@@ -1,5 +1,27 @@
 # three.js
 
+# three.js
+
+| 目录名称   | 文件大小 | 代码行数 | glsl 代码行数 |
+| ---------- | -------- | -------- | ------------- |
+| renderers  | 1.0M     | 12,555   | 3,424         |
+| math       | 208K     | 4,651    | 0             |
+| extras     | 140K     | 2,418    | 85            |
+| animation  | 136K     | 2,215    | 0             |
+| geometries | 128K     | 1,834    | 0             |
+| loaders    | 108K     | 1,660    | 0             |
+| core       | 108K     | 2,027    | 0             |
+| materials  | 88K      | 1,207    | 0             |
+| objects    | 76K      | 1,128    | 0             |
+| helpers    | 60K      | 740      | 0             |
+| lights     | 56K      | 414      | 0             |
+| textures   | 52K      | 410      | 0             |
+| cameras    | 28K      | 382      | 0             |
+| audio      | 24K      | 407      | 0             |
+| scenes     | 12K      | 86       | 0             |
+| sum        | 2.2M     | 32,661   | 3,509         |
+
+
 [![NPM Package][npm]][npm-url]
 [![Build Size][build-size]][build-size-url]
 [![NPM Downloads][npm-downloads]][npmtrends-url]
