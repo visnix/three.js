@@ -18,4 +18,3 @@ directory_path = os.path.dirname(os.path.realpath(__file__))
 
 # 调用函数，你需要替换为你的文件路径
 remove_empty_lines(directory_path + '/build/three.module.js')
-remove_empty_lines(directory_path + '/build/three.cjs')

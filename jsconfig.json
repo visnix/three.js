@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "three": ["./build/three.module.js"],
+      "three/addons/*": ["./examples/jsm/*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["./**/*.js", "examples/**/*.html"]
+}
