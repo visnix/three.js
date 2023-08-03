@@ -1,5 +1,4 @@
 export const REVISION = '156dev';
-
 export const MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
 export const TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
 export const CullFaceNone = 0;
@@ -53,7 +52,6 @@ export const ReinhardToneMapping = 2;
 export const CineonToneMapping = 3;
 export const ACESFilmicToneMapping = 4;
 export const CustomToneMapping = 5;
-
 export const UVMapping = 300;
 export const CubeReflectionMapping = 301;
 export const CubeRefractionMapping = 302;
@@ -95,7 +93,6 @@ export const RedIntegerFormat = 1029;
 export const RGFormat = 1030;
 export const RGIntegerFormat = 1031;
 export const RGBAIntegerFormat = 1033;
-
 export const RGB_S3TC_DXT1_Format = 33776;
 export const RGBA_S3TC_DXT1_Format = 33777;
 export const RGBA_S3TC_DXT3_Format = 33778;
@@ -148,13 +145,11 @@ export const BasicDepthPacking = 3200;
 export const RGBADepthPacking = 3201;
 export const TangentSpaceNormalMap = 0;
 export const ObjectSpaceNormalMap = 1;
-
 // Color space string identifiers, matching CSS Color Module Level 4 and WebGPU names where available.
 export const NoColorSpace = '';
 export const SRGBColorSpace = 'srgb';
 export const LinearSRGBColorSpace = 'srgb-linear';
 export const DisplayP3ColorSpace = 'display-p3';
-
 export const ZeroStencilOp = 0;
 export const KeepStencilOp = 7680;
 export const ReplaceStencilOp = 7681;
@@ -163,7 +158,6 @@ export const DecrementStencilOp = 7683;
 export const IncrementWrapStencilOp = 34055;
 export const DecrementWrapStencilOp = 34056;
 export const InvertStencilOp = 5386;
-
 export const NeverStencilFunc = 512;
 export const LessStencilFunc = 513;
 export const EqualStencilFunc = 514;
@@ -172,7 +166,6 @@ export const GreaterStencilFunc = 516;
 export const NotEqualStencilFunc = 517;
 export const GreaterEqualStencilFunc = 518;
 export const AlwaysStencilFunc = 519;
-
 export const NeverCompare = 512;
 export const LessCompare = 513;
 export const EqualCompare = 514;
@@ -181,7 +174,6 @@ export const GreaterCompare = 516;
 export const NotEqualCompare = 517;
 export const GreaterEqualCompare = 518;
 export const AlwaysCompare = 519;
-
 export const StaticDrawUsage = 35044;
 export const DynamicDrawUsage = 35048;
 export const StreamDrawUsage = 35040;
@@ -191,11 +183,8 @@ export const StreamReadUsage = 35041;
 export const StaticCopyUsage = 35046;
 export const DynamicCopyUsage = 35050;
 export const StreamCopyUsage = 35042;
-
 export const GLSL1 = '100';
 export const GLSL3 = '300 es';
-
 export const _SRGBAFormat = 1035; // fallback for WebGL 1
-
 export const WebGLCoordinateSystem = 2000;
 export const WebGPUCoordinateSystem = 2001;

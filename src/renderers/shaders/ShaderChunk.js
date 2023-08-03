@@ -103,7 +103,6 @@ import uv_pars_fragment from './ShaderChunk/uv_pars_fragment.glsl.js';
 import uv_pars_vertex from './ShaderChunk/uv_pars_vertex.glsl.js';
 import uv_vertex from './ShaderChunk/uv_vertex.glsl.js';
 import worldpos_vertex from './ShaderChunk/worldpos_vertex.glsl.js';
-
 import * as background from './ShaderLib/background.glsl.js';
 import * as backgroundCube from './ShaderLib/backgroundCube.glsl.js';
 import * as cube from './ShaderLib/cube.glsl.js';
@@ -121,7 +120,6 @@ import * as meshtoon from './ShaderLib/meshtoon.glsl.js';
 import * as points from './ShaderLib/points.glsl.js';
 import * as shadow from './ShaderLib/shadow.glsl.js';
 import * as sprite from './ShaderLib/sprite.glsl.js';
-
 export const ShaderChunk = {
 	alphahash_fragment: alphahash_fragment,
 	alphahash_pars_fragment: alphahash_pars_fragment,
@@ -228,7 +226,6 @@ export const ShaderChunk = {
 	uv_pars_vertex: uv_pars_vertex,
 	uv_vertex: uv_vertex,
 	worldpos_vertex: worldpos_vertex,
-
 	background_vert: background.vertex,
 	background_frag: background.fragment,
 	backgroundCube_vert: backgroundCube.vertex,

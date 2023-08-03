@@ -32,10 +32,5 @@ print(directory_path)
 # remove_empty_lines(directory_path + '/build/three.module.js')
 
 # # 调用函数，文件目录
-traverse_directory(directory_path + "/playground")
-traverse_directory(directory_path + "/manual")
-traverse_directory(directory_path + "/editor")
-traverse_directory(directory_path + "/manual")
-traverse_directory(directory_path + "/utils")
-traverse_directory(directory_path + "/test")
-traverse_directory(directory_path + "/docs")
+traverse_directory(directory_path + "/src")
+
