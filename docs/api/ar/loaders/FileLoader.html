@@ -8,42 +8,34 @@
 	</head>
 	<body class="rtl">
 		[page:Loader] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			فئة منخفضة المستوى لتحميل الموارد باستخدام Fetch ، يتم استخدامها داخليًا من قبل
 			معظم المحملات. يمكن أيضًا استخدامها مباشرة لتحميل أي نوع ملف لا يحتوي على
 			محمل.			
 		</p>
-		 
 		<h2>مثال الكود</h2>
 		<code>
 		const loader = new THREE.FileLoader();
-	
 		//load a text file and output the result to the console
 		loader.load(
 			// resource URL
 			'example.txt',
-	
 			// onLoad callback
 			function ( data ) {
 				// output the text to the console
 				console.log( data )
 			},
-	
 			// onProgress callback
 			function ( xhr ) {
 				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 			},
-	
 			// onError callback
 			function ( err ) {
 				console.error( 'An error happened' );
 			}
 		);
 		</code>
-		 
 		<p>
 		* ملاحظة: * يجب تمكين ذاكرة التخزين المؤقت باستخدام
 		<code>THREE.Cache.enabled = true;</code>
@@ -52,34 +44,27 @@
 		التي تحتوي على الاستجابة من كل طلب يتم من خلال هذا المحمل ،
 		لذلك يتم طلب كل ملف مرة واحدة.
 		</p>
-		 
 		<h2>المنشئ (Constructor)</h2>
-		 
 		<h3>[name] ( [param:LoadingManager manager] )</h3>
 		<p>
 		[page:LoadingManager manager] - [page:LoadingManager loadingManager]
 		للمحمل الذي سيستخدمه. الافتراضي هو [page:DefaultLoadingManager].
 		</p>
-		 
 		<h2>الخصائص (Properties)</h2>
 		<p>انظر إلى الصفحة الأساسية [page:Loader] للخصائص المشتركة.</p>
-		 
 		<h3>[property:String mimeType]</h3>
 		<p>
 		المتوقع
 		[link:https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types mimeType].
 		انظر [page:.setMimeType]. الافتراضي هو `undefined`.
 		</p>
-		 
 		<h3>[property:String responseType]</h3>
 		<p>
 		نوع الاستجابة المتوقع. انظر [page:.setResponseType]. الافتراضي هو
 		`undefined`.
 		</p>
-
 		<h2>الطرق (Methods)</h2>
 		<p>انظر إلى الصفحة الأساسية [page:Loader] للطرق المشتركة.</p>
-	 
 		<h3>
 		[method:undefined load]( [param:String url], [param:Function onLoad], [param:Function onProgress], [param:Function onError] )
 		</h3>
@@ -94,10 +79,8 @@
 		.[page:Integer loaded]. إذا لم يضع الخادم رأس Content-Length
 		؛ .[page:Integer total] ستكون 0.<br />
 		[page:Function onError] (اختياري) - سيتم استدعاؤه في حالة حدوث خطأ.<br /><br />
-	 
 		قم بتحميل عنوان URL وإرسال الاستجابة إلى وظيفة onLoad.
 		</p>
-	 
 		<h3>[method:this setMimeType]( [param:String mimeType] )</h3>
 		<p>
 		قم بتعيين
@@ -105,7 +88,6 @@
 		المتوقع للملف الذي يتم تحميله. لاحظ أنه في كثير من الحالات سيتم
 		تحديده تلقائيًا ، لذلك بشكل افتراضي هو `undefined`.
 		</p>
-	 
 		<h3>[method:this setResponseType]( [param:String responseType] )</h3>
 		<p>
 		قم بتغيير نوع الاستجابة. القيم المقبولة هي:<br />
@@ -121,9 +103,7 @@
 		[page:String json] - يحلل الملف باستخدام
 		[link:https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse JSON.parse].<br />
 		</p>
-	 
 		<h2>المصدر (Source)</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

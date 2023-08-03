@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -60,12 +58,10 @@ pickHelper.addEventListener('select', (event) =&gt; {
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, -1),
     ]);
-
     this.controllers = [];
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
       scene.add(controller);
-
       const line = new THREE.Line(pointerGeometry);
       line.scale.z = 5;
       controller.add(line);
@@ -86,17 +82,14 @@ pickHelper.addEventListener('select', (event) =&gt; {
 +    this.objectToColorMap = new Map();
 +    this.controllerToObjectMap = new Map();
 +    this.tempMatrix = new THREE.Matrix4();
-
     const pointerGeometry = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, -1),
     ]);
-
     this.controllers = [];
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
       scene.add(controller);
-
       const line = new THREE.Line(pointerGeometry);
       line.scale.z = 5;
       controller.add(line);
@@ -140,9 +133,7 @@ pickHelper.addEventListener('select', (event) =&gt; {
 또한 원래 방사체의 색을 <code class="notranslate" translate="no">objectToColorMap</code>에 저장하여 선이 가리키는 모든 부분에 닿을 수 있을 만큼 길게 만듭니다.</p>
 <p>모든 프레임에서 이러한 설정들을 재설정하려면 몇 가지 코드를 추가해야 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class ControllerPickHelper {
-
   ...
-
 +  _reset() {
 +    // restore the colors
 +    this.objectToColorMap.forEach((color, object) =&gt; {
@@ -153,9 +144,7 @@ pickHelper.addEventListener('select', (event) =&gt; {
 +  }
   update(scene, time) {
 +    this._reset();
-
     ...
-
 }
 </pre>
 <p>다음으로 우리는 사용자가 컨트롤러를 클릭했을 때 <code class="notranslate" translate="no">select</code> 이벤트를 내보내야 합니다.
@@ -169,12 +158,10 @@ pickHelper.addEventListener('select', (event) =&gt; {
     this.objectToColorMap = new Map();  // object to save color and picked object
     this.controllerToObjectMap = new Map();
     this.tempMatrix = new THREE.Matrix4();
-
     const pointerGeometry = new THREE.BufferGeometry().setFromPoints([
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(0, 0, -1),
     ]);
-
     this.controllers = [];
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
@@ -186,7 +173,6 @@ pickHelper.addEventListener('select', (event) =&gt; {
 +        }
 +      });
       scene.add(controller);
-
       const line = new THREE.Line(pointerGeometry);
       line.scale.z = 5;
       controller.add(line);
@@ -197,11 +183,8 @@ pickHelper.addEventListener('select', (event) =&gt; {
 </pre>
 <p>이제 render loop에서 <code class="notranslate" translate="no">update</code>만 호출하면 됩니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
-
   ...
-
 +  pickHelper.update(scene, time);
-
   renderer.render(scene, camera);
 }
 </pre>
@@ -210,7 +193,6 @@ pickHelper.addEventListener('select', (event) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-point-to-select.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-point-to-select.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>만약 우리가 물체를 움직일 수 있기를 원한다면 어떨까요?</p>
 <p>그것은 비교적 쉽습니다.
@@ -218,11 +200,8 @@ pickHelper.addEventListener('select', (event) =&gt; {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class ControllerPickHelper extends THREE.EventDispatcher {
   constructor(scene) {
     super();
-
     ...
-
     this.controllers = [];
-
 +    const selectListener = (event) =&gt; {
 +      const controller = event.target;
 +      const selectedObject = this.controllerToObjectMap.get(event.target);
@@ -230,7 +209,6 @@ pickHelper.addEventListener('select', (event) =&gt; {
 +        this.dispatchEvent({type: 'select', controller, selectedObject});
 +      }
 +    };
-
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
 -      controller.addEventListener('select', (event) =&gt; {
@@ -241,18 +219,14 @@ pickHelper.addEventListener('select', (event) =&gt; {
 -        }
 -      });
 +      controller.addEventListener('select', selectListener);
-
        ...
 </pre>
 <p>이제 이것을 <code class="notranslate" translate="no">selectstart</code>와 <code class="notranslate" translate="no">select</code> 모두에 사용해 봅시다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class ControllerPickHelper extends THREE.EventDispatcher {
   constructor(scene) {
     super();
-
     ...
-
     this.controllers = [];
-
     const selectListener = (event) =&gt; {
       const controller = event.target;
       const selectedObject = this.controllerToObjectMap.get(event.target);
@@ -261,23 +235,18 @@ pickHelper.addEventListener('select', (event) =&gt; {
 +        this.dispatchEvent({type: event.type, controller, selectedObject});
       }
     };
-
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
       controller.addEventListener('select', selectListener);
       controller.addEventListener('selectstart', selectListener);
-
        ...
 </pre>
 <p>사용자가 컨트롤러의 버튼을 놓을 때 three.js가 전송하는 <code class="notranslate" translate="no">selectend</code> 이벤트도 전달해 봅시다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class ControllerPickHelper extends THREE.EventDispatcher {
   constructor(scene) {
     super();
-
     ...
-
     this.controllers = [];
-
     const selectListener = (event) =&gt; {
       const controller = event.target;
       const selectedObject = this.controllerToObjectMap.get(event.target);
@@ -285,18 +254,15 @@ pickHelper.addEventListener('select', (event) =&gt; {
         this.dispatchEvent({type: event.type, controller, selectedObject});
       }
     };
-
 +    const endListener = (event) =&gt; {
 +      const controller = event.target;
 +      this.dispatchEvent({type: event.type, controller});
 +    };
-
     for (let i = 0; i &lt; 2; ++i) {
       const controller = renderer.xr.getController(i);
       controller.addEventListener('select', selectListener);
       controller.addEventListener('selectstart', selectListener);
 +      controller.addEventListener('selectend', endListener);
-
        ...
 </pre>
 <p>이제 코드를 변경하여 <code class="notranslate" translate="no">selectstart</code> 이벤트가 발생하면 선택한 개체를 scene에서 제거하고 컨트롤러의 하위 개체로 만듭니다.
@@ -307,7 +273,6 @@ pickHelper.addEventListener('select', (event) =&gt; {
 -  const partnerObject = meshToMeshMap.get(event.selectedObject);
 -  partnerObject.visible = true;
 -});
-
 +const controllerToSelection = new Map();
 +pickHelper.addEventListener('selectstart', (event) =&gt; {
 +  const {controller, selectedObject} = event;
@@ -339,19 +304,12 @@ pickHelper.addEventListener('select', (event) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-point-to-select-w-move.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-point-to-select-w-move.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>솔직하게 말해서 나는 이 <code class="notranslate" translate="no">ControllerPickHelper</code>가 코드를 구성하는 가장 좋은 방법이라고 확신할 수 없습니다.
 하지만 이것은 three.js의 VR에서 작동하는 간단한 작업들의 다양한 부분을 보여주는데 유용합니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

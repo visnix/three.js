@@ -23,7 +23,6 @@
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -32,38 +31,29 @@
   }
 }
 </script>
-
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
 function main() {
-
 	const canvas = document.querySelector( '#c' );
 	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
 	renderer.autoClearColor = false;
-
 	const fov = 45;
 	const aspect = 2; // the canvas default
 	const near = 0.1;
 	const far = 100;
 	const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 	camera.position.set( 0, 10, 20 );
-
 	const controls = new OrbitControls( camera, canvas );
 	controls.target.set( 0, 5, 0 );
 	controls.update();
-
 	const scene = new THREE.Scene();
-
 	const sceneBG = new THREE.Scene();
 	const cameraBG = new THREE.OrthographicCamera( - 1, 1, 1, - 1, - 1, 1 );
-
 	let bgMesh;
 	let bgTexture;
 	{
-
 		const loader = new THREE.TextureLoader();
 		bgTexture = loader.load( 'resources/images/beach.jpg' );
 		bgTexture.colorSpace = THREE.SRGBColorSpace;
@@ -74,11 +64,8 @@ function main() {
 		} );
 		bgMesh = new THREE.Mesh( planeGeo, planeMat );
 		sceneBG.add( bgMesh );
-
 	}
-
 	function frameArea( sizeToFitOnScreen, boxSize, boxCenter, camera ) {
-
 		const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
 		const halfFovY = THREE.MathUtils.degToRad( camera.fov * .5 );
 		const distance = halfSizeToFitOnScreen / Math.tan( halfFovY );
@@ -88,86 +75,57 @@ function main() {
 			.subVectors( camera.position, boxCenter )
 			.multiply( new THREE.Vector3( 1, 0, 1 ) )
 			.normalize();
-
 		// move the camera to a position distance units way from the center
 		// in whatever direction the camera was from the center already
 		camera.position.copy( direction.multiplyScalar( distance ).add( boxCenter ) );
-
 		// pick some near and far values for the frustum that
 		// will contain the box.
 		camera.near = boxSize / 100;
 		camera.far = boxSize * 100;
-
 		camera.updateProjectionMatrix();
-
 		// point the camera to look at the center of the box
 		camera.lookAt( boxCenter.x, boxCenter.y, boxCenter.z );
-
 	}
-
 	{
-
 		const gltfLoader = new GLTFLoader();
 		gltfLoader.load( 'resources/models/3dbustchallange_submission/scene.gltf', ( gltf ) => {
-
 			const root = gltf.scene;
 			scene.add( root );
-
 			// fix materials from r114
 			root.traverse( ( { material } ) => {
-
 				if ( material ) {
-
 					material.depthWrite = true;
-
 				}
-
 			} );
-
 			// compute the box that contains all the stuff
 			// from root and below
 			const box = new THREE.Box3().setFromObject( root );
-
 			const boxSize = box.getSize( new THREE.Vector3() ).length();
 			const boxCenter = box.getCenter( new THREE.Vector3() );
-
 			// set the camera to frame the box
 			frameArea( boxSize * 0.4, boxSize, boxCenter, camera );
-
 			// update the Trackball controls to handle the new size
 			controls.maxDistance = boxSize * 10;
 			controls.target.copy( boxCenter );
 			controls.update();
-
 		} );
-
 	}
-
 	function resizeRendererToDisplaySize( renderer ) {
-
 		const canvas = renderer.domElement;
 		const width = canvas.clientWidth;
 		const height = canvas.clientHeight;
 		const needResize = canvas.width !== width || canvas.height !== height;
 		if ( needResize ) {
-
 			renderer.setSize( width, height, false );
-
 		}
-
 		return needResize;
-
 	}
-
 	function render() {
-
 		if ( resizeRendererToDisplaySize( renderer ) ) {
-
 			const canvas = renderer.domElement;
 			const canvasAspect = canvas.clientWidth / canvas.clientHeight;
 			camera.aspect = canvasAspect;
 			camera.updateProjectionMatrix();
-
 			// scale the background plane to keep the image's
 			// aspect correct.
 			// Note the image may not have loaded yet.
@@ -175,20 +133,13 @@ function main() {
 			const aspect = imageAspect / canvasAspect;
 			bgMesh.scale.x = aspect > 1 ? aspect : 1;
 			bgMesh.scale.y = aspect > 1 ? 1 : 1 / aspect;
-
 		}
-
 		renderer.render( sceneBG, cameraBG );
 		renderer.render( scene, camera );
-
 		requestAnimationFrame( render );
-
 	}
-
 	requestAnimationFrame( render );
-
 }
-
 main();
 </script>
 </html>

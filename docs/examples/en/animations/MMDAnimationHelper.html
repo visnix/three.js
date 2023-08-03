@@ -8,79 +8,56 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc"> A animation helper for <a href="https://sites.google.com/view/evpvp/">`MMD`</a> resources. <br /><br />
 		[name] handles animation of MMD assets loaded by [page:MMDLoader] with MMD special features as IK, Grant, and Physics.
 		It uses [page:CCDIKSolver] and [page:MMDPhysics] inside.
 		</p>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { MMDAnimationHelper } from 'three/addons/animation/MMDAnimationHelper.js';
 		</code>
-
 		<h2>Code Example</h2>
-
 		<code>
 		// Instantiate a helper
 		const helper = new MMDAnimationHelper();
-
 		// Load MMD resources and add to helper
 		new MMDLoader().loadWithAnimation(
 			'models/mmd/miku.pmd',
 			'models/mmd/dance.vmd',
 			function ( mmd ) {
-
 				helper.add( mmd.mesh, {
 					animation: mmd.animation,
 					physics: true
 				} );
-
 				scene.add( mmd.mesh );
-
 				new THREE.AudioLoader().load(
 					'audios/mmd/song.mp3',
 					function ( buffer ) {
-
 						const listener = new THREE.AudioListener();
 						const audio = new THREE.Audio( listener ).setBuffer( buffer );
-
 						listener.position.z = 1;
-
 						scene.add( audio );
 						scene.add( listener );
-
 					}
-
 				);
-
 			}
 		);
-
 		function render() {
-
 			helper.update( clock.getDelta() );
 			renderer.render( scene, camera );
-
 		}
 		</code>
-
 		<h2>Examples</h2>
-
 		<p>
 			[example:webgl_loader_mmd]<br />
 			[example:webgl_loader_mmd_pose]<br />
 			[example:webgl_loader_mmd_audio]
 		</p>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]( [param:Object params] )</h3>
 		<p>
 		[page:Object params] — (optional)<br />
@@ -95,26 +72,18 @@
 		<p>
 		Creates a new [name].
 		</p>
-
 		<h2>Properties</h2>
-
 		<h3>[property:Audio audio]</h3>
 		<p>An [page:Audio] added to helper.</p>
-
 		<h3>[property:Camera camera]</h3>
 		<p>An [page:Camera] added to helper.</p>
-
 		<h3>[property:Array meshes]</h3>
 		<p>An array of [page:SkinnedMesh] added to helper.</p>
-
 		<h3>[property:WeakMap objects]</h3>
 		<p>A [page:WeakMap] which holds animation stuffs used in helper for objects added to helper. For example, you can access [page:AnimationMixer] for an added [page:SkinnedMesh] with "helper.objects.get( mesh ).mixer"</p>
-
 		<h3>[property:Function onBeforePhysics]</h3>
 		<p>An optional callback that is executed immediately before the physicis calculation for an [page:SkinnedMesh]. This function is called with the [page:SkinnedMesh].</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:MMDAnimationHelper add]( [param:Object3D object], [param:Object params] )</h3>
 		<p>
 		[page:Object3D object] — [page:SkinnedMesh], [page:Camera], or [page:Audio]<br />
@@ -133,7 +102,6 @@
 		Add an [page:SkinnedMesh], [page:Camera], or [page:Audio] to helper and setup animation. The anmation durations of added objects are synched.
 		If camera/audio has already been added, it'll be replaced with a new one.
 		</p>
-
 		<h3>[method:MMDAnimationHelper enable]( [param:String key], [param:Boolean enabled] )</h3>
 		<p>
 		[page:String key] — Allowed strings are 'animation', 'ik', 'grant', 'physics', and 'cameraAnimation'.<br />
@@ -142,7 +110,6 @@
 		<p>
 		Enable/Disable an animation feature
 		</p>
-
 		<h3>[method:MMDAnimationHelper pose]( [param:SkinnedMesh mesh], [param:Object vpd], [param:Object params] )</h3>
 		<p>
 		[page:SkinnedMesh mesh] — [page:SkinnedMesh] which changes the posing. It doesn't need to be added to helper.<br />
@@ -157,7 +124,6 @@
 		<p>
 		Changes the posing of [page:SkinnedMesh] as VPD content specifies.
 		</p>
-
 		<h3>[method:MMDAnimationHelper remove]( [param:Object3D object] )</h3>
 		<p>
 		[page:Object3D object] — [page:SkinnedMesh], [page:Camera], or [page:Audio]<br />
@@ -165,7 +131,6 @@
 		<p>
 		Remove an [page:SkinnedMesh], [page:Camera], or [page:Audio] from helper.
 		</p>
-
 		<h3>[method:MMDAnimationHelper update]( [param:Number delta] )</h3>
 		<p>
 		[page:Number delta] — number in second<br />
@@ -173,9 +138,7 @@
 		<p>
 		Advance mixer time and update the animations of objects added to helper
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/animation/MMDAnimationHelper.js examples/jsm/animation/MMDAnimationHelper.js]
 		</p>

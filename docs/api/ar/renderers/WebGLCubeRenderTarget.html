@@ -8,26 +8,19 @@
 	</head>
 	<body class="rtl">
 		[page:WebGLRenderTarget] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 		يستخدمه [page:CubeCamera] كـ [page:WebGLRenderTarget].
 		</p>
-		 
 		<h2>أمثلة (Examples)</h2>
-		 
 		<p>انظر [page:CubeCamera] للحصول على أمثلة.</p>
-		 
 		<h2>المنشئ (Constructor)</h2>
-		 
 		<h3>[name]([param:Number size], [param:Object options])</h3>
 		<p>
 		[page:Float size] - الحجم ، بالبكسل. الافتراضي هو `1`.<br />
 		options - (اختياري) كائن يحمل معلمات القوام لـ
 		قوام الهدف المُنشأ تلقائيًا وعمق المخزن/مخططات المخزن booleans. لـ
 		شرح معلمات القوام انظر [page:Texture Texture]. التالي هي خيارات صالحة:<br /><br />
-		 
 		[page:Constant wrapS] - الافتراضي هو [page:Textures ClampToEdgeWrapping].
 		<br />
 		[page:Constant wrapT] - الافتراضي هو [page:Textures ClampToEdgeWrapping].
@@ -45,19 +38,12 @@
 		<br />
 		[page:Boolean depthBuffer] - الافتراضي هو `true`.<br />
 		[page:Boolean stencilBuffer] - الافتراضي هو `false`.<br /><br />
-		 
 		ينشئ [name] جديدًا
 		</p>
-		 
-
 		<h2>الخصائص (Properties)</h2>
-
 		<h3>انظر [page:WebGLRenderTarget] للخصائص الموروثة</h3>
-	 
 		<h2>الطرق (Methods)</h2>
-	 
 		<h3>انظر [page:WebGLRenderTarget] للطرق الموروثة</h3>
-	 
 		<h3>
 		[method:this fromEquirectangularTexture]( [param:WebGLRenderer renderer], [param:Texture texture] )
 		</h3>
@@ -69,7 +55,6 @@
 		استخدم هذه الطريقة إذا كنت ترغب في تحويل بانوراما إستوائية مستطيلة إلى
 		تنسيق cubemap.
 		</p>
-	 
 		<h3>
 		[method:undefined clear]( [param:WebGLRenderer renderer], [param:Boolean color], 
 		[param:Boolean depth], [param:Boolean stencil] )
@@ -79,10 +64,7 @@
 		المخزنات. يتم تعيين مخزن اللون على لون المسح الحالي للمُعالج.
 		المعاملات الافتراضية هي `true`.
 		</p>
-	 
-
 		<h2>المصدر (Source)</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

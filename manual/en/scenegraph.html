@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -49,7 +47,6 @@ around the Earth's local space.</p>
 <p></p><div class="threejs_diagram_container">
   <iframe class="threejs_diagram " style="width: 400px; height: 300px;" src="/manual/foo/../resources/moon-orbit.html"></iframe>
 </div>
-
 <p></p>
 <p>To think of it another way, you living on the Earth do not have to think
 about the Earth's rotation on its axis nor its rotation around the
@@ -69,14 +66,12 @@ the real sun, earth, and moon use physics but for our purposes we'll
 fake it with a scene graph.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// an array of objects whose rotation to update
 const objects = [];
-
 // use just one sphere for everything
 const radius = 1;
 const widthSegments = 6;
 const heightSegments = 6;
 const sphereGeometry = new THREE.SphereGeometry(
     radius, widthSegments, heightSegments);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);  // make the sun large
@@ -123,7 +118,6 @@ objects in our <code class="notranslate" translate="no">objects</code> array wit
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Now let's add in the earth.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
@@ -142,7 +136,6 @@ rotate too.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>You can see both the sun and the earth are rotating but the earth is not
 going around the sun. Let's make the earth a child of the sun</p>
@@ -154,7 +147,6 @@ going around the sun. Let's make the earth a child of the sun</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>What happened? Why is the earth the same size as the sun and why is it so far away?
 I actually had to move the camera from 50 units above to 150 units above to see the earth.</p>
@@ -171,14 +163,12 @@ to that node.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const solarSystem = new THREE.Object3D();
 +scene.add(solarSystem);
 +objects.push(solarSystem);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);
 -scene.add(sunMesh);
 +solarSystem.add(sunMesh);
 objects.push(sunMesh);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 earthMesh.position.x = 10;
@@ -197,7 +187,6 @@ it is no longer scaled by 5x.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit-fixed.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Much better. The earth is smaller than the sun and it's rotating around the sun
 and rotating itself.</p>
@@ -206,18 +195,15 @@ and rotating itself.</p>
 +earthOrbit.position.x = 10;
 +solarSystem.add(earthOrbit);
 +objects.push(earthOrbit);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 -earthMesh.position.x = 10; // note that this offset is already set in its parent's THREE.Object3D object "earthOrbit"
 -solarSystem.add(earthMesh);
 +earthOrbit.add(earthMesh);
 objects.push(earthMesh);
-
 +const moonOrbit = new THREE.Object3D();
 +moonOrbit.position.x = 2;
 +earthOrbit.add(moonOrbit);
-
 +const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
 +const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
 +moonMesh.scale.set(.5, .5, .5);
@@ -233,7 +219,6 @@ to the <code class="notranslate" translate="no">moonOrbit</code>. The new scene 
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>You can see the moon follows the spirograph pattern shown at the top
 of this article but we didn't have to manually compute it. We just
@@ -262,7 +247,6 @@ all the spheres. Otherwise a sphere might draw over them and cover them up.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>We can see the
 <span style="color:red">x (red)</span> and
@@ -289,7 +273,6 @@ some function to add the helpers for each node</p>
 -  axes.renderOrder = 1;
 -  node.add(axes);
 -});
-
 +function makeAxisGrid(node, label, units) {
 +  const helper = new AxisGridHelper(node, units);
 +  gui.add(helper, 'visible').name(label);
@@ -323,12 +306,10 @@ class AxisGridHelper {
     axes.material.depthTest = false;
     axes.renderOrder = 2;  // after the grid
     node.add(axes);
-
     const grid = new THREE.GridHelper(units, units);
     grid.material.depthTest = false;
     grid.renderOrder = 1;
     node.add(grid);
-
     this.grid = grid;
     this.axes = axes;
     this.visible = false;
@@ -350,7 +331,6 @@ Otherwise the grid might overwrite the axes.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes-grids.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes-grids.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Turn on the <code class="notranslate" translate="no">solarSystem</code> and you'll see how the earth is exactly 10
 units out from the center just like we set above. You can see how the
@@ -375,7 +355,6 @@ moves around and the tank will target the sphere.</p>
 the lights in gold, and the cameras in purple. One camera has not been added
 to the scene graph.</p>
 <div class="threejs_center"><img src="../resources/images/scenegraph-tank.svg" style="width: 800px;"></div>
-
 <p>Look in the code to see the setup of all of these nodes.</p>
 <p>For the target, the thing the tank is aiming at, there is a <code class="notranslate" translate="no">targetOrbit</code>
 (<a href="/docs/#api/en/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>) which just rotates similar to the <code class="notranslate" translate="no">earthOrbit</code> above. A
@@ -400,9 +379,7 @@ position slightly further down the curve and uses that to point the tank in that
 direction using <a href="/docs/#api/en/core/Object3D.lookAt"><code class="notranslate" translate="no">Object3D.lookAt</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const tankPosition = new THREE.Vector2();
 const tankTarget = new THREE.Vector2();
-
 ...
-
 // move tank
 const tankTime = time * .05;
 curve.getPointAt(tankTime % 1, tankPosition);
@@ -414,9 +391,7 @@ tank.lookAt(tankTarget.x, 0, tankTarget.y);
 of the tank. To point it at the target we just ask for the target's world position
 and then again use <a href="/docs/#api/en/core/Object3D.lookAt"><code class="notranslate" translate="no">Object3D.lookAt</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const targetPosition = new THREE.Vector3();
-
 ...
-
 // face turret at target
 targetMesh.getWorldPosition(targetPosition);
 turretPivot.lookAt(targetPosition);
@@ -448,7 +423,6 @@ targetCameraPivot.lookAt(targetPosition);
   { cam: targetCamera, desc: 'near target looking at tank', },
   { cam: tankCamera, desc: 'above back of tank', },
 ];
-
 const infoElem = document.querySelector('#info');
 </pre>
 <p>and cycle through our cameras at render time.</p>
@@ -459,7 +433,6 @@ infoElem.textContent = camera.desc;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-tank.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-tank.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope this gives some idea of how scene graphs work and how you might use them.
 Making <a href="/docs/#api/en/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a> nodes and parenting things to them is an important step to using
@@ -468,15 +441,9 @@ to make something move and rotate the way you want. For example without a scene 
 computing the motion of the moon or where to put the wheels of the car relative to its
 body would be very complicated but using a scene graph it becomes much easier.</p>
 <p><a href="materials.html">Next up we'll go over materials</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

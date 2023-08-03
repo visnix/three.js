@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -63,7 +61,6 @@
     <div class="code">THREE.FogExp2</div>
   </div>
 </div>
-
 <p>需要注意的是雾是作用在 <em>渲染的物体</em> 上的，是物体颜色中每个像素计算的一部分。这意味着如果你想让你的场景褪色到某种颜色，你需要设定雾 <strong>和</strong> 场景的背景颜色为同一种颜色。背景颜色通过<a href="/docs/#api/zh/scenes/Scene#background"><code class="notranslate" translate="no">scene.background</code></a>属性设置。你可以通过 <a href="/docs/#api/zh/math/Color"><code class="notranslate" translate="no">THREE.Color</code></a> 选择背景颜色设置。例如：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">scene.background = new THREE.Color('#F00');  // red
 </pre>
@@ -77,10 +74,8 @@
     <div class="code">fog blue, background blue</div>
   </div>
 </div>
-
 <p>这是我们之前添加雾的例子。唯一的改动是在添加雾之后，我们设置了场景的背景颜色。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
-
 +{
 +  const near = 1;
 +  const far = 2;
@@ -94,7 +89,6 @@
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>让我们添加界面来调整雾。我们将再次使用<a href="https://github.com/georgealways/lil-gui">lil-gui</a>。lil-gui接收对象和属性参数，并自动为其创建界面。我们能够简单地操纵雾的 <code class="notranslate" translate="no">near</code> 和 <code class="notranslate" translate="no">far</code> 属性，但是 <code class="notranslate" translate="no">near</code> 数值大于 <code class="notranslate" translate="no">far</code> 是无效的，所以我们创建助手（helper）来确保 <code class="notranslate" translate="no">near</code> 和 <code class="notranslate" translate="no">far</code> 属性，让 <code class="notranslate" translate="no">near</code> 小于或等于  <code class="notranslate" translate="no">far</code> ， <code class="notranslate" translate="no">far</code> 大于或等于 <code class="notranslate" translate="no">near</code>。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// We use this class to pass to lil-gui
@@ -178,7 +172,6 @@ class FogGUIHelper {
   const color = 'lightblue';
   scene.fog = new THREE.Fog(color, near, far);
   scene.background = new THREE.Color(color);
-
 *  const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
   gui.add(fogGUIHelper, 'near', near, far).listen();
   gui.add(fogGUIHelper, 'far', near, far).listen();
@@ -189,7 +182,6 @@ class FogGUIHelper {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog-gui.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>你可以观察到，设置 <code class="notranslate" translate="no">near</code> 如1.9， <code class="notranslate" translate="no">far</code> 为2.0能在未雾化和完全雾化之间获得锐利的变化效果，而设置 <code class="notranslate" translate="no">near</code> = 1.1， <code class="notranslate" translate="no">far</code> = 2.9 会让我们旋转的方块在距离摄像机2个单位距离的位置获得最平滑的变化效果。</p>
 <p>最后， <a href="/docs/#api/zh/materials/Material#fog"><code class="notranslate" translate="no">fog</code></a> 在材料上有个布尔属性，用来设置渲染物体的材料是否会受到雾的影响。对于大多数材料而言默认设置为 <code class="notranslate" translate="no">true</code> ，作为你可能想关掉雾生效的例子，设想下你正在制作一个3D车辆模拟器并处于驾驶员座位或座舱的视角，你很可能为了看清车内的物体将它们的是否受雾影响属性关闭。</p>
@@ -200,7 +192,6 @@ class FogGUIHelper {
     <div class="code">fog: true, all</div>
   </div>
 </div>
-
 <p>注意房间尽头的墙壁和天花板正受到雾的影响，当我们把房子材料上的是否受雾影响属性关闭可以解决这个问题。</p>
 <div class="spread">
   <div>
@@ -208,18 +199,11 @@ class FogGUIHelper {
     <div class="code">fog: true, only outside materials</div>
   </div>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-fog.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

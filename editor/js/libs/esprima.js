@@ -13,42 +13,31 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
 /******/ 		// Check if module is in cache
 /* istanbul ignore if */
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -56,19 +45,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ ([
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
-
 	/*
 	  Copyright JS Foundation and other contributors, https://js.foundation/
-
 	  Redistribution and use in source and binary forms, with or without
 	  modification, are permitted provided that the following conditions are met:
-
 	    * Redistributions of source code must retain the above copyright
 	      notice, this list of conditions and the following disclaimer.
 	    * Redistributions in binary form must reproduce the above copyright
 	      notice, this list of conditions and the following disclaimer in the
 	      documentation and/or other materials provided with the distribution.
-
 	  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 	  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 	  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -156,12 +141,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.Syntax = syntax_1.Syntax;
 	// Sync with *.json manifests.
 	exports.version = '3.1.3';
-
-
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var syntax_1 = __webpack_require__(2);
 	var CommentHandler = (function () {
@@ -309,12 +291,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return CommentHandler;
 	}());
 	exports.CommentHandler = CommentHandler;
-
-
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
-
 	"use strict";
 	exports.Syntax = {
 	    AssignmentExpression: 'AssignmentExpression',
@@ -383,12 +362,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    WithStatement: 'WithStatement',
 	    YieldExpression: 'YieldExpression'
 	};
-
-
 /***/ },
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var assert_1 = __webpack_require__(4);
 	var messages_1 = __webpack_require__(5);
@@ -3291,12 +3267,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Parser;
 	}());
 	exports.Parser = Parser;
-
-
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
-
 	// Ensure the condition is true, otherwise throw an error.
 	// This is only to have a better contract semantic, i.e. another safety net
 	// to catch a logic error. The condition shall be fulfilled in normal case.
@@ -3309,12 +3282,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	}
 	exports.assert = assert;
-
-
 /***/ },
 /* 5 */
 /***/ function(module, exports) {
-
 	"use strict";
 	// Error messages should be identical to V8.
 	exports.Messages = {
@@ -3366,12 +3336,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    DuplicateBinding: 'Duplicate binding %0',
 	    ForInOfLoopInitializer: '%0 loop variable declaration may not have an initializer'
 	};
-
-
 /***/ },
 /* 6 */
 /***/ function(module, exports) {
-
 	"use strict";
 	var ErrorHandler = (function () {
 	    function ErrorHandler() {
@@ -3435,12 +3402,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return ErrorHandler;
 	}());
 	exports.ErrorHandler = ErrorHandler;
-
-
 /***/ },
 /* 7 */
 /***/ function(module, exports) {
-
 	"use strict";
 	(function (Token) {
 	    Token[Token["BooleanLiteral"] = 1] = "BooleanLiteral";
@@ -3467,12 +3431,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.TokenName[Token.StringLiteral] = 'String';
 	exports.TokenName[Token.RegularExpression] = 'RegularExpression';
 	exports.TokenName[Token.Template] = 'Template';
-
-
 /***/ },
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var assert_1 = __webpack_require__(4);
 	var messages_1 = __webpack_require__(5);
@@ -4631,12 +4592,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Scanner;
 	}());
 	exports.Scanner = Scanner;
-
-
 /***/ },
 /* 9 */
 /***/ function(module, exports) {
-
 	"use strict";
 	// See also tools/generate-unicode-regex.js.
 	var Regex = {
@@ -4689,12 +4647,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return (cp >= 0x30 && cp <= 0x37); // 0..7
 	    }
 	};
-
-
 /***/ },
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var syntax_1 = __webpack_require__(2);
 	var ArrayExpression = (function () {
@@ -5308,12 +5263,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return YieldExpression;
 	}());
 	exports.YieldExpression = YieldExpression;
-
-
 /***/ },
 /* 11 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 /* istanbul ignore next */
 	var __extends = (this && this.__extends) || function (d, b) {
@@ -5847,12 +5799,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return JSXParser;
 	}(parser_1.Parser));
 	exports.JSXParser = JSXParser;
-
-
 /***/ },
 /* 12 */
 /***/ function(module, exports) {
-
 	// Generated by generate-xhtml-entities.js. DO NOT MODIFY!
 	"use strict";
 	exports.XHTMLEntities = {
@@ -6109,12 +6058,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    lang: '\u27E8',
 	    rang: '\u27E9'
 	};
-
-
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
-
 	"use strict";
 	exports.JSXSyntax = {
 	    JSXAttribute: 'JSXAttribute',
@@ -6129,12 +6075,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    JSXSpreadAttribute: 'JSXSpreadAttribute',
 	    JSXText: 'JSXText'
 	};
-
-
 /***/ },
 /* 14 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var jsx_syntax_1 = __webpack_require__(13);
 	var JSXClosingElement = (function () {
@@ -6232,12 +6175,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return JSXText;
 	}());
 	exports.JSXText = JSXText;
-
-
 /***/ },
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var scanner_1 = __webpack_require__(8);
 	var error_handler_1 = __webpack_require__(6);
@@ -6393,8 +6333,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Tokenizer;
 	}());
 	exports.Tokenizer = Tokenizer;
-
-
 /***/ }
 /******/ ])
 });

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -39,11 +37,9 @@
 しかし、それはベストプラクティスではありません。</p>
 <p><a href="https://www.shadertoy.com/view/XtsSWs">街全体を描く凄いshadertoyシェーダー</a>で比較してみましょう。</p>
 <div class="threejs_center"><img src="../resources/images/shadertoy-skyline.png"></div>
-
 <p>上記のシェーダーは私のPCではフルスクリーンだと1秒間に約5フレームで動作します。
 <a href="https://store.steampowered.com/app/255710/Cities_Skylines/">Citiesのようなゲーム: スカイライン</a>とは対照的です。</p>
 <div class="threejs_center"><img src="../resources/images/cities-skylines.jpg" style="width: 600px;"></div>
-
 <p>このゲームはテクスチャと三角形の建物を描画する伝統的な技術を使用しており、同じマシンで1秒間に30～60フレーム動作します。</p>
 <p>それでもthree.jsでShadertoyのシェーダーを使ってみましょう。</p>
 <p>以下は2019年1月現在で<a href="https://www.shadertoy.com/new">shadertoy.comで"New"を選ぶ</a>した時のデフォルトのshadertoyシェーダーです。</p>
@@ -53,10 +49,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = fragCoord/iResolution.xy;
-
     // Time varying pixel color
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
-
     // Output to screen
     fragColor = vec4(col,1.0);
 }
@@ -105,7 +99,6 @@ outは関数が値を提供する事を意味するパラメーターです。
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
   renderer.autoClearColor = false;
-
   const camera = new THREE.OrthographicCamera(
     -1, // left
      1, // right
@@ -120,7 +113,6 @@ outは関数が値を提供する事を意味するパラメーターです。
       color: 'red',
   });
   scene.add(new THREE.Mesh(plane, material));
-
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
@@ -131,18 +123,13 @@ outは関数が値を提供する事を意味するパラメーターです。
     }
     return needResize;
   }
-
   function render() {
     resizeRendererToDisplaySize(renderer);
-
     renderer.render(scene, camera);
-
     requestAnimationFrame(render);
   }
-
   requestAnimationFrame(render);
 }
-
 main();
 </pre>
 <p><a href="backgrounds.html">背景とスカイボックスの記事で説明したように</a>、これらのパラメーターを持つ <a href="/docs/#api/ja/cameras/OrthographicCamera"><code class="notranslate" translate="no">OrthographicCamera</code></a> と2の長さの平面がキャンバスを塗り潰します。
@@ -151,29 +138,23 @@ main();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-prep.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-prep.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これで動作するようになったので、shadertoyシェーダーを追加してみましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const fragmentShader = `
 #include &lt;common&gt;
-
 uniform vec3 iResolution;
 uniform float iTime;
-
 // By iq: https://www.shadertoy.com/user/iq  
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = fragCoord/iResolution.xy;
-
     // Time varying pixel color
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
-
     // Output to screen
     fragColor = vec4(col,1.0);
 }
-
 void main() {
   mainImage(gl_FragColor, gl_FragCoord.xy);
 }
@@ -205,15 +186,11 @@ void main() {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function render() {
 +function render(time) {
 +  time *= 0.001;  // convert to seconds
-
   resizeRendererToDisplaySize(renderer);
-
 +  const canvas = renderer.domElement;
 +  uniforms.iResolution.value.set(canvas.width, canvas.height, 1);
 +  uniforms.iTime.value = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -226,7 +203,6 @@ void main() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-basic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-basic.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これは<a href="https://www.shadertoy.com/new">新しいシェーダーでShadertoyで見たものと一致します</a>。
 少なくとも2019年1月の時点では😉。上記のシェーダーは何をしているのでしょうか？</p>
@@ -252,7 +228,6 @@ void main() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-basic-x40.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-basic-x40.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>シンプルな入力でshadertoyにある
 <a href="https://www.shadertoy.com/view/MdXGW2">a city canal</a>や
@@ -268,20 +243,16 @@ void main() {
 #define TIMESCALE 0.25 
 #define TILES 8
 #define COLOR 0.7, 1.6, 2.8
-
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord.xy / iResolution.xy;
     uv.x *= iResolution.x / iResolution.y;
-
     vec4 noise = texture2D(iChannel0, floor(uv * float(TILES)) / float(TILES));
     float p = 1.0 - mod(noise.r + noise.g + noise.b + iTime * float(TIMESCALE), 1.0);
     p = min(max(p * 3.0 - 1.8, 0.1), 2.0);
-
     vec2 r = mod(uv * float(TILES), 1.0);
     r = vec2(pow(r.x - 0.5, 2.0), pow(r.y - 0.5, 2.0));
     p *= 1.0 - pow(min(1.0, 12.0 * dot(r, r)), 2.0);
-
     fragColor = vec4(COLOR, 1.0) * p;
 }
 </pre>
@@ -290,11 +261,9 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 GLSLでは <code class="notranslate" translate="no">sampler2D</code> と呼ばれています。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const fragmentShader = `
 #include &lt;common&gt;
-
 uniform vec3 iResolution;
 uniform float iTime;
 +uniform sampler2D iChannel0;
-
 ...
 </pre>
 <p>ここで取り上げた<a href="textures.html">これ</a>のようなテクスチャをロードし、ユニフォームの値を設定します。</p>
@@ -314,7 +283,6 @@ const uniforms = {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-bleepy-blocks.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-bleepy-blocks.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これまでは<a href="https://shadertoy.com">Shadertoy.com</a>で使われているShadertoyシェーダーをそのまま使っていましたが、キャンバスを塗りつぶすように描画しています。
 しかし、そのユースケースだけに限定する必要はありません。
@@ -328,9 +296,7 @@ const uniforms = {
 フラグメントシェーダーで使用するために宣言します。
 Three.jsのテクスチャ座標は <code class="notranslate" translate="no">uv</code> で前にある <code class="notranslate" translate="no">v</code> は <em>ヴァリイング</em> を意味します。</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">...
-
 +varying vec2 vUv;
-
 void main() {
 -  mainImage(gl_FragColor, gl_FragCoord.xy);
 +  mainImage(gl_FragColor, vUv * iResolution.xy);
@@ -373,21 +339,14 @@ uniforms.iTime.value = time;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-as-texture.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-as-texture.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これで少しでもthree.jsを使ったshadertoyシェーダーの使い方を知ってもらえればと思います。
 繰り返しになりますが、ほとんどのshadertoyシェーダーは実際にパフォーマンスの高い方法で描画する推奨された方法ではなく、
 面白いチャレンジ（単一の機能で全てを描画する）と覚えておく事が重要です。
 それでもshadertoyのシェーダー達は素晴らしく、印象的で、美しく、どのように機能するかコードを見て学ぶ事ができます。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

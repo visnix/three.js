@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -41,11 +39,9 @@ location outputs a color that draws something interesting</em>. It's a fun chall
 and many of the result are amazing. But, it is not best practice.</p>
 <p>Compare <a href="https://www.shadertoy.com/view/XtsSWs">this amazing shadertoy shader that draws an entire city</a></p>
 <div class="threejs_center"><img src="../resources/images/shadertoy-skyline.png"></div>
-
 <p>Fullscreen on my GPU it runs at about 5 frames a second. Contrast that to
 <a href="https://store.steampowered.com/app/255710/Cities_Skylines/">a game like Cities: Skylines</a></p>
 <div class="threejs_center"><img src="../resources/images/cities-skylines.jpg" style="width: 600px;"></div>
-
 <p>This game runs 30-60 frames a second on the same machine because it uses more
 traditional techniques, drawing buildings made from triangles with textures on
 them, etc...</p>
@@ -57,10 +53,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = fragCoord/iResolution.xy;
-
     // Time varying pixel color
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
-
     // Output to screen
     fragColor = vec4(col,1.0);
 }
@@ -115,7 +109,6 @@ entire thing</p>
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
   renderer.autoClearColor = false;
-
   const camera = new THREE.OrthographicCamera(
     -1, // left
      1, // right
@@ -130,7 +123,6 @@ entire thing</p>
       color: 'red',
   });
   scene.add(new THREE.Mesh(plane, material));
-
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     const width = canvas.clientWidth;
@@ -141,18 +133,13 @@ entire thing</p>
     }
     return needResize;
   }
-
   function render() {
     resizeRendererToDisplaySize(renderer);
-
     renderer.render(scene, camera);
-
     requestAnimationFrame(render);
   }
-
   requestAnimationFrame(render);
 }
-
 main();
 </pre>
 <p>As <a href="backgrounds.html">explained in the backgrounds article</a> an
@@ -163,29 +150,23 @@ canvas. For now all we'll get is a red canvas as our plane is using a red
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-prep.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-prep.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Now that we have something working let's add the shadertoy shader. </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const fragmentShader = `
 #include &lt;common&gt;
-
 uniform vec3 iResolution;
 uniform float iTime;
-
 // By iq: https://www.shadertoy.com/user/iq  
 // license: Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     // Normalized pixel coordinates (from 0 to 1)
     vec2 uv = fragCoord/iResolution.xy;
-
     // Time varying pixel color
     vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
-
     // Output to screen
     fragColor = vec4(col,1.0);
 }
-
 void main() {
   mainImage(gl_FragColor, gl_FragCoord.xy);
 }
@@ -219,15 +200,11 @@ of the uniform.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function render() {
 +function render(time) {
 +  time *= 0.001;  // convert to seconds
-
   resizeRendererToDisplaySize(renderer);
-
 +  const canvas = renderer.domElement;
 +  uniforms.iResolution.value.set(canvas.width, canvas.height, 1);
 +  uniforms.iTime.value = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -240,7 +217,6 @@ not used above so just setting it to 1 for now. ¯\_(ツ)_/¯</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-basic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-basic.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>This <a href="https://www.shadertoy.com/new">matches what we see on Shadertoy for a new shader</a>,
 at least as of January 2019 😉. What's the shader above doing? </p>
@@ -265,7 +241,6 @@ would overlap perfectly making purple.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-basic-x40.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-basic-x40.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Knowing how simple the inputs are and then seeing results like
 <a href="https://www.shadertoy.com/view/MdXGW2">a city canal</a>,
@@ -283,20 +258,16 @@ computing the color of every pixel means those examples run very slow.</p>
 #define TIMESCALE 0.25 
 #define TILES 8
 #define COLOR 0.7, 1.6, 2.8
-
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
     vec2 uv = fragCoord.xy / iResolution.xy;
     uv.x *= iResolution.x / iResolution.y;
-
     vec4 noise = texture2D(iChannel0, floor(uv * float(TILES)) / float(TILES));
     float p = 1.0 - mod(noise.r + noise.g + noise.b + iTime * float(TIMESCALE), 1.0);
     p = min(max(p * 3.0 - 1.8, 0.1), 2.0);
-
     vec2 r = mod(uv * float(TILES), 1.0);
     r = vec2(pow(r.x - 0.5, 2.0), pow(r.y - 0.5, 2.0));
     p *= 1.0 - pow(min(1.0, 12.0 * dot(r, r)), 2.0);
-
     fragColor = vec4(COLOR, 1.0) * p;
 }
 </pre>
@@ -307,11 +278,9 @@ up the texture on the uniforms.</p>
 as <code class="notranslate" translate="no">sampler2D</code> in GLSL.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const fragmentShader = `
 #include &lt;common&gt;
-
 uniform vec3 iResolution;
 uniform float iTime;
 +uniform sampler2D iChannel0;
-
 ...
 </pre>
 <p>Then we can load a texture like we covered <a href="textures.html">here</a> and assign the uniform's value.</p>
@@ -331,7 +300,6 @@ const uniforms = {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-bleepy-blocks.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-bleepy-blocks.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>So far we've been using Shadertoy shaders as they are used on
 <a href="https://shadertoy.com">Shadertoy.com</a>, namely drawing to cover the canvas.
@@ -350,9 +318,7 @@ shader to the fragment shader that gets interpolated (or varied) between
 vertices. To use it in our fragment shader we declare it. Three.js refers to its
 texture coordinates as <code class="notranslate" translate="no">uv</code> with the <code class="notranslate" translate="no">v</code> in front meaning <em>varying</em>.</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">...
-
 +varying vec2 vUv;
-
 void main() {
 -  mainImage(gl_FragColor, gl_FragCoord.xy);
 +  mainImage(gl_FragColor, vUv * iResolution.xy);
@@ -395,22 +361,15 @@ cubes from <a href="responsive.html">the article on responsiveness</a>. The resu
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadertoy-as-texture.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadertoy-as-texture.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope this at least gets you started on how to use a shadertoy shader with
 three.js. Again, it's important to remember that most shadertoy shaders are an
 interesting challenge (draw everything with a single function) rather than the
 recommended way to actually display things in a performant way. Still, they are
 amazing, impressive, beautiful, and you can learn a ton by seeing how they work.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -1,8 +1,6 @@
 import { glslFn } from '../../code/FunctionNode.js';
-
 // Original shader code from:
 // https://github.com/AcademySoftwareFoundation/MaterialX/blob/main/libraries/stdlib/genglsl/lib/mx_hsv.glsl
-
 export const mx_hsvtorgb = glslFn( `vec3 mx_hsvtorgb(vec3 hsv)
 {
     // Reference for this technique: Foley & van Dam
@@ -29,7 +27,6 @@ export const mx_hsvtorgb = glslFn( `vec3 mx_hsvtorgb(vec3 hsv)
         return vec3 (v, p, q);
     }
 }` );
-
 export const mx_rgbtohsv = glslFn( `vec3 mx_rgbtohsv(vec3 c)
 {
     // See Foley & van Dam

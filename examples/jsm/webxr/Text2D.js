@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-
 function createText( message, height ) {
-
 	const canvas = document.createElement( 'canvas' );
 	const context = canvas.getContext( '2d' );
 	let metrics = null;
@@ -16,10 +14,8 @@ function createText( message, height ) {
 	context.textBaseline = 'middle';
 	context.fillStyle = '#ffffff';
 	context.fillText( message, textWidth / 2, textHeight / 2 );
-
 	const texture = new THREE.Texture( canvas );
 	texture.needsUpdate = true;
-
 	const material = new THREE.MeshBasicMaterial( {
 		color: 0xffffff,
 		side: THREE.DoubleSide,
@@ -32,7 +28,5 @@ function createText( message, height ) {
 	);
 	const plane = new THREE.Mesh( geometry, material );
 	return plane;
-
 }
-
 export { createText };

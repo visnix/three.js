@@ -12,7 +12,6 @@
 			<p>有时候，您可能需要在你的Three.js应用程序中使用到文本，这里有几种方法可以做到。
 			</p>
 		</div>
-
 		<h2>1. DOM + CSS</h2>
 		<div>
 			<p>
@@ -20,11 +19,9 @@
 			</p>
 			<p>你可以在这里添加内容</p>
 			<code>&lt;div id="info"&gt;Description&lt;/div&gt;</code>
-
 			<p>
 				然后使用CSS来将其绝对定位在其它具有z-index的元素之上，尤其是当你全屏运行three.js的时候。
 			</p>
-
 			<code>
 #info {
 	position: absolute;
@@ -35,25 +32,16 @@
 	display:block;
 }
 			</code>
-
 		</div>
-
-
-
 		<h2>2. 将文字绘制到画布中，并将其用作[page:Texture]（纹理）</h2>
 		<div>
 			<p>如果你希望在three.js的场景中的平面上轻松地绘制文本，请使用此方法。</p>
 		</div>
-
-
 		<h2>3. 在你所喜欢的3D软件里创建模型，并导出给three.js
 			 </h2>
 		<div>
 			<p>如果你更喜欢使用3D建模软件来工作并导出模型到three.js，请使用这种方法。</p>
 		</div>
-
-
-
 		<h2>4. three.js自带的文字几何体</h2>
 		<div>
 			<p>
@@ -67,22 +55,16 @@
 <br>
 				请参阅 [page:TextGeometry] 页面来阅读如何完成此操作的详细信息，以及每一个接收的参数的描述，还有由three.js分发、自带的JSON字体的列表。
 			</p>
-
 			<h3>示例</h3>
 			<p>
 				[example:webgl_geometry_text WebGL / geometry / text]<br />
 				[example:webgl_shadowmap WebGL / shadowmap]
 			</p>
-
 			<p>
 				如果Typeface已经关闭，或者没有你所想使用的字体，这有一个教程:[link:http://www.jaanga.com/2012/03/blender-to-threejs-create-3d-text-with.html]<br>
 				这是一个在blender上运行的python脚本，能够让你将文字导出为Three.js的JSON格式。
 			</p>
-
 		</div>
-
-
-
 		<h2>5. 位图字体</h2>
 		<div>
 			<p>
@@ -102,8 +84,5 @@
 				<li>[link:https://github.com/libgdx/libgdx/wiki/Hiero hiero] <i>(desktop app)</i></li>
 			</ul>
 		</div>
-
-
-
 	</body>
 </html>

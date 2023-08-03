@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -35,17 +33,14 @@
 一个常见的格式是.OBJ 3D格式，我们现在尝试加载一个。</p>
 <p>在网上搜索，我找到了<a href="https://www.blendswap.com/blends/view/69174">CC-BY-NC 3.0风车3D模型</a>，作者是<a href="https://www.blendswap.com/user/ahedov">阿赫多夫</a>。</p>
 <div class="threejs_center"><img src="../resources/images/windmill-obj.jpg"></div>
-
 <p>我从那个网站下载了.blend文件，并将其加载到<a href="https://Blender.org">Blender</a>并将其导出为.OBJ文件。</p>
 <div class="threejs_center"><img style="width: 827px;" src="../resources/images/windmill-export-as-obj.jpg"></div>
-
 <blockquote>
 <p>注意：如果你从未使用过Blender，你可能会感到意外，Blender里做的事情不同于你用过的其他程序。你可能需要留出一些时间阅读Blender的一些基本操作。</p>
 <p>我还要补充一点，3D程序通常超过1000个功能。它们是最复杂的软件之一。当我1996年第一次学习3D Studio Max时，我阅读了600页的手册70%内容，每天花几个小时，持续了大约3周。几年后当我学习Maya时，以前学过的都适用于Maya。所以，要知道如果你真的希望能够使用三维软件来构建三维资源或者修改现有的3D模型，把学习3D的计划放在你的日程表上，好好学习。</p>
 </blockquote>
 <p>一般我会使用以下的导出设置：</p>
 <div class="threejs_center"><img style="width: 239px;" src="../resources/images/windmill-export-options.jpg"></div>
-
 <p>让我们一起来尝试将它展示出来。</p>
 <p>基于<a href="lights.html">光线文章</a>中的定向光线（<a href="/docs/#api/zh/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a>）示例，结合半球光线（<a href="/docs/#api/zh/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a>）示例。相对于示例，我删除了所有与调整灯光相关的GUI内容，还删除了添加到场景中的立方体和球体。</p>
 <p>第一件要做的事就是将<a href="/docs/#examples/loaders/OBJLoader"><code class="notranslate" translate="no">OBJLoader</code></a>添加到代码中。</p>
@@ -64,14 +59,12 @@
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-no-materials.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-no-materials.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>这已经相当接近，但是材质（material）显示异常。场景里材质显示异常是因为.OBJ文件格式是不包含材质数据的。</p>
 <p>.OBJ加载器可以传入 名称/材质对 的对象。当它加载.OBJ文件时，会加载对应名称的材质，若该材质不存在就会使用默认材质。</p>
 <p>有时.OBJ文件会带有一个.MTL文件来定义材质。在我们的示例里也会创建一个.MTL文件。.MTL文件是一个ASCII码文件，所以可以直接阅读。</p>
 <pre class="prettyprint showlinemods notranslate lang-mtl" translate="no"># Blender MTL File: 'windmill_001.blend'
 # Material Count: 2
-
 newmtl Material
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
@@ -83,7 +76,6 @@ d 1.000000
 illum 1
 map_Kd windmill_001_lopatky_COL.jpg
 map_Bump windmill_001_lopatky_NOR.jpg
-
 newmtl windmill
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
@@ -99,20 +91,15 @@ map_Ns windmill_001_base_SPEC.jpg
 </pre>
 <p>我们能看到2个材质，引用了五张纹理图片，但是这些纹理文件在哪里呢？</p>
 <div class="threejs_center"><img style="width: 757px;" src="../resources/images/windmill-exported-files.png"></div>
-
 <p>我们只得到一个.OBJ文件以及一个.MTL文件。</p>
 <p>我们所下载的.blend文件是包含了模型的纹理，所以我们可以让blender点击<strong>File-&gt;External Data-&gt;Unpack All Into Files</strong>导出这些文件。</p>
 <div class="threejs_center"><img style="width: 828px;" src="../resources/images/windmill-export-textures.jpg"></div>
-
 <p>选择 <strong>Write Files to Current Directory</strong></p>
 <div class="threejs_center"><img style="width: 828px;" src="../resources/images/windmill-overwrite.jpg"></div>
-
 <p>这样就会在.blend文件的目录下创建出一个<strong>textures</strong>文件夹。</p>
 <div class="threejs_center"><img style="width: 758px;" src="../resources/images/windmill-exported-texture-files.png"></div>
-
 <p>我复制这些纹理放到我导出的.OBJ目录里。</p>
 <div class="threejs_center"><img style="width: 757px;" src="../resources/images/windmill-exported-files-with-textures.png"></div>
-
 <p>现在.MTL文件就能加载到这些纹理。</p>
 <p>首先要引用 <a href="/docs/#examples/loaders/MTLLoader"><code class="notranslate" translate="no">MTLLoader</code></a>;</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
@@ -138,11 +125,9 @@ import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-materials.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-materials.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>注意当旋转模型时，会发现风车布是消失了的。</p>
 <div class="threejs_center"><img style="width: 528px;" src="../resources/images/windmill-missing-cloth.jpg"></div>
-
 <p>我们需要设置这个材质为双面，在<a href="materials.html">关于材质的文章</a>有详细说明。
 在.MTL里不好修复这个问题，在我脑海里有三个解决办法：</p>
 <ol>
@@ -183,15 +168,12 @@ import {OBJLoader} from 'three/addons/loaders/OBJLoader.js';
 <p>采用哪个方案取决于你。1是最简单，3是最灵活，2是两者之间，现在我选择2 。</p>
 <p>修改之后，当你从后面看的时候，你仍然可以看到风车布，但是还有一个问题。如果我们放大近看，我们看到的东西正在变成块状。</p>
 <div class="threejs_center"><img style="width: 700px;" src="../resources/images/windmill-blocky.jpg"></div>
-
 <p>发生了什么？</p>
 <p>看看纹理，有2个纹理命名包含了NOR，这是法线贴图（NORmal map）。法线贴图通常是紫色的，而凹凸贴图则是黑白的。法线贴图表示表面的方向，而凹凸贴图则表示表面的高度。</p>
 <div class="threejs_center"><img style="width: 256px;" src="../examples/resources/models/windmill/windmill_001_base_NOR.jpg"></div>
-
 <p>看<a href="https://github.com/mrdoob/three.js/blob/1a560a3426e24bbfc9ca1f5fb0dfb4c727d59046/examples/js/loaders/MTLLoader.js#L432">MTLLoader源码</a>，<code class="notranslate" translate="no">norm</code>是标记为法线贴图，我们手动修改一下.MTL文件。</p>
 <pre class="prettyprint showlinemods notranslate lang-mtl" translate="no"># Blender MTL File: 'windmill_001.blend'
 # Material Count: 2
-
 newmtl Material
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
@@ -204,7 +186,6 @@ illum 1
 map_Kd windmill_001_lopatky_COL.jpg
 -map_Bump windmill_001_lopatky_NOR.jpg
 +norm windmill_001_lopatky_NOR.jpg
-
 newmtl windmill
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
@@ -224,12 +205,10 @@ map_Ns windmill_001_base_SPEC.jpg
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-materials-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-materials-fixed.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>现在尝试加载不同的模型：</p>
 <p>网络搜索我找到<a href="https://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC</a> 风车3D模型，由<a href="http://www.gerzi.ch/">Roger Gerzner / GERIZ.3D Art</a>制作。</p>
 <div class="threejs_center"><img src="../resources/images/windmill-obj-2.jpg"></div>
-
 <p>它已经有了一个.obj版本。让我们加载它(注意，我现在已经删除了.MTL加载器)</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-  objLoader.load('resources/models/windmill/windmill.obj', ...
 +  objLoader.load('resources/models/windmill-2/windmill.obj', ...
@@ -238,13 +217,11 @@ map_Ns windmill_001_base_SPEC.jpg
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-wat.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-wat.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>嗯,没有东西出现。是什么问题?我想知道这个模型的尺寸是多少?我们可以问THREE.js模型的大小，并尝试自动设置相机的参数。</p>
 <p>首先，我们可以让THREE.js计算一个包含我们刚刚加载的场景的盒子，并计算出它的大小和中心。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">objLoader.load('resources/models/windmill_2/windmill.obj', (root) =&gt; {
   scene.add(root);
-
 +  const box = new THREE.Box3().setFromObject(root);
 +  const boxSize = box.getSize(new THREE.Vector3()).length();
 +  const boxCenter = box.getCenter(new THREE.Vector3());
@@ -257,16 +234,13 @@ center p {x: -0.00006103515625, y: 770.0909731090069, z: -3.313507080078125}
 </pre>
 <p>我们的相机目前只显示大约100个单位，最近0.1和最远100。我们的地平面只有40个单位宽，所以这个风车模型是如此之大，达2000个单位，摄像机被包含在模型里面，所有能展示的部分都在截锥体外面。</p>
 <div class="threejs_center"><img style="width: 280px;" src="../resources/images/camera-inside-windmill.svg"></div>
-
 <p>我们可以手动修复该问题，也可以使相机自动对场景进行构图。 让我们尝试一下，我们可以使用刚计算出的框调整摄像机设置以查看整个场景。 请注意，关于将相机放置在哪里，并没有正确的答案。 我们可以从任何方向，在任何高度面对场景，因此我们只需要选择一些东西即可。</p>
 <p>在<a href="cameras.html">关于相机的文章</a>讨论提到，相机定义了一个截锥体。该截锥体由视场(<code class="notranslate" translate="no">fov</code>：the field of view)和远(<code class="notranslate" translate="no">far</code>)近(<code class="notranslate" translate="no">near</code>)设置定义。我们想知道的是，给定当前的视场，摄像机需要设置多远，才能使包含场景的盒子在截锥体内，假设截锥体永远延伸，即假设<code class="notranslate" translate="no">near</code>是0.00000001，<code class="notranslate" translate="no">far</code>是无穷大(infinity)。</p>
 <p>因为我们知道盒子的大小也知道视野（FOV:the field of view），所以我们有了这个三角形。</p>
 <div class="threejs_center"><img style="width: 600px;" src="../resources/images/camera-fit-scene.svg"></div>
-
 <p>你可以看到在左边的是相机，在它前方投射出蓝色的截锥体。我们只是计算了包含风车的盒子。我们需要计算相机应该离方框有多远，使得盒子在截锥体内。</p>
 <p>利用基本的直角三角形函数和<a href="https://www.google.com/search?q=SOHCAHTOA">SOHCAHTOA</a>，已知截锥体的视场和方框的大小，就可以计算出距离。</p>
 <div class="threejs_center"><img style="width: 600px;" src="../resources/images/field-of-view-camera.svg"></div>
-
 <p>根据该图，计算距离的公式为：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">distance = halfSizeToFitOnScreen / tangent(halfFovY)
 </pre>
@@ -275,22 +249,17 @@ center p {x: -0.00006103515625, y: 770.0909731090069, z: -3.313507080078125}
   const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
   const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
   const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
-
   // compute a unit vector that points in the direction the camera is now
   // from the center of the box
   const direction = (new THREE.Vector3()).subVectors(camera.position, boxCenter).normalize();
-
   // move the camera to a position distance units way from the center
   // in whatever direction the camera was from the center already
   camera.position.copy(direction.multiplyScalar(distance).add(boxCenter));
-
   // pick some near and far values for the frustum that
   // will contain the box.
   camera.near = boxSize / 100;
   camera.far = boxSize * 100;
-
   camera.updateProjectionMatrix();
-
   // point the camera to look at the center of the box
   camera.lookAt(boxCenter.x, boxCenter.y, boxCenter.z);
 }
@@ -323,11 +292,9 @@ center p {x: -0.00006103515625, y: 770.0909731090069, z: -3.313507080078125}
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-auto-camera.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-auto-camera.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>这效果已经差不多了。用鼠标旋转照相机，你应该能看到风车。问题是风车很大，盒子中心约为(0,770,0)。所以,当我们把相机从(0,10,20)移到到<code class="notranslate" translate="no">distance</code>单位距离，摄像头是风车的正下方。</p>
 <div class="threejs_center"><img style="width: 360px;" src="../resources/images/computed-camera-position.svg"></div>
-
 <p>修改代码使摄像头不管在哪个方向，都能对准盒子侧面中心。我们要做的就是把盒子到摄像机的<code class="notranslate" translate="no">y</code>分量归零。然后，当我们标准化这个向量它就会变成一个平行于XZ平面的向量。换句话说，平行于地面。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-// compute a unit vector that points in the direction the camera is now
 -// from the center of the box
@@ -341,11 +308,9 @@ center p {x: -0.00006103515625, y: 770.0909731090069, z: -3.313507080078125}
 </pre>
 <p>如果你看风车的底部，你会看到一个小正方形，这是我们的地板。</p>
 <div class="threejs_center"><img style="width: 365px;" src="../resources/images/tiny-ground-plane.jpg"></div>
-
 <p>它只有40x40个单位，相对于风车来说太小了。由于风车超过2000个单位大，让我们改变地面的大小来适配。我们还需要调整重复次数，否则不能看到棋盘。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const planeSize = 40;
 +const planeSize = 4000;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -360,7 +325,6 @@ texture.repeat.set(repeats, repeats);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-auto-camera-xz.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-auto-camera-xz.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>现在把材质加回去，就像之前有一个.mtl文件，它引用了一些纹理。但是看了一下这些文件，我很快发现了一个问题。</p>
 <pre class="prettyprint showlinemods notranslate lang-shell" translate="no"> $ ls -l windmill
@@ -387,7 +351,6 @@ texture.repeat.set(repeats, repeats);
 <p>现在，为了使用.mtl文件，我们需要编辑它来引用.jpg文件，而不是.tga文件。幸运的是，它是一个简单的文本文件，所以很容易编辑。</p>
 <pre class="prettyprint showlinemods notranslate lang-mtl" translate="no">newmtl blinn1SG
 Ka 0.10 0.10 0.10
-
 Kd 0.00 0.00 0.00
 Ks 0.00 0.00 0.00
 Ke 0.00 0.00 0.00
@@ -399,10 +362,8 @@ Tf 1.000000 1.000000 1.000000
 illum 2
 -map_Kd windmill_diffuse.tga
 +map_Kd windmill_diffuse.jpg
-
 -map_Ks windmill_spec.tga
 +map_Ks windmill_spec.jpg
-
 -map_bump windmill_normal.tga 
 -bump windmill_normal.tga 
 +map_bump windmill_normal.jpg 
@@ -421,13 +382,10 @@ illum 2
       // compute the box that contains all the stuff
       // from root and below
       const box = new THREE.Box3().setFromObject(root);
-
       const boxSize = box.getSize(new THREE.Vector3()).length();
       const boxCenter = box.getCenter(new THREE.Vector3());
-
       // set the camera to frame the box
       frameArea(boxSize * 1.2, boxSize, boxCenter, camera);
-
       // update the Trackball controls to handle the new size
       controls.maxDistance = boxSize * 10;
       controls.target.copy(boxCenter);
@@ -463,7 +421,6 @@ illum 2
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-obj-materials-windmill2.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-obj-materials-windmill2.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>加载模型经常遇到这类问题。常见的问题包括</p>
 <ul>
@@ -486,15 +443,9 @@ Three.js一般是以Y为上（up）。有些建模包默认是Z为上，有些�
 <p>我最不想展示的就是旋转风车。不幸的是. obj文件没有层次结构（hierarchy）。这意味着每个风车模型基本上都是一个单独的网格（mesh）。你不能转动风车的叶片，因为它们没有与建筑物的其他部分分开。</p>
 <p>这就是为什么.obj不是一个好的3D格式的主要原因之一。如果我猜一下，它比其他格式更常见的原因是它很简单，而且不支持很多特性。特别是如果你在做一些静态的物体，比如建筑图像，没必要动起来。</p>
 <p>接下来我们将尝试加载一个gLTF场景。gLTF格式支持更多特性。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

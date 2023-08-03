@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -45,7 +43,6 @@ const rtNear = 0.1;
 const rtFar = 5;
 const rtCamera = new THREE.PerspectiveCamera(rtFov, rtAspect, rtNear, rtFar);
 rtCamera.position.z = 2;
-
 const rtScene = new THREE.Scene();
 rtScene.background = new THREE.Color('red');
 </pre>
@@ -59,23 +56,17 @@ rtScene.background = new THREE.Color('red');
   light.position.set(-1, 2, 4);
 *  rtScene.add(light);
 }
-
 const boxWidth = 1;
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
 *  rtScene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
-
 *const rtCubes = [
   makeInstance(geometry, 0x44aa88,  0),
   makeInstance(geometry, 0x8844aa, -2),
@@ -93,9 +84,7 @@ scene.add(cube);
 <p>现在在渲染的时候，我们首先将渲染目标的场景(rtScene)，渲染到渲染目标(注：这里有点绕，需要结合代码理解)。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   ...
-
   // rotate all the cubes in the render target scene
   rtCubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
@@ -103,7 +92,6 @@ scene.add(cube);
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   // draw render target scene to render target
   renderer.setRenderTarget(renderTarget);
   renderer.render(rtScene, rtCamera);
@@ -113,7 +101,6 @@ scene.add(cube);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // rotate the cube in the scene
   cube.rotation.x = time;
   cube.rotation.y = time * 1.1;
-
   // render the scene to the canvas
   renderer.render(scene, camera);
 </pre>
@@ -122,7 +109,6 @@ scene.add(cube);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-target.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-target.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>方块是红色的，这是因为我们设置了 <code class="notranslate" translate="no">rtScene</code> 的 <code class="notranslate" translate="no">background</code> 为红色，所以渲染目标的纹理所处的背景为红色。</p>
 <p>渲染目标可以用在各种各样的物体上。<a href="shadows.html">Shadows</a>用了渲染目标，<a href="picking.html">Picking can use a render target</a>，多种效果<a href="post-processing.html">post processing effects</a>需要用到渲染目标。
@@ -140,27 +126,19 @@ scene.add(cube);
 <p>在上面的例子，我们创建了固定尺寸512X512的渲染目标。对于像后处理，你通常需要创建跟画布一样尺寸的渲染目标。在我们的代码中意味着，当我们改变画布的尺寸，会同时更新渲染目标尺寸，和渲染目标中正在使用的摄像机。例如：</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
-
 +    renderTarget.setSize(canvas.width, canvas.height);
 +    rtCamera.aspect = camera.aspect;
 +    rtCamera.updateProjectionMatrix();
 }
 </pre></li>
 </ul>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -1,21 +1,15 @@
 const svgNS = 'http://www.w3.org/2000/svg';
-
 let locationHref = '';
 let _useWebWorker = false;
-
 const initialDefaultFrame = -999999;
-
 const setWebWorker = (flag) => { _useWebWorker = !!flag; };
 const getWebWorker = () => _useWebWorker;
-
 const setLocationHref = (value) => { locationHref = value; };
 const getLocationHref = () => locationHref;
-
 function createTag(type) {
   // return {appendChild:function(){},setAttribute:function(){},style:{}}
   return document.createElement(type);
 }
-
 function extendPrototype(sources, destination) {
   var i;
   var len = sources.length;
@@ -27,19 +21,15 @@ function extendPrototype(sources, destination) {
     }
   }
 }
-
 function getDescriptor(object, prop) {
   return Object.getOwnPropertyDescriptor(object, prop);
 }
-
 function createProxyFunction(prototype) {
   function ProxyFunction() {}
   ProxyFunction.prototype = prototype;
   return ProxyFunction;
 }
-
 // import Howl from '../../3rd_party/howler';
-
 const audioControllerFactory = (function () {
   function AudioController(audioFactory) {
     this.audios = [];
@@ -47,7 +37,6 @@ const audioControllerFactory = (function () {
     this._volume = 1;
     this._isMuted = false;
   }
-
   AudioController.prototype = {
     addAudio: function (audio) {
       this.audios.push(audio);
@@ -116,12 +105,10 @@ const audioControllerFactory = (function () {
       }
     },
   };
-
   return function () {
     return new AudioController();
   };
 }());
-
 const createTypedArray = (function () {
   function createRegularArray(type, len) {
     var i = 0;
@@ -156,11 +143,9 @@ const createTypedArray = (function () {
   }
   return createRegularArray;
 }());
-
 function createSizedArray(len) {
   return Array.apply(null, { length: len });
 }
-
 let subframeEnabled = true;
 let expressionsPlugin = null;
 let idPrefix$1 = '';
@@ -171,7 +156,6 @@ const bmSqrt = Math.sqrt;
 const bmFloor = Math.floor;
 const bmMax = Math.max;
 const bmMin = Math.min;
-
 const BMMath = {};
 (function () {
   var propertyNames = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'ceil', 'cbrt', 'expm1', 'clz32', 'cos', 'cosh', 'exp', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p', 'log2', 'log10', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc', 'E', 'LN10', 'LN2', 'LOG10E', 'LOG2E', 'PI', 'SQRT1_2', 'SQRT2'];
@@ -181,7 +165,6 @@ const BMMath = {};
     BMMath[propertyNames[i]] = Math[propertyNames[i]];
   }
 }());
-
 function ProjectInterface$1() { return {}; }
 BMMath.random = Math.random;
 BMMath.abs = function (val) {
@@ -200,18 +183,15 @@ BMMath.abs = function (val) {
 let defaultCurveSegments = 150;
 const degToRads = Math.PI / 180;
 const roundCorner = 0.5519;
-
 function roundValues(flag) {
   _shouldRoundValues = !!flag;
 }
-
 function bmRnd(value) {
   if (_shouldRoundValues) {
     return Math.round(value);
   }
   return value;
 }
-
 function styleDiv(element) {
   element.style.position = 'absolute';
   element.style.top = 0;
@@ -225,53 +205,44 @@ function styleDiv(element) {
   element.style.webkitTransformStyle = 'preserve-3d';
   element.style.mozTransformStyle = 'preserve-3d';
 }
-
 function BMEnterFrameEvent(type, currentTime, totalTime, frameMultiplier) {
   this.type = type;
   this.currentTime = currentTime;
   this.totalTime = totalTime;
   this.direction = frameMultiplier < 0 ? -1 : 1;
 }
-
 function BMCompleteEvent(type, frameMultiplier) {
   this.type = type;
   this.direction = frameMultiplier < 0 ? -1 : 1;
 }
-
 function BMCompleteLoopEvent(type, totalLoops, currentLoop, frameMultiplier) {
   this.type = type;
   this.currentLoop = currentLoop;
   this.totalLoops = totalLoops;
   this.direction = frameMultiplier < 0 ? -1 : 1;
 }
-
 function BMSegmentStartEvent(type, firstFrame, totalFrames) {
   this.type = type;
   this.firstFrame = firstFrame;
   this.totalFrames = totalFrames;
 }
-
 function BMDestroyEvent(type, target) {
   this.type = type;
   this.target = target;
 }
-
 function BMRenderFrameErrorEvent(nativeError, currentTime) {
   this.type = 'renderFrameError';
   this.nativeError = nativeError;
   this.currentTime = currentTime;
 }
-
 function BMConfigErrorEvent(nativeError) {
   this.type = 'configError';
   this.nativeError = nativeError;
 }
-
 function BMAnimationConfigErrorEvent(type, nativeError) {
   this.type = type;
   this.nativeError = nativeError;
 }
-
 const createElementID = (function () {
   var _count = 0;
   return function createID() {
@@ -279,7 +250,6 @@ const createElementID = (function () {
     return idPrefix$1 + '__lottie_element_' + _count;
   };
 }());
-
 function HSVtoRGB(h, s, v) {
   var r;
   var g;
@@ -307,7 +277,6 @@ function HSVtoRGB(h, s, v) {
     g,
     b];
 }
-
 function RGBtoHSV(r, g, b) {
   var max = Math.max(r, g, b);
   var min = Math.min(r, g, b);
@@ -315,7 +284,6 @@ function RGBtoHSV(r, g, b) {
   var h;
   var s = (max === 0 ? 0 : d / max);
   var v = max / 255;
-
   switch (max) {
     case min: h = 0; break;
     case r: h = (g - b) + d * (g < b ? 6 : 0); h /= 6 * d; break;
@@ -323,14 +291,12 @@ function RGBtoHSV(r, g, b) {
     case b: h = (r - g) + d * 4; h /= 6 * d; break;
     default: break;
   }
-
   return [
     h,
     s,
     v,
   ];
 }
-
 function addSaturationToRGB(color, offset) {
   var hsv = RGBtoHSV(color[0] * 255, color[1] * 255, color[2] * 255);
   hsv[1] += offset;
@@ -341,7 +307,6 @@ function addSaturationToRGB(color, offset) {
   }
   return HSVtoRGB(hsv[0], hsv[1], hsv[2]);
 }
-
 function addBrightnessToRGB(color, offset) {
   var hsv = RGBtoHSV(color[0] * 255, color[1] * 255, color[2] * 255);
   hsv[2] += offset;
@@ -352,7 +317,6 @@ function addBrightnessToRGB(color, offset) {
   }
   return HSVtoRGB(hsv[0], hsv[1], hsv[2]);
 }
-
 function addHueToRGB(color, offset) {
   var hsv = RGBtoHSV(color[0] * 255, color[1] * 255, color[2] * 255);
   hsv[0] += offset / 360;
@@ -363,7 +327,6 @@ function addHueToRGB(color, offset) {
   }
   return HSVtoRGB(hsv[0], hsv[1], hsv[2]);
 }
-
 const rgbToHex = (function () {
   var colorMap = [];
   var i;
@@ -372,7 +335,6 @@ const rgbToHex = (function () {
     hex = i.toString(16);
     colorMap[i] = hex.length === 1 ? '0' + hex : hex;
   }
-
   return function (r, g, b) {
     if (r < 0) {
       r = 0;
@@ -386,7 +348,6 @@ const rgbToHex = (function () {
     return '#' + colorMap[r] + colorMap[g] + colorMap[b];
   };
 }());
-
 const setSubframeEnabled = (flag) => { subframeEnabled = !!flag; };
 const getSubframeEnabled = () => subframeEnabled;
 const setExpressionsPlugin = (value) => { expressionsPlugin = value; };
@@ -395,12 +356,10 @@ const setDefaultCurveSegments = (value) => { defaultCurveSegments = value; };
 const getDefaultCurveSegments = () => defaultCurveSegments;
 const setIdPrefix = (value) => { idPrefix$1 = value; };
 const getIdPrefix = () => idPrefix$1;
-
 function createNS(type) {
   // return {appendChild:function(){},setAttribute:function(){},style:{}}
   return document.createElementNS(svgNS, type);
 }
-
 const dataManager = (function () {
   var _counterId = 1;
   var processes = [];
@@ -408,7 +367,6 @@ const dataManager = (function () {
   var workerInstance;
   var workerProxy = {
     onmessage: function () {
-
     },
     postMessage: function (path) {
       workerFn({
@@ -433,7 +391,6 @@ const dataManager = (function () {
     workerFn = fn;
     return workerProxy;
   }
-
   function setupWorker() {
     if (!workerInstance) {
       workerInstance = createWorker(function workerStart(e) {
@@ -483,7 +440,6 @@ const dataManager = (function () {
               }
             }
           }
-
           function completeChars(chars, assets) {
             if (chars) {
               var i = 0;
@@ -509,7 +465,6 @@ const dataManager = (function () {
               }
             }
           }
-
           function findComp(id, comps) {
             var i = 0;
             var len = comps.length;
@@ -521,7 +476,6 @@ const dataManager = (function () {
             }
             return null;
           }
-
           function findCompLayers(id, comps) {
             var comp = findComp(id, comps);
             if (comp) {
@@ -533,7 +487,6 @@ const dataManager = (function () {
             }
             return null;
           }
-
           function completeShapes(arr) {
             var i;
             var len = arr.length;
@@ -559,7 +512,6 @@ const dataManager = (function () {
               }
             }
           }
-
           function convertPathsToAbsoluteValues(path) {
             var i;
             var len = path.i.length;
@@ -570,7 +522,6 @@ const dataManager = (function () {
               path.o[i][1] += path.v[i][1];
             }
           }
-
           function checkVersion(minimum, animVersionString) {
             var animVersion = animVersionString ? animVersionString.split('.') : [100, 100, 100];
             if (minimum[0] > animVersion[0]) {
@@ -590,10 +541,8 @@ const dataManager = (function () {
             }
             return null;
           }
-
           var checkText = (function () {
             var minimumVersion = [4, 4, 14];
-
             function updateTextLayer(textLayer) {
               var documentData = textLayer.t.d;
               textLayer.t.d = {
@@ -605,7 +554,6 @@ const dataManager = (function () {
                 ],
               };
             }
-
             function iterateLayers(layers) {
               var i;
               var len = layers.length;
@@ -615,7 +563,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             return function (animationData) {
               if (checkVersion(minimumVersion, animationData.v)) {
                 iterateLayers(animationData.layers);
@@ -631,7 +578,6 @@ const dataManager = (function () {
               }
             };
           }());
-
           var checkChars = (function () {
             var minimumVersion = [4, 7, 99];
             return function (animationData) {
@@ -677,10 +623,8 @@ const dataManager = (function () {
               }
             };
           }());
-
           var checkPathProperties = (function () {
             var minimumVersion = [5, 7, 15];
-
             function updateTextLayer(textLayer) {
               var pathData = textLayer.t.p;
               if (typeof pathData.a === 'number') {
@@ -702,7 +646,6 @@ const dataManager = (function () {
                 };
               }
             }
-
             function iterateLayers(layers) {
               var i;
               var len = layers.length;
@@ -712,7 +655,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             return function (animationData) {
               if (checkVersion(minimumVersion, animationData.v)) {
                 iterateLayers(animationData.layers);
@@ -728,10 +670,8 @@ const dataManager = (function () {
               }
             };
           }());
-
           var checkColors = (function () {
             var minimumVersion = [4, 1, 9];
-
             function iterateShapes(shapes) {
               var i;
               var len = shapes.length;
@@ -766,7 +706,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             function iterateLayers(layers) {
               var i;
               var len = layers.length;
@@ -776,7 +715,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             return function (animationData) {
               if (checkVersion(minimumVersion, animationData.v)) {
                 iterateLayers(animationData.layers);
@@ -792,10 +730,8 @@ const dataManager = (function () {
               }
             };
           }());
-
           var checkShapes = (function () {
             var minimumVersion = [4, 4, 18];
-
             function completeClosingShapes(arr) {
               var i;
               var len = arr.length;
@@ -821,7 +757,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             function iterateLayers(layers) {
               var layerData;
               var i;
@@ -856,7 +791,6 @@ const dataManager = (function () {
                 }
               }
             }
-
             return function (animationData) {
               if (checkVersion(minimumVersion, animationData.v)) {
                 iterateLayers(animationData.layers);
@@ -872,7 +806,6 @@ const dataManager = (function () {
               }
             };
           }());
-
           function completeData(animationData) {
             if (animationData.__complete) {
               return;
@@ -886,13 +819,11 @@ const dataManager = (function () {
             completeChars(animationData.chars, animationData.assets);
             animationData.__complete = true;
           }
-
           function completeText(data) {
             if (data.t.a.length === 0 && !('m' in data.t.p)) {
               // data.singleShape = true;
             }
           }
-
           var moduleOb = {};
           moduleOb.completeData = completeData;
           moduleOb.checkColors = checkColors;
@@ -900,13 +831,11 @@ const dataManager = (function () {
           moduleOb.checkPathProperties = checkPathProperties;
           moduleOb.checkShapes = checkShapes;
           moduleOb.completeLayers = completeLayers;
-
           return moduleOb;
         }
         if (!_workerSelf.dataManager) {
           _workerSelf.dataManager = dataFunctionManager();
         }
-
         if (!_workerSelf.assetLoader) {
           _workerSelf.assetLoader = (function () {
             function formatResponse(xhr) {
@@ -925,7 +854,6 @@ const dataManager = (function () {
               }
               return null;
             }
-
             function loadAsset(path, fullPath, callback, errorCallback) {
               var response;
               var xhr = new XMLHttpRequest();
@@ -963,7 +891,6 @@ const dataManager = (function () {
             };
           }());
         }
-
         if (e.data.type === 'loadAnimation') {
           _workerSelf.assetLoader.load(
             e.data.path,
@@ -1011,7 +938,6 @@ const dataManager = (function () {
           );
         }
       });
-
       workerInstance.onmessage = function (event) {
         var data = event.data;
         var id = data.id;
@@ -1025,7 +951,6 @@ const dataManager = (function () {
       };
     }
   }
-
   function createProcess(onComplete, onError) {
     _counterId += 1;
     var id = 'processId_' + _counterId;
@@ -1035,7 +960,6 @@ const dataManager = (function () {
     };
     return id;
   }
-
   function loadAnimation(path, onComplete, onError) {
     setupWorker();
     var processId = createProcess(onComplete, onError);
@@ -1046,7 +970,6 @@ const dataManager = (function () {
       id: processId,
     });
   }
-
   function loadData(path, onComplete, onError) {
     setupWorker();
     var processId = createProcess(onComplete, onError);
@@ -1057,7 +980,6 @@ const dataManager = (function () {
       id: processId,
     });
   }
-
   function completeAnimation(anim, onComplete, onError) {
     setupWorker();
     var processId = createProcess(onComplete, onError);
@@ -1067,14 +989,12 @@ const dataManager = (function () {
       id: processId,
     });
   }
-
   return {
     loadAnimation: loadAnimation,
     loadData: loadData,
     completeAnimation: completeAnimation,
   };
 }());
-
 const ImagePreloader = (function () {
   var proxyImage = (function () {
     var canvas = createTag('canvas');
@@ -1085,7 +1005,6 @@ const ImagePreloader = (function () {
     ctx.fillRect(0, 0, 1, 1);
     return canvas;
   }());
-
   function imageLoaded() {
     this.loadedAssets += 1;
     if (this.loadedAssets === this.totalImages && this.loadedFootagesCount === this.totalFootages) {
@@ -1102,7 +1021,6 @@ const ImagePreloader = (function () {
       }
     }
   }
-
   function getAssetsPath(assetData, assetsPath, originalPath) {
     var path = '';
     if (assetData.e) {
@@ -1120,7 +1038,6 @@ const ImagePreloader = (function () {
     }
     return path;
   }
-
   function testImageLoaded(img) {
     var _count = 0;
     var intervalId = setInterval(function () {
@@ -1132,7 +1049,6 @@ const ImagePreloader = (function () {
       _count += 1;
     }.bind(this), 50);
   }
-
   function createImageData(assetData) {
     var path = getAssetsPath(assetData, this.assetsPath, this.path);
     var img = createNS('image');
@@ -1157,7 +1073,6 @@ const ImagePreloader = (function () {
     };
     return ob;
   }
-
   function createImgData(assetData) {
     var path = getAssetsPath(assetData, this.assetsPath, this.path);
     var img = createTag('img');
@@ -1174,7 +1089,6 @@ const ImagePreloader = (function () {
     };
     return ob;
   }
-
   function createFootageData(data) {
     var ob = {
       assetData: data,
@@ -1189,7 +1103,6 @@ const ImagePreloader = (function () {
     }.bind(this));
     return ob;
   }
-
   function loadAssets(assets, cb) {
     this.imagesLoadedCb = cb;
     var i;
@@ -1206,15 +1119,12 @@ const ImagePreloader = (function () {
       }
     }
   }
-
   function setPath(path) {
     this.path = path || '';
   }
-
   function setAssetsPath(path) {
     this.assetsPath = path || '';
   }
-
   function getAsset(assetData) {
     var i = 0;
     var len = this.images.length;
@@ -1226,20 +1136,16 @@ const ImagePreloader = (function () {
     }
     return null;
   }
-
   function destroy() {
     this.imagesLoadedCb = null;
     this.images.length = 0;
   }
-
   function loadedImages() {
     return this.totalImages === this.loadedAssets;
   }
-
   function loadedFootages() {
     return this.totalFootages === this.loadedFootagesCount;
   }
-
   function setCacheType(type, elementHelper) {
     if (type === 'svg') {
       this._elementHelper = elementHelper;
@@ -1248,7 +1154,6 @@ const ImagePreloader = (function () {
       this._createImageData = this.createImgData.bind(this);
     }
   }
-
   function ImagePreloaderFactory() {
     this._imageLoaded = imageLoaded.bind(this);
     this._footageLoaded = footageLoaded.bind(this);
@@ -1263,7 +1168,6 @@ const ImagePreloader = (function () {
     this.imagesLoadedCb = null;
     this.images = [];
   }
-
   ImagePreloaderFactory.prototype = {
     loadAssets: loadAssets,
     setAssetsPath: setAssetsPath,
@@ -1278,10 +1182,8 @@ const ImagePreloader = (function () {
     footageLoaded: footageLoaded,
     setCacheType: setCacheType,
   };
-
   return ImagePreloaderFactory;
 }());
-
 function BaseEvent() {}
 BaseEvent.prototype = {
   triggerEvent: function (eventName, args) {
@@ -1297,7 +1199,6 @@ BaseEvent.prototype = {
       this._cbs[eventName] = [];
     }
     this._cbs[eventName].push(callback);
-
     return function () {
       this.removeEventListener(eventName, callback);
     }.bind(this);
@@ -1322,9 +1223,7 @@ BaseEvent.prototype = {
     }
   },
 };
-
 const markerParser = (
-
   function () {
     function parsePayloadLines(payload) {
       var lines = payload.split('\r\n');
@@ -1343,7 +1242,6 @@ const markerParser = (
       }
       return keys;
     }
-
     return function (_markers) {
       var markers = [];
       for (var i = 0; i < _markers.length; i += 1) {
@@ -1368,12 +1266,10 @@ const markerParser = (
       return markers;
     };
   }());
-
 const ProjectInterface = (function () {
   function registerComposition(comp) {
     this.compositions.push(comp);
   }
-
   return function () {
     function _thisProjectFunction(name) {
       var i = 0;
@@ -1389,26 +1285,19 @@ const ProjectInterface = (function () {
       }
       return null;
     }
-
     _thisProjectFunction.compositions = [];
     _thisProjectFunction.currentFrame = 0;
-
     _thisProjectFunction.registerComposition = registerComposition;
-
     return _thisProjectFunction;
   };
 }());
-
 const renderers = {};
-
 const registerRenderer = (key, value) => {
   renderers[key] = value;
 };
-
 function getRenderer(key) {
   return renderers[key];
 }
-
 const AnimationItem = function () {
   this._cbs = [];
   this.name = '';
@@ -1446,9 +1335,7 @@ const AnimationItem = function () {
   this.onSegmentComplete = this.onSegmentComplete.bind(this);
   this.drawnFrameEvent = new BMEnterFrameEvent('drawnFrame', 0, 0, 0);
 };
-
 extendPrototype([BaseEvent], AnimationItem);
-
 AnimationItem.prototype.setParams = function (params) {
   if (params.wrapper || params.container) {
     this.wrapper = params.wrapper || params.container;
@@ -1499,18 +1386,15 @@ AnimationItem.prototype.setParams = function (params) {
     );
   }
 };
-
 AnimationItem.prototype.onSetupError = function () {
   this.trigger('data_failed');
 };
-
 AnimationItem.prototype.setupAnimation = function (data) {
   dataManager.completeAnimation(
     data,
     this.configAnimation
   );
 };
-
 AnimationItem.prototype.setData = function (wrapper, animationData) {
   if (animationData) {
     if (typeof animationData !== 'object') {
@@ -1522,7 +1406,6 @@ AnimationItem.prototype.setData = function (wrapper, animationData) {
     animationData: animationData,
   };
   var wrapperAttributes = wrapper.attributes;
-
   params.path = wrapperAttributes.getNamedItem('data-animation-path') // eslint-disable-line no-nested-ternary
     ? wrapperAttributes.getNamedItem('data-animation-path').value
     : wrapperAttributes.getNamedItem('data-bm-path') // eslint-disable-line no-nested-ternary
@@ -1541,7 +1424,6 @@ AnimationItem.prototype.setData = function (wrapper, animationData) {
           : wrapperAttributes.getNamedItem('bm-renderer')
             ? wrapperAttributes.getNamedItem('bm-renderer').value
             : 'canvas';
-
   var loop = wrapperAttributes.getNamedItem('data-anim-loop') // eslint-disable-line no-nested-ternary
     ? wrapperAttributes.getNamedItem('data-anim-loop').value
     : wrapperAttributes.getNamedItem('data-bm-loop') // eslint-disable-line no-nested-ternary
@@ -1564,7 +1446,6 @@ AnimationItem.prototype.setData = function (wrapper, animationData) {
         ? wrapperAttributes.getNamedItem('bm-autoplay').value
         : true;
   params.autoplay = autoplay !== 'false';
-
   params.name = wrapperAttributes.getNamedItem('data-name') // eslint-disable-line no-nested-ternary
     ? wrapperAttributes.getNamedItem('data-name').value
     : wrapperAttributes.getNamedItem('data-bm-name') // eslint-disable-line no-nested-ternary
@@ -1579,13 +1460,11 @@ AnimationItem.prototype.setData = function (wrapper, animationData) {
       : wrapperAttributes.getNamedItem('bm-prerender')
         ? wrapperAttributes.getNamedItem('bm-prerender').value
         : '';
-
   if (prerender === 'false') {
     params.prerender = false;
   }
   this.setParams(params);
 };
-
 AnimationItem.prototype.includeLayers = function (data) {
   if (data.op > this.animationData.op) {
     this.animationData.op = data.op;
@@ -1623,7 +1502,6 @@ AnimationItem.prototype.includeLayers = function (data) {
     this.onSegmentComplete
   );
 };
-
 AnimationItem.prototype.onSegmentComplete = function (data) {
   this.animationData = data;
   var expressionsPlugin = getExpressionsPlugin();
@@ -1632,7 +1510,6 @@ AnimationItem.prototype.onSegmentComplete = function (data) {
   }
   this.loadNextSegment();
 };
-
 AnimationItem.prototype.loadNextSegment = function () {
   var segments = this.animationData.segments;
   if (!segments || segments.length === 0 || !this.autoloadSegments) {
@@ -1648,7 +1525,6 @@ AnimationItem.prototype.loadNextSegment = function () {
     this.trigger('data_failed');
   }.bind(this));
 };
-
 AnimationItem.prototype.loadSegments = function () {
   var segments = this.animationData.segments;
   if (!segments) {
@@ -1656,18 +1532,15 @@ AnimationItem.prototype.loadSegments = function () {
   }
   this.loadNextSegment();
 };
-
 AnimationItem.prototype.imagesLoaded = function () {
   this.trigger('loaded_images');
   this.checkLoaded();
 };
-
 AnimationItem.prototype.preloadImages = function () {
   this.imagePreloader.setAssetsPath(this.assetsPath);
   this.imagePreloader.setPath(this.path);
   this.imagePreloader.loadAssets(this.animationData.assets, this.imagesLoaded.bind(this));
 };
-
 AnimationItem.prototype.configAnimation = function (animData) {
   if (!this.renderer) {
     return;
@@ -1685,7 +1558,6 @@ AnimationItem.prototype.configAnimation = function (animData) {
     if (!animData.assets) {
       animData.assets = [];
     }
-
     this.assets = this.animationData.assets;
     this.frameRate = this.animationData.fr;
     this.frameMult = this.animationData.fr / 1000;
@@ -1703,7 +1575,6 @@ AnimationItem.prototype.configAnimation = function (animData) {
     this.triggerConfigError(error);
   }
 };
-
 AnimationItem.prototype.waitForFontsLoaded = function () {
   if (!this.renderer) {
     return;
@@ -1714,7 +1585,6 @@ AnimationItem.prototype.waitForFontsLoaded = function () {
     setTimeout(this.waitForFontsLoaded.bind(this), 20);
   }
 };
-
 AnimationItem.prototype.checkLoaded = function () {
   if (!this.isLoaded
         && this.renderer.globalData.fontManager.isLoaded
@@ -1736,18 +1606,14 @@ AnimationItem.prototype.checkLoaded = function () {
     }
   }
 };
-
 AnimationItem.prototype.resize = function () {
   this.renderer.updateContainerSize();
 };
-
 AnimationItem.prototype.setSubframe = function (flag) {
   this.isSubframeEnabled = !!flag;
 };
-
 AnimationItem.prototype.gotoFrame = function () {
   this.currentFrame = this.isSubframeEnabled ? this.currentRawFrame : ~~this.currentRawFrame; // eslint-disable-line no-bitwise
-
   if (this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted) {
     this.currentFrame = this.timeCompleted;
   }
@@ -1755,7 +1621,6 @@ AnimationItem.prototype.gotoFrame = function () {
   this.renderFrame();
   this.trigger('drawnFrame');
 };
-
 AnimationItem.prototype.renderFrame = function () {
   if (this.isLoaded === false || !this.renderer) {
     return;
@@ -1766,7 +1631,6 @@ AnimationItem.prototype.renderFrame = function () {
     this.triggerRenderFrameError(error);
   }
 };
-
 AnimationItem.prototype.play = function (name) {
   if (name && this.name !== name) {
     return;
@@ -1781,7 +1645,6 @@ AnimationItem.prototype.play = function (name) {
     }
   }
 };
-
 AnimationItem.prototype.pause = function (name) {
   if (name && this.name !== name) {
     return;
@@ -1794,7 +1657,6 @@ AnimationItem.prototype.pause = function (name) {
     this.audioController.pause();
   }
 };
-
 AnimationItem.prototype.togglePause = function (name) {
   if (name && this.name !== name) {
     return;
@@ -1805,7 +1667,6 @@ AnimationItem.prototype.togglePause = function (name) {
     this.pause();
   }
 };
-
 AnimationItem.prototype.stop = function (name) {
   if (name && this.name !== name) {
     return;
@@ -1815,7 +1676,6 @@ AnimationItem.prototype.stop = function (name) {
   this._completedLoop = false;
   this.setCurrentRawFrameValue(0);
 };
-
 AnimationItem.prototype.getMarkerData = function (markerName) {
   var marker;
   for (var i = 0; i < this.markers.length; i += 1) {
@@ -1826,7 +1686,6 @@ AnimationItem.prototype.getMarkerData = function (markerName) {
   }
   return null;
 };
-
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
   if (name && this.name !== name) {
     return;
@@ -1844,7 +1703,6 @@ AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
   }
   this.pause();
 };
-
 AnimationItem.prototype.goToAndPlay = function (value, isFrame, name) {
   if (name && this.name !== name) {
     return;
@@ -1864,7 +1722,6 @@ AnimationItem.prototype.goToAndPlay = function (value, isFrame, name) {
   }
   this.play();
 };
-
 AnimationItem.prototype.advanceTime = function (value) {
   if (this.isPaused === true || this.isLoaded === false) {
     return;
@@ -1912,7 +1769,6 @@ AnimationItem.prototype.advanceTime = function (value) {
     this.trigger('complete');
   }
 };
-
 AnimationItem.prototype.adjustSegment = function (arr, offset) {
   this.playCount = 0;
   if (arr[1] < arr[0]) {
@@ -1951,7 +1807,6 @@ AnimationItem.prototype.setSegment = function (init, end) {
       pendingFrame = end - init;
     }
   }
-
   this.firstFrame = init;
   this.totalFrames = end - init;
   this.timeCompleted = this.totalFrames;
@@ -1959,7 +1814,6 @@ AnimationItem.prototype.setSegment = function (init, end) {
     this.goToAndStop(pendingFrame, true);
   }
 };
-
 AnimationItem.prototype.playSegments = function (arr, forceFlag) {
   if (forceFlag) {
     this.segments.length = 0;
@@ -1980,7 +1834,6 @@ AnimationItem.prototype.playSegments = function (arr, forceFlag) {
     this.play();
   }
 };
-
 AnimationItem.prototype.resetSegments = function (forceFlag) {
   this.segments.length = 0;
   this.segments.push([this.animationData.ip, this.animationData.op]);
@@ -1995,7 +1848,6 @@ AnimationItem.prototype.checkSegments = function (offset) {
   }
   return false;
 };
-
 AnimationItem.prototype.destroy = function (name) {
   if ((name && this.name !== name) || !this.renderer) {
     return;
@@ -2014,56 +1866,46 @@ AnimationItem.prototype.destroy = function (name) {
   this.imagePreloader = null;
   this.projectInterface = null;
 };
-
 AnimationItem.prototype.setCurrentRawFrameValue = function (value) {
   this.currentRawFrame = value;
   this.gotoFrame();
 };
-
 AnimationItem.prototype.setSpeed = function (val) {
   this.playSpeed = val;
   this.updaFrameModifier();
 };
-
 AnimationItem.prototype.setDirection = function (val) {
   this.playDirection = val < 0 ? -1 : 1;
   this.updaFrameModifier();
 };
-
 AnimationItem.prototype.setVolume = function (val, name) {
   if (name && this.name !== name) {
     return;
   }
   this.audioController.setVolume(val);
 };
-
 AnimationItem.prototype.getVolume = function () {
   return this.audioController.getVolume();
 };
-
 AnimationItem.prototype.mute = function (name) {
   if (name && this.name !== name) {
     return;
   }
   this.audioController.mute();
 };
-
 AnimationItem.prototype.unmute = function (name) {
   if (name && this.name !== name) {
     return;
   }
   this.audioController.unmute();
 };
-
 AnimationItem.prototype.updaFrameModifier = function () {
   this.frameModifier = this.frameMult * this.playSpeed * this.playDirection;
   this.audioController.setRate(this.playSpeed * this.playDirection);
 };
-
 AnimationItem.prototype.getPath = function () {
   return this.path;
 };
-
 AnimationItem.prototype.getAssetsPath = function (assetData) {
   var path = '';
   if (assetData.e) {
@@ -2081,7 +1923,6 @@ AnimationItem.prototype.getAssetsPath = function (assetData) {
   }
   return path;
 };
-
 AnimationItem.prototype.getAssetData = function (id) {
   var i = 0;
   var len = this.assets.length;
@@ -2093,19 +1934,15 @@ AnimationItem.prototype.getAssetData = function (id) {
   }
   return null;
 };
-
 AnimationItem.prototype.hide = function () {
   this.renderer.hide();
 };
-
 AnimationItem.prototype.show = function () {
   this.renderer.show();
 };
-
 AnimationItem.prototype.getDuration = function (isFrame) {
   return isFrame ? this.totalFrames : this.totalFrames / this.frameRate;
 };
-
 AnimationItem.prototype.updateDocumentData = function (path, documentData, index) {
   try {
     var element = this.renderer.getElementByPath(path);
@@ -2114,7 +1951,6 @@ AnimationItem.prototype.updateDocumentData = function (path, documentData, index
     // TODO: decide how to handle catch case
   }
 };
-
 AnimationItem.prototype.trigger = function (name) {
   if (this._cbs && this._cbs[name]) {
     switch (name) {
@@ -2159,25 +1995,20 @@ AnimationItem.prototype.trigger = function (name) {
     this.onDestroy.call(this, new BMDestroyEvent(name, this));
   }
 };
-
 AnimationItem.prototype.triggerRenderFrameError = function (nativeError) {
   var error = new BMRenderFrameErrorEvent(nativeError, this.currentFrame);
   this.triggerEvent('error', error);
-
   if (this.onError) {
     this.onError.call(this, error);
   }
 };
-
 AnimationItem.prototype.triggerConfigError = function (nativeError) {
   var error = new BMConfigErrorEvent(nativeError, this.currentFrame);
   this.triggerEvent('error', error);
-
   if (this.onError) {
     this.onError.call(this, error);
   }
 };
-
 const animationManager = (function () {
   var moduleOb = {};
   var registeredAnimations = [];
@@ -2186,7 +2017,6 @@ const animationManager = (function () {
   var playingAnimationsNum = 0;
   var _stopped = true;
   var _isFrozen = false;
-
   function removeElement(ev) {
     var i = 0;
     var animItem = ev.target;
@@ -2202,7 +2032,6 @@ const animationManager = (function () {
       i += 1;
     }
   }
-
   function registerAnimation(element, animationData) {
     if (!element) {
       return null;
@@ -2219,7 +2048,6 @@ const animationManager = (function () {
     animItem.setData(element, animationData);
     return animItem;
   }
-
   function getRegisteredAnimations() {
     var i;
     var lenAnims = registeredAnimations.length;
@@ -2229,16 +2057,13 @@ const animationManager = (function () {
     }
     return animations;
   }
-
   function addPlayingCount() {
     playingAnimationsNum += 1;
     activate();
   }
-
   function subtractPlayingCount() {
     playingAnimationsNum -= 1;
   }
-
   function setupAnimation(animItem, element) {
     animItem.addEventListener('destroy', removeElement);
     animItem.addEventListener('_active', addPlayingCount);
@@ -2246,28 +2071,24 @@ const animationManager = (function () {
     registeredAnimations.push({ elem: element, animation: animItem });
     len += 1;
   }
-
   function loadAnimation(params) {
     var animItem = new AnimationItem();
     setupAnimation(animItem, null);
     animItem.setParams(params);
     return animItem;
   }
-
   function setSpeed(val, animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.setSpeed(val, animation);
     }
   }
-
   function setDirection(val, animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.setDirection(val, animation);
     }
   }
-
   function play(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
@@ -2287,47 +2108,40 @@ const animationManager = (function () {
       _stopped = true;
     }
   }
-
   function first(nowTime) {
     initTime = nowTime;
     window.requestAnimationFrame(resume);
   }
-
   function pause(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.pause(animation);
     }
   }
-
   function goToAndStop(value, isFrame, animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.goToAndStop(value, isFrame, animation);
     }
   }
-
   function stop(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.stop(animation);
     }
   }
-
   function togglePause(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.togglePause(animation);
     }
   }
-
   function destroy(animation) {
     var i;
     for (i = (len - 1); i >= 0; i -= 1) {
       registeredAnimations[i].animation.destroy(animation);
     }
   }
-
   function searchAnimations(animationData, standalone, renderer) {
     var animElements = [].concat([].slice.call(document.getElementsByClassName('lottie')),
       [].slice.call(document.getElementsByClassName('bodymovin')));
@@ -2353,14 +2167,12 @@ const animationManager = (function () {
       registerAnimation(div, animationData);
     }
   }
-
   function resize() {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.resize();
     }
   }
-
   function activate() {
     if (!_isFrozen && playingAnimationsNum) {
       if (_stopped) {
@@ -2369,37 +2181,31 @@ const animationManager = (function () {
       }
     }
   }
-
   function freeze() {
     _isFrozen = true;
   }
-
   function unfreeze() {
     _isFrozen = false;
     activate();
   }
-
   function setVolume(val, animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.setVolume(val, animation);
     }
   }
-
   function mute(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.mute(animation);
     }
   }
-
   function unmute(animation) {
     var i;
     for (i = 0; i < len; i += 1) {
       registeredAnimations[i].animation.unmute(animation);
     }
   }
-
   moduleOb.registerAnimation = registerAnimation;
   moduleOb.loadAnimation = loadAnimation;
   moduleOb.setSpeed = setSpeed;
@@ -2421,7 +2227,6 @@ const animationManager = (function () {
   moduleOb.getRegisteredAnimations = getRegisteredAnimations;
   return moduleOb;
 }());
-
 /* eslint-disable */
 const BezierFactory = (function () {
   /**
@@ -2434,11 +2239,9 @@ const BezierFactory = (function () {
      * spline.get(x) => returns the easing value | x must be in [0, 1] range
      *
      */
-
   var ob = {};
   ob.getBezierEasing = getBezierEasing;
   var beziers = {};
-
   function getBezierEasing(a, b, c, d, nm) {
     var str = nm || ('bez_' + a + '_' + b + '_' + c + '_' + d).replace(/\./g, 'p');
     if (beziers[str]) {
@@ -2448,32 +2251,25 @@ const BezierFactory = (function () {
     beziers[str] = bezEasing;
     return bezEasing;
   }
-
   // These values are established by empiricism with tests (tradeoff: performance VS precision)
   var NEWTON_ITERATIONS = 4;
   var NEWTON_MIN_SLOPE = 0.001;
   var SUBDIVISION_PRECISION = 0.0000001;
   var SUBDIVISION_MAX_ITERATIONS = 10;
-
   var kSplineTableSize = 11;
   var kSampleStepSize = 1.0 / (kSplineTableSize - 1.0);
-
   var float32ArraySupported = typeof Float32Array === 'function';
-
   function A(aA1, aA2) { return 1.0 - 3.0 * aA2 + 3.0 * aA1; }
   function B(aA1, aA2) { return 3.0 * aA2 - 6.0 * aA1; }
   function C(aA1) { return 3.0 * aA1; }
-
   // Returns x(t) given t, x1, and x2, or y(t) given t, y1, and y2.
   function calcBezier(aT, aA1, aA2) {
     return ((A(aA1, aA2) * aT + B(aA1, aA2)) * aT + C(aA1)) * aT;
   }
-
   // Returns dx/dt given t, x1, and x2, or dy/dt given t, y1, and y2.
   function getSlope(aT, aA1, aA2) {
     return 3.0 * A(aA1, aA2) * aT * aT + 2.0 * B(aA1, aA2) * aT + C(aA1);
   }
-
   function binarySubdivide(aX, aA, aB, mX1, mX2) {
     var currentX,
       currentT,
@@ -2489,7 +2285,6 @@ const BezierFactory = (function () {
     } while (Math.abs(currentX) > SUBDIVISION_PRECISION && ++i < SUBDIVISION_MAX_ITERATIONS);
     return currentT;
   }
-
   function newtonRaphsonIterate(aX, aGuessT, mX1, mX2) {
     for (var i = 0; i < NEWTON_ITERATIONS; ++i) {
       var currentSlope = getSlope(aGuessT, mX1, mX2);
@@ -2499,7 +2294,6 @@ const BezierFactory = (function () {
     }
     return aGuessT;
   }
-
   /**
      * points is an array of [ mX1, mY1, mX2, mY2 ]
      */
@@ -2507,12 +2301,9 @@ const BezierFactory = (function () {
     this._p = points;
     this._mSampleValues = float32ArraySupported ? new Float32Array(kSplineTableSize) : new Array(kSplineTableSize);
     this._precomputed = false;
-
     this.get = this.get.bind(this);
   }
-
   BezierEasing.prototype = {
-
     get: function (x) {
       var mX1 = this._p[0],
         mY1 = this._p[1],
@@ -2525,9 +2316,7 @@ const BezierFactory = (function () {
       if (x === 1) return 1;
       return calcBezier(this._getTForX(x), mY1, mY2);
     },
-
     // Private part
-
     _precompute: function () {
       var mX1 = this._p[0],
         mY1 = this._p[1],
@@ -2536,7 +2325,6 @@ const BezierFactory = (function () {
       this._precomputed = true;
       if (mX1 !== mY1 || mX2 !== mY2) { this._calcSampleValues(); }
     },
-
     _calcSampleValues: function () {
       var mX1 = this._p[0],
         mX2 = this._p[2];
@@ -2544,7 +2332,6 @@ const BezierFactory = (function () {
         this._mSampleValues[i] = calcBezier(i * kSampleStepSize, mX1, mX2);
       }
     },
-
     /**
          * getTForX chose the fastest heuristic to determine the percentage value precisely from a given X projection.
          */
@@ -2552,20 +2339,16 @@ const BezierFactory = (function () {
       var mX1 = this._p[0],
         mX2 = this._p[2],
         mSampleValues = this._mSampleValues;
-
       var intervalStart = 0.0;
       var currentSample = 1;
       var lastSample = kSplineTableSize - 1;
-
       for (; currentSample !== lastSample && mSampleValues[currentSample] <= aX; ++currentSample) {
         intervalStart += kSampleStepSize;
       }
       --currentSample;
-
       // Interpolate to provide an initial guess for t
       var dist = (aX - mSampleValues[currentSample]) / (mSampleValues[currentSample + 1] - mSampleValues[currentSample]);
       var guessForT = intervalStart + dist * kSampleStepSize;
-
       var initialSlope = getSlope(guessForT, mX1, mX2);
       if (initialSlope >= NEWTON_MIN_SLOPE) {
         return newtonRaphsonIterate(aX, guessForT, mX1, mX2);
@@ -2575,31 +2358,25 @@ const BezierFactory = (function () {
       return binarySubdivide(aX, intervalStart, intervalStart + kSampleStepSize, mX1, mX2);
     },
   };
-
   return ob;
 }());
-
 const pooling = (function () {
   function double(arr) {
     return arr.concat(createSizedArray(arr.length));
   }
-
   return {
     double: double,
   };
 }());
-
 const poolFactory = (function () {
   return function (initialLength, _create, _release) {
     var _length = 0;
     var _maxLength = initialLength;
     var pool = createSizedArray(_maxLength);
-
     var ob = {
       newElement: newElement,
       release: release,
     };
-
     function newElement() {
       var element;
       if (_length) {
@@ -2610,7 +2387,6 @@ const poolFactory = (function () {
       }
       return element;
     }
-
     function release(element) {
       if (_length === _maxLength) {
         pool = pooling.double(pool);
@@ -2622,11 +2398,9 @@ const poolFactory = (function () {
       pool[_length] = element;
       _length += 1;
     }
-
     return ob;
   };
 }());
-
 const bezierLengthPool = (function () {
   function create() {
     return {
@@ -2637,7 +2411,6 @@ const bezierLengthPool = (function () {
   }
   return poolFactory(8, create);
 }());
-
 const segmentsLengthPool = (function () {
   function create() {
     return {
@@ -2645,7 +2418,6 @@ const segmentsLengthPool = (function () {
       totalLength: 0,
     };
   }
-
   function release(element) {
     var i;
     var len = element.lengths.length;
@@ -2654,18 +2426,14 @@ const segmentsLengthPool = (function () {
     }
     element.lengths.length = 0;
   }
-
   return poolFactory(8, create, release);
 }());
-
 function bezFunction() {
   var math = Math;
-
   function pointOnLine2D(x1, y1, x2, y2, x3, y3) {
     var det1 = (x1 * y2) + (y1 * x3) + (x2 * y3) - (x3 * y2) - (y3 * x1) - (x2 * y1);
     return det1 > -0.001 && det1 < 0.001;
   }
-
   function pointOnLine3D(x1, y1, z1, x2, y2, z2, x3, y3, z3) {
     if (z1 === 0 && z2 === 0 && z3 === 0) {
       return pointOnLine2D(x1, y1, x2, y2, x3, y3);
@@ -2687,7 +2455,6 @@ function bezFunction() {
     }
     return diffDist > -0.0001 && diffDist < 0.0001;
   }
-
   var getBezierLength = (function () {
     return function (pt1, pt2, pt3, pt4) {
       var curveSegments = getDefaultCurveSegments();
@@ -2724,7 +2491,6 @@ function bezFunction() {
       return lengthData;
     };
   }());
-
   function getSegmentsLength(shapeData) {
     var segmentsLength = segmentsLengthPool.newElement();
     var closed = shapeData.c;
@@ -2746,20 +2512,16 @@ function bezFunction() {
     segmentsLength.totalLength = totalLength;
     return segmentsLength;
   }
-
   function BezierData(length) {
     this.segmentLength = 0;
     this.points = new Array(length);
   }
-
   function PointData(partial, point) {
     this.partialLength = partial;
     this.point = point;
   }
-
   var buildBezierData = (function () {
     var storedData = {};
-
     return function (pt1, pt2, pt3, pt4) {
       var bezierName = (pt1[0] + '_' + pt1[1] + '_' + pt2[0] + '_' + pt2[1] + '_' + pt3[0] + '_' + pt3[1] + '_' + pt4[0] + '_' + pt4[1]).replace(/\./g, 'p');
       if (!storedData[bezierName]) {
@@ -2800,7 +2562,6 @@ function bezFunction() {
       return storedData[bezierName];
     };
   }());
-
   function getDistancePerc(perc, bezierData) {
     var percents = bezierData.percents;
     var lengths = bezierData.lengths;
@@ -2830,7 +2591,6 @@ function bezFunction() {
     }
     return percents[initPos] + (percents[initPos + 1] - percents[initPos]) * lPerc;
   }
-
   function getPointInSegment(pt1, pt2, pt3, pt4, percent, bezierData) {
     var t1 = getDistancePerc(percent, bezierData);
     var u1 = 1 - t1;
@@ -2838,9 +2598,7 @@ function bezFunction() {
     var ptY = math.round((u1 * u1 * u1 * pt1[1] + (t1 * u1 * u1 + u1 * t1 * u1 + u1 * u1 * t1) * pt3[1] + (t1 * t1 * u1 + u1 * t1 * t1 + t1 * u1 * t1) * pt4[1] + t1 * t1 * t1 * pt2[1]) * 1000) / 1000;
     return [ptX, ptY];
   }
-
   var bezierSegmentPoints = createTypedArray('float32', 8);
-
   function getNewSegment(pt1, pt2, pt3, pt4, startPerc, endPerc, bezierData) {
     if (startPerc < 0) {
       startPerc = 0;
@@ -2879,10 +2637,8 @@ function bezFunction() {
       bezierSegmentPoints[i * 4 + 2] = math.round((u0u1u1 * pt1[i] + t0u1u1_3 * pt3[i] + t0t1u1_3 * pt4[i] + t0t1t1 * pt2[i]) * 1000) / 1000; // eslint-disable-line camelcase
       bezierSegmentPoints[i * 4 + 3] = math.round((u1u1u1 * pt1[i] + t1u1u1_3 * pt3[i] + t1t1u1_3 * pt4[i] + t1t1t1 * pt2[i]) * 1000) / 1000; // eslint-disable-line camelcase
     }
-
     return bezierSegmentPoints;
   }
-
   return {
     getSegmentsLength: getSegmentsLength,
     getNewSegment: getNewSegment,
@@ -2892,13 +2648,10 @@ function bezFunction() {
     pointOnLine3D: pointOnLine3D,
   };
 }
-
 const bez = bezFunction();
-
 const PropertyFactory = (function () {
   var initFrame = initialDefaultFrame;
   var mathAbs = Math.abs;
-
   function interpolateValue(frameNum, caching) {
     var offsetTime = this.offsetTime;
     var newValue;
@@ -2912,7 +2665,6 @@ const PropertyFactory = (function () {
     var keyData;
     var nextKeyData;
     var keyframeMetadata;
-
     while (flag) {
       keyData = this.keyframes[i];
       nextKeyData = this.keyframes[i + 1];
@@ -2935,7 +2687,6 @@ const PropertyFactory = (function () {
       }
     }
     keyframeMetadata = this.keyframesMetadata[i] || {};
-
     var k;
     var kLen;
     var perc;
@@ -2966,7 +2717,6 @@ const PropertyFactory = (function () {
         }
         perc = fnc((frameNum - keyTime) / (nextKeyTime - keyTime));
         var distanceInLine = bezierData.segmentLength * perc;
-
         var segmentPerc;
         var addedLength = (caching.lastFrame < frameNum && caching._lastKeyframeIndex === i) ? caching._lastAddedLength : 0;
         j = (caching.lastFrame < frameNum && caching._lastKeyframeIndex === i) ? caching._lastPoint : 0;
@@ -3056,10 +2806,8 @@ const PropertyFactory = (function () {
               perc = fnc((frameNum - keyTime) / (nextKeyTime - keyTime));
             }
           }
-
           endValue = nextKeyData.s || keyData.e;
           keyValue = keyData.h === 1 ? keyData.s[i] : keyData.s[i] + (endValue[i] - keyData.s[i]) * perc;
-
           if (this.propType === 'multidimensional') {
             newValue[i] = keyValue;
           } else {
@@ -3071,7 +2819,6 @@ const PropertyFactory = (function () {
     caching.lastIndex = iterationIndex;
     return newValue;
   }
-
   // based on @Toji's https://github.com/toji/gl-matrix/
   function slerp(a, b, t) {
     var out = [];
@@ -3083,13 +2830,11 @@ const PropertyFactory = (function () {
     var by = b[1];
     var bz = b[2];
     var bw = b[3];
-
     var omega;
     var cosom;
     var sinom;
     var scale0;
     var scale1;
-
     cosom = ax * bx + ay * by + az * bz + aw * bw;
     if (cosom < 0.0) {
       cosom = -cosom;
@@ -3111,10 +2856,8 @@ const PropertyFactory = (function () {
     out[1] = scale0 * ay + scale1 * by;
     out[2] = scale0 * az + scale1 * bz;
     out[3] = scale0 * aw + scale1 * bw;
-
     return out;
   }
-
   function quaternionToEuler(out, quat) {
     var qx = quat[0];
     var qy = quat[1];
@@ -3127,7 +2870,6 @@ const PropertyFactory = (function () {
     out[1] = attitude / degToRads;
     out[2] = bank / degToRads;
   }
-
   function createQuaternion(values) {
     var heading = values[0] * degToRads;
     var attitude = values[1] * degToRads;
@@ -3142,10 +2884,8 @@ const PropertyFactory = (function () {
     var x = s1 * s2 * c3 + c1 * c2 * s3;
     var y = s1 * c2 * c3 + c1 * s2 * s3;
     var z = c1 * s2 * c3 - s1 * c2 * s3;
-
     return [x, y, z, w];
   }
-
   function getValueAtCurrentTime() {
     var frameNum = this.comp.renderedFrame - this.offsetTime;
     var initTime = this.keyframes[0].t - this.offsetTime;
@@ -3155,14 +2895,12 @@ const PropertyFactory = (function () {
         this._caching._lastKeyframeIndex = -1;
         this._caching.lastIndex = 0;
       }
-
       var renderResult = this.interpolateValue(frameNum, this._caching);
       this.pv = renderResult;
     }
     this._caching.lastFrame = frameNum;
     return this.pv;
   }
-
   function setVValue(val) {
     var multipliedValue;
     if (this.propType === 'unidimensional') {
@@ -3184,7 +2922,6 @@ const PropertyFactory = (function () {
       }
     }
   }
-
   function processEffectsSequence() {
     if (this.elem.globalData.frameId === this.frameId || !this.effectsSequence.length) {
       return;
@@ -3206,12 +2943,10 @@ const PropertyFactory = (function () {
     this.lock = false;
     this.frameId = this.elem.globalData.frameId;
   }
-
   function addEffect(effectFunction) {
     this.effectsSequence.push(effectFunction);
     this.container.addDynamicProperty(this);
   }
-
   function ValueProperty(elem, data, mult, container) {
     this.propType = 'unidimensional';
     this.mult = mult || 1;
@@ -3231,7 +2966,6 @@ const PropertyFactory = (function () {
     this.setVValue = setVValue;
     this.addEffect = addEffect;
   }
-
   function MultiDimensionalProperty(elem, data, mult, container) {
     this.propType = 'multidimensional';
     this.mult = mult || 1;
@@ -3258,7 +2992,6 @@ const PropertyFactory = (function () {
     this.setVValue = setVValue;
     this.addEffect = addEffect;
   }
-
   function KeyframedValueProperty(elem, data, mult, container) {
     this.propType = 'unidimensional';
     this.keyframes = data.k;
@@ -3284,7 +3017,6 @@ const PropertyFactory = (function () {
     this.effectsSequence = [getValueAtCurrentTime.bind(this)];
     this.addEffect = addEffect;
   }
-
   function KeyframedMultidimensionalProperty(elem, data, mult, container) {
     this.propType = 'multidimensional';
     var i;
@@ -3337,7 +3069,6 @@ const PropertyFactory = (function () {
     this._caching = { lastFrame: initFrame, lastIndex: 0, value: createTypedArray('float32', arrLen) };
     this.addEffect = addEffect;
   }
-
   function getProp(elem, data, type, mult, container) {
     var p;
     if (!data.k.length) {
@@ -3361,13 +3092,11 @@ const PropertyFactory = (function () {
     }
     return p;
   }
-
   var ob = {
     getProp: getProp,
   };
   return ob;
 }());
-
 function DynamicPropertyContainer() {}
 DynamicPropertyContainer.prototype = {
   addDynamicProperty: function (prop) {
@@ -3395,14 +3124,12 @@ DynamicPropertyContainer.prototype = {
     this._isAnimated = false;
   },
 };
-
 const pointPool = (function () {
   function create() {
     return createTypedArray('float32', 2);
   }
   return poolFactory(8, create);
 }());
-
 function ShapePath() {
   this.c = false;
   this._length = 0;
@@ -3411,7 +3138,6 @@ function ShapePath() {
   this.o = createSizedArray(this._maxLength);
   this.i = createSizedArray(this._maxLength);
 }
-
 ShapePath.prototype.setPathData = function (closed, len) {
   this.c = closed;
   this.setLength(len);
@@ -3423,21 +3149,18 @@ ShapePath.prototype.setPathData = function (closed, len) {
     i += 1;
   }
 };
-
 ShapePath.prototype.setLength = function (len) {
   while (this._maxLength < len) {
     this.doubleArrayLength();
   }
   this._length = len;
 };
-
 ShapePath.prototype.doubleArrayLength = function () {
   this.v = this.v.concat(createSizedArray(this._maxLength));
   this.i = this.i.concat(createSizedArray(this._maxLength));
   this.o = this.o.concat(createSizedArray(this._maxLength));
   this._maxLength *= 2;
 };
-
 ShapePath.prototype.setXYAt = function (x, y, type, pos, replace) {
   var arr;
   this._length = Math.max(this._length, pos + 1);
@@ -3464,13 +3187,11 @@ ShapePath.prototype.setXYAt = function (x, y, type, pos, replace) {
   arr[pos][0] = x;
   arr[pos][1] = y;
 };
-
 ShapePath.prototype.setTripleAt = function (vX, vY, oX, oY, iX, iY, pos, replace) {
   this.setXYAt(vX, vY, 'v', pos, replace);
   this.setXYAt(oX, oY, 'o', pos, replace);
   this.setXYAt(iX, iY, 'i', pos, replace);
 };
-
 ShapePath.prototype.reverse = function () {
   var newPath = new ShapePath();
   newPath.setPathData(this.c, this._length);
@@ -3484,7 +3205,6 @@ ShapePath.prototype.reverse = function () {
   }
   var cnt = this._length - 1;
   var len = this._length;
-
   var i;
   for (i = init; i < len; i += 1) {
     newPath.setTripleAt(vertices[cnt][0], vertices[cnt][1], inPoints[cnt][0], inPoints[cnt][1], outPoints[cnt][0], outPoints[cnt][1], i, false);
@@ -3492,12 +3212,10 @@ ShapePath.prototype.reverse = function () {
   }
   return newPath;
 };
-
 const shapePool = (function () {
   function create() {
     return new ShapePath();
   }
-
   function release(shapePath) {
     var len = shapePath._length;
     var i;
@@ -3512,32 +3230,26 @@ const shapePool = (function () {
     shapePath._length = 0;
     shapePath.c = false;
   }
-
   function clone(shape) {
     var cloned = factory.newElement();
     var i;
     var len = shape._length === undefined ? shape.v.length : shape._length;
     cloned.setLength(len);
     cloned.c = shape.c;
-
     for (i = 0; i < len; i += 1) {
       cloned.setTripleAt(shape.v[i][0], shape.v[i][1], shape.o[i][0], shape.o[i][1], shape.i[i][0], shape.i[i][1], i);
     }
     return cloned;
   }
-
   var factory = poolFactory(4, create, release);
   factory.clone = clone;
-
   return factory;
 }());
-
 function ShapeCollection() {
   this._length = 0;
   this._maxLength = 4;
   this.shapes = createSizedArray(this._maxLength);
 }
-
 ShapeCollection.prototype.addShape = function (shapeData) {
   if (this._length === this._maxLength) {
     this.shapes = this.shapes.concat(createSizedArray(this._maxLength));
@@ -3546,7 +3258,6 @@ ShapeCollection.prototype.addShape = function (shapeData) {
   this.shapes[this._length] = shapeData;
   this._length += 1;
 };
-
 ShapeCollection.prototype.releaseShapes = function () {
   var i;
   for (i = 0; i < this._length; i += 1) {
@@ -3554,17 +3265,14 @@ ShapeCollection.prototype.releaseShapes = function () {
   }
   this._length = 0;
 };
-
 const shapeCollectionPool = (function () {
   var ob = {
     newShapeCollection: newShapeCollection,
     release: release,
   };
-
   var _length = 0;
   var _maxLength = 4;
   var pool = createSizedArray(_maxLength);
-
   function newShapeCollection() {
     var shapeCollection;
     if (_length) {
@@ -3575,7 +3283,6 @@ const shapeCollectionPool = (function () {
     }
     return shapeCollection;
   }
-
   function release(shapeCollection) {
     var i;
     var len = shapeCollection._length;
@@ -3583,7 +3290,6 @@ const shapeCollectionPool = (function () {
       shapePool.release(shapeCollection.shapes[i]);
     }
     shapeCollection._length = 0;
-
     if (_length === _maxLength) {
       pool = pooling.double(pool);
       _maxLength *= 2;
@@ -3591,13 +3297,10 @@ const shapeCollectionPool = (function () {
     pool[_length] = shapeCollection;
     _length += 1;
   }
-
   return ob;
 }());
-
 const ShapePropertyFactory = (function () {
   var initFrame = -999999;
-
   function interpolateShape(frameNum, previousValue, caching) {
     var iterationIndex = caching.lastIndex;
     var keyPropS;
@@ -3666,7 +3369,6 @@ const ShapePropertyFactory = (function () {
     jLen = previousValue._length;
     kLen = keyPropS.i[0].length;
     caching.lastIndex = iterationIndex;
-
     for (j = 0; j < jLen; j += 1) {
       for (k = 0; k < kLen; k += 1) {
         vertexValue = isHold ? keyPropS.i[j][k] : keyPropS.i[j][k] + (keyPropE.i[j][k] - keyPropS.i[j][k]) * perc;
@@ -3678,7 +3380,6 @@ const ShapePropertyFactory = (function () {
       }
     }
   }
-
   function interpolateShapeCurrentTime() {
     var frameNum = this.comp.renderedFrame - this.offsetTime;
     var initTime = this.keyframes[0].t - this.offsetTime;
@@ -3693,11 +3394,9 @@ const ShapePropertyFactory = (function () {
     this._caching.lastFrame = frameNum;
     return this.pv;
   }
-
   function resetShape() {
     this.paths = this.localShapeCollection;
   }
-
   function shapesEqual(shape1, shape2) {
     if (shape1._length !== shape2._length || shape1.c !== shape2.c) {
       return false;
@@ -3716,7 +3415,6 @@ const ShapePropertyFactory = (function () {
     }
     return true;
   }
-
   function setVValue(newPath) {
     if (!shapesEqual(this.v, newPath)) {
       this.v = shapePool.clone(newPath);
@@ -3726,7 +3424,6 @@ const ShapePropertyFactory = (function () {
       this.paths = this.localShapeCollection;
     }
   }
-
   function processEffectsSequence() {
     if (this.elem.globalData.frameId === this.frameId) {
       return;
@@ -3757,7 +3454,6 @@ const ShapePropertyFactory = (function () {
     this.lock = false;
     this.frameId = this.elem.globalData.frameId;
   }
-
   function ShapeProperty(elem, data, type) {
     this.propType = 'shape';
     this.comp = elem.comp;
@@ -3776,17 +3472,14 @@ const ShapePropertyFactory = (function () {
     this.reset = resetShape;
     this.effectsSequence = [];
   }
-
   function addEffect(effectFunction) {
     this.effectsSequence.push(effectFunction);
     this.container.addDynamicProperty(this);
   }
-
   ShapeProperty.prototype.interpolateShape = interpolateShape;
   ShapeProperty.prototype.getValue = processEffectsSequence;
   ShapeProperty.prototype.setVValue = setVValue;
   ShapeProperty.prototype.addEffect = addEffect;
-
   function KeyframedShapeProperty(elem, data, type) {
     this.propType = 'shape';
     this.comp = elem.comp;
@@ -3813,10 +3506,8 @@ const ShapePropertyFactory = (function () {
   KeyframedShapeProperty.prototype.interpolateShape = interpolateShape;
   KeyframedShapeProperty.prototype.setVValue = setVValue;
   KeyframedShapeProperty.prototype.addEffect = addEffect;
-
   var EllShapeProperty = (function () {
     var cPoint = roundCorner;
-
     function EllShapePropertyFactory(elem, data) {
       this.v = shapePool.newElement();
       this.v.setPathData(true, 4);
@@ -3837,7 +3528,6 @@ const ShapePropertyFactory = (function () {
         this.convertEllToPath();
       }
     }
-
     EllShapePropertyFactory.prototype = {
       reset: resetShape,
       getValue: function () {
@@ -3846,7 +3536,6 @@ const ShapePropertyFactory = (function () {
         }
         this.frameId = this.elem.globalData.frameId;
         this.iterateDynamicProperties();
-
         if (this._mdf) {
           this.convertEllToPath();
         }
@@ -3884,12 +3573,9 @@ const ShapePropertyFactory = (function () {
         _v.o[3][1] = p1 - s1 * cPoint;
       },
     };
-
     extendPrototype([DynamicPropertyContainer], EllShapePropertyFactory);
-
     return EllShapePropertyFactory;
   }());
-
   var StarShapeProperty = (function () {
     function StarShapePropertyFactory(elem, data) {
       this.v = shapePool.newElement();
@@ -3922,7 +3608,6 @@ const ShapePropertyFactory = (function () {
         this.convertToPath();
       }
     }
-
     StarShapePropertyFactory.prototype = {
       reset: resetShape,
       getValue: function () {
@@ -3967,7 +3652,6 @@ const ShapePropertyFactory = (function () {
           x += +this.p.v[0];
           y += +this.p.v[1];
           this.v.setTripleAt(x, y, x - ox * perimSegment * roundness * dir, y - oy * perimSegment * roundness * dir, x + ox * perimSegment * roundness * dir, y + oy * perimSegment * roundness * dir, i, true);
-
           /* this.v.v[i] = [x,y];
                     this.v.i[i] = [x+ox*perimSegment*roundness*dir,y+oy*perimSegment*roundness*dir];
                     this.v.o[i] = [x-ox*perimSegment*roundness*dir,y-oy*perimSegment*roundness*dir];
@@ -4000,13 +3684,10 @@ const ShapePropertyFactory = (function () {
         this.paths.length = 0;
         this.paths[0] = this.v;
       },
-
     };
     extendPrototype([DynamicPropertyContainer], StarShapePropertyFactory);
-
     return StarShapePropertyFactory;
   }());
-
   var RectShapeProperty = (function () {
     function RectShapePropertyFactory(elem, data) {
       this.v = shapePool.newElement();
@@ -4029,7 +3710,6 @@ const ShapePropertyFactory = (function () {
         this.convertRectToPath();
       }
     }
-
     RectShapePropertyFactory.prototype = {
       convertRectToPath: function () {
         var p0 = this.p.v[0];
@@ -4039,7 +3719,6 @@ const ShapePropertyFactory = (function () {
         var round = bmMin(v0, v1, this.r.v);
         var cPoint = round * (1 - roundCorner);
         this.v._length = 0;
-
         if (this.d === 2 || this.d === 1) {
           this.v.setTripleAt(p0 + v0, p1 - v1 + round, p0 + v0, p1 - v1 + round, p0 + v0, p1 - v1 + cPoint, 0, true);
           this.v.setTripleAt(p0 + v0, p1 + v1 - round, p0 + v0, p1 + v1 - cPoint, p0 + v0, p1 + v1 - round, 1, true);
@@ -4084,10 +3763,8 @@ const ShapePropertyFactory = (function () {
       reset: resetShape,
     };
     extendPrototype([DynamicPropertyContainer], RectShapePropertyFactory);
-
     return RectShapePropertyFactory;
   }());
-
   function getShapeProp(elem, data, type) {
     var prop;
     if (type === 3 || type === 4) {
@@ -4110,22 +3787,18 @@ const ShapePropertyFactory = (function () {
     }
     return prop;
   }
-
   function getConstructorFunction() {
     return ShapeProperty;
   }
-
   function getKeyframedConstructorFunction() {
     return KeyframedShapeProperty;
   }
-
   var ob = {};
   ob.getShapeProp = getShapeProp;
   ob.getConstructorFunction = getConstructorFunction;
   ob.getKeyframedConstructorFunction = getKeyframedConstructorFunction;
   return ob;
 }());
-
 /*!
  Transformation Matrix v2.0
  (c) Epistemex 2014-2015
@@ -4134,7 +3807,6 @@ const ShapePropertyFactory = (function () {
  Contributions by leeoniya.
  License: MIT, header required.
  */
-
 /**
  * 2D transformation matrix object initialized with identity matrix.
  *
@@ -4154,13 +3826,11 @@ const ShapePropertyFactory = (function () {
  * @prop {CanvasRenderingContext2D|null} [context=null] - set or get current canvas context
  * @constructor
  */
-
 const Matrix = (function () {
   var _cos = Math.cos;
   var _sin = Math.sin;
   var _tan = Math.tan;
   var _rnd = Math.round;
-
   function reset() {
     this.props[0] = 1;
     this.props[1] = 0;
@@ -4180,7 +3850,6 @@ const Matrix = (function () {
     this.props[15] = 1;
     return this;
   }
-
   function rotate(angle) {
     if (angle === 0) {
       return this;
@@ -4189,7 +3858,6 @@ const Matrix = (function () {
     var mSin = _sin(angle);
     return this._t(mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   }
-
   function rotateX(angle) {
     if (angle === 0) {
       return this;
@@ -4198,7 +3866,6 @@ const Matrix = (function () {
     var mSin = _sin(angle);
     return this._t(1, 0, 0, 0, 0, mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1);
   }
-
   function rotateY(angle) {
     if (angle === 0) {
       return this;
@@ -4207,7 +3874,6 @@ const Matrix = (function () {
     var mSin = _sin(angle);
     return this._t(mCos, 0, mSin, 0, 0, 1, 0, 0, -mSin, 0, mCos, 0, 0, 0, 0, 1);
   }
-
   function rotateZ(angle) {
     if (angle === 0) {
       return this;
@@ -4216,15 +3882,12 @@ const Matrix = (function () {
     var mSin = _sin(angle);
     return this._t(mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
   }
-
   function shear(sx, sy) {
     return this._t(1, sy, sx, 1, 0, 0);
   }
-
   function skew(ax, ay) {
     return this.shear(_tan(ax), _tan(ay));
   }
-
   function skewFromAxis(ax, angle) {
     var mCos = _cos(angle);
     var mSin = _sin(angle);
@@ -4233,7 +3896,6 @@ const Matrix = (function () {
       ._t(mCos, -mSin, 0, 0, mSin, mCos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
     // return this._t(mCos, mSin, -mSin, mCos, 0, 0)._t(1, 0, _tan(ax), 1, 0, 0)._t(mCos, -mSin, mSin, mCos, 0, 0);
   }
-
   function scale(sx, sy, sz) {
     if (!sz && sz !== 0) {
       sz = 1;
@@ -4243,7 +3905,6 @@ const Matrix = (function () {
     }
     return this._t(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1);
   }
-
   function setTransform(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p) {
     this.props[0] = a;
     this.props[1] = b;
@@ -4263,7 +3924,6 @@ const Matrix = (function () {
     this.props[15] = p;
     return this;
   }
-
   function translate(tx, ty, tz) {
     tz = tz || 0;
     if (tx !== 0 || ty !== 0 || tz !== 0) {
@@ -4271,10 +3931,8 @@ const Matrix = (function () {
     }
     return this;
   }
-
   function transform(a2, b2, c2, d2, e2, f2, g2, h2, i2, j2, k2, l2, m2, n2, o2, p2) {
     var _p = this.props;
-
     if (a2 === 1 && b2 === 0 && c2 === 0 && d2 === 0 && e2 === 0 && f2 === 1 && g2 === 0 && h2 === 0 && i2 === 0 && j2 === 0 && k2 === 1 && l2 === 0) {
       // NOTE: commenting this condition because TurboFan deoptimizes code when present
       // if(m2 !== 0 || n2 !== 0 || o2 !== 0){
@@ -4286,7 +3944,6 @@ const Matrix = (function () {
       this._identityCalculated = false;
       return this;
     }
-
     var a1 = _p[0];
     var b1 = _p[1];
     var c1 = _p[2];
@@ -4303,7 +3960,6 @@ const Matrix = (function () {
     var n1 = _p[13];
     var o1 = _p[14];
     var p1 = _p[15];
-
     /* matrix order (canvas compatible):
          * ace
          * bdf
@@ -4313,26 +3969,21 @@ const Matrix = (function () {
     _p[1] = a1 * b2 + b1 * f2 + c1 * j2 + d1 * n2;
     _p[2] = a1 * c2 + b1 * g2 + c1 * k2 + d1 * o2;
     _p[3] = a1 * d2 + b1 * h2 + c1 * l2 + d1 * p2;
-
     _p[4] = e1 * a2 + f1 * e2 + g1 * i2 + h1 * m2;
     _p[5] = e1 * b2 + f1 * f2 + g1 * j2 + h1 * n2;
     _p[6] = e1 * c2 + f1 * g2 + g1 * k2 + h1 * o2;
     _p[7] = e1 * d2 + f1 * h2 + g1 * l2 + h1 * p2;
-
     _p[8] = i1 * a2 + j1 * e2 + k1 * i2 + l1 * m2;
     _p[9] = i1 * b2 + j1 * f2 + k1 * j2 + l1 * n2;
     _p[10] = i1 * c2 + j1 * g2 + k1 * k2 + l1 * o2;
     _p[11] = i1 * d2 + j1 * h2 + k1 * l2 + l1 * p2;
-
     _p[12] = m1 * a2 + n1 * e2 + o1 * i2 + p1 * m2;
     _p[13] = m1 * b2 + n1 * f2 + o1 * j2 + p1 * n2;
     _p[14] = m1 * c2 + n1 * g2 + o1 * k2 + p1 * o2;
     _p[15] = m1 * d2 + n1 * h2 + o1 * l2 + p1 * p2;
-
     this._identityCalculated = false;
     return this;
   }
-
   function isIdentity() {
     if (!this._identityCalculated) {
       this._identity = !(this.props[0] !== 1 || this.props[1] !== 0 || this.props[2] !== 0 || this.props[3] !== 0 || this.props[4] !== 0 || this.props[5] !== 1 || this.props[6] !== 0 || this.props[7] !== 0 || this.props[8] !== 0 || this.props[9] !== 0 || this.props[10] !== 1 || this.props[11] !== 0 || this.props[12] !== 0 || this.props[13] !== 0 || this.props[14] !== 0 || this.props[15] !== 1);
@@ -4340,7 +3991,6 @@ const Matrix = (function () {
     }
     return this._identity;
   }
-
   function equals(matr) {
     var i = 0;
     while (i < 16) {
@@ -4351,7 +4001,6 @@ const Matrix = (function () {
     }
     return true;
   }
-
   function clone(matr) {
     var i;
     for (i = 0; i < 16; i += 1) {
@@ -4359,14 +4008,12 @@ const Matrix = (function () {
     }
     return matr;
   }
-
   function cloneFromProps(props) {
     var i;
     for (i = 0; i < 16; i += 1) {
       this.props[i] = props[i];
     }
   }
-
   function applyToPoint(x, y, z) {
     return {
       x: x * this.props[0] + y * this.props[4] + z * this.props[8] + this.props[12],
@@ -4387,7 +4034,6 @@ const Matrix = (function () {
   function applyToZ(x, y, z) {
     return x * this.props[2] + y * this.props[6] + z * this.props[10] + this.props[14];
   }
-
   function getInverseMatrix() {
     var determinant = this.props[0] * this.props[5] - this.props[1] * this.props[4];
     var a = this.props[5] / determinant;
@@ -4405,12 +4051,10 @@ const Matrix = (function () {
     inverseMatrix.props[13] = f;
     return inverseMatrix;
   }
-
   function inversePoint(pt) {
     var inverseMatrix = this.getInverseMatrix();
     return inverseMatrix.applyToPointArray(pt[0], pt[1], pt[2] || 0);
   }
-
   function inversePoints(pts) {
     var i;
     var len = pts.length;
@@ -4420,7 +4064,6 @@ const Matrix = (function () {
     }
     return retPts;
   }
-
   function applyToTriplePoints(pt1, pt2, pt3) {
     var arr = createTypedArray('float32', 6);
     if (this.isIdentity()) {
@@ -4446,7 +4089,6 @@ const Matrix = (function () {
     }
     return arr;
   }
-
   function applyToPointArray(x, y, z) {
     var arr;
     if (this.isIdentity()) {
@@ -4460,7 +4102,6 @@ const Matrix = (function () {
     }
     return arr;
   }
-
   function applyToPointStringified(x, y) {
     if (this.isIdentity()) {
       return x + ',' + y;
@@ -4468,7 +4109,6 @@ const Matrix = (function () {
     var _p = this.props;
     return Math.round((x * _p[0] + y * _p[4] + _p[12]) * 100) / 100 + ',' + Math.round((x * _p[1] + y * _p[5] + _p[13]) * 100) / 100;
   }
-
   function toCSS() {
     // Doesn't make much sense to add this optimization. If it is an identity matrix, it's very likely this will get called only once since it won't be keyframed.
     /* if(this.isIdentity()) {
@@ -4485,7 +4125,6 @@ const Matrix = (function () {
     }
     return cssValue;
   }
-
   function roundMatrixProperty(val) {
     var v = 10000;
     if ((val < 0.000001 && val > 0) || (val > -0.000001 && val < 0)) {
@@ -4493,7 +4132,6 @@ const Matrix = (function () {
     }
     return val;
   }
-
   function to2dCSS() {
     // Doesn't make much sense to add this optimization. If it is an identity matrix, it's very likely this will get called only once since it won't be keyframed.
     /* if(this.isIdentity()) {
@@ -4508,7 +4146,6 @@ const Matrix = (function () {
     var _f = roundMatrixProperty(props[13]);
     return 'matrix(' + _a + ',' + _b + ',' + _c + ',' + _d + ',' + _e + ',' + _f + ')';
   }
-
   return function () {
     this.reset = reset;
     this.rotate = rotate;
@@ -4541,21 +4178,17 @@ const Matrix = (function () {
     this.isIdentity = isIdentity;
     this._identity = true;
     this._identityCalculated = false;
-
     this.props = createTypedArray('float32', 16);
     this.reset();
   };
 }());
-
 const lottie = {};
 var standalone = '__[STANDALONE]__';
 var animationData = '__[ANIMATIONDATA]__';
 var renderer = '';
-
 function setLocation(href) {
   setLocationHref(href);
 }
-
 function searchAnimations() {
   if (standalone === true) {
     animationManager.searchAnimations(animationData, standalone, renderer);
@@ -4563,22 +4196,18 @@ function searchAnimations() {
     animationManager.searchAnimations();
   }
 }
-
 function setSubframeRendering(flag) {
   setSubframeEnabled(flag);
 }
-
 function setPrefix(prefix) {
   setIdPrefix(prefix);
 }
-
 function loadAnimation(params) {
   if (standalone === true) {
     params.animationData = JSON.parse(animationData);
   }
   return animationManager.loadAnimation(params);
 }
-
 function setQuality(value) {
   if (typeof value === 'string') {
     switch (value) {
@@ -4602,17 +4231,14 @@ function setQuality(value) {
     roundValues(true);
   }
 }
-
 function inBrowser() {
   return typeof navigator !== 'undefined';
 }
-
 function installPlugin(type, plugin) {
   if (type === 'expressions') {
     setExpressionsPlugin(plugin);
   }
 }
-
 function getFactory(name) {
   switch (name) {
     case 'propertyFactory':
@@ -4625,7 +4251,6 @@ function getFactory(name) {
       return null;
   }
 }
-
 lottie.play = animationManager.play;
 lottie.pause = animationManager.pause;
 lottie.setLocationHref = setLocation;
@@ -4654,14 +4279,12 @@ lottie.useWebWorker = setWebWorker;
 lottie.setIDPrefix = setPrefix;
 lottie.__getFactory = getFactory;
 lottie.version = '[[BM_VERSION]]';
-
 function checkReady() {
   if (document.readyState === 'complete') {
     clearInterval(readyStateCheckInterval);
     searchAnimations();
   }
 }
-
 function getQueryVariable(variable) {
   var vars = queryString.split('&');
   for (var i = 0; i < vars.length; i += 1) {
@@ -4683,7 +4306,6 @@ if (standalone) {
   renderer = getQueryVariable('renderer');
 }
 var readyStateCheckInterval = setInterval(checkReady, 100);
-
 // this adds bodymovin to the window object for backwards compatibility
 try {
   if (!(typeof exports === 'object' && typeof module !== 'undefined')
@@ -4694,26 +4316,21 @@ try {
 } catch (err) {
   //
 }
-
 const ShapeModifiers = (function () {
   var ob = {};
   var modifiers = {};
   ob.registerModifier = registerModifier;
   ob.getModifier = getModifier;
-
   function registerModifier(nm, factory) {
     if (!modifiers[nm]) {
       modifiers[nm] = factory;
     }
   }
-
   function getModifier(nm, elem, data) {
     return new modifiers[nm](elem, data);
   }
-
   return ob;
 }());
-
 function ShapeModifier() {}
 ShapeModifier.prototype.initModifierProperties = function () {};
 ShapeModifier.prototype.addShapeToModifier = function () {};
@@ -4750,9 +4367,7 @@ ShapeModifier.prototype.processKeys = function () {
   this.frameId = this.elem.globalData.frameId;
   this.iterateDynamicProperties();
 };
-
 extendPrototype([DynamicPropertyContainer], ShapeModifier);
-
 function TrimModifier() {
 }
 extendPrototype([ShapeModifier], TrimModifier);
@@ -4766,11 +4381,9 @@ TrimModifier.prototype.initModifierProperties = function (elem, data) {
   this.m = data.m;
   this._isAnimated = !!this.s.effectsSequence.length || !!this.e.effectsSequence.length || !!this.o.effectsSequence.length;
 };
-
 TrimModifier.prototype.addShapeToModifier = function (shapeData) {
   shapeData.pathsData = [];
 };
-
 TrimModifier.prototype.calculateShapeEdges = function (s, e, shapeLength, addedLength, totalModifierLength) {
   var segments = [];
   if (e <= 1) {
@@ -4820,7 +4433,6 @@ TrimModifier.prototype.calculateShapeEdges = function (s, e, shapeLength, addedL
   }
   return shapeSegments;
 };
-
 TrimModifier.prototype.releasePathsData = function (pathsData) {
   var i;
   var len = pathsData.length;
@@ -4830,7 +4442,6 @@ TrimModifier.prototype.releasePathsData = function (pathsData) {
   pathsData.length = 0;
   return pathsData;
 };
-
 TrimModifier.prototype.processShapes = function (_isFirstFrame) {
   var s;
   var e;
@@ -4853,7 +4464,6 @@ TrimModifier.prototype.processShapes = function (_isFirstFrame) {
     } else {
       e = this.e.v + o;
     }
-
     if (s > e) {
       var _s = s;
       s = e;
@@ -4876,7 +4486,6 @@ TrimModifier.prototype.processShapes = function (_isFirstFrame) {
   var pathData;
   var totalShapeLength;
   var totalModifierLength = 0;
-
   if (e === s) {
     for (i = 0; i < len; i += 1) {
       this.shapes[i].localShapeCollection.releaseShapes();
@@ -4911,7 +4520,6 @@ TrimModifier.prototype.processShapes = function (_isFirstFrame) {
           shapeData.totalShapeLength = totalShapeLength;
           shapeData.pathsData = pathsData;
         }
-
         totalModifierLength += totalShapeLength;
         shapeData.shape._mdf = true;
       }
@@ -4985,7 +4593,6 @@ TrimModifier.prototype.processShapes = function (_isFirstFrame) {
     }
   }
 };
-
 TrimModifier.prototype.addPaths = function (newPaths, localShapeCollection) {
   var i;
   var len = newPaths.length;
@@ -4993,7 +4600,6 @@ TrimModifier.prototype.addPaths = function (newPaths, localShapeCollection) {
     localShapeCollection.addShape(newPaths[i]);
   }
 };
-
 TrimModifier.prototype.addSegment = function (pt1, pt2, pt3, pt4, shapePath, pos, newShape) {
   shapePath.setXYAt(pt2[0], pt2[1], 'o', pos);
   shapePath.setXYAt(pt3[0], pt3[1], 'i', pos + 1);
@@ -5002,7 +4608,6 @@ TrimModifier.prototype.addSegment = function (pt1, pt2, pt3, pt4, shapePath, pos
   }
   shapePath.setXYAt(pt4[0], pt4[1], 'v', pos + 1);
 };
-
 TrimModifier.prototype.addSegmentFromArray = function (points, shapePath, pos, newShape) {
   shapePath.setXYAt(points[1], points[5], 'o', pos);
   shapePath.setXYAt(points[2], points[6], 'i', pos + 1);
@@ -5011,7 +4616,6 @@ TrimModifier.prototype.addSegmentFromArray = function (points, shapePath, pos, n
   }
   shapePath.setXYAt(points[3], points[7], 'v', pos + 1);
 };
-
 TrimModifier.prototype.addShapes = function (shapeData, shapeSegment, shapePath) {
   var pathsData = shapeData.pathsData;
   var shapePaths = shapeData.shape.paths.shapes;
@@ -5099,7 +4703,6 @@ TrimModifier.prototype.addShapes = function (shapeData, shapeSegment, shapePath)
   }
   return shapes;
 };
-
 function PuckerAndBloatModifier() {}
 extendPrototype([ShapeModifier], PuckerAndBloatModifier);
 PuckerAndBloatModifier.prototype.initModifierProperties = function (elem, data) {
@@ -5107,7 +4710,6 @@ PuckerAndBloatModifier.prototype.initModifierProperties = function (elem, data) 
   this.amount = PropertyFactory.getProp(elem, data.a, 0, null, this);
   this._isAnimated = !!this.amount.effectsSequence.length;
 };
-
 PuckerAndBloatModifier.prototype.processPath = function (path, amount) {
   var percent = amount / 100;
   var centerPoint = [0, 0];
@@ -5138,7 +4740,6 @@ PuckerAndBloatModifier.prototype.processPath = function (path, amount) {
   }
   return clonedPath;
 };
-
 PuckerAndBloatModifier.prototype.processShapes = function (_isFirstFrame) {
   var shapePaths;
   var i;
@@ -5146,7 +4747,6 @@ PuckerAndBloatModifier.prototype.processShapes = function (_isFirstFrame) {
   var j;
   var jLen;
   var amount = this.amount.v;
-
   if (amount !== 0) {
     var shapeData;
     var localShapeCollection;
@@ -5169,10 +4769,8 @@ PuckerAndBloatModifier.prototype.processShapes = function (_isFirstFrame) {
     this._mdf = false;
   }
 };
-
 const TransformPropertyFactory = (function () {
   var defaultVector = [0, 0];
-
   function applyToMatrix(mat) {
     var _mdf = this._mdf;
     this.iterateDynamicProperties();
@@ -5211,9 +4809,7 @@ const TransformPropertyFactory = (function () {
       this.precalculateMatrix();
       this._isDirty = false;
     }
-
     this.iterateDynamicProperties();
-
     if (this._mdf || forceRender) {
       var frameRate;
       this.v.cloneFromProps(this.pre.props);
@@ -5286,7 +4882,6 @@ const TransformPropertyFactory = (function () {
     }
     this.frameId = this.elem.globalData.frameId;
   }
-
   function precalculateMatrix() {
     if (!this.a.k) {
       this.pre.translate(-this.a.v[0], -this.a.v[1], this.a.v[2]);
@@ -5320,18 +4915,15 @@ const TransformPropertyFactory = (function () {
       this.appliedTransformations = 4;
     }
   }
-
   function autoOrient() {
     //
     // var prevP = this.getValueAtTime();
   }
-
   function addDynamicProperty(prop) {
     this._addDynamicProperty(prop);
     this.elem.addDynamicProperty(prop);
     this._isDirty = true;
   }
-
   function TransformProperty(elem, data, container) {
     this.elem = elem;
     this.frameId = -1;
@@ -5386,30 +4978,24 @@ const TransformPropertyFactory = (function () {
       this.getValue(true);
     }
   }
-
   TransformProperty.prototype = {
     applyToMatrix: applyToMatrix,
     getValue: processKeys,
     precalculateMatrix: precalculateMatrix,
     autoOrient: autoOrient,
   };
-
   extendPrototype([DynamicPropertyContainer], TransformProperty);
   TransformProperty.prototype.addDynamicProperty = addDynamicProperty;
   TransformProperty.prototype._addDynamicProperty = DynamicPropertyContainer.prototype.addDynamicProperty;
-
   function getTransformProperty(elem, data, container) {
     return new TransformProperty(elem, data, container);
   }
-
   return {
     getTransformProperty: getTransformProperty,
   };
 }());
-
 function RepeaterModifier() {}
 extendPrototype([ShapeModifier], RepeaterModifier);
-
 RepeaterModifier.prototype.initModifierProperties = function (elem, data) {
   this.getValue = this.processKeys;
   this.c = PropertyFactory.getProp(elem, data.c, 0, null, this);
@@ -5428,7 +5014,6 @@ RepeaterModifier.prototype.initModifierProperties = function (elem, data) {
   this.tMatrix = new Matrix();
   this.matrix = new Matrix();
 };
-
 RepeaterModifier.prototype.applyTransforms = function (pMatrix, rMatrix, sMatrix, transform, perc, inv) {
   var dir = inv ? -1 : 1;
   var scaleX = transform.s.v[0] + (1 - transform.s.v[0]) * (1 - perc);
@@ -5441,7 +5026,6 @@ RepeaterModifier.prototype.applyTransforms = function (pMatrix, rMatrix, sMatrix
   sMatrix.scale(inv ? 1 / scaleX : scaleX, inv ? 1 / scaleY : scaleY);
   sMatrix.translate(transform.a.v[0], transform.a.v[1], transform.a.v[2]);
 };
-
 RepeaterModifier.prototype.init = function (elem, arr, pos, elemsData) {
   this.elem = elem;
   this.arr = arr;
@@ -5464,7 +5048,6 @@ RepeaterModifier.prototype.init = function (elem, arr, pos, elemsData) {
     this.getValue(true);
   }
 };
-
 RepeaterModifier.prototype.resetElements = function (elements) {
   var i;
   var len = elements.length;
@@ -5475,13 +5058,11 @@ RepeaterModifier.prototype.resetElements = function (elements) {
     }
   }
 };
-
 RepeaterModifier.prototype.cloneElements = function (elements) {
   var newElements = JSON.parse(JSON.stringify(elements));
   this.resetElements(newElements);
   return newElements;
 };
-
 RepeaterModifier.prototype.changeGroupRender = function (elements, renderFlag) {
   var i;
   var len = elements.length;
@@ -5492,7 +5073,6 @@ RepeaterModifier.prototype.changeGroupRender = function (elements, renderFlag) {
     }
   }
 };
-
 RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
   var items;
   var itemsTransform;
@@ -5511,7 +5091,6 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
         group.it.push({
           a: { a: 0, ix: 1, k: [0, 0] }, nm: 'Transform', o: { a: 0, ix: 7, k: 100 }, p: { a: 0, ix: 2, k: [0, 0] }, r: { a: 1, ix: 6, k: [{ s: 0, e: 0, t: 0 }, { s: 0, e: 0, t: 1 }] }, s: { a: 0, ix: 3, k: [100, 100] }, sa: { a: 0, ix: 5, k: 0 }, sk: { a: 0, ix: 4, k: 0 }, ty: 'tr',
         });
-
         this.arr.splice(0, 0, group);
         this._groups.splice(0, 0, group);
         this._currentCopies += 1;
@@ -5537,10 +5116,8 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
       }
       cont += 1;
     }
-
     this._currentCopies = copies;
     /// /
-
     var offset = this.o.v;
     var offsetModulo = offset % 1;
     var roundOffset = offset > 0 ? Math.floor(offset) : Math.ceil(offset);
@@ -5553,7 +5130,6 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
     this.tMatrix.reset();
     this.matrix.reset();
     var iteration = 0;
-
     if (offset > 0) {
       while (iteration < roundOffset) {
         this.applyTransforms(this.pMatrix, this.rMatrix, this.sMatrix, this.tr, 1, false);
@@ -5587,7 +5163,6 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
       items[items.length - 1].transform.op.v = this._currentCopies === 1
         ? this.so.v
         : this.so.v + (this.eo.v - this.so.v) * (i / (this._currentCopies - 1));
-
       if (iteration !== 0) {
         if ((i !== 0 && dir === 1) || (i !== this._currentCopies - 1 && dir === -1)) {
           this.applyTransforms(this.pMatrix, this.rMatrix, this.sMatrix, this.tr, 1, false);
@@ -5595,7 +5170,6 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
         this.matrix.transform(rProps[0], rProps[1], rProps[2], rProps[3], rProps[4], rProps[5], rProps[6], rProps[7], rProps[8], rProps[9], rProps[10], rProps[11], rProps[12], rProps[13], rProps[14], rProps[15]);
         this.matrix.transform(sProps[0], sProps[1], sProps[2], sProps[3], sProps[4], sProps[5], sProps[6], sProps[7], sProps[8], sProps[9], sProps[10], sProps[11], sProps[12], sProps[13], sProps[14], sProps[15]);
         this.matrix.transform(pProps[0], pProps[1], pProps[2], pProps[3], pProps[4], pProps[5], pProps[6], pProps[7], pProps[8], pProps[9], pProps[10], pProps[11], pProps[12], pProps[13], pProps[14], pProps[15]);
-
         for (j = 0; j < jLen; j += 1) {
           itemsTransform[j] = this.matrix.props[j];
         }
@@ -5625,9 +5199,7 @@ RepeaterModifier.prototype.processShapes = function (_isFirstFrame) {
   }
   return hasReloaded;
 };
-
 RepeaterModifier.prototype.addShape = function () {};
-
 function RoundCornersModifier() {}
 extendPrototype([ShapeModifier], RoundCornersModifier);
 RoundCornersModifier.prototype.initModifierProperties = function (elem, data) {
@@ -5635,7 +5207,6 @@ RoundCornersModifier.prototype.initModifierProperties = function (elem, data) {
   this.rd = PropertyFactory.getProp(elem, data.r, 0, null, this);
   this._isAnimated = !!this.rd.effectsSequence.length;
 };
-
 RoundCornersModifier.prototype.processPath = function (path, round) {
   var clonedPath = shapePool.newElement();
   clonedPath.c = path.c;
@@ -5681,7 +5252,6 @@ RoundCornersModifier.prototype.processPath = function (path, round) {
         oY = vY - (vY - currentV[1]) * roundCorner;
         clonedPath.setTripleAt(vX, vY, oX, oY, iX, iY, index);
         index += 1;
-
         if (i === len - 1) {
           closerV = path.v[0];
         } else {
@@ -5705,7 +5275,6 @@ RoundCornersModifier.prototype.processPath = function (path, round) {
   }
   return clonedPath;
 };
-
 RoundCornersModifier.prototype.processShapes = function (_isFirstFrame) {
   var shapePaths;
   var i;
@@ -5713,7 +5282,6 @@ RoundCornersModifier.prototype.processShapes = function (_isFirstFrame) {
   var j;
   var jLen;
   var rd = this.rd.v;
-
   if (rd !== 0) {
     var shapeData;
     var localShapeCollection;
@@ -5736,10 +5304,8 @@ RoundCornersModifier.prototype.processShapes = function (_isFirstFrame) {
     this._mdf = false;
   }
 };
-
 function getFontProperties(fontData) {
   var styles = fontData.fStyle ? fontData.fStyle.split(' ') : [];
-
   var fWeight = 'normal'; var
     fStyle = 'normal';
   var len = styles.length;
@@ -5771,13 +5337,11 @@ function getFontProperties(fontData) {
         break;
     }
   }
-
   return {
     style: fStyle,
     weight: fontData.fWeight || fWeight,
   };
 }
-
 const FontManager = (function () {
   var maxWaitingTime = 5000;
   var emptyChar = {
@@ -5793,7 +5357,6 @@ const FontManager = (function () {
   combinedCharacters = combinedCharacters.concat([2304, 2305, 2306, 2307, 2362, 2363, 2364, 2364, 2366,
     2367, 2368, 2369, 2370, 2371, 2372, 2373, 2374, 2375, 2376, 2377, 2378, 2379,
     2380, 2381, 2382, 2383, 2387, 2388, 2389, 2390, 2391, 2402, 2403]);
-
   var surrogateModifiers = [
     'd83cdffb',
     'd83cdffc',
@@ -5801,9 +5364,7 @@ const FontManager = (function () {
     'd83cdffe',
     'd83cdfff',
   ];
-
   var zeroWidthJoiner = [65039, 8205];
-
   function trimFontOptions(font) {
     var familyArray = font.split(',');
     var i;
@@ -5816,7 +5377,6 @@ const FontManager = (function () {
     }
     return enabledFamilies.join(',');
   }
-
   function setUpNode(font, family) {
     var parentNode = createTag('span');
     // Node is invisible to screen readers.
@@ -5838,13 +5398,11 @@ const FontManager = (function () {
     parentNode.style.letterSpacing = '0';
     parentNode.appendChild(node);
     document.body.appendChild(parentNode);
-
     // Remember width with no applied web font
     var width = node.offsetWidth;
     node.style.fontFamily = trimFontOptions(font) + ', ' + family;
     return { node: node, w: width, parent: parentNode };
   }
-
   function checkLoadedFonts() {
     var i;
     var len = this.fonts.length;
@@ -5876,14 +5434,12 @@ const FontManager = (function () {
         }
       }
     }
-
     if (loadedCount !== 0 && Date.now() - this.initTime < maxWaitingTime) {
       setTimeout(this.checkLoadedFontsBinded, 20);
     } else {
       setTimeout(this.setIsLoadedBinded, 10);
     }
   }
-
   function createHelper(fontData, def) {
     var engine = (document.body && def) ? 'svg' : 'canvas';
     var helper;
@@ -5920,7 +5476,6 @@ const FontManager = (function () {
       measureText: measure,
     };
   }
-
   function addFonts(fontData, defs) {
     if (!fontData) {
       this.isLoaded = true;
@@ -5940,7 +5495,6 @@ const FontManager = (function () {
       this.fonts = fontData.list;
       return;
     }
-
     var fontArr = fontData.list;
     var i;
     var len = fontArr.length;
@@ -5957,11 +5511,9 @@ const FontManager = (function () {
         _pendingFonts -= 1;
       } else if (fontArr[i].fOrigin === 'p' || fontArr[i].origin === 3) {
         loadedSelector = document.querySelectorAll('style[f-forigin="p"][f-family="' + fontArr[i].fFamily + '"], style[f-origin="3"][f-family="' + fontArr[i].fFamily + '"]');
-
         if (loadedSelector.length > 0) {
           shouldLoadFont = false;
         }
-
         if (shouldLoadFont) {
           var s = createTag('style');
           s.setAttribute('f-forigin', fontArr[i].fOrigin);
@@ -5973,14 +5525,12 @@ const FontManager = (function () {
         }
       } else if (fontArr[i].fOrigin === 'g' || fontArr[i].origin === 1) {
         loadedSelector = document.querySelectorAll('link[f-forigin="g"], link[f-origin="1"]');
-
         for (j = 0; j < loadedSelector.length; j += 1) {
           if (loadedSelector[j].href.indexOf(fontArr[i].fPath) !== -1) {
             // Font is already loaded
             shouldLoadFont = false;
           }
         }
-
         if (shouldLoadFont) {
           var l = createTag('link');
           l.setAttribute('f-forigin', fontArr[i].fOrigin);
@@ -5992,14 +5542,12 @@ const FontManager = (function () {
         }
       } else if (fontArr[i].fOrigin === 't' || fontArr[i].origin === 2) {
         loadedSelector = document.querySelectorAll('script[f-forigin="t"], script[f-origin="2"]');
-
         for (j = 0; j < loadedSelector.length; j += 1) {
           if (fontArr[i].fPath === loadedSelector[j].src) {
             // Font is already loaded
             shouldLoadFont = false;
           }
         }
-
         if (shouldLoadFont) {
           var sc = createTag('link');
           sc.setAttribute('f-forigin', fontArr[i].fOrigin);
@@ -6021,7 +5569,6 @@ const FontManager = (function () {
       setTimeout(this.checkLoadedFonts.bind(this), 100);
     }
   }
-
   function addChars(chars) {
     if (!chars) {
       return;
@@ -6049,7 +5596,6 @@ const FontManager = (function () {
       }
     }
   }
-
   function getCharData(char, style, font) {
     var i = 0;
     var len = this.chars.length;
@@ -6069,7 +5615,6 @@ const FontManager = (function () {
     }
     return emptyChar;
   }
-
   function measureText(char, fontName, size) {
     var fontData = this.getFontByName(fontName);
     var index = char.charCodeAt(0);
@@ -6085,7 +5630,6 @@ const FontManager = (function () {
     }
     return fontData.cache[index + 1] * size;
   }
-
   function getFontByName(name) {
     var i = 0;
     var len = this.fonts.length;
@@ -6097,27 +5641,22 @@ const FontManager = (function () {
     }
     return this.fonts[0];
   }
-
   function isModifier(firstCharCode, secondCharCode) {
     var sum = firstCharCode.toString(16) + secondCharCode.toString(16);
     return surrogateModifiers.indexOf(sum) !== -1;
   }
-
   function isZeroWidthJoiner(firstCharCode, secondCharCode) {
     if (!secondCharCode) {
       return firstCharCode === zeroWidthJoiner[1];
     }
     return firstCharCode === zeroWidthJoiner[0] && secondCharCode === zeroWidthJoiner[1];
   }
-
   function isCombinedCharacter(char) {
     return combinedCharacters.indexOf(char) !== -1;
   }
-
   function setIsLoaded() {
     this.isLoaded = true;
   }
-
   var Font = function () {
     this.fonts = [];
     this.chars = null;
@@ -6131,7 +5670,6 @@ const FontManager = (function () {
   Font.isModifier = isModifier;
   Font.isZeroWidthJoiner = isZeroWidthJoiner;
   Font.isCombinedCharacter = isCombinedCharacter;
-
   var fontPrototype = {
     addChars: addChars,
     addFonts: addFonts,
@@ -6141,16 +5679,11 @@ const FontManager = (function () {
     checkLoadedFonts: checkLoadedFonts,
     setIsLoaded: setIsLoaded,
   };
-
   Font.prototype = fontPrototype;
-
   return Font;
 }());
-
 function RenderableElement() {
-
 }
-
 RenderableElement.prototype = {
   initRenderable: function () {
     // layer's visibility related to inpoint and outpoint. Rename isVisible to isInRange
@@ -6232,7 +5765,6 @@ RenderableElement.prototype = {
     return { w: this.data.width, h: this.data.height };
   },
 };
-
 const MaskManagerInterface = (function () {
   function MaskInterface(mask, data) {
     this._mask = mask;
@@ -6254,7 +5786,6 @@ const MaskManagerInterface = (function () {
       return this._mask.op.v * 100;
     },
   });
-
   var MaskManager = function (maskManager) {
     var _masksInterfaces = createSizedArray(maskManager.viewData.length);
     var i;
@@ -6262,7 +5793,6 @@ const MaskManagerInterface = (function () {
     for (i = 0; i < len; i += 1) {
       _masksInterfaces[i] = new MaskInterface(maskManager.viewData[i], maskManager.masksProperties[i]);
     }
-
     var maskFunction = function (name) {
       i = 0;
       while (i < len) {
@@ -6277,11 +5807,9 @@ const MaskManagerInterface = (function () {
   };
   return MaskManager;
 }());
-
 const ExpressionPropertyInterface = (function () {
   var defaultUnidimensionalValue = { pv: 0, v: 0, mult: 1 };
   var defaultMultidimensionalValue = { pv: [0, 0, 0], v: [0, 0, 0], mult: 1 };
-
   function completeProperty(expressionValue, property, type) {
     Object.defineProperty(expressionValue, 'velocity', {
       get: function () {
@@ -6311,7 +5839,6 @@ const ExpressionPropertyInterface = (function () {
     expressionValue.velocityAtTime = property.getVelocityAtTime;
     expressionValue.propertyGroup = property.propertyGroup;
   }
-
   function UnidimensionalPropertyInterface(property) {
     if (!property || !('pv' in property)) {
       property = defaultUnidimensionalValue;
@@ -6321,7 +5848,6 @@ const ExpressionPropertyInterface = (function () {
     var expressionValue = new Number(val); // eslint-disable-line no-new-wrappers
     expressionValue.value = val;
     completeProperty(expressionValue, property, 'unidimensional');
-
     return function () {
       if (property.k) {
         property.getValue();
@@ -6335,7 +5861,6 @@ const ExpressionPropertyInterface = (function () {
       return expressionValue;
     };
   }
-
   function MultidimensionalPropertyInterface(property) {
     if (!property || !('pv' in property)) {
       property = defaultMultidimensionalValue;
@@ -6346,7 +5871,6 @@ const ExpressionPropertyInterface = (function () {
     var arrValue = createTypedArray('float32', len);
     expressionValue.value = arrValue;
     completeProperty(expressionValue, property, 'multidimensional');
-
     return function () {
       if (property.k) {
         property.getValue();
@@ -6358,12 +5882,10 @@ const ExpressionPropertyInterface = (function () {
       return expressionValue;
     };
   }
-
   // TODO: try to avoid using this getter
   function defaultGetter() {
     return defaultUnidimensionalValue;
   }
-
   return function (property) {
     if (!property) {
       return defaultGetter;
@@ -6373,7 +5895,6 @@ const ExpressionPropertyInterface = (function () {
     return MultidimensionalPropertyInterface(property);
   };
 }());
-
 const TransformExpressionInterface = (function () {
   return function (transform) {
     function _thisFunction(name) {
@@ -6421,15 +5942,12 @@ const TransformExpressionInterface = (function () {
     Object.defineProperty(_thisFunction, 'rotation', {
       get: ExpressionPropertyInterface(transform.r || transform.rz),
     });
-
     Object.defineProperty(_thisFunction, 'zRotation', {
       get: ExpressionPropertyInterface(transform.rz || transform.r),
     });
-
     Object.defineProperty(_thisFunction, 'xRotation', {
       get: ExpressionPropertyInterface(transform.rx),
     });
-
     Object.defineProperty(_thisFunction, 'yRotation', {
       get: ExpressionPropertyInterface(transform.ry),
     });
@@ -6460,43 +5978,33 @@ const TransformExpressionInterface = (function () {
           _pz ? _pz() : 0];
       },
     });
-
     Object.defineProperty(_thisFunction, 'xPosition', {
       get: ExpressionPropertyInterface(transform.px),
     });
-
     Object.defineProperty(_thisFunction, 'yPosition', {
       get: ExpressionPropertyInterface(transform.py),
     });
-
     Object.defineProperty(_thisFunction, 'zPosition', {
       get: ExpressionPropertyInterface(transform.pz),
     });
-
     Object.defineProperty(_thisFunction, 'anchorPoint', {
       get: ExpressionPropertyInterface(transform.a),
     });
-
     Object.defineProperty(_thisFunction, 'opacity', {
       get: ExpressionPropertyInterface(transform.o),
     });
-
     Object.defineProperty(_thisFunction, 'skew', {
       get: ExpressionPropertyInterface(transform.sk),
     });
-
     Object.defineProperty(_thisFunction, 'skewAxis', {
       get: ExpressionPropertyInterface(transform.sa),
     });
-
     Object.defineProperty(_thisFunction, 'orientation', {
       get: ExpressionPropertyInterface(transform.or),
     });
-
     return _thisFunction;
   };
 }());
-
 const LayerExpressionInterface = (function () {
   function getMatrix(time) {
     var toWorldMat = new Matrix();
@@ -6509,7 +6017,6 @@ const LayerExpressionInterface = (function () {
     }
     return toWorldMat;
   }
-
   function toWorldVec(arr, time) {
     var toWorldMat = this.getMatrix(time);
     toWorldMat.props[12] = 0;
@@ -6517,12 +6024,10 @@ const LayerExpressionInterface = (function () {
     toWorldMat.props[14] = 0;
     return this.applyPoint(toWorldMat, arr);
   }
-
   function toWorld(arr, time) {
     var toWorldMat = this.getMatrix(time);
     return this.applyPoint(toWorldMat, arr);
   }
-
   function fromWorldVec(arr, time) {
     var toWorldMat = this.getMatrix(time);
     toWorldMat.props[12] = 0;
@@ -6530,12 +6035,10 @@ const LayerExpressionInterface = (function () {
     toWorldMat.props[14] = 0;
     return this.invertPoint(toWorldMat, arr);
   }
-
   function fromWorld(arr, time) {
     var toWorldMat = this.getMatrix(time);
     return this.invertPoint(toWorldMat, arr);
   }
-
   function applyPoint(matrix, arr) {
     if (this._elem.hierarchy && this._elem.hierarchy.length) {
       var i;
@@ -6546,7 +6049,6 @@ const LayerExpressionInterface = (function () {
     }
     return matrix.applyToPointArray(arr[0], arr[1], arr[2] || 0);
   }
-
   function invertPoint(matrix, arr) {
     if (this._elem.hierarchy && this._elem.hierarchy.length) {
       var i;
@@ -6557,7 +6059,6 @@ const LayerExpressionInterface = (function () {
     }
     return matrix.inversePoint(arr);
   }
-
   function fromComp(arr) {
     var toWorldMat = new Matrix();
     toWorldMat.reset();
@@ -6572,21 +6073,17 @@ const LayerExpressionInterface = (function () {
     }
     return toWorldMat.inversePoint(arr);
   }
-
   function sampleImage() {
     return [1, 1, 1, 1];
   }
-
   return function (elem) {
     var transformInterface;
-
     function _registerMaskInterface(maskManager) {
       _thisLayerFunction.mask = new MaskManagerInterface(maskManager, elem);
     }
     function _registerEffectsInterface(effects) {
       _thisLayerFunction.effect = effects;
     }
-
     function _thisLayerFunction(name) {
       switch (name) {
         case 'ADBE Root Vectors Group':
@@ -6652,7 +6149,6 @@ const LayerExpressionInterface = (function () {
         },
       },
     });
-
     _thisLayerFunction.startTime = elem.data.st;
     _thisLayerFunction.index = elem.data.ind;
     _thisLayerFunction.source = elem.data.refId;
@@ -6661,13 +6157,11 @@ const LayerExpressionInterface = (function () {
     _thisLayerFunction.inPoint = elem.data.ip / elem.comp.globalData.frameRate;
     _thisLayerFunction.outPoint = elem.data.op / elem.comp.globalData.frameRate;
     _thisLayerFunction._name = elem.data.nm;
-
     _thisLayerFunction.registerMaskInterface = _registerMaskInterface;
     _thisLayerFunction.registerEffectsInterface = _registerEffectsInterface;
     return _thisLayerFunction;
   };
 }());
-
 const propertyGroupFactory = (function () {
   return function (interfaceFunction, parentPropertyGroup) {
     return function (val) {
@@ -6679,13 +6173,11 @@ const propertyGroupFactory = (function () {
     };
   };
 }());
-
 const PropertyInterface = (function () {
   return function (propertyName, propertyGroup) {
     var interfaceFunction = {
       _name: propertyName,
     };
-
     function _propertyGroup(val) {
       val = val === undefined ? 1 : val;
       if (val <= 0) {
@@ -6693,16 +6185,13 @@ const PropertyInterface = (function () {
       }
       return propertyGroup(val - 1);
     }
-
     return _propertyGroup;
   };
 }());
-
 const EffectsExpressionInterface = (function () {
   var ob = {
     createEffectsInterface: createEffectsInterface,
   };
-
   function createEffectsInterface(elem, propertyGroup) {
     if (elem.effectsManager) {
       var effectElements = [];
@@ -6712,7 +6201,6 @@ const EffectsExpressionInterface = (function () {
       for (i = 0; i < len; i += 1) {
         effectElements.push(createGroupInterface(effectsData[i], elem.effectsManager.effectElements[i], propertyGroup, elem));
       }
-
       var effects = elem.data.ef || [];
       var groupInterface = function (name) {
         i = 0;
@@ -6734,7 +6222,6 @@ const EffectsExpressionInterface = (function () {
     }
     return null;
   }
-
   function createGroupInterface(data, elements, propertyGroup, elem) {
     function groupInterface(name) {
       var effects = data.ef;
@@ -6752,7 +6239,6 @@ const EffectsExpressionInterface = (function () {
       throw new Error();
     }
     var _propertyGroup = propertyGroupFactory(groupInterface, propertyGroup);
-
     var effectElements = [];
     var i;
     var len = data.ef.length;
@@ -6763,7 +6249,6 @@ const EffectsExpressionInterface = (function () {
         effectElements.push(createValueInterface(elements.effectElements[i], data.ef[i].ty, elem, _propertyGroup));
       }
     }
-
     if (data.mn === 'ADBE Color Control') {
       Object.defineProperty(groupInterface, 'color', {
         get: function () {
@@ -6784,7 +6269,6 @@ const EffectsExpressionInterface = (function () {
     groupInterface.active = groupInterface.enabled;
     return groupInterface;
   }
-
   function createValueInterface(element, type, elem, propertyGroup) {
     var expressionProperty = ExpressionPropertyInterface(element.p);
     function interfaceFunction() {
@@ -6793,17 +6277,13 @@ const EffectsExpressionInterface = (function () {
       }
       return expressionProperty();
     }
-
     if (element.p.setGroupProperty) {
       element.p.setGroupProperty(PropertyInterface('', propertyGroup));
     }
-
     return interfaceFunction;
   }
-
   return ob;
 }());
-
 const CompExpressionInterface = (function () {
   return function (comp) {
     function _thisLayerFunction(name) {
@@ -6830,20 +6310,16 @@ const CompExpressionInterface = (function () {
     return _thisLayerFunction;
   };
 }());
-
 const ShapePathInterface = (
-
   function () {
     return function pathInterfaceFactory(shape, view, propertyGroup) {
       var prop = view.sh;
-
       function interfaceFunction(val) {
         if (val === 'Shape' || val === 'shape' || val === 'Path' || val === 'path' || val === 'ADBE Vector Shape' || val === 2) {
           return interfaceFunction.path;
         }
         return null;
       }
-
       var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
       prop.setGroupProperty(PropertyInterface('Path', _propertyGroup));
       Object.defineProperties(interfaceFunction, {
@@ -6873,7 +6349,6 @@ const ShapePathInterface = (
     };
   }()
 );
-
 const ShapeExpressionInterface = (function () {
   function iterateElements(shapes, view, propertyGroup) {
     var arr = [];
@@ -6910,7 +6385,6 @@ const ShapeExpressionInterface = (function () {
     }
     return arr;
   }
-
   function contentsInterfaceFactory(shape, view, propertyGroup) {
     var interfaces;
     var interfaceFunction = function _interfaceFunction(value) {
@@ -6927,7 +6401,6 @@ const ShapeExpressionInterface = (function () {
       }
       return null;
     };
-
     interfaceFunction.propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     interfaces = iterateElements(shape.it, view.it, interfaceFunction.propertyGroup);
     interfaceFunction.numProperties = interfaces.length;
@@ -6935,10 +6408,8 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.transform = transformInterface;
     interfaceFunction.propertyIndex = shape.cix;
     interfaceFunction._name = shape.nm;
-
     return interfaceFunction;
   }
-
   function groupInterfaceFactory(shape, view, propertyGroup) {
     var interfaceFunction = function _interfaceFunction(value) {
       switch (value) {
@@ -6970,7 +6441,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function fillInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(val) {
       if (val === 'Color' || val === 'color') {
@@ -6990,12 +6460,10 @@ const ShapeExpressionInterface = (function () {
       _name: { value: shape.nm },
       mn: { value: shape.mn },
     });
-
     view.c.setGroupProperty(PropertyInterface('Color', propertyGroup));
     view.o.setGroupProperty(PropertyInterface('Opacity', propertyGroup));
     return interfaceFunction;
   }
-
   function gradientFillInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(val) {
       if (val === 'Start Point' || val === 'start point') {
@@ -7027,7 +6495,6 @@ const ShapeExpressionInterface = (function () {
       _name: { value: shape.nm },
       mn: { value: shape.mn },
     });
-
     view.s.setGroupProperty(PropertyInterface('Start Point', propertyGroup));
     view.e.setGroupProperty(PropertyInterface('End Point', propertyGroup));
     view.o.setGroupProperty(PropertyInterface('Opacity', propertyGroup));
@@ -7039,7 +6506,6 @@ const ShapeExpressionInterface = (function () {
     }
     return interfaceFunction;
   }
-
   function strokeInterfaceFactory(shape, view, propertyGroup) {
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     var _dashPropertyGroup = propertyGroupFactory(dashOb, _propertyGroup);
@@ -7055,7 +6521,6 @@ const ShapeExpressionInterface = (function () {
       addPropertyToDashOb(i);
       view.d.dataProps[i].p.setGroupProperty(_dashPropertyGroup);
     }
-
     function interfaceFunction(val) {
       if (val === 'Color' || val === 'color') {
         return interfaceFunction.color;
@@ -7084,13 +6549,11 @@ const ShapeExpressionInterface = (function () {
       _name: { value: shape.nm },
       mn: { value: shape.mn },
     });
-
     view.c.setGroupProperty(PropertyInterface('Color', _propertyGroup));
     view.o.setGroupProperty(PropertyInterface('Opacity', _propertyGroup));
     view.w.setGroupProperty(PropertyInterface('Stroke Width', _propertyGroup));
     return interfaceFunction;
   }
-
   function trimInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(val) {
       if (val === shape.e.ix || val === 'End' || val === 'end') {
@@ -7104,16 +6567,13 @@ const ShapeExpressionInterface = (function () {
       }
       return null;
     }
-
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     interfaceFunction.propertyIndex = shape.ix;
-
     view.s.setGroupProperty(PropertyInterface('Start', _propertyGroup));
     view.e.setGroupProperty(PropertyInterface('End', _propertyGroup));
     view.o.setGroupProperty(PropertyInterface('Offset', _propertyGroup));
     interfaceFunction.propertyIndex = shape.ix;
     interfaceFunction.propertyGroup = propertyGroup;
-
     Object.defineProperties(interfaceFunction, {
       start: {
         get: ExpressionPropertyInterface(view.s),
@@ -7129,7 +6589,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function transformInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.a.ix === value || value === 'Anchor Point') {
@@ -7195,7 +6654,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.propertyGroup = propertyGroup;
     return interfaceFunction;
   }
-
   function ellipseInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.p.ix === value) {
@@ -7211,7 +6669,6 @@ const ShapeExpressionInterface = (function () {
     var prop = view.sh.ty === 'tm' ? view.sh.prop : view.sh;
     prop.s.setGroupProperty(PropertyInterface('Size', _propertyGroup));
     prop.p.setGroupProperty(PropertyInterface('Position', _propertyGroup));
-
     Object.defineProperties(interfaceFunction, {
       size: {
         get: ExpressionPropertyInterface(prop.s),
@@ -7224,7 +6681,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function starInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.p.ix === value) {
@@ -7250,7 +6706,6 @@ const ShapeExpressionInterface = (function () {
       }
       return null;
     }
-
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     var prop = view.sh.ty === 'tm' ? view.sh.prop : view.sh;
     interfaceFunction.propertyIndex = shape.ix;
@@ -7263,7 +6718,6 @@ const ShapeExpressionInterface = (function () {
       prop.ir.setGroupProperty(PropertyInterface('Inner Radius', _propertyGroup));
       prop.is.setGroupProperty(PropertyInterface('Inner Roundness', _propertyGroup));
     }
-
     Object.defineProperties(interfaceFunction, {
       position: {
         get: ExpressionPropertyInterface(prop.p),
@@ -7291,7 +6745,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function rectInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.p.ix === value) {
@@ -7306,13 +6759,11 @@ const ShapeExpressionInterface = (function () {
       return null;
     }
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
-
     var prop = view.sh.ty === 'tm' ? view.sh.prop : view.sh;
     interfaceFunction.propertyIndex = shape.ix;
     prop.p.setGroupProperty(PropertyInterface('Position', _propertyGroup));
     prop.s.setGroupProperty(PropertyInterface('Size', _propertyGroup));
     prop.r.setGroupProperty(PropertyInterface('Rotation', _propertyGroup));
-
     Object.defineProperties(interfaceFunction, {
       position: {
         get: ExpressionPropertyInterface(prop.p),
@@ -7328,7 +6779,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function roundedInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.r.ix === value || value === 'Round Corners 1') {
@@ -7336,12 +6786,10 @@ const ShapeExpressionInterface = (function () {
       }
       return null;
     }
-
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     var prop = view;
     interfaceFunction.propertyIndex = shape.ix;
     prop.rd.setGroupProperty(PropertyInterface('Radius', _propertyGroup));
-
     Object.defineProperties(interfaceFunction, {
       radius: {
         get: ExpressionPropertyInterface(prop.rd),
@@ -7351,7 +6799,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   function repeaterInterfaceFactory(shape, view, propertyGroup) {
     function interfaceFunction(value) {
       if (shape.c.ix === value || value === 'Copies') {
@@ -7361,7 +6808,6 @@ const ShapeExpressionInterface = (function () {
       }
       return null;
     }
-
     var _propertyGroup = propertyGroupFactory(interfaceFunction, propertyGroup);
     var prop = view;
     interfaceFunction.propertyIndex = shape.ix;
@@ -7379,7 +6825,6 @@ const ShapeExpressionInterface = (function () {
     interfaceFunction.mn = shape.mn;
     return interfaceFunction;
   }
-
   return function (shapes, view, propertyGroup) {
     var interfaces;
     function _interfaceFunction(value) {
@@ -7410,7 +6855,6 @@ const ShapeExpressionInterface = (function () {
     return _interfaceFunction;
   };
 }());
-
 const TextExpressionInterface = (function () {
   return function (elem) {
     var _prevValue;
@@ -7439,7 +6883,6 @@ const TextExpressionInterface = (function () {
     return _thisLayerFunction;
   };
 }());
-
 const getBlendMode = (function () {
   var blendModeEnums = {
     0: 'source-over',
@@ -7459,12 +6902,10 @@ const getBlendMode = (function () {
     14: 'color',
     15: 'luminosity',
   };
-
   return function (mode) {
     return blendModeEnums[mode] || '';
   };
 }());
-
 function SliderEffect(data, elem, container) {
   this.p = PropertyFactory.getProp(elem, data.v, 0, 0, container);
 }
@@ -7489,7 +6930,6 @@ function CheckboxEffect(data, elem, container) {
 function NoValueEffect() {
   this.p = {};
 }
-
 function EffectsManager(data, element) {
   var effects = data.ef || [];
   this.effectElements = [];
@@ -7501,15 +6941,11 @@ function EffectsManager(data, element) {
     this.effectElements.push(effectItem);
   }
 }
-
 function GroupEffect(data, element) {
   this.init(data, element);
 }
-
 extendPrototype([DynamicPropertyContainer], GroupEffect);
-
 GroupEffect.prototype.getValue = GroupEffect.prototype.iterateDynamicProperties;
-
 GroupEffect.prototype.init = function (data, element) {
   this.data = data;
   this.effectElements = [];
@@ -7556,10 +6992,8 @@ GroupEffect.prototype.init = function (data, element) {
     }
   }
 };
-
 function BaseElement() {
 }
-
 BaseElement.prototype = {
   checkMasks: function () {
     if (!this.data.hasMask) {
@@ -7582,7 +7016,6 @@ BaseElement.prototype = {
     }
     var effectsInterface = EffectsExpressionInterface.createEffectsInterface(this, this.layerInterface);
     this.layerInterface.registerEffectsInterface(effectsInterface);
-
     if (this.data.ty === 0 || this.data.xt) {
       this.compInterface = CompExpressionInterface(this);
     } else if (this.data.ty === 4) {
@@ -7596,7 +7029,6 @@ BaseElement.prototype = {
   setBlendMode: function () {
     var blendModeValue = getBlendMode(this.data.bm);
     var elem = this.baseElement || this.layerElement;
-
     elem.style['mix-blend-mode'] = blendModeValue;
   },
   initBaseData: function (data, globalData, comp) {
@@ -7604,7 +7036,6 @@ BaseElement.prototype = {
     this.comp = comp;
     this.data = data;
     this.layerId = createElementID();
-
     // Stretch factor for old animations missing this property.
     if (!this.data.sr) {
       this.data.sr = 1;
@@ -7617,16 +7048,13 @@ BaseElement.prototype = {
   },
   sourceRectAtTime: function () {},
 };
-
 /**
  * @file
  * Handles element's layer frame update.
  * Checks layer in point and out point
  *
  */
-
 function FrameElement() {}
-
 FrameElement.prototype = {
   /**
      * @function
@@ -7670,7 +7098,6 @@ FrameElement.prototype = {
     }
   },
 };
-
 const FootageInterface = (function () {
   var outlineInterfaceFactory = (function (elem) {
     var currentPropertyName = '';
@@ -7702,7 +7129,6 @@ const FootageInterface = (function () {
     }
     return init;
   });
-
   var dataInterfaceFactory = function (elem) {
     function interfaceFunction(value) {
       if (value === 'Outline') {
@@ -7710,12 +7136,10 @@ const FootageInterface = (function () {
       }
       return null;
     }
-
     interfaceFunction._name = 'Outline';
     interfaceFunction.outlineInterface = outlineInterfaceFactory(elem);
     return interfaceFunction;
   };
-
   return function (elem) {
     function _interfaceFunction(value) {
       if (value === 'Data') {
@@ -7723,13 +7147,11 @@ const FootageInterface = (function () {
       }
       return null;
     }
-
     _interfaceFunction._name = 'Data';
     _interfaceFunction.dataInterface = dataInterfaceFactory(elem);
     return _interfaceFunction;
   };
 }());
-
 function FootageElement(data, globalData, comp) {
   this.initFrame();
   this.initRenderable();
@@ -7737,30 +7159,22 @@ function FootageElement(data, globalData, comp) {
   this.footageData = globalData.imageLoader.getAsset(this.assetData);
   this.initBaseData(data, globalData, comp);
 }
-
 FootageElement.prototype.prepareFrame = function () {
 };
-
 extendPrototype([RenderableElement, BaseElement, FrameElement], FootageElement);
-
 FootageElement.prototype.getBaseElement = function () {
   return null;
 };
-
 FootageElement.prototype.renderFrame = function () {
 };
-
 FootageElement.prototype.destroy = function () {
 };
-
 FootageElement.prototype.initExpressions = function () {
   this.layerInterface = FootageInterface(this);
 };
-
 FootageElement.prototype.getFootageData = function () {
   return this.footageData;
 };
-
 function AudioElement(data, globalData, comp) {
   this.initFrame();
   this.initRenderable();
@@ -7778,7 +7192,6 @@ function AudioElement(data, globalData, comp) {
   this.tm = data.tm ? PropertyFactory.getProp(this, data.tm, 0, globalData.frameRate, this) : { _placeholder: true };
   this.lv = PropertyFactory.getProp(this, data.au && data.au.lv ? data.au.lv : { k: [100] }, 1, 0.01, this);
 }
-
 AudioElement.prototype.prepareFrame = function (num) {
   this.prepareRenderableFrame(num, true);
   this.prepareProperties(num, true);
@@ -7795,9 +7208,7 @@ AudioElement.prototype.prepareFrame = function (num) {
     this.audio.volume(totalVolume);
   }
 };
-
 extendPrototype([RenderableElement, BaseElement, FrameElement], AudioElement);
-
 AudioElement.prototype.renderFrame = function () {
   if (this.isInRange && this._canPlay) {
     if (!this._isPlaying) {
@@ -7811,49 +7222,38 @@ AudioElement.prototype.renderFrame = function () {
     }
   }
 };
-
 AudioElement.prototype.show = function () {
   // this.audio.play()
 };
-
 AudioElement.prototype.hide = function () {
   this.audio.pause();
   this._isPlaying = false;
 };
-
 AudioElement.prototype.pause = function () {
   this.audio.pause();
   this._isPlaying = false;
   this._canPlay = false;
 };
-
 AudioElement.prototype.resume = function () {
   this._canPlay = true;
 };
-
 AudioElement.prototype.setRate = function (rateValue) {
   this.audio.rate(rateValue);
 };
-
 AudioElement.prototype.volume = function (volumeValue) {
   this._volumeMultiplier = volumeValue;
   this._previousVolume = volumeValue * this._volume;
   this.audio.volume(this._previousVolume);
 };
-
 AudioElement.prototype.getBaseElement = function () {
   return null;
 };
-
 AudioElement.prototype.destroy = function () {
 };
-
 AudioElement.prototype.sourceRectAtTime = function () {
 };
-
 AudioElement.prototype.initExpressions = function () {
 };
-
 function BaseRenderer() {}
 BaseRenderer.prototype.checkLayers = function (num) {
   var i;
@@ -7871,7 +7271,6 @@ BaseRenderer.prototype.checkLayers = function (num) {
   }
   this.checkPendingElements();
 };
-
 BaseRenderer.prototype.createItem = function (layer) {
   switch (layer.ty) {
     case 2:
@@ -7896,19 +7295,15 @@ BaseRenderer.prototype.createItem = function (layer) {
       return this.createNull(layer);
   }
 };
-
 BaseRenderer.prototype.createCamera = function () {
   throw new Error('You\'re using a 3d camera. Try the html renderer.');
 };
-
 BaseRenderer.prototype.createAudio = function (data) {
   return new AudioElement(data, this.globalData, this);
 };
-
 BaseRenderer.prototype.createFootage = function (data) {
   return new FootageElement(data, this.globalData, this);
 };
-
 BaseRenderer.prototype.buildAllItems = function () {
   var i;
   var len = this.layers.length;
@@ -7917,7 +7312,6 @@ BaseRenderer.prototype.buildAllItems = function () {
   }
   this.checkPendingElements();
 };
-
 BaseRenderer.prototype.includeLayers = function (newLayers) {
   this.completeLayers = false;
   var i;
@@ -7935,11 +7329,9 @@ BaseRenderer.prototype.includeLayers = function (newLayers) {
     }
   }
 };
-
 BaseRenderer.prototype.setProjectInterface = function (pInterface) {
   this.globalData.projectInterface = pInterface;
 };
-
 BaseRenderer.prototype.initItems = function () {
   if (!this.globalData.progressiveLoad) {
     this.buildAllItems();
@@ -7968,11 +7360,9 @@ BaseRenderer.prototype.buildElementParenting = function (element, parentName, hi
     i += 1;
   }
 };
-
 BaseRenderer.prototype.addPendingElement = function (element) {
   this.pendingElements.push(element);
 };
-
 BaseRenderer.prototype.searchExtraCompositions = function (assets) {
   var i;
   var len = assets.length;
@@ -7984,7 +7374,6 @@ BaseRenderer.prototype.searchExtraCompositions = function (assets) {
     }
   }
 };
-
 BaseRenderer.prototype.getElementByPath = function (path) {
   var pathValue = path.shift();
   var element;
@@ -8005,7 +7394,6 @@ BaseRenderer.prototype.getElementByPath = function (path) {
   }
   return element.getElementByPath(path);
 };
-
 BaseRenderer.prototype.setupGlobalData = function (animData, fontsContainer) {
   this.globalData.fontManager = new FontManager();
   this.globalData.fontManager.addChars(animData.chars);
@@ -8022,9 +7410,7 @@ BaseRenderer.prototype.setupGlobalData = function (animData, fontsContainer) {
     h: animData.h,
   };
 };
-
 function TransformElement() {}
-
 TransformElement.prototype = {
   initTransform: function () {
     this.finalTransform = {
@@ -8036,7 +7422,6 @@ TransformElement.prototype = {
     if (this.data.ao) {
       this.finalTransform.mProp.autoOriented = true;
     }
-
     // TODO: check TYPE 11: Guided elements
     if (this.data.ty !== 11) {
       // this.createElements();
@@ -8045,7 +7430,6 @@ TransformElement.prototype = {
   renderTransform: function () {
     this.finalTransform._opMdf = this.finalTransform.mProp.o._mdf || this._isFirstFrame;
     this.finalTransform._matMdf = this.finalTransform.mProp._mdf || this._isFirstFrame;
-
     if (this.hierarchy) {
       var mat;
       var finalMat = this.finalTransform.mat;
@@ -8061,7 +7445,6 @@ TransformElement.prototype = {
           i += 1;
         }
       }
-
       if (this.finalTransform._matMdf) {
         mat = this.finalTransform.mProp.v.props;
         finalMat.cloneFromProps(mat);
@@ -8099,7 +7482,6 @@ TransformElement.prototype = {
   },
   mHelper: new Matrix(),
 };
-
 function MaskElement(data, element, globalData) {
   this.data = data;
   this.element = element;
@@ -8112,7 +7494,6 @@ function MaskElement(data, element, globalData) {
   var len = this.masksProperties ? this.masksProperties.length : 0;
   this.viewData = createSizedArray(len);
   this.solidPath = '';
-
   var path;
   var properties = this.masksProperties;
   var count = 0;
@@ -8131,7 +7512,6 @@ function MaskElement(data, element, globalData) {
       maskType = 'mask';
       maskRef = 'mask';
     }
-
     if ((properties[i].mode === 's' || properties[i].mode === 'i') && count === 0) {
       rect = createNS('rect');
       rect.setAttribute('fill', '#ffffff');
@@ -8141,7 +7521,6 @@ function MaskElement(data, element, globalData) {
     } else {
       rect = null;
     }
-
     path = createNS('path');
     if (properties[i].mode === 'n') {
       // TODO move this to a factory or to a constructor
@@ -8154,11 +7533,9 @@ function MaskElement(data, element, globalData) {
       defs.appendChild(path);
     } else {
       count += 1;
-
       path.setAttribute('fill', properties[i].mode === 's' ? '#000000' : '#ffffff');
       path.setAttribute('clip-rule', 'nonzero');
       var filterID;
-
       if (properties[i].x.k !== 0) {
         maskType = 'mask';
         maskRef = 'mask';
@@ -8177,7 +7554,6 @@ function MaskElement(data, element, globalData) {
         feMorph = null;
         x = null;
       }
-
       // TODO move this to a factory or to a constructor
       this.storedData[i] = {
         elem: path,
@@ -8200,7 +7576,6 @@ function MaskElement(data, element, globalData) {
         mask.appendChild(path);
         defs.appendChild(mask);
         g.setAttribute('mask', 'url(' + getLocationHref() + '#' + layerId + '_' + count + ')');
-
         currentMasks.length = 0;
         currentMasks.push(g);
       } else {
@@ -8222,14 +7597,11 @@ function MaskElement(data, element, globalData) {
       }
     }
   }
-
   this.maskElement = createNS(maskType);
-
   len = currentMasks.length;
   for (i = 0; i < len; i += 1) {
     this.maskElement.appendChild(currentMasks[i]);
   }
-
   if (count > 0) {
     this.maskElement.setAttribute('id', layerId);
     this.element.maskedElement.setAttribute(maskRef, 'url(' + getLocationHref() + '#' + layerId + ')');
@@ -8239,11 +7611,9 @@ function MaskElement(data, element, globalData) {
     this.element.addRenderableComponent(this);
   }
 }
-
 MaskElement.prototype.getMaskProperty = function (pos) {
   return this.viewData[pos].prop;
 };
-
 MaskElement.prototype.renderFrame = function (isFirstFrame) {
   var finalMat = this.element.finalTransform.mat;
   var i;
@@ -8278,11 +7648,9 @@ MaskElement.prototype.renderFrame = function (isFirstFrame) {
     }
   }
 };
-
 MaskElement.prototype.getMaskelement = function () {
   return this.maskElement;
 };
-
 MaskElement.prototype.createLayerSolidPath = function () {
   var path = 'M0,0 ';
   path += ' h' + this.globalData.compSize.w;
@@ -8291,7 +7659,6 @@ MaskElement.prototype.createLayerSolidPath = function () {
   path += ' v-' + this.globalData.compSize.h + ' ';
   return path;
 };
-
 MaskElement.prototype.drawPath = function (pathData, pathNodes, viewData) {
   var pathString = ' M' + pathNodes.v[0][0] + ',' + pathNodes.v[0][1];
   var i;
@@ -8306,7 +7673,6 @@ MaskElement.prototype.drawPath = function (pathData, pathNodes, viewData) {
     pathString += ' C' + pathNodes.o[i - 1][0] + ',' + pathNodes.o[i - 1][1] + ' ' + pathNodes.i[0][0] + ',' + pathNodes.i[0][1] + ' ' + pathNodes.v[0][0] + ',' + pathNodes.v[0][1];
   }
   // pathNodes.__renderedString = pathString;
-
   if (viewData.lastPath !== pathString) {
     var pathShapeValue = '';
     if (viewData.elem) {
@@ -8318,7 +7684,6 @@ MaskElement.prototype.drawPath = function (pathData, pathNodes, viewData) {
     viewData.lastPath = pathString;
   }
 };
-
 MaskElement.prototype.destroy = function () {
   this.element = null;
   this.globalData = null;
@@ -8326,12 +7691,10 @@ MaskElement.prototype.destroy = function () {
   this.data = null;
   this.masksProperties = null;
 };
-
 const filtersFactory = (function () {
   var ob = {};
   ob.createFilter = createFilter;
   ob.createAlphaToLuminanceFilter = createAlphaToLuminanceFilter;
-
   function createFilter(filId, skipCoordinates) {
     var fil = createNS('filter');
     fil.setAttribute('id', filId);
@@ -8344,7 +7707,6 @@ const filtersFactory = (function () {
     }
     return fil;
   }
-
   function createAlphaToLuminanceFilter() {
     var feColorMatrix = createNS('feColorMatrix');
     feColorMatrix.setAttribute('type', 'matrix');
@@ -8352,10 +7714,8 @@ const filtersFactory = (function () {
     feColorMatrix.setAttribute('values', '0 0 0 1 0  0 0 0 1 0  0 0 0 1 0  0 0 0 1 1');
     return feColorMatrix;
   }
-
   return ob;
 }());
-
 const featureSupport = (function () {
   var ob = {
     maskType: true,
@@ -8365,10 +7725,8 @@ const featureSupport = (function () {
   }
   return ob;
 }());
-
 var registeredEffects = {};
 var idPrefix = 'filter_result_';
-
 function SVGEffects(elem) {
   var i;
   var source = 'SourceGraphic';
@@ -8401,7 +7759,6 @@ function SVGEffects(elem) {
     elem.addRenderableComponent(this);
   }
 }
-
 SVGEffects.prototype.renderFrame = function (_isFirstFrame) {
   var i;
   var len = this.filters.length;
@@ -8409,17 +7766,14 @@ SVGEffects.prototype.renderFrame = function (_isFirstFrame) {
     this.filters[i].renderFrame(_isFirstFrame);
   }
 };
-
 function registerEffect(id, effect, countsAsEffect) {
   registeredEffects[id] = {
     effect,
     countsAsEffect,
   };
 }
-
 function SVGBaseElement() {
 }
-
 SVGBaseElement.prototype = {
   initRendererElement: function () {
     this.layerElement = createNS('g');
@@ -8464,7 +7818,6 @@ SVGBaseElement.prototype = {
         filId = createElementID();
         fil = filtersFactory.createFilter(filId);
         /// /
-
         // This solution doesn't work on Android when meta tag with viewport attribute is set
         /* var feColorMatrix = createNS('feColorMatrix');
                 feColorMatrix.setAttribute('type', 'matrix');
@@ -8525,7 +7878,6 @@ SVGBaseElement.prototype = {
       cp.setAttribute('id', clipId);
       cp.appendChild(pt);
       this.globalData.defs.appendChild(cp);
-
       if (this.checkMasks()) {
         var cpGroup = createNS('g');
         cpGroup.setAttribute('clip-path', 'url(' + getLocationHref() + '#' + clipId + ')');
@@ -8574,15 +7926,12 @@ SVGBaseElement.prototype = {
     this.matteElement.setAttribute('mask', 'url(' + getLocationHref() + '#' + id + ')');
   },
 };
-
 /**
  * @file
  * Handles AE's layer parenting property.
  *
  */
-
 function HierarchyElement() {}
-
 HierarchyElement.prototype = {
   /**
      * @function
@@ -8625,9 +7974,7 @@ HierarchyElement.prototype = {
     }
   },
 };
-
 function RenderableDOMElement() {}
-
 (function () {
   var _prototype = {
     initElement: function (data, globalData, comp) {
@@ -8689,7 +8036,6 @@ function RenderableDOMElement() {}
   };
   extendPrototype([RenderableElement, createProxyFunction(_prototype)], RenderableDOMElement);
 }());
-
 function IImageElement(data, globalData, comp) {
   this.assetData = globalData.getAssetData(data.refId);
   this.initElement(data, globalData, comp);
@@ -8697,33 +8043,25 @@ function IImageElement(data, globalData, comp) {
     top: 0, left: 0, width: this.assetData.w, height: this.assetData.h,
   };
 }
-
 extendPrototype([BaseElement, TransformElement, SVGBaseElement, HierarchyElement, FrameElement, RenderableDOMElement], IImageElement);
-
 IImageElement.prototype.createContent = function () {
   var assetPath = this.globalData.getAssetsPath(this.assetData);
-
   this.innerElem = createNS('image');
   this.innerElem.setAttribute('width', this.assetData.w + 'px');
   this.innerElem.setAttribute('height', this.assetData.h + 'px');
   this.innerElem.setAttribute('preserveAspectRatio', this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
   this.innerElem.setAttributeNS('http://www.w3.org/1999/xlink', 'href', assetPath);
-
   this.layerElement.appendChild(this.innerElem);
 };
-
 IImageElement.prototype.sourceRectAtTime = function () {
   return this.sourceRect;
 };
-
 function ProcessedElement(element, position) {
   this.elem = element;
   this.pos = position;
 }
-
 function IShapeElement() {
 }
-
 IShapeElement.prototype = {
   addShapeToModifiers: function (data) {
     var i;
@@ -8751,7 +8089,6 @@ IShapeElement.prototype = {
     for (i = 0; i < len; i += 1) {
       this.shapes[i].sh.reset();
     }
-
     len = this.shapeModifiers.length;
     var shouldBreakProcess;
     for (i = len - 1; i >= 0; i -= 1) {
@@ -8763,7 +8100,6 @@ IShapeElement.prototype = {
       }
     }
   },
-
   searchProcessedElement: function (elem) {
     var elements = this.processedElements;
     var i = 0;
@@ -8793,19 +8129,16 @@ IShapeElement.prototype = {
     this.prepareProperties(num, this.isInRange);
   },
 };
-
 const lineCapEnum = {
   1: 'butt',
   2: 'round',
   3: 'square',
 };
-
 const lineJoinEnum = {
   1: 'miter',
   2: 'round',
   3: 'bevel',
 };
-
 function SVGShapeData(transformers, level, shape) {
   this.caches = [];
   this.styles = [];
@@ -8828,11 +8161,9 @@ function SVGShapeData(transformers, level, shape) {
     i += 1;
   }
 }
-
 SVGShapeData.prototype.setAsAnimated = function () {
   this._isAnimated = true;
 };
-
 function SVGStyleData(data, level) {
   this.data = data;
   this.type = data.ty;
@@ -8843,12 +8174,10 @@ function SVGStyleData(data, level) {
   this.pElem = createNS('path');
   this.msElem = null;
 }
-
 SVGStyleData.prototype.reset = function () {
   this.d = '';
   this._mdf = false;
 };
-
 function DashProperty(elem, data, renderer, container) {
   this.elem = elem;
   this.frameId = -1;
@@ -8872,7 +8201,6 @@ function DashProperty(elem, data, renderer, container) {
   }
   this._isAnimated = this.k;
 }
-
 DashProperty.prototype.getValue = function (forceRender) {
   if (this.elem.globalData.frameId === this.frameId && !forceRender) {
     return;
@@ -8900,7 +8228,6 @@ DashProperty.prototype.getValue = function (forceRender) {
   }
 };
 extendPrototype([DynamicPropertyContainer], DashProperty);
-
 function SVGStrokeStyleData(elem, data, styleOb) {
   this.initDynamicPropertyContainer(elem);
   this.getValue = this.iterateDynamicProperties;
@@ -8911,9 +8238,7 @@ function SVGStrokeStyleData(elem, data, styleOb) {
   this.style = styleOb;
   this._isAnimated = !!this._isAnimated;
 }
-
 extendPrototype([DynamicPropertyContainer], SVGStrokeStyleData);
-
 function SVGFillStyleData(elem, data, styleOb) {
   this.initDynamicPropertyContainer(elem);
   this.getValue = this.iterateDynamicProperties;
@@ -8921,17 +8246,13 @@ function SVGFillStyleData(elem, data, styleOb) {
   this.c = PropertyFactory.getProp(elem, data.c, 1, 255, this);
   this.style = styleOb;
 }
-
 extendPrototype([DynamicPropertyContainer], SVGFillStyleData);
-
 function SVGNoStyleData(elem, data, styleOb) {
   this.initDynamicPropertyContainer(elem);
   this.getValue = this.iterateDynamicProperties;
   this.style = styleOb;
 }
-
 extendPrototype([DynamicPropertyContainer], SVGNoStyleData);
-
 function GradientProperty(elem, data, container) {
   this.data = data;
   this.c = createTypedArray('uint8c', data.p * 4);
@@ -8946,7 +8267,6 @@ function GradientProperty(elem, data, container) {
   this.k = this.prop.k;
   this.getValue(true);
 }
-
 GradientProperty.prototype.comparePoints = function (values, points) {
   var i = 0;
   var len = this.o.length / 2;
@@ -8960,7 +8280,6 @@ GradientProperty.prototype.comparePoints = function (values, points) {
   }
   return true;
 };
-
 GradientProperty.prototype.checkCollapsable = function () {
   if (this.o.length / 2 !== this.c.length / 4) {
     return false;
@@ -8979,7 +8298,6 @@ GradientProperty.prototype.checkCollapsable = function () {
   }
   return true;
 };
-
 GradientProperty.prototype.getValue = function (forceRender) {
   this.prop.getValue();
   this._mdf = false;
@@ -9012,15 +8330,12 @@ GradientProperty.prototype.getValue = function (forceRender) {
     this._mdf = !forceRender;
   }
 };
-
 extendPrototype([DynamicPropertyContainer], GradientProperty);
-
 function SVGGradientFillStyleData(elem, data, styleOb) {
   this.initDynamicPropertyContainer(elem);
   this.getValue = this.iterateDynamicProperties;
   this.initGradientData(elem, data, styleOb);
 }
-
 SVGGradientFillStyleData.prototype.initGradientData = function (elem, data, styleOb) {
   this.o = PropertyFactory.getProp(elem, data.o, 0, 0.01, this);
   this.s = PropertyFactory.getProp(elem, data.s, 1, null, this);
@@ -9034,7 +8349,6 @@ SVGGradientFillStyleData.prototype.initGradientData = function (elem, data, styl
   this.setGradientOpacity(data, styleOb);
   this._isAnimated = !!this._isAnimated;
 };
-
 SVGGradientFillStyleData.prototype.setGradientData = function (pathElement, data) {
   var gradientId = createElementID();
   var gfill = createNS(data.t === 1 ? 'linearGradient' : 'radialGradient');
@@ -9055,7 +8369,6 @@ SVGGradientFillStyleData.prototype.setGradientData = function (pathElement, data
   this.gf = gfill;
   this.cst = stops;
 };
-
 SVGGradientFillStyleData.prototype.setGradientOpacity = function (data, styleOb) {
   if (this.g._hasOpacity && !this.g._collapsable) {
     var stop;
@@ -9094,9 +8407,7 @@ SVGGradientFillStyleData.prototype.setGradientOpacity = function (data, styleOb)
     styleOb.msElem = maskElement;
   }
 };
-
 extendPrototype([DynamicPropertyContainer], SVGGradientFillStyleData);
-
 function SVGGradientStrokeStyleData(elem, data, styleOb) {
   this.initDynamicPropertyContainer(elem);
   this.getValue = this.iterateDynamicProperties;
@@ -9105,15 +8416,12 @@ function SVGGradientStrokeStyleData(elem, data, styleOb) {
   this.initGradientData(elem, data, styleOb);
   this._isAnimated = !!this._isAnimated;
 }
-
 extendPrototype([SVGGradientFillStyleData, DynamicPropertyContainer], SVGGradientStrokeStyleData);
-
 function ShapeGroupData() {
   this.it = [];
   this.prevViewData = [];
   this.gr = createNS('g');
 }
-
 function SVGTransformData(mProps, op, container) {
   this.transform = {
     mProps: mProps,
@@ -9123,7 +8431,6 @@ function SVGTransformData(mProps, op, container) {
   this.elements = [];
   this._isAnimated = this.transform.mProps.dynamicProperties.length || this.transform.op.effectsSequence.length;
 }
-
 const buildShapeString = function (pathNodes, length, closed, mat) {
   if (length === 0) {
     return '';
@@ -9142,15 +8449,12 @@ const buildShapeString = function (pathNodes, length, closed, mat) {
   }
   return shapeString;
 };
-
 const SVGElementsRenderer = (function () {
   var _identityMatrix = new Matrix();
   var _matrixHelper = new Matrix();
-
   var ob = {
     createRenderFunction: createRenderFunction,
   };
-
   function createRenderFunction(data) {
     switch (data.ty) {
       case 'fl':
@@ -9174,7 +8478,6 @@ const SVGElementsRenderer = (function () {
         return null;
     }
   }
-
   function renderContentTransform(styleData, itemData, isFirstFrame) {
     if (isFirstFrame || itemData.transform.op._mdf) {
       itemData.transform.container.setAttribute('opacity', itemData.transform.op.v);
@@ -9183,11 +8486,8 @@ const SVGElementsRenderer = (function () {
       itemData.transform.container.setAttribute('transform', itemData.transform.mProps.v.to2dCSS());
     }
   }
-
   function renderNoop() {
-
   }
-
   function renderPath(styleData, itemData, isFirstFrame) {
     var j;
     var jLen;
@@ -9244,10 +8544,8 @@ const SVGElementsRenderer = (function () {
       itemData.styles[l]._mdf = redraw || itemData.styles[l]._mdf;
     }
   }
-
   function renderFill(styleData, itemData, isFirstFrame) {
     var styleElem = itemData.style;
-
     if (itemData.c._mdf || isFirstFrame) {
       styleElem.pElem.setAttribute('fill', 'rgb(' + bmFloor(itemData.c.v[0]) + ',' + bmFloor(itemData.c.v[1]) + ',' + bmFloor(itemData.c.v[2]) + ')');
     }
@@ -9255,18 +8553,15 @@ const SVGElementsRenderer = (function () {
       styleElem.pElem.setAttribute('fill-opacity', itemData.o.v);
     }
   }
-
   function renderGradientStroke(styleData, itemData, isFirstFrame) {
     renderGradient(styleData, itemData, isFirstFrame);
     renderStroke(styleData, itemData, isFirstFrame);
   }
-
   function renderGradient(styleData, itemData, isFirstFrame) {
     var gfill = itemData.gf;
     var hasOpacity = itemData.g._hasOpacity;
     var pt1 = itemData.s.v;
     var pt2 = itemData.e.v;
-
     if (itemData.o._mdf || isFirstFrame) {
       var attr = styleData.ty === 'gf' ? 'fill-opacity' : 'stroke-opacity';
       itemData.style.pElem.setAttribute(attr, itemData.o.v);
@@ -9334,7 +8629,6 @@ const SVGElementsRenderer = (function () {
           rad = Math.sqrt(Math.pow(pt1[0] - pt2[0], 2) + Math.pow(pt1[1] - pt2[1], 2));
         }
         var ang = Math.atan2(pt2[1] - pt1[1], pt2[0] - pt1[0]);
-
         var percent = itemData.h.v;
         if (percent >= 1) {
           percent = 0.99;
@@ -9354,7 +8648,6 @@ const SVGElementsRenderer = (function () {
       // gfill.setAttribute('fy','200');
     }
   }
-
   function renderStroke(styleData, itemData, isFirstFrame) {
     var styleElem = itemData.style;
     var d = itemData.d;
@@ -9375,10 +8668,8 @@ const SVGElementsRenderer = (function () {
       }
     }
   }
-
   return ob;
 }());
-
 function SVGShapeElement(data, globalData, comp) {
   // List of drawable elements
   this.shapes = [];
@@ -9400,21 +8691,15 @@ function SVGShapeElement(data, globalData, comp) {
   this.prevViewData = [];
   // Moving any property that doesn't get too much access after initialization because of v8 way of handling more than 10 properties.
 }
-
 extendPrototype([BaseElement, TransformElement, SVGBaseElement, IShapeElement, HierarchyElement, FrameElement, RenderableDOMElement], SVGShapeElement);
-
 SVGShapeElement.prototype.initSecondaryElement = function () {
 };
-
 SVGShapeElement.prototype.identityMatrix = new Matrix();
-
 SVGShapeElement.prototype.buildExpressionInterface = function () {};
-
 SVGShapeElement.prototype.createContent = function () {
   this.searchShapes(this.shapesData, this.itemsData, this.prevViewData, this.layerElement, 0, [], true);
   this.filterUniqueShapes();
 };
-
 /*
 This method searches for multiple shapes that affect a single element and one of them is animated
 */
@@ -9443,7 +8728,6 @@ SVGShapeElement.prototype.filterUniqueShapes = function () {
     }
   }
 };
-
 SVGShapeElement.prototype.setShapesAsAnimated = function (shapes) {
   var i;
   var len = shapes.length;
@@ -9451,12 +8735,10 @@ SVGShapeElement.prototype.setShapesAsAnimated = function (shapes) {
     shapes[i].setAsAnimated();
   }
 };
-
 SVGShapeElement.prototype.createStyleElement = function (data, level) {
   // TODO: prevent drawing of hidden styles
   var elementData;
   var styleOb = new SVGStyleData(data, level);
-
   var pathElement = styleOb.pElem;
   if (data.ty === 'st') {
     elementData = new SVGStrokeStyleData(this, data, styleOb);
@@ -9474,7 +8756,6 @@ SVGShapeElement.prototype.createStyleElement = function (data, level) {
   } else if (data.ty === 'no') {
     elementData = new SVGNoStyleData(this, data, styleOb);
   }
-
   if (data.ty === 'st' || data.ty === 'gs') {
     pathElement.setAttribute('stroke-linecap', lineCapEnum[data.lc || 2]);
     pathElement.setAttribute('stroke-linejoin', lineJoinEnum[data.lj || 2]);
@@ -9483,11 +8764,9 @@ SVGShapeElement.prototype.createStyleElement = function (data, level) {
       pathElement.setAttribute('stroke-miterlimit', data.ml);
     }
   }
-
   if (data.r === 2) {
     pathElement.setAttribute('fill-rule', 'evenodd');
   }
-
   if (data.ln) {
     pathElement.setAttribute('id', data.ln);
   }
@@ -9501,7 +8780,6 @@ SVGShapeElement.prototype.createStyleElement = function (data, level) {
   this.addToAnimatedContents(data, elementData);
   return elementData;
 };
-
 SVGShapeElement.prototype.createGroupElement = function (data) {
   var elementData = new ShapeGroupData();
   if (data.ln) {
@@ -9515,14 +8793,12 @@ SVGShapeElement.prototype.createGroupElement = function (data) {
   }
   return elementData;
 };
-
 SVGShapeElement.prototype.createTransformElement = function (data, container) {
   var transformProperty = TransformPropertyFactory.getTransformProperty(this, data, this);
   var elementData = new SVGTransformData(transformProperty, transformProperty.o, container);
   this.addToAnimatedContents(data, elementData);
   return elementData;
 };
-
 SVGShapeElement.prototype.createShapeElement = function (data, ownTransformers, level) {
   var ty = 4;
   if (data.ty === 'rc') {
@@ -9539,7 +8815,6 @@ SVGShapeElement.prototype.createShapeElement = function (data, ownTransformers, 
   this.addToAnimatedContents(data, elementData);
   return elementData;
 };
-
 SVGShapeElement.prototype.addToAnimatedContents = function (data, element) {
   var i = 0;
   var len = this.animatedContents.length;
@@ -9555,7 +8830,6 @@ SVGShapeElement.prototype.addToAnimatedContents = function (data, element) {
     data: data,
   });
 };
-
 SVGShapeElement.prototype.setElementStyles = function (elementData) {
   var arr = elementData.styles;
   var j;
@@ -9566,7 +8840,6 @@ SVGShapeElement.prototype.setElementStyles = function (elementData) {
     }
   }
 };
-
 SVGShapeElement.prototype.reloadShapes = function () {
   this._isFirstFrame = true;
   var i;
@@ -9582,7 +8855,6 @@ SVGShapeElement.prototype.reloadShapes = function () {
   }
   this.renderModifiers();
 };
-
 SVGShapeElement.prototype.searchShapes = function (arr, itemsData, prevViewData, container, level, transformers, render) {
   var ownTransformers = [].concat(transformers);
   var i;
@@ -9674,7 +8946,6 @@ SVGShapeElement.prototype.searchShapes = function (arr, itemsData, prevViewData,
     ownModifiers[i].closed = true;
   }
 };
-
 SVGShapeElement.prototype.renderInnerContent = function () {
   this.renderModifiers();
   var i;
@@ -9694,7 +8965,6 @@ SVGShapeElement.prototype.renderInnerContent = function () {
     }
   }
 };
-
 SVGShapeElement.prototype.renderShape = function () {
   var i;
   var len = this.animatedContents.length;
@@ -9706,13 +8976,11 @@ SVGShapeElement.prototype.renderShape = function () {
     }
   }
 };
-
 SVGShapeElement.prototype.destroy = function () {
   this.destroyBaseElement();
   this.shapesData = null;
   this.itemsData = null;
 };
-
 function LetterProps(o, sw, sc, fc, m, p) {
   this.o = o;
   this.sw = sw;
@@ -9729,7 +8997,6 @@ function LetterProps(o, sw, sc, fc, m, p) {
     p: true,
   };
 }
-
 LetterProps.prototype.update = function (o, sw, sc, fc, m, p) {
   this._mdf.o = false;
   this._mdf.sw = false;
@@ -9738,7 +9005,6 @@ LetterProps.prototype.update = function (o, sw, sc, fc, m, p) {
   this._mdf.m = false;
   this._mdf.p = false;
   var updated = false;
-
   if (this.o !== o) {
     this.o = o;
     this._mdf.o = true;
@@ -9771,7 +9037,6 @@ LetterProps.prototype.update = function (o, sw, sc, fc, m, p) {
   }
   return updated;
 };
-
 function TextProperty(elem, data) {
   this._frameId = initialDefaultFrame;
   this.pv = '';
@@ -9815,17 +9080,13 @@ function TextProperty(elem, data) {
     finalText: [],
     finalLineHeight: 0,
     __complete: false,
-
   };
   this.copyData(this.currentData, this.data.d.k[0].s);
-
   if (!this.searchProperty()) {
     this.completeTextData(this.currentData);
   }
 }
-
 TextProperty.prototype.defaultBoxWidth = [0, 0];
-
 TextProperty.prototype.copyData = function (obj, data) {
   for (var s in data) {
     if (Object.prototype.hasOwnProperty.call(data, s)) {
@@ -9834,7 +9095,6 @@ TextProperty.prototype.copyData = function (obj, data) {
   }
   return obj;
 };
-
 TextProperty.prototype.setCurrentData = function (data) {
   if (!data.__complete) {
     this.completeTextData(data);
@@ -9843,11 +9103,9 @@ TextProperty.prototype.setCurrentData = function (data) {
   this.currentData.boxWidth = this.currentData.boxWidth || this.defaultBoxWidth;
   this._mdf = true;
 };
-
 TextProperty.prototype.searchProperty = function () {
   return this.searchKeyframes();
 };
-
 TextProperty.prototype.searchKeyframes = function () {
   this.kf = this.data.d.k.length > 1;
   if (this.kf) {
@@ -9855,12 +9113,10 @@ TextProperty.prototype.searchKeyframes = function () {
   }
   return this.kf;
 };
-
 TextProperty.prototype.addEffect = function (effectFunction) {
   this.effectsSequence.push(effectFunction);
   this.elem.addDynamicProperty(this);
 };
-
 TextProperty.prototype.getValue = function (_finalValue) {
   if ((this.elem.globalData.frameId === this.frameId || !this.effectsSequence.length) && !_finalValue) {
     return;
@@ -9893,7 +9149,6 @@ TextProperty.prototype.getValue = function (_finalValue) {
   this.lock = false;
   this.frameId = this.elem.globalData.frameId;
 };
-
 TextProperty.prototype.getKeyframeValue = function () {
   var textKeys = this.data.d.k;
   var frameNum = this.elem.comp.renderedFrame;
@@ -9910,7 +9165,6 @@ TextProperty.prototype.getKeyframeValue = function () {
   }
   return this.data.d.k[this.keysIndex].s;
 };
-
 TextProperty.prototype.buildFinalText = function (text) {
   var charactersArray = [];
   var i = 0;
@@ -9954,7 +9208,6 @@ TextProperty.prototype.buildFinalText = function (text) {
   }
   return charactersArray;
 };
-
 TextProperty.prototype.completeTextData = function (documentData) {
   documentData.__complete = true;
   var fontManager = this.elem.globalData.fontManager;
@@ -9974,7 +9227,6 @@ TextProperty.prototype.completeTextData = function (documentData) {
   var fontData = fontManager.getFontByName(documentData.f);
   var charData; var
     cLength = 0;
-
   var fontProps = getFontProperties(fontData);
   documentData.fWeight = fontProps.weight;
   documentData.fStyle = fontProps.style;
@@ -10068,7 +9320,6 @@ TextProperty.prototype.completeTextData = function (documentData) {
       // tCanvasHelper.font = documentData.finalSize + 'px '+ fontManager.getFontByName(documentData.f).fFamily;
       cLength = fontManager.measureText(val, documentData.f, documentData.finalSize);
     }
-
     //
     if (currentChar === ' ') {
       uncollapsedSpaces += cLength + trackingOffset;
@@ -10135,7 +9386,6 @@ TextProperty.prototype.completeTextData = function (documentData) {
     }
   }
   documentData.lineWidths = lineWidths;
-
   var animators = data.a; var animatorData; var
     letterData;
   jLen = animators.length;
@@ -10182,7 +9432,6 @@ TextProperty.prototype.completeTextData = function (documentData) {
   documentData.ls = documentData.ls || 0;
   documentData.ascent = (fontData.ascent * documentData.finalSize) / 100;
 };
-
 TextProperty.prototype.updateDocumentData = function (newData, index) {
   index = index === undefined ? this.keysIndex : index;
   var dData = this.copyData({}, this.data.d.k[index].s);
@@ -10191,7 +9440,6 @@ TextProperty.prototype.updateDocumentData = function (newData, index) {
   this.recalculate(index);
   this.elem.addDynamicProperty(this);
 };
-
 TextProperty.prototype.recalculate = function (index) {
   var dData = this.data.d.k[index].s;
   dData.__complete = false;
@@ -10199,24 +9447,20 @@ TextProperty.prototype.recalculate = function (index) {
   this._isFirstFrame = true;
   this.getValue(dData);
 };
-
 TextProperty.prototype.canResizeFont = function (_canResize) {
   this.canResize = _canResize;
   this.recalculate(this.keysIndex);
   this.elem.addDynamicProperty(this);
 };
-
 TextProperty.prototype.setMinimumFontSize = function (_fontValue) {
   this.minimumFontSize = Math.floor(_fontValue) || 1;
   this.recalculate(this.keysIndex);
   this.elem.addDynamicProperty(this);
 };
-
 const TextSelectorProp = (function () {
   var max = Math.max;
   var min = Math.min;
   var floor = Math.floor;
-
   function TextSelectorPropFactory(elem, data) {
     this._currentTextLength = -1;
     this.k = false;
@@ -10241,7 +9485,6 @@ const TextSelectorProp = (function () {
       this.getValue();
     }
   }
-
   TextSelectorPropFactory.prototype = {
     getMult: function (ind) {
       if (this._currentTextLength !== this.elem.textProperty.currentData.l.length) {
@@ -10262,7 +9505,6 @@ const TextSelectorProp = (function () {
         y2 = 1.0 + this.xe.v / 100.0;
       }
       var easer = BezierFactory.getBezierEasing(x1, y1, x2, y2).get;
-
       var mult = 0;
       var s = this.finalS;
       var e = this.finalE;
@@ -10280,7 +9522,6 @@ const TextSelectorProp = (function () {
         } else {
           mult = 1 - max(0, min(0.5 / (e - s) + (ind - s) / (e - s), 1));
         }
-
         mult = easer(mult);
       } else if (type === 4) {
         if (e === s) {
@@ -10373,16 +9614,13 @@ const TextSelectorProp = (function () {
     },
   };
   extendPrototype([DynamicPropertyContainer], TextSelectorPropFactory);
-
   function getTextSelectorProp(elem, data, arr) {
     return new TextSelectorPropFactory(elem, data, arr);
   }
-
   return {
     getTextSelectorProp: getTextSelectorProp,
   };
 }());
-
 function TextAnimatorDataProperty(elem, animatorProps, container) {
   var defaultData = { propType: false };
   var getProp = PropertyFactory.getProp;
@@ -10405,11 +9643,9 @@ function TextAnimatorDataProperty(elem, animatorProps, container) {
     fb: textAnimatorAnimatables.fb ? getProp(elem, textAnimatorAnimatables.fb, 0, 0.01, container) : defaultData,
     t: textAnimatorAnimatables.t ? getProp(elem, textAnimatorAnimatables.t, 0, 0, container) : defaultData,
   };
-
   this.s = TextSelectorProp.getTextSelectorProp(elem, animatorProps.s, container);
   this.s.t = animatorProps.s.t;
 }
-
 function TextAnimatorProperty(textData, renderType, elem) {
   this._isFirstFrame = true;
   this._hasMaskedPath = false;
@@ -10426,7 +9662,6 @@ function TextAnimatorProperty(textData, renderType, elem) {
   this.lettersChangedFlag = false;
   this.initDynamicPropertyContainer(elem);
 }
-
 TextAnimatorProperty.prototype.searchProperties = function () {
   var i;
   var len = this._textData.a.length;
@@ -10451,7 +9686,6 @@ TextAnimatorProperty.prototype.searchProperties = function () {
   }
   this._moreOptions.alignment = getProp(this._elem, this._textData.m.a, 1, 0, this);
 };
-
 TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChangedFlag) {
   this.lettersChangedFlag = lettersChangedFlag;
   if (!this._mdf && !this._isFirstFrame && !lettersChangedFlag && (!this._hasMaskedPath || !this._pathData.m._mdf)) {
@@ -10521,7 +9755,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
       this._pathData.pi = pathInfo;
     }
     pathInfo = this._pathData.pi;
-
     currentLength = this._pathData.f.v;
     segmentInd = 0;
     pointInd = 1;
@@ -10550,7 +9783,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
     currentPoint = points[pointInd];
     partialLength = currentPoint.partialLength;
   }
-
   len = letters.length;
   xPos = 0;
   yPos = 0;
@@ -10561,9 +9793,7 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
   var j;
   var jLen;
   var letterValue;
-
   jLen = animators.length;
-
   var mult;
   var ind = -1;
   var offf;
@@ -10584,7 +9814,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
   var letterM = '';
   var letterP = this.defaultPropsArray;
   var letterO;
-
   //
   if (documentData.j === 2 || documentData.j === 1) {
     var animatorJustifyOffset = 0;
@@ -10592,7 +9821,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
     var justifyOffsetMult = documentData.j === 2 ? -0.5 : -1;
     var lastIndex = 0;
     var isNewLine = true;
-
     for (i = 0; i < len; i += 1) {
       if (letters[i].n) {
         if (animatorJustifyOffset) {
@@ -10632,7 +9860,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
     }
   }
   //
-
   for (i = 0; i < len; i += 1) {
     matrixHelper.reset();
     elemOpacity = 1;
@@ -10745,11 +9972,9 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
       } else {
         offf = letters[i].an / 2 - letters[i].add;
         matrixHelper.translate(-offf, 0, 0);
-
         // Grouping alignment
         matrixHelper.translate((-alignment[0] * letters[i].an) * 0.005, (-alignment[1] * yOff) * 0.01, 0);
       }
-
       for (j = 0; j < jLen; j += 1) {
         animatorProps = animators[j].a;
         if (animatorProps.t.propType) {
@@ -10789,7 +10014,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
         if (animatorProps.a.propType) {
           animatorSelector = animators[j].s;
           mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
-
           if (mult.length) {
             matrixHelper.translate(-animatorProps.a.v[0] * mult[0], -animatorProps.a.v[1] * mult[1], animatorProps.a.v[2] * mult[2]);
           } else {
@@ -10897,10 +10121,8 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
           }
         }
       }
-
       for (j = 0; j < jLen; j += 1) {
         animatorProps = animators[j].a;
-
         if (animatorProps.p.propType) {
           animatorSelector = animators[j].s;
           mult = animatorSelector.getMult(letters[i].anIndexes[j], textData.a[j].s.totalChars);
@@ -10926,10 +10148,8 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
       if (documentData.fillColorAnim && documentData.fc) {
         letterFc = 'rgb(' + Math.round(fc[0] * 255) + ',' + Math.round(fc[1] * 255) + ',' + Math.round(fc[2] * 255) + ')';
       }
-
       if (this._hasMaskedPath) {
         matrixHelper.translate(0, -documentData.ls);
-
         matrixHelper.translate(0, (alignment[1] * yOff) * 0.01 + yPos, 0);
         if (this._pathData.p.v) {
           tanAngle = (currentPoint.point[1] - prevPoint.point[1]) / (currentPoint.point[0] - prevPoint.point[0]);
@@ -10947,7 +10167,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
         }
       } else {
         matrixHelper.translate(xPos, yPos, 0);
-
         if (documentData.ps) {
           // matrixHelper.translate(documentData.ps[0],documentData.ps[1],0);
           matrixHelper.translate(documentData.ps[0], documentData.ps[1] + documentData.ascent, 0);
@@ -10976,7 +10195,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
       }
       letterO = elemOpacity;
     }
-
     if (renderedLettersCount <= i) {
       letterValue = new LetterProps(letterO, letterSw, letterSc, letterFc, letterM, letterP);
       this.renderedLetters.push(letterValue);
@@ -10988,7 +10206,6 @@ TextAnimatorProperty.prototype.getMeasures = function (documentData, lettersChan
     }
   }
 };
-
 TextAnimatorProperty.prototype.getValue = function () {
   if (this._elem.globalData.frameId === this._frameId) {
     return;
@@ -10996,14 +10213,11 @@ TextAnimatorProperty.prototype.getValue = function () {
   this._frameId = this._elem.globalData.frameId;
   this.iterateDynamicProperties();
 };
-
 TextAnimatorProperty.prototype.mHelper = new Matrix();
 TextAnimatorProperty.prototype.defaultPropsArray = [];
 extendPrototype([DynamicPropertyContainer], TextAnimatorProperty);
-
 function ITextElement() {
 }
-
 ITextElement.prototype.initElement = function (data, globalData, comp) {
   this.lettersChangedFlag = true;
   this.initFrame();
@@ -11020,7 +10234,6 @@ ITextElement.prototype.initElement = function (data, globalData, comp) {
   this.hide();
   this.textAnimator.searchProperties(this.dynamicProperties);
 };
-
 ITextElement.prototype.prepareFrame = function (num) {
   this._mdf = false;
   this.prepareRenderableFrame(num);
@@ -11031,7 +10244,6 @@ ITextElement.prototype.prepareFrame = function (num) {
     this.textProperty._mdf = false;
   }
 };
-
 ITextElement.prototype.createPathShape = function (matrixHelper, shapes) {
   var j;
   var jLen = shapes.length;
@@ -11045,19 +10257,15 @@ ITextElement.prototype.createPathShape = function (matrixHelper, shapes) {
   }
   return shapeStr;
 };
-
 ITextElement.prototype.updateDocumentData = function (newData, index) {
   this.textProperty.updateDocumentData(newData, index);
 };
-
 ITextElement.prototype.canResizeFont = function (_canResize) {
   this.textProperty.canResizeFont(_canResize);
 };
-
 ITextElement.prototype.setMinimumFontSize = function (_fontSize) {
   this.textProperty.setMinimumFontSize(_fontSize);
 };
-
 ITextElement.prototype.applyTextPropertiesToMatrix = function (documentData, matrixHelper, lineNumber, xPos, yPos) {
   if (documentData.ps) {
     matrixHelper.translate(documentData.ps[0], documentData.ps[1] + documentData.ascent, 0);
@@ -11075,35 +10283,26 @@ ITextElement.prototype.applyTextPropertiesToMatrix = function (documentData, mat
   }
   matrixHelper.translate(xPos, yPos, 0);
 };
-
 ITextElement.prototype.buildColor = function (colorData) {
   return 'rgb(' + Math.round(colorData[0] * 255) + ',' + Math.round(colorData[1] * 255) + ',' + Math.round(colorData[2] * 255) + ')';
 };
-
 ITextElement.prototype.emptyProp = new LetterProps();
-
 ITextElement.prototype.destroy = function () {
-
 };
-
 var emptyShapeData = {
   shapes: [],
 };
-
 function SVGTextLottieElement(data, globalData, comp) {
   this.textSpans = [];
   this.renderType = 'svg';
   this.initElement(data, globalData, comp);
 }
-
 extendPrototype([BaseElement, TransformElement, SVGBaseElement, HierarchyElement, FrameElement, RenderableDOMElement, ITextElement], SVGTextLottieElement);
-
 SVGTextLottieElement.prototype.createContent = function () {
   if (this.data.singleShape && !this.globalData.fontManager.chars) {
     this.textContainer = createNS('text');
   }
 };
-
 SVGTextLottieElement.prototype.buildTextContents = function (textArray) {
   var i = 0;
   var len = textArray.length;
@@ -11121,7 +10320,6 @@ SVGTextLottieElement.prototype.buildTextContents = function (textArray) {
   textContents.push(currentTextContent);
   return textContents;
 };
-
 SVGTextLottieElement.prototype.buildShapeData = function (data, scale) {
   // data should probably be cloned to apply scale separately to each instance of a text on different layers
   // but since text internal content gets only rendered once and then it's never rerendered,
@@ -11139,12 +10337,10 @@ SVGTextLottieElement.prototype.buildShapeData = function (data, scale) {
   }
   return data;
 };
-
 SVGTextLottieElement.prototype.buildNewText = function () {
   this.addDynamicProperty(this);
   var i;
   var len;
-
   var documentData = this.textProperty.currentData;
   this.renderedLetters = createSizedArray(documentData ? documentData.l.length : 0);
   if (documentData.fc) {
@@ -11168,11 +10364,9 @@ SVGTextLottieElement.prototype.buildNewText = function () {
     this.layerElement.setAttribute('font-weight', fWeight);
   }
   this.layerElement.setAttribute('aria-label', documentData.t);
-
   var letters = documentData.l || [];
   var usesGlyphs = !!this.globalData.fontManager.chars;
   len = letters.length;
-
   var tSpan;
   var matrixHelper = this.mHelper;
   var shapeStr = '';
@@ -11216,7 +10410,6 @@ SVGTextLottieElement.prototype.buildNewText = function () {
       this.textSpans[i].span = tSpan;
       yPos += documentData.finalLineHeight;
     }
-
     this.layerElement.appendChild(tElement);
   } else {
     var cachedSpansLength = this.textSpans.length;
@@ -11246,7 +10439,6 @@ SVGTextLottieElement.prototype.buildNewText = function () {
         }
         tSpan.style.display = 'inherit';
       }
-
       matrixHelper.reset();
       if (singleShape) {
         if (letters[i].n) {
@@ -11309,10 +10501,8 @@ SVGTextLottieElement.prototype.buildNewText = function () {
     this.textSpans[i].span.style.display = 'none';
     i += 1;
   }
-
   this._sizeChanged = true;
 };
-
 SVGTextLottieElement.prototype.sourceRectAtTime = function () {
   this.prepareFrame(this.comp.renderedFrame - this.data.st);
   this.renderInnerContent();
@@ -11328,7 +10518,6 @@ SVGTextLottieElement.prototype.sourceRectAtTime = function () {
   }
   return this.bbox;
 };
-
 SVGTextLottieElement.prototype.getValue = function () {
   var i;
   var len = this.textSpans.length;
@@ -11344,7 +10533,6 @@ SVGTextLottieElement.prototype.getValue = function () {
     }
   }
 };
-
 SVGTextLottieElement.prototype.renderInnerContent = function () {
   if (!this.data.singleShape || this._mdf) {
     this.textAnimator.getMeasures(this.textProperty.currentData, this.lettersChangedFlag);
@@ -11353,9 +10541,7 @@ SVGTextLottieElement.prototype.renderInnerContent = function () {
       var i;
       var len;
       var renderedLetters = this.textAnimator.renderedLetters;
-
       var letters = this.textProperty.currentData.l;
-
       len = letters.length;
       var renderedLetter;
       var textSpan;
@@ -11388,12 +10574,10 @@ SVGTextLottieElement.prototype.renderInnerContent = function () {
     }
   }
 };
-
 function ISolidElement(data, globalData, comp) {
   this.initElement(data, globalData, comp);
 }
 extendPrototype([IImageElement], ISolidElement);
-
 ISolidElement.prototype.createContent = function () {
   var rect = createNS('rect');
   /// /rect.style.width = this.data.sw;
@@ -11404,7 +10588,6 @@ ISolidElement.prototype.createContent = function () {
   rect.setAttribute('fill', this.data.sc);
   this.layerElement.appendChild(rect);
 };
-
 function NullElement(data, globalData, comp) {
   this.initFrame();
   this.initBaseData(data, globalData, comp);
@@ -11412,54 +10595,39 @@ function NullElement(data, globalData, comp) {
   this.initTransform(data, globalData, comp);
   this.initHierarchy();
 }
-
 NullElement.prototype.prepareFrame = function (num) {
   this.prepareProperties(num, true);
 };
-
 NullElement.prototype.renderFrame = function () {
 };
-
 NullElement.prototype.getBaseElement = function () {
   return null;
 };
-
 NullElement.prototype.destroy = function () {
 };
-
 NullElement.prototype.sourceRectAtTime = function () {
 };
-
 NullElement.prototype.hide = function () {
 };
-
 extendPrototype([BaseElement, TransformElement, HierarchyElement, FrameElement], NullElement);
-
 function SVGRendererBase() {
 }
-
 extendPrototype([BaseRenderer], SVGRendererBase);
-
 SVGRendererBase.prototype.createNull = function (data) {
   return new NullElement(data, this.globalData, this);
 };
-
 SVGRendererBase.prototype.createShape = function (data) {
   return new SVGShapeElement(data, this.globalData, this);
 };
-
 SVGRendererBase.prototype.createText = function (data) {
   return new SVGTextLottieElement(data, this.globalData, this);
 };
-
 SVGRendererBase.prototype.createImage = function (data) {
   return new IImageElement(data, this.globalData, this);
 };
-
 SVGRendererBase.prototype.createSolid = function (data) {
   return new ISolidElement(data, this.globalData, this);
 };
-
 SVGRendererBase.prototype.configAnimation = function (animData) {
   this.svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
   if (this.renderConfig.viewBoxSize) {
@@ -11467,7 +10635,6 @@ SVGRendererBase.prototype.configAnimation = function (animData) {
   } else {
     this.svgElement.setAttribute('viewBox', '0 0 ' + animData.w + ' ' + animData.h);
   }
-
   if (!this.renderConfig.viewBoxOnly) {
     this.svgElement.setAttribute('width', animData.w);
     this.svgElement.setAttribute('height', animData.h);
@@ -11497,11 +10664,9 @@ SVGRendererBase.prototype.configAnimation = function (animData) {
   this.animationItem.wrapper.appendChild(this.svgElement);
   // Mask animation
   var defs = this.globalData.defs;
-
   this.setupGlobalData(animData, defs);
   this.globalData.progressiveLoad = this.renderConfig.progressiveLoad;
   this.data = animData;
-
   var maskElement = createNS('clipPath');
   var rect = createNS('rect');
   rect.setAttribute('width', animData.w);
@@ -11512,12 +10677,10 @@ SVGRendererBase.prototype.configAnimation = function (animData) {
   maskElement.setAttribute('id', maskId);
   maskElement.appendChild(rect);
   this.layerElement.setAttribute('clip-path', 'url(' + getLocationHref() + '#' + maskId + ')');
-
   defs.appendChild(maskElement);
   this.layers = animData.layers;
   this.elements = createSizedArray(animData.layers.length);
 };
-
 SVGRendererBase.prototype.destroy = function () {
   if (this.animationItem.wrapper) {
     this.animationItem.wrapper.innerText = '';
@@ -11535,10 +10698,8 @@ SVGRendererBase.prototype.destroy = function () {
   this.destroyed = true;
   this.animationItem = null;
 };
-
 SVGRendererBase.prototype.updateContainerSize = function () {
 };
-
 SVGRendererBase.prototype.buildItem = function (pos) {
   var elements = this.elements;
   if (elements[pos] || this.layers[pos].ty === 99) {
@@ -11546,7 +10707,6 @@ SVGRendererBase.prototype.buildItem = function (pos) {
   }
   elements[pos] = true;
   var element = this.createItem(this.layers[pos]);
-
   elements[pos] = element;
   if (getExpressionsPlugin()) {
     if (this.layers[pos].ty === 0) {
@@ -11564,7 +10724,6 @@ SVGRendererBase.prototype.buildItem = function (pos) {
     }
   }
 };
-
 SVGRendererBase.prototype.checkPendingElements = function () {
   while (this.pendingElements.length) {
     var element = this.pendingElements.pop();
@@ -11582,7 +10741,6 @@ SVGRendererBase.prototype.checkPendingElements = function () {
     }
   }
 };
-
 SVGRendererBase.prototype.renderFrame = function (num) {
   if (this.renderedFrame === num || this.destroyed) {
     return;
@@ -11616,7 +10774,6 @@ SVGRendererBase.prototype.renderFrame = function (num) {
     }
   }
 };
-
 SVGRendererBase.prototype.appendElementInPos = function (element, pos) {
   var newElement = element.getBaseElement();
   if (!newElement) {
@@ -11636,19 +10793,14 @@ SVGRendererBase.prototype.appendElementInPos = function (element, pos) {
     this.layerElement.appendChild(newElement);
   }
 };
-
 SVGRendererBase.prototype.hide = function () {
   this.layerElement.style.display = 'none';
 };
-
 SVGRendererBase.prototype.show = function () {
   this.layerElement.style.display = 'block';
 };
-
 function ICompElement() {}
-
 extendPrototype([BaseElement, TransformElement, HierarchyElement, FrameElement, RenderableDOMElement], ICompElement);
-
 ICompElement.prototype.initElement = function (data, globalData, comp) {
   this.initFrame();
   this.initBaseData(data, globalData, comp);
@@ -11663,7 +10815,6 @@ ICompElement.prototype.initElement = function (data, globalData, comp) {
   }
   this.hide();
 };
-
 /* ICompElement.prototype.hide = function(){
     if(!this.hidden){
         this.hideElement();
@@ -11675,7 +10826,6 @@ ICompElement.prototype.initElement = function (data, globalData, comp) {
         }
     }
 }; */
-
 ICompElement.prototype.prepareFrame = function (num) {
   this._mdf = false;
   this.prepareRenderableFrame(num);
@@ -11683,7 +10833,6 @@ ICompElement.prototype.prepareFrame = function (num) {
   if (!this.isInRange && !this.data.xt) {
     return;
   }
-
   if (!this.tm._placeholder) {
     var timeRemapped = this.tm.v;
     if (timeRemapped === this.data.op) {
@@ -11708,7 +10857,6 @@ ICompElement.prototype.prepareFrame = function (num) {
     }
   }
 };
-
 ICompElement.prototype.renderInnerContent = function () {
   var i;
   var len = this.layers.length;
@@ -11718,15 +10866,12 @@ ICompElement.prototype.renderInnerContent = function () {
     }
   }
 };
-
 ICompElement.prototype.setElements = function (elems) {
   this.elements = elems;
 };
-
 ICompElement.prototype.getElements = function () {
   return this.elements;
 };
-
 ICompElement.prototype.destroyElements = function () {
   var i;
   var len = this.layers.length;
@@ -11736,12 +10881,10 @@ ICompElement.prototype.destroyElements = function () {
     }
   }
 };
-
 ICompElement.prototype.destroy = function () {
   this.destroyElements();
   this.destroyBaseElement();
 };
-
 function SVGCompElement(data, globalData, comp) {
   this.layers = data.layers;
   this.supports3d = true;
@@ -11751,13 +10894,10 @@ function SVGCompElement(data, globalData, comp) {
   this.initElement(data, globalData, comp);
   this.tm = data.tm ? PropertyFactory.getProp(this, data.tm, 0, globalData.frameRate, this) : { _placeholder: true };
 }
-
 extendPrototype([SVGRendererBase, ICompElement, SVGBaseElement], SVGCompElement);
-
 SVGCompElement.prototype.createComp = function (data) {
   return new SVGCompElement(data, this.globalData, this);
 };
-
 function SVGRenderer(animationItem, config) {
   this.animationItem = animationItem;
   this.layers = null;
@@ -11808,7 +10948,6 @@ function SVGRenderer(animationItem, config) {
     width: (config && config.width),
     height: (config && config.height),
   };
-
   this.globalData = {
     _mdf: false,
     frameNum: -1,
@@ -11820,13 +10959,10 @@ function SVGRenderer(animationItem, config) {
   this.destroyed = false;
   this.rendererType = 'svg';
 }
-
 extendPrototype([SVGRendererBase], SVGRenderer);
-
 SVGRenderer.prototype.createComp = function (data) {
   return new SVGCompElement(data, this.globalData, this);
 };
-
 function CVContextData() {
   this.saved = [];
   this.cArrPos = 0;
@@ -11840,7 +10976,6 @@ function CVContextData() {
   }
   this._length = len;
 }
-
 CVContextData.prototype.duplicate = function () {
   var newLength = this._length * 2;
   var currentSavedOp = this.savedOp;
@@ -11852,19 +10987,16 @@ CVContextData.prototype.duplicate = function () {
   }
   this._length = newLength;
 };
-
 CVContextData.prototype.reset = function () {
   this.cArrPos = 0;
   this.cTr.reset();
   this.cO = 1;
 };
-
 function ShapeTransformManager() {
   this.sequences = {};
   this.sequenceList = [];
   this.transform_key_count = 0;
 }
-
 ShapeTransformManager.prototype = {
   addTransformSequence: function (transforms) {
     var i;
@@ -11918,12 +11050,9 @@ ShapeTransformManager.prototype = {
     return '_' + this.transform_key_count;
   },
 };
-
 function CVEffects() {
-
 }
 CVEffects.prototype.renderFrame = function () {};
-
 function CVMaskElement(data, element) {
   this.data = data;
   this.element = element;
@@ -11943,7 +11072,6 @@ function CVMaskElement(data, element) {
     this.element.addRenderableComponent(this);
   }
 }
-
 CVMaskElement.prototype.renderFrame = function () {
   if (!this.hasMasks) {
     return;
@@ -11981,16 +11109,12 @@ CVMaskElement.prototype.renderFrame = function () {
   this.element.globalData.renderer.save(true);
   ctx.clip();
 };
-
 CVMaskElement.prototype.getMaskProperty = MaskElement.prototype.getMaskProperty;
-
 CVMaskElement.prototype.destroy = function () {
   this.element = null;
 };
-
 function CVBaseElement() {
 }
-
 CVBaseElement.prototype = {
   createElements: function () {},
   initRendererElement: function () {},
@@ -12052,7 +11176,6 @@ CVBaseElement.prototype = {
 };
 CVBaseElement.prototype.hide = CVBaseElement.prototype.hideElement;
 CVBaseElement.prototype.show = CVBaseElement.prototype.showElement;
-
 function CVShapeData(element, data, styles, transformsManager) {
   this.styledShapes = [];
   this.tr = [0, 0, 0, 0, 0, 0];
@@ -12079,9 +11202,7 @@ function CVShapeData(element, data, styles, transformsManager) {
     }
   }
 }
-
 CVShapeData.prototype.setAsAnimated = SVGShapeData.prototype.setAsAnimated;
-
 function CVShapeElement(data, globalData, comp) {
   this.shapes = [];
   this.shapesData = data.shapes;
@@ -12093,19 +11214,13 @@ function CVShapeElement(data, globalData, comp) {
   this.transformsManager = new ShapeTransformManager();
   this.initElement(data, globalData, comp);
 }
-
 extendPrototype([BaseElement, TransformElement, CVBaseElement, IShapeElement, HierarchyElement, FrameElement, RenderableElement], CVShapeElement);
-
 CVShapeElement.prototype.initElement = RenderableDOMElement.prototype.initElement;
-
 CVShapeElement.prototype.transformHelper = { opacity: 1, _opMdf: false };
-
 CVShapeElement.prototype.dashResetter = [];
-
 CVShapeElement.prototype.createContent = function () {
   this.searchShapes(this.shapesData, this.itemsData, this.prevViewData, true, []);
 };
-
 CVShapeElement.prototype.createStyleElement = function (data, transforms) {
   var styleElem = {
     data: data,
@@ -12154,7 +11269,6 @@ CVShapeElement.prototype.createStyleElement = function (data, transforms) {
   elementData.style = styleElem;
   return elementData;
 };
-
 CVShapeElement.prototype.createGroupElement = function () {
   var elementData = {
     it: [],
@@ -12162,7 +11276,6 @@ CVShapeElement.prototype.createGroupElement = function () {
   };
   return elementData;
 };
-
 CVShapeElement.prototype.createTransformElement = function (data) {
   var elementData = {
     transform: {
@@ -12175,15 +11288,12 @@ CVShapeElement.prototype.createTransformElement = function (data) {
   };
   return elementData;
 };
-
 CVShapeElement.prototype.createShapeElement = function (data) {
   var elementData = new CVShapeData(this, data, this.stylesList, this.transformsManager);
-
   this.shapes.push(elementData);
   this.addShapeToModifiers(elementData);
   return elementData;
 };
-
 CVShapeElement.prototype.reloadShapes = function () {
   this._isFirstFrame = true;
   var i;
@@ -12199,7 +11309,6 @@ CVShapeElement.prototype.reloadShapes = function () {
   this.renderModifiers();
   this.transformsManager.processSequences(this._isFirstFrame);
 };
-
 CVShapeElement.prototype.addTransformToStyleList = function (transform) {
   var i;
   var len = this.stylesList.length;
@@ -12209,7 +11318,6 @@ CVShapeElement.prototype.addTransformToStyleList = function (transform) {
     }
   }
 };
-
 CVShapeElement.prototype.removeTransformFromStyleList = function () {
   var i;
   var len = this.stylesList.length;
@@ -12219,7 +11327,6 @@ CVShapeElement.prototype.removeTransformFromStyleList = function () {
     }
   }
 };
-
 CVShapeElement.prototype.closeStyles = function (styles) {
   var i;
   var len = styles.length;
@@ -12227,7 +11334,6 @@ CVShapeElement.prototype.closeStyles = function (styles) {
     styles[i].closed = true;
   }
 };
-
 CVShapeElement.prototype.searchShapes = function (arr, itemsData, prevViewData, shouldRender, transforms) {
   var i;
   var len = arr.length - 1;
@@ -12252,7 +11358,6 @@ CVShapeElement.prototype.searchShapes = function (arr, itemsData, prevViewData, 
       } else {
         itemsData[i].style.closed = false;
       }
-
       ownStyles.push(itemsData[i].style);
     } else if (arr[i].ty === 'gr') {
       if (!processedPos) {
@@ -12308,7 +11413,6 @@ CVShapeElement.prototype.searchShapes = function (arr, itemsData, prevViewData, 
     ownModifiers[i].closed = true;
   }
 };
-
 CVShapeElement.prototype.renderInnerContent = function () {
   this.transformHelper.opacity = 1;
   this.transformHelper._opMdf = false;
@@ -12316,7 +11420,6 @@ CVShapeElement.prototype.renderInnerContent = function () {
   this.transformsManager.processSequences(this._isFirstFrame);
   this.renderShape(this.transformHelper, this.shapesData, this.itemsData, true);
 };
-
 CVShapeElement.prototype.renderShapeTransform = function (parentTransform, groupTransform) {
   if (parentTransform._opMdf || groupTransform.op._mdf || this._isFirstFrame) {
     groupTransform.opacity = parentTransform.opacity;
@@ -12324,7 +11427,6 @@ CVShapeElement.prototype.renderShapeTransform = function (parentTransform, group
     groupTransform._opMdf = true;
   }
 };
-
 CVShapeElement.prototype.drawLayer = function () {
   var i;
   var len = this.stylesList.length;
@@ -12341,7 +11443,6 @@ CVShapeElement.prototype.drawLayer = function () {
   for (i = 0; i < len; i += 1) {
     currentStyle = this.stylesList[i];
     type = currentStyle.type;
-
     // Skipping style when
     // Stroke width equals 0
     // style should not be rendered (extra unused repeaters)
@@ -12375,7 +11476,6 @@ CVShapeElement.prototype.drawLayer = function () {
         }
         nodes = elems[j].trNodes;
         kLen = nodes.length;
-
         for (k = 0; k < kLen; k += 1) {
           if (nodes[k].t === 'm') {
             ctx.moveTo(nodes[k].p[0], nodes[k].p[1]);
@@ -12399,7 +11499,6 @@ CVShapeElement.prototype.drawLayer = function () {
     }
   }
 };
-
 CVShapeElement.prototype.renderShape = function (parentTransform, items, data, isMain) {
   var i;
   var len = items.length - 1;
@@ -12427,7 +11526,6 @@ CVShapeElement.prototype.renderShape = function (parentTransform, items, data, i
     this.drawLayer();
   }
 };
-
 CVShapeElement.prototype.renderStyledShape = function (styledShape, shape) {
   if (this._isFirstFrame || shape._mdf || styledShape.transforms._mdf) {
     var shapeNodes = styledShape.trNodes;
@@ -12474,7 +11572,6 @@ CVShapeElement.prototype.renderStyledShape = function (styledShape, shape) {
     styledShape.trNodes = shapeNodes;
   }
 };
-
 CVShapeElement.prototype.renderPath = function (pathData, itemData) {
   if (pathData.hd !== true && pathData._shouldRender) {
     var i;
@@ -12484,10 +11581,8 @@ CVShapeElement.prototype.renderPath = function (pathData, itemData) {
     }
   }
 };
-
 CVShapeElement.prototype.renderFill = function (styleData, itemData, groupTransform) {
   var styleElem = itemData.style;
-
   if (itemData.c._mdf || this._isFirstFrame) {
     styleElem.co = 'rgb('
         + bmFloor(itemData.c.v[0]) + ','
@@ -12498,7 +11593,6 @@ CVShapeElement.prototype.renderFill = function (styleData, itemData, groupTransf
     styleElem.coOp = itemData.o.v * groupTransform.opacity;
   }
 };
-
 CVShapeElement.prototype.renderGradientFill = function (styleData, itemData, groupTransform) {
   var styleElem = itemData.style;
   var grd;
@@ -12511,7 +11605,6 @@ CVShapeElement.prototype.renderGradientFill = function (styleData, itemData, gro
     } else {
       var rad = Math.sqrt(Math.pow(pt1[0] - pt2[0], 2) + Math.pow(pt1[1] - pt2[1], 2));
       var ang = Math.atan2(pt2[1] - pt1[1], pt2[0] - pt1[0]);
-
       var percent = itemData.h.v;
       if (percent >= 1) {
         percent = 0.99;
@@ -12523,12 +11616,10 @@ CVShapeElement.prototype.renderGradientFill = function (styleData, itemData, gro
       var y = Math.sin(ang + itemData.a.v) * dist + pt1[1];
       grd = ctx.createRadialGradient(x, y, 0, pt1[0], pt1[1], rad);
     }
-
     var i;
     var len = styleData.g.p;
     var cValues = itemData.g.c;
     var opacity = 1;
-
     for (i = 0; i < len; i += 1) {
       if (itemData.g._hasOpacity && itemData.g._collapsable) {
         opacity = itemData.g.o[i * 2 + 1];
@@ -12539,7 +11630,6 @@ CVShapeElement.prototype.renderGradientFill = function (styleData, itemData, gro
   }
   styleElem.coOp = itemData.o.v * groupTransform.opacity;
 };
-
 CVShapeElement.prototype.renderStroke = function (styleData, itemData, groupTransform) {
   var styleElem = itemData.style;
   var d = itemData.d;
@@ -12557,7 +11647,6 @@ CVShapeElement.prototype.renderStroke = function (styleData, itemData, groupTran
     styleElem.wi = itemData.w.v;
   }
 };
-
 CVShapeElement.prototype.destroy = function () {
   this.shapesData = null;
   this.globalData = null;
@@ -12565,7 +11654,6 @@ CVShapeElement.prototype.destroy = function () {
   this.stylesList.length = 0;
   this.itemsData.length = 0;
 };
-
 function CVTextElement(data, globalData, comp) {
   this.textSpans = [];
   this.yOffset = 0;
@@ -12586,13 +11674,10 @@ function CVTextElement(data, globalData, comp) {
   this.initElement(data, globalData, comp);
 }
 extendPrototype([BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement, ITextElement], CVTextElement);
-
 CVTextElement.prototype.tHelper = createTag('canvas').getContext('2d');
-
 CVTextElement.prototype.buildNewText = function () {
   var documentData = this.textProperty.currentData;
   this.renderedLetters = createSizedArray(documentData.l ? documentData.l.length : 0);
-
   var hasFill = false;
   if (documentData.fc) {
     hasFill = true;
@@ -12678,18 +11763,15 @@ CVTextElement.prototype.buildNewText = function () {
     cnt += 1;
   }
 };
-
 CVTextElement.prototype.renderInnerContent = function () {
   var ctx = this.canvasContext;
   ctx.font = this.values.fValue;
   ctx.lineCap = 'butt';
   ctx.lineJoin = 'miter';
   ctx.miterLimit = 4;
-
   if (!this.data.singleShape) {
     this.textAnimator.getMeasures(this.textProperty.currentData, this.lettersChangedFlag);
   }
-
   var i;
   var len;
   var j;
@@ -12697,9 +11779,7 @@ CVTextElement.prototype.renderInnerContent = function () {
   var k;
   var kLen;
   var renderedLetters = this.textAnimator.renderedLetters;
-
   var letters = this.textProperty.currentData.l;
-
   len = letters.length;
   var renderedLetter;
   var lastFill = null;
@@ -12780,24 +11860,20 @@ CVTextElement.prototype.renderInnerContent = function () {
     }
   }
 };
-
 function CVImageElement(data, globalData, comp) {
   this.assetData = globalData.getAssetData(data.refId);
   this.img = globalData.imageLoader.getAsset(this.assetData);
   this.initElement(data, globalData, comp);
 }
 extendPrototype([BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement], CVImageElement);
-
 CVImageElement.prototype.initElement = SVGShapeElement.prototype.initElement;
 CVImageElement.prototype.prepareFrame = IImageElement.prototype.prepareFrame;
-
 CVImageElement.prototype.createContent = function () {
   if (this.img.width && (this.assetData.w !== this.img.width || this.assetData.h !== this.img.height)) {
     var canvas = createTag('canvas');
     canvas.width = this.assetData.w;
     canvas.height = this.assetData.h;
     var ctx = canvas.getContext('2d');
-
     var imgW = this.img.width;
     var imgH = this.img.height;
     var imgRel = imgW / imgH;
@@ -12816,30 +11892,24 @@ CVImageElement.prototype.createContent = function () {
     this.img = canvas;
   }
 };
-
 CVImageElement.prototype.renderInnerContent = function () {
   this.canvasContext.drawImage(this.img, 0, 0);
 };
-
 CVImageElement.prototype.destroy = function () {
   this.img = null;
 };
-
 function CVSolidElement(data, globalData, comp) {
   this.initElement(data, globalData, comp);
 }
 extendPrototype([BaseElement, TransformElement, CVBaseElement, HierarchyElement, FrameElement, RenderableElement], CVSolidElement);
-
 CVSolidElement.prototype.initElement = SVGShapeElement.prototype.initElement;
 CVSolidElement.prototype.prepareFrame = IImageElement.prototype.prepareFrame;
-
 CVSolidElement.prototype.renderInnerContent = function () {
   var ctx = this.canvasContext;
   ctx.fillStyle = this.data.sc;
   ctx.fillRect(0, 0, this.data.sw, this.data.sh);
   //
 };
-
 function CanvasRendererBase(animationItem, config) {
   this.animationItem = animationItem;
   this.renderConfig = {
@@ -12871,25 +11941,19 @@ function CanvasRendererBase(animationItem, config) {
   this.rendererType = 'canvas';
 }
 extendPrototype([BaseRenderer], CanvasRendererBase);
-
 CanvasRendererBase.prototype.createShape = function (data) {
   return new CVShapeElement(data, this.globalData, this);
 };
-
 CanvasRendererBase.prototype.createText = function (data) {
   return new CVTextElement(data, this.globalData, this);
 };
-
 CanvasRendererBase.prototype.createImage = function (data) {
   return new CVImageElement(data, this.globalData, this);
 };
-
 CanvasRendererBase.prototype.createSolid = function (data) {
   return new CVSolidElement(data, this.globalData, this);
 };
-
 CanvasRendererBase.prototype.createNull = SVGRenderer.prototype.createNull;
-
 CanvasRendererBase.prototype.ctxTransform = function (props) {
   if (props[0] === 1 && props[1] === 0 && props[4] === 0 && props[5] === 1 && props[12] === 0 && props[13] === 0) {
     return;
@@ -12906,7 +11970,6 @@ CanvasRendererBase.prototype.ctxTransform = function (props) {
   var trProps = this.contextData.cTr.props;
   this.canvasContext.setTransform(trProps[0], trProps[1], trProps[4], trProps[5], trProps[12], trProps[13]);
 };
-
 CanvasRendererBase.prototype.ctxOpacity = function (op) {
   /* if(op === 1){
         return;
@@ -12922,7 +11985,6 @@ CanvasRendererBase.prototype.ctxOpacity = function (op) {
     this.globalData.currentGlobalAlpha = this.contextData.cO;
   }
 };
-
 CanvasRendererBase.prototype.reset = function () {
   if (!this.renderConfig.clearCanvas) {
     this.canvasContext.restore();
@@ -12930,7 +11992,6 @@ CanvasRendererBase.prototype.reset = function () {
   }
   this.contextData.reset();
 };
-
 CanvasRendererBase.prototype.save = function (actionFlag) {
   if (!this.renderConfig.clearCanvas) {
     this.canvasContext.save();
@@ -12951,7 +12012,6 @@ CanvasRendererBase.prototype.save = function (actionFlag) {
   this.contextData.savedOp[this.contextData.cArrPos] = this.contextData.cO;
   this.contextData.cArrPos += 1;
 };
-
 CanvasRendererBase.prototype.restore = function (actionFlag) {
   if (!this.renderConfig.clearCanvas) {
     this.canvasContext.restore();
@@ -12976,7 +12036,6 @@ CanvasRendererBase.prototype.restore = function (actionFlag) {
     this.globalData.currentGlobalAlpha = popped;
   }
 };
-
 CanvasRendererBase.prototype.configAnimation = function (animData) {
   if (this.animationItem.wrapper) {
     this.animationItem.container = createTag('canvas');
@@ -13017,10 +12076,8 @@ CanvasRendererBase.prototype.configAnimation = function (animData) {
   this.globalData.progressiveLoad = this.renderConfig.progressiveLoad;
   this.globalData.transformCanvas = this.transformCanvas;
   this.elements = createSizedArray(animData.layers.length);
-
   this.updateContainerSize();
 };
-
 CanvasRendererBase.prototype.updateContainerSize = function () {
   this.reset();
   var elementWidth;
@@ -13051,7 +12108,6 @@ CanvasRendererBase.prototype.updateContainerSize = function () {
       this.transformCanvas.sx = elementHeight / (this.transformCanvas.h / this.renderConfig.dpr);
       this.transformCanvas.sy = elementHeight / (this.transformCanvas.h / this.renderConfig.dpr);
     }
-
     if (xPos === 'xMid' && ((animationRel < elementRel && fillType === 'meet') || (animationRel > elementRel && fillType === 'slice'))) {
       this.transformCanvas.tx = ((elementWidth - this.transformCanvas.w * (elementHeight / this.transformCanvas.h)) / 2) * this.renderConfig.dpr;
     } else if (xPos === 'xMax' && ((animationRel < elementRel && fillType === 'meet') || (animationRel > elementRel && fillType === 'slice'))) {
@@ -13089,10 +12145,8 @@ CanvasRendererBase.prototype.updateContainerSize = function () {
   this.canvasContext.rect(0, 0, this.transformCanvas.w, this.transformCanvas.h);
   this.canvasContext.closePath();
   this.canvasContext.clip();
-
   this.renderFrame(this.renderedFrame, true);
 };
-
 CanvasRendererBase.prototype.destroy = function () {
   if (this.renderConfig.clearCanvas && this.animationItem.wrapper) {
     this.animationItem.wrapper.innerText = '';
@@ -13109,7 +12163,6 @@ CanvasRendererBase.prototype.destroy = function () {
   this.animationItem.container = null;
   this.destroyed = true;
 };
-
 CanvasRendererBase.prototype.renderFrame = function (num, forceRender) {
   if ((this.renderedFrame === num && this.renderConfig.clearCanvas === true && !forceRender) || this.destroyed || num === -1) {
     return;
@@ -13119,7 +12172,6 @@ CanvasRendererBase.prototype.renderFrame = function (num, forceRender) {
   this.globalData.frameId += 1;
   this.globalData._mdf = !this.renderConfig.clearCanvas || forceRender;
   this.globalData.projectInterface.currentFrame = num;
-
   // console.log('--------');
   // console.log('NEW: ',num);
   var i;
@@ -13127,7 +12179,6 @@ CanvasRendererBase.prototype.renderFrame = function (num, forceRender) {
   if (!this.completeLayers) {
     this.checkLayers(num);
   }
-
   for (i = 0; i < len; i += 1) {
     if (this.completeLayers || this.elements[i]) {
       this.elements[i].prepareFrame(num - this.layers[i].st);
@@ -13149,7 +12200,6 @@ CanvasRendererBase.prototype.renderFrame = function (num, forceRender) {
     }
   }
 };
-
 CanvasRendererBase.prototype.buildItem = function (pos) {
   var elements = this.elements;
   if (elements[pos] || this.layers[pos].ty === 99) {
@@ -13162,22 +12212,18 @@ CanvasRendererBase.prototype.buildItem = function (pos) {
         element.resize(this.globalData.transformCanvas);
     } */
 };
-
 CanvasRendererBase.prototype.checkPendingElements = function () {
   while (this.pendingElements.length) {
     var element = this.pendingElements.pop();
     element.checkParenting();
   }
 };
-
 CanvasRendererBase.prototype.hide = function () {
   this.animationItem.container.style.display = 'none';
 };
-
 CanvasRendererBase.prototype.show = function () {
   this.animationItem.container.style.display = 'block';
 };
-
 function CVCompElement(data, globalData, comp) {
   this.completeLayers = false;
   this.layers = data.layers;
@@ -13186,9 +12232,7 @@ function CVCompElement(data, globalData, comp) {
   this.initElement(data, globalData, comp);
   this.tm = data.tm ? PropertyFactory.getProp(this, data.tm, 0, globalData.frameRate, this) : { _placeholder: true };
 }
-
 extendPrototype([CanvasRendererBase, ICompElement, CVBaseElement], CVCompElement);
-
 CVCompElement.prototype.renderInnerContent = function () {
   var ctx = this.canvasContext;
   ctx.beginPath();
@@ -13206,7 +12250,6 @@ CVCompElement.prototype.renderInnerContent = function () {
     }
   }
 };
-
 CVCompElement.prototype.destroy = function () {
   var i;
   var len = this.layers.length;
@@ -13218,11 +12261,9 @@ CVCompElement.prototype.destroy = function () {
   this.layers = null;
   this.elements = null;
 };
-
 CVCompElement.prototype.createComp = function (data) {
   return new CVCompElement(data, this.globalData, this);
 };
-
 function CanvasRenderer(animationItem, config) {
   this.animationItem = animationItem;
   this.renderConfig = {
@@ -13254,45 +12295,36 @@ function CanvasRenderer(animationItem, config) {
   this.rendererType = 'canvas';
 }
 extendPrototype([CanvasRendererBase], CanvasRenderer);
-
 CanvasRenderer.prototype.createComp = function (data) {
   return new CVCompElement(data, this.globalData, this);
 };
-
 // Registering renderers
 registerRenderer('canvas', CanvasRenderer);
-
 // Registering shape modifiers
 ShapeModifiers.registerModifier('tm', TrimModifier);
 ShapeModifiers.registerModifier('pb', PuckerAndBloatModifier);
 ShapeModifiers.registerModifier('rp', RepeaterModifier);
 ShapeModifiers.registerModifier('rd', RoundCornersModifier);
-
 const Expressions = (function () {
   var ob = {};
   ob.initExpressions = initExpressions;
-
   function initExpressions(animation) {
     var stackCount = 0;
     var registers = [];
-
     function pushExpression() {
       stackCount += 1;
     }
-
     function popExpression() {
       stackCount -= 1;
       if (stackCount === 0) {
         releaseInstances();
       }
     }
-
     function registerExpressionProperty(expression) {
       if (registers.indexOf(expression) === -1) {
         registers.push(expression);
       }
     }
-
     function releaseInstances() {
       var i;
       var len = registers.length;
@@ -13301,7 +12333,6 @@ const Expressions = (function () {
       }
       registers.length = 0;
     }
-
     animation.renderer.compInterface = CompExpressionInterface(animation.renderer);
     animation.renderer.globalData.projectInterface.registerComposition(animation.renderer);
     animation.renderer.globalData.pushExpression = pushExpression;
@@ -13310,11 +12341,9 @@ const Expressions = (function () {
   }
   return ob;
 }());
-
 /* eslint-disable */
 /*
  Copyright 2014 David Bau.
-
  Permission is hereby granted, free of charge, to any person obtaining
  a copy of this software and associated documentation files (the
  "Software"), to deal in the Software without restriction, including
@@ -13322,10 +12351,8 @@ const Expressions = (function () {
  distribute, sublicense, and/or sell copies of the Software, and to
  permit persons to whom the Software is furnished to do so, subject to
  the following conditions:
-
  The above copyright notice and this permission notice shall be
  included in all copies or substantial portions of the Software.
-
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -13333,9 +12360,7 @@ const Expressions = (function () {
  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
  */
-
 function seedRandom(pool, math) {
 //
 // The following constants are related to IEEE 754 limits.
@@ -13350,7 +12375,6 @@ function seedRandom(pool, math) {
         overflow = significance * 2,
         mask = width - 1,
         nodecrypto;         // node.js crypto module, initialized at the bottom.
-
 //
 // seedrandom()
 // This is the seedrandom function described above.
@@ -13358,15 +12382,12 @@ function seedRandom(pool, math) {
     function seedrandom(seed, options, callback) {
         var key = [];
         options = (options === true) ? { entropy: true } : (options || {});
-
         // Flatten the seed string or build one from local entropy if needed.
         var shortseed = mixkey(flatten(
             options.entropy ? [seed, tostring(pool)] :
                 (seed === null) ? autoseed() : seed, 3), key);
-
         // Use the seed to initialize an ARC4 generator.
         var arc4 = new ARC4(key);
-
         // This function returns a random double in [0, 1) that contains
         // randomness in every bit of the mantissa of the IEEE 754 value.
         var prng = function() {
@@ -13385,14 +12406,11 @@ function seedRandom(pool, math) {
             }
             return (n + x) / d;                 // Form the number within [0, 1).
         };
-
         prng.int32 = function() { return arc4.g(4) | 0; };
         prng.quick = function() { return arc4.g(4) / 0x100000000; };
         prng.double = prng;
-
         // Mix the randomness into accumulated entropy.
         mixkey(tostring(arc4.S), pool);
-
         // Calling convention: what to return as a function of prng, seed, is_math.
         return (options.pass || callback ||
         function(prng, seed, is_math_call, state) {
@@ -13402,11 +12420,9 @@ function seedRandom(pool, math) {
                 // Only provide the .state method if requested via options.state.
                 prng.state = function() { return copy(arc4, {}); };
             }
-
             // If called as a method of Math (Math.seedrandom()), mutate
             // Math.random because that is how seedrandom.js has worked since v1.0.
             if (is_math_call) { math[rngname] = prng; return seed; }
-
             // Otherwise, it is a newer calling convention, so return the
             // prng directly.
             else return prng;
@@ -13417,7 +12433,6 @@ function seedRandom(pool, math) {
             options.state);
     }
     math['seed' + rngname] = seedrandom;
-
 //
 // ARC4
 //
@@ -13431,10 +12446,8 @@ function seedRandom(pool, math) {
     function ARC4(key) {
         var t, keylen = key.length,
             me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
-
         // The empty key [] is treated as [0].
         if (!keylen) { key = [keylen++]; }
-
         // Set up S using the standard key scheduling algorithm.
         while (i < width) {
             s[i] = i++;
@@ -13443,7 +12456,6 @@ function seedRandom(pool, math) {
             s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
             s[j] = t;
         }
-
         // The "g" method returns the next (count) outputs as one number.
         me.g = function(count) {
             // Using instance members instead of closure state nearly doubles speed.
@@ -13460,7 +12472,6 @@ function seedRandom(pool, math) {
             // See http://google.com/search?q=rsa+fluhrer+response&btnI
         };
     }
-
 //
 // copy()
 // Copies internal state of ARC4 to or from a plain object.
@@ -13471,7 +12482,6 @@ function seedRandom(pool, math) {
         t.S = f.S.slice();
         return t;
     }
-
 //
 // flatten()
 // Converts an object tree to nested arrays of strings.
@@ -13485,7 +12495,6 @@ function seedRandom(pool, math) {
         }
         return (result.length ? result : typ == 'string' ? obj : obj + '\0');
     }
-
 //
 // mixkey()
 // Mixes a string seed into a key that is an array of integers, and
@@ -13499,7 +12508,6 @@ function seedRandom(pool, math) {
         }
         return tostring(key);
     }
-
 //
 // autoseed()
 // Returns an object for autoseeding, using window.crypto and Node crypto
@@ -13517,7 +12525,6 @@ function seedRandom(pool, math) {
             return [+new Date(), global, plugins, global.screen, tostring(pool)];
         }
     }
-
 //
 // tostring()
 // Converts an array of charcodes to a string
@@ -13525,7 +12532,6 @@ function seedRandom(pool, math) {
     function tostring(a) {
         return String.fromCharCode.apply(0, a);
     }
-
 //
 // When seedrandom.js is loaded, we immediately mix a few bits
 // from the built-in RNG into the entropy pool.  Because we do
@@ -13534,28 +12540,21 @@ function seedRandom(pool, math) {
 // initialization.
 //
     mixkey(math.random(), pool);
-
 //
 // Nodejs and AMD support: export the implementation as a module using
 // either convention.
 //
-
 // End anonymous scope, and pass initial values.
 };
-
 function initialize$2(BMMath) {
     seedRandom([], BMMath);
 }
-
 var propTypes = {
   SHAPE: 'shape',
 };
-
 /* eslint-disable camelcase */
-
 const ExpressionManager = (function () {
   'use strict';
-
   var ob = {};
   var Math = BMMath;
   var window = null;
@@ -13564,15 +12563,12 @@ const ExpressionManager = (function () {
   var fetch = null;
   var frames = null;
   initialize$2(BMMath);
-
   function $bm_isInstanceOfArray(arr) {
     return arr.constructor === Array || arr.constructor === Float32Array;
   }
-
   function isNumerable(tOfV, v) {
     return tOfV === 'number' || tOfV === 'boolean' || tOfV === 'string' || v instanceof Number;
   }
-
   function $bm_neg(a) {
     var tOfA = typeof a;
     if (tOfA === 'number' || tOfA === 'boolean' || a instanceof Number) {
@@ -13592,11 +12588,9 @@ const ExpressionManager = (function () {
     }
     return -a;
   }
-
   var easeInBez = BezierFactory.getBezierEasing(0.333, 0, 0.833, 0.833, 'easeIn').get;
   var easeOutBez = BezierFactory.getBezierEasing(0.167, 0.167, 0.667, 1, 'easeOut').get;
   var easeInOutBez = BezierFactory.getBezierEasing(0.33, 0, 0.667, 1, 'easeInOut').get;
-
   function sum(a, b) {
     var tOfA = typeof a;
     var tOfB = typeof b;
@@ -13634,7 +12628,6 @@ const ExpressionManager = (function () {
     return 0;
   }
   var add = sum;
-
   function sub(a, b) {
     var tOfA = typeof a;
     var tOfB = typeof b;
@@ -13674,7 +12667,6 @@ const ExpressionManager = (function () {
     }
     return 0;
   }
-
   function mul(a, b) {
     var tOfA = typeof a;
     var tOfB = typeof b;
@@ -13682,7 +12674,6 @@ const ExpressionManager = (function () {
     if (isNumerable(tOfA, a) && isNumerable(tOfB, b)) {
       return a * b;
     }
-
     var i;
     var len;
     if ($bm_isInstanceOfArray(a) && isNumerable(tOfB, b)) {
@@ -13703,7 +12694,6 @@ const ExpressionManager = (function () {
     }
     return 0;
   }
-
   function div(a, b) {
     var tOfA = typeof a;
     var tOfB = typeof b;
@@ -13745,7 +12735,6 @@ const ExpressionManager = (function () {
   var $bm_mul = mul;
   var $bm_div = div;
   var $bm_mod = mod;
-
   function clamp(num, min, max) {
     if (min > max) {
       var mm = max;
@@ -13754,19 +12743,15 @@ const ExpressionManager = (function () {
     }
     return Math.min(Math.max(num, min), max);
   }
-
   function radiansToDegrees(val) {
     return val / degToRads;
   }
   var radians_to_degrees = radiansToDegrees;
-
   function degreesToRadians(val) {
     return val * degToRads;
   }
   var degrees_to_radians = radiansToDegrees;
-
   var helperLengthArray = [0, 0, 0, 0, 0, 0];
-
   function length(arr1, arr2) {
     if (typeof arr1 === 'number' || arr1 instanceof Number) {
       arr2 = arr2 || 0;
@@ -13783,11 +12768,9 @@ const ExpressionManager = (function () {
     }
     return Math.sqrt(addedLength);
   }
-
   function normalize(vec) {
     return div(vec, length(vec));
   }
-
   function rgbToHsl(val) {
     var r = val[0]; var g = val[1]; var b = val[2];
     var max = Math.max(r, g, b);
@@ -13795,7 +12778,6 @@ const ExpressionManager = (function () {
     var h;
     var s;
     var l = (max + min) / 2;
-
     if (max === min) {
       h = 0; // achromatic
       s = 0; // achromatic
@@ -13810,10 +12792,8 @@ const ExpressionManager = (function () {
       }
       h /= 6;
     }
-
     return [h, s, l, val[3]];
   }
-
   function hue2rgb(p, q, t) {
     if (t < 0) t += 1;
     if (t > 1) t -= 1;
@@ -13822,16 +12802,13 @@ const ExpressionManager = (function () {
     if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
     return p;
   }
-
   function hslToRgb(val) {
     var h = val[0];
     var s = val[1];
     var l = val[2];
-
     var r;
     var g;
     var b;
-
     if (s === 0) {
       r = l; // achromatic
       b = l; // achromatic
@@ -13843,10 +12820,8 @@ const ExpressionManager = (function () {
       g = hue2rgb(p, q, h);
       b = hue2rgb(p, q, h - 1 / 3);
     }
-
     return [r, g, b, val[3]];
   }
-
   function linear(t, tMin, tMax, value1, value2) {
     if (value1 === undefined || value2 === undefined) {
       value1 = tMin;
@@ -13905,7 +12880,6 @@ const ExpressionManager = (function () {
     var rndm = BMMath.random();
     return min + rndm * (max - min);
   }
-
   function createPath(points, inTangents, outTangents, closed) {
     var i;
     var len = points.length;
@@ -13921,7 +12895,6 @@ const ExpressionManager = (function () {
     }
     return path;
   }
-
   function initiateExpression(elem, data, property) {
     var val = data.x;
     var needsVelocity = /velocity(?![\w\d])/.test(val);
@@ -13964,14 +12937,11 @@ const ExpressionManager = (function () {
     var mask;
     var valueAtTime;
     var velocityAtTime;
-
     var scoped_bm_rt;
     // val = val.replace(/(\\?"|')((http)(s)?(:\/))?\/.*?(\\?"|')/g, "\"\""); // deter potential network calls
     var expression_function = eval('[function _expression_function(){' + val + ';scoped_bm_rt=$bm_rt}]')[0]; // eslint-disable-line no-eval
     var numKeys = property.kf ? data.k.length : 0;
-
     var active = !this.data || this.data.hd !== true;
-
     var wiggle = function wiggle(freq, amp) {
       var iWiggle;
       var j;
@@ -14003,58 +12973,45 @@ const ExpressionManager = (function () {
       }
       return this.pv + addedAmps[0] + (-amp + amp * 2 * BMMath.random()) * perc;
     }.bind(this);
-
     if (thisProperty.loopIn) {
       loopIn = thisProperty.loopIn.bind(thisProperty);
       loop_in = loopIn;
     }
-
     if (thisProperty.loopOut) {
       loopOut = thisProperty.loopOut.bind(thisProperty);
       loop_out = loopOut;
     }
-
     if (thisProperty.smooth) {
       smooth = thisProperty.smooth.bind(thisProperty);
     }
-
     function loopInDuration(type, duration) {
       return loopIn(type, duration, true);
     }
-
     function loopOutDuration(type, duration) {
       return loopOut(type, duration, true);
     }
-
     if (this.getValueAtTime) {
       valueAtTime = this.getValueAtTime.bind(this);
     }
-
     if (this.getVelocityAtTime) {
       velocityAtTime = this.getVelocityAtTime.bind(this);
     }
-
     var comp = elem.comp.globalData.projectInterface.bind(elem.comp.globalData.projectInterface);
-
     function lookAt(elem1, elem2) {
       var fVec = [elem2[0] - elem1[0], elem2[1] - elem1[1], elem2[2] - elem1[2]];
       var pitch = Math.atan2(fVec[0], Math.sqrt(fVec[1] * fVec[1] + fVec[2] * fVec[2])) / degToRads;
       var yaw = -Math.atan2(fVec[1], fVec[2]) / degToRads;
       return [yaw, pitch, 0];
     }
-
     function easeOut(t, tMin, tMax, val1, val2) {
       return applyEase(easeOutBez, t, tMin, tMax, val1, val2);
     }
-
     function easeIn(t, tMin, tMax, val1, val2) {
       return applyEase(easeInBez, t, tMin, tMax, val1, val2);
     }
-
     function ease(t, tMin, tMax, val1, val2) {
       return applyEase(easeInOutBez, t, tMin, tMax, val1, val2);
     }
-
     function applyEase(fn, t, tMin, tMax, val1, val2) {
       if (val1 === undefined) {
         val1 = tMin;
@@ -14079,7 +13036,6 @@ const ExpressionManager = (function () {
       }
       return (val2 - val1) * mult + val1;
     }
-
     function nearestKey(time) {
       var iKey;
       var lenKey = data.k.length;
@@ -14122,7 +13078,6 @@ const ExpressionManager = (function () {
       obKey.time = keyTime / elem.comp.globalData.frameRate;
       return obKey;
     }
-
     function key(ind) {
       var obKey;
       var iKey;
@@ -14136,7 +13091,6 @@ const ExpressionManager = (function () {
         value: [],
       };
       var arr = Object.prototype.hasOwnProperty.call(data.k[ind], 's') ? data.k[ind].s : data.k[ind - 1].e;
-
       lenKey = arr.length;
       for (iKey = 0; iKey < lenKey; iKey += 1) {
         obKey[iKey] = arr[iKey];
@@ -14144,14 +13098,12 @@ const ExpressionManager = (function () {
       }
       return obKey;
     }
-
     function framesToTime(fr, fps) {
       if (!fps) {
         fps = elem.comp.globalData.frameRate;
       }
       return fr / fps;
     }
-
     function timeToFrames(t, fps) {
       if (!t && t !== 0) {
         t = time;
@@ -14161,15 +13113,12 @@ const ExpressionManager = (function () {
       }
       return t * fps;
     }
-
     function seedRandom(seed) {
       BMMath.seedrandom(randSeed + seed);
     }
-
     function sourceRectAtTime() {
       return elem.sourceRectAtTime();
     }
-
     function substring(init, end) {
       if (typeof value === 'string') {
         if (end === undefined) {
@@ -14179,7 +13128,6 @@ const ExpressionManager = (function () {
       }
       return '';
     }
-
     function substr(init, end) {
       if (typeof value === 'string') {
         if (end === undefined) {
@@ -14189,12 +13137,10 @@ const ExpressionManager = (function () {
       }
       return '';
     }
-
     function posterizeTime(framesPerSecond) {
       time = framesPerSecond === 0 ? 0 : Math.floor(time * framesPerSecond) / framesPerSecond;
       value = valueAtTime(time);
     }
-
     var time;
     var velocity;
     var value;
@@ -14239,7 +13185,6 @@ const ExpressionManager = (function () {
                     scale = transform.scale; */
         }
       }
-
       if (elemType === 4 && !content) {
         content = thisLayer('ADBE Root Vectors Group');
       }
@@ -14259,7 +13204,6 @@ const ExpressionManager = (function () {
       }
       expression_function();
       this.frameExpressionId = elem.globalData.frameId;
-
       // TODO: Check if it's possible to return on ShapeInterface the .v value
       // Changed this to a ternary operation because Rollup failed compiling it correctly
       scoped_bm_rt = scoped_bm_rt.propType === propTypes.SHAPE
@@ -14271,12 +13215,10 @@ const ExpressionManager = (function () {
     executeExpression.__preventDeadCodeRemoval = [$bm_transform, anchorPoint, time, velocity, inPoint, outPoint, width, height, name, loop_in, loop_out, smooth, toComp, fromCompToSurface, toWorld, fromWorld, mask, position, rotation, scale, thisComp, numKeys, active, wiggle, loopInDuration, loopOutDuration, comp, lookAt, easeOut, easeIn, ease, nearestKey, key, text, textIndex, textTotal, selectorValue, framesToTime, timeToFrames, sourceRectAtTime, substring, substr, posterizeTime, index, globalData];
     return executeExpression;
   }
-
   ob.initiateExpression = initiateExpression;
   ob.__preventDeadCodeRemoval = [window, document, XMLHttpRequest, fetch, frames, $bm_neg, add, $bm_sum, $bm_sub, $bm_mul, $bm_div, $bm_mod, clamp, radians_to_degrees, degreesToRadians, degrees_to_radians, normalize, rgbToHsl, hslToRgb, linear, random, createPath];
   return ob;
 }());
-
 const expressionHelpers = (function () {
   function searchExpressions(elem, data, prop) {
     if (data.x) {
@@ -14286,7 +13228,6 @@ const expressionHelpers = (function () {
       prop.effectsSequence.push(prop.initiateExpression(elem, data, prop).bind(prop));
     }
   }
-
   function getValueAtTime(frameNum) {
     frameNum *= this.elem.globalData.frameRate;
     frameNum -= this.offsetTime;
@@ -14297,7 +13238,6 @@ const expressionHelpers = (function () {
     }
     return this._cachingAtTime.value;
   }
-
   function getSpeedAtTime(frameNum) {
     var delta = -0.01;
     var v1 = this.getValueAtTime(frameNum);
@@ -14314,7 +13254,6 @@ const expressionHelpers = (function () {
     }
     return speed;
   }
-
   function getVelocityAtTime(frameNum) {
     if (this.vel !== undefined) {
       return this.vel;
@@ -14338,15 +13277,12 @@ const expressionHelpers = (function () {
     }
     return velocity;
   }
-
   function getStaticValueAtTime() {
     return this.pv;
   }
-
   function setGroupProperty(propertyGroup) {
     this.propertyGroup = propertyGroup;
   }
-
   return {
     searchExpressions: searchExpressions,
     getSpeedAtTime: getSpeedAtTime,
@@ -14356,7 +13292,6 @@ const expressionHelpers = (function () {
     setGroupProperty: setGroupProperty,
   };
 }());
-
 function addPropertyDecorator() {
   function loopOut(type, duration, durationFlag) {
     if (!this.k || !this.keyframes) {
@@ -14421,9 +13356,7 @@ function addPropertyDecorator() {
       return lastValue + (lastValue - nextLastValue) * (((currentFrame - lastKeyFrame)) / 0.001);
     }
       return this.getValueAtTime((((currentFrame - firstKeyFrame) % cycleDuration + firstKeyFrame)) / this.comp.globalData.frameRate, 0); // eslint-disable-line
-
   }
-
   function loopIn(type, duration, durationFlag) {
     if (!this.k) {
       return this.pv;
@@ -14487,9 +13420,7 @@ function addPropertyDecorator() {
       return firstValue + ((firstValue - nextFirstValue) * (firstKeyFrame - currentFrame)) / 0.001;
     }
       return this.getValueAtTime(((cycleDuration - ((firstKeyFrame - currentFrame) % cycleDuration + firstKeyFrame))) / this.comp.globalData.frameRate, 0); // eslint-disable-line
-
   }
-
   function smooth(width, samples) {
     if (!this.k) {
       return this.pv;
@@ -14532,7 +13463,6 @@ function addPropertyDecorator() {
     }
     return value;
   }
-
   function getTransformValueAtTime(time) {
     if (!this._transformCachingAtTime) {
       this._transformCachingAtTime = {
@@ -14602,11 +13532,9 @@ function addPropertyDecorator() {
     return matrix;
     /// /
   }
-
   function getTransformStaticValueAtTime() {
     return this.v.clone(new Matrix());
   }
-
   var getTransformProperty = TransformPropertyFactory.getTransformProperty;
   TransformPropertyFactory.getTransformProperty = function (elem, data, container) {
     var prop = getTransformProperty(elem, data, container);
@@ -14618,7 +13546,6 @@ function addPropertyDecorator() {
     prop.setGroupProperty = expressionHelpers.setGroupProperty;
     return prop;
   };
-
   var propertyGetProp = PropertyFactory.getProp;
   PropertyFactory.getProp = function (elem, data, type, mult, container) {
     var prop = propertyGetProp(elem, data, type, mult, container);
@@ -14651,10 +13578,8 @@ function addPropertyDecorator() {
     if (prop.k) {
       container.addDynamicProperty(prop);
     }
-
     return prop;
   };
-
   function getShapeValueAtTime(frameNum) {
     // For now this caching object is created only when needed instead of creating it when the shape is initialized.
     if (!this._cachingAtTime) {
@@ -14664,7 +13589,6 @@ function addPropertyDecorator() {
         lastTime: initialDefaultFrame,
       };
     }
-
     frameNum *= this.elem.globalData.frameRate;
     frameNum -= this.offsetTime;
     if (frameNum !== this._cachingAtTime.lastTime) {
@@ -14674,10 +13598,8 @@ function addPropertyDecorator() {
     }
     return this._cachingAtTime.shapeValue;
   }
-
   var ShapePropertyConstructorFunction = ShapePropertyFactory.getConstructorFunction();
   var KeyframedShapePropertyConstructorFunction = ShapePropertyFactory.getKeyframedConstructorFunction();
-
   function ShapeExpressions() {}
   ShapeExpressions.prototype = {
     vertices: function (prop, time) {
@@ -14722,7 +13644,6 @@ function addPropertyDecorator() {
       if (!this._segmentsLength) {
         this._segmentsLength = bez.getSegmentsLength(shapePath);
       }
-
       var segmentsLength = this._segmentsLength;
       var lengths = segmentsLength.lengths;
       var lengthPos = segmentsLength.totalLength * perc;
@@ -14778,7 +13699,6 @@ function addPropertyDecorator() {
   extendPrototype([ShapeExpressions], KeyframedShapePropertyConstructorFunction);
   KeyframedShapePropertyConstructorFunction.prototype.getValueAtTime = getShapeValueAtTime;
   KeyframedShapePropertyConstructorFunction.prototype.initiateExpression = ExpressionManager.initiateExpression;
-
   var propertyGetShapeProp = ShapePropertyFactory.getShapeProp;
   ShapePropertyFactory.getShapeProp = function (elem, data, type, arr, trims) {
     var prop = propertyGetShapeProp(elem, data, type, arr, trims);
@@ -14795,11 +13715,9 @@ function addPropertyDecorator() {
     return prop;
   };
 }
-
 function initialize$1() {
   addPropertyDecorator();
 }
-
 function addDecorator() {
   function searchExpressions() {
     if (this.data.d.x) {
@@ -14809,7 +13727,6 @@ function addDecorator() {
     }
     return null;
   }
-
   TextProperty.prototype.getExpressionValue = function (currentValue, text) {
     var newValue = this.calculateExpression(text);
     if (currentValue.t !== newValue) {
@@ -14821,24 +13738,19 @@ function addDecorator() {
     }
     return currentValue;
   };
-
   TextProperty.prototype.searchProperty = function () {
     var isKeyframed = this.searchKeyframes();
     var hasExpressions = this.searchExpressions();
     this.kf = isKeyframed || hasExpressions;
     return this.kf;
   };
-
   TextProperty.prototype.searchExpressions = searchExpressions;
 }
-
 function initialize() {
   addDecorator();
 }
-
 // Registering expression plugin
 setExpressionsPlugin(Expressions);
 initialize$1();
 initialize();
-
 export { lottie as default };

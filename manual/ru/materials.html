@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -99,7 +97,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
   </div>
 </div>
 <div class="threejs_center code">низкополигональные модели с теми же материалами</div>
-
 <p><code class="notranslate" translate="no">shininess</code> устанавливает <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> определяя <em>блеск</em> от бликов. Значение по умолчанию - 30.</p>
 <div class="spread">
   <div>
@@ -115,7 +112,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
     <div class="code">shininess: 150</div>
   </div>
 </div>
-
 <p>Обратите внимание, что установка светимости (<code class="notranslate" translate="no">emissive</code> свойства) для цвета
 <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a> или <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> и установка <code class="notranslate" translate="no">color</code> в черный 
 (и <code class="notranslate" translate="no">shininess</code> в 0 для Фонга) в конечном итоге будет выглядеть как <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>.</p>
@@ -145,7 +141,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
     </div>
   </div>
 </div>
-
 <p>Зачем нам все 3, когда <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> может делать то же самое, что <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>
 и <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a>? Причина в том, что более сложный материал требует больше ресурсов 
 графического процессора. На более медленном GPU, например, на мобильном телефоне, возможно, 
@@ -162,7 +157,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
 <div class="spread">
   <div data-diagram="MeshToonMaterial"></div>
 </div>
-
 <p>Далее идут 2 <em>физически обоснованных</em> материала. Physically Based
 Rendering часто сокращается как PBR.</p>
 <p>Приведенные выше материалы используют простую математику для создания материалов, 
@@ -184,7 +178,6 @@ Rendering часто сокращается как PBR.</p>
 <p>Вот краткий пример <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> с <code class="notranslate" translate="no">roughness</code> от 0 до 1 
 поперёк и <code class="notranslate" translate="no">metalness</code> от 0 до 1 вниз.</p>
 <div data-diagram="MeshStandardMaterial" style="min-height: 400px"></div>
-
 <p><a href="/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a> же самое, что и <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> но он добавляет <code class="notranslate" translate="no">clearcoat</code> 
 параметр, который идет от 0 до 1 для определения степени применения слоя 
 глянцевого покрытия, и  <code class="notranslate" translate="no">clearCoatRoughness</code> параметр, который указывает, 
@@ -192,7 +185,6 @@ Rendering часто сокращается как PBR.</p>
 <p>Вот та же сетка <code class="notranslate" translate="no">roughness</code> по <code class="notranslate" translate="no">metalness</code> как и до этого, но с 
 <code class="notranslate" translate="no">clearcoat</code> и <code class="notranslate" translate="no">clearCoatRoughness</code>.</p>
 <div data-diagram="MeshPhysicalMaterial" style="min-height: 400px"></div>
-
 <p>Различные стандартные материалы от самых быстрых к самым медленным: 
 <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> ➡ 
 <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>. Более медленные материалы 
@@ -212,7 +204,6 @@ Rendering часто сокращается как PBR.</p>
     <div data-diagram="MeshDepthMaterial"></div>
   </div>
 </div>
-
 <p>The <a href="/docs/#api/en/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a> Покажет вам <em>нормали</em> геометрии. 
 <em>Нормали</em> - это направление конкретного треугольника или грани пикселя.
 <a href="/docs/#api/en/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a> рисует пространство просмотра нормалей (нормали относительно камеры).
@@ -225,7 +216,6 @@ Rendering часто сокращается как PBR.</p>
     <div data-diagram="MeshNormalMaterial"></div>
   </div>
 </div>
-
 <p><a href="/docs/#api/en/materials/ShaderMaterial"><code class="notranslate" translate="no">ShaderMaterial</code></a> предназначен для изготовления нестандартных материалов 
 с использованием шейдерной системы three.js. 
 <a href="/docs/#api/en/materials/RawShaderMaterial"><code class="notranslate" translate="no">RawShaderMaterial</code></a> предназначен для создания полностью пользовательских 
@@ -245,7 +235,6 @@ Rendering часто сокращается как PBR.</p>
     <div class="code">flatShading: true</div>
   </div>
 </div>
-
 <p><a href="/docs/#api/en/materials/Material#side"><code class="notranslate" translate="no">side</code></a>: какие стороны треугольников показать. По умолчанию = <code class="notranslate" translate="no">THREE.FrontSide</code>.
 Другие варианты - <code class="notranslate" translate="no">THREE.BackSide</code> и <code class="notranslate" translate="no">THREE.DoubleSide</code> (с обеих сторон).
 Большинство трехмерных объектов, нарисованных в three, вероятно, являются непрозрачными 
@@ -265,7 +254,6 @@ Rendering часто сокращается как PBR.</p>
     <div class="code">side: THREE.DoubleSide</div>
   </div>
 </div>
-
 <p>С материалами действительно есть над чем поразмыслить, и нам еще многое 
 предстоит сделать. Мы в основном игнорировали текстуры, 
 которые открывают множество свойств. Прежде чем мы рассмотрим текстуры, 
@@ -304,19 +292,11 @@ flat shaded
  они редко переключаются с использования одного на использование другого.
 </p>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-materials.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

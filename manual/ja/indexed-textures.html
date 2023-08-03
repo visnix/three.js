@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -63,7 +61,6 @@
 ユーザーがクリックしたピクセルのカラーを見ると国のIDが分かります。</p>
 <p>そこでこのようなテクスチャを生成する<a href="https://github.com/mrdoob/three.js/blob/master/manual/resources/tools/geo-picking/">コード</a>を書いてみました。</p>
 <div class="threejs_center"><img src="../examples/resources/data/world/country-index-texture.png" style="width: 700px;"></div>
-
 <p>注：このテクスチャを生成するために使用されたデータは<a href="http://thematicmapping.org/downloads/world_borders.php">このウェブサイト</a>からのもので<a href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>ライセンスです。</p>
 <p>たったの217KBになり、国のメッシュの14MBよりずっと良いです。
 解像度を下げる事もできそうですが、今の所は217KBで充分だと思います。</p>
@@ -76,14 +73,12 @@ pickingScene.background = new THREE.Color(0);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
 +  const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
 +  indexTexture.minFilter = THREE.NearestFilter;
 +  indexTexture.magFilter = THREE.NearestFilter;
 +
 +  const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
 +  pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
   scene.add(new THREE.Mesh(geometry, material));
@@ -101,7 +96,6 @@ pickingScene.background = new THREE.Color(0);
   }
   pick(cssPosition, scene, camera) {
     const {pickingTexture, pixelBuffer} = this;
-
     // set the view offset to represent just a single pixel under the mouse
     const pixelRatio = renderer.getPixelRatio();
     camera.setViewOffset(
@@ -126,7 +120,6 @@ pickingScene.background = new THREE.Color(0);
         1,   // width
         1,   // height
         pixelBuffer);
-
 +    const id =
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
@@ -151,7 +144,6 @@ pickingScene.background = new THREE.Color(0);
 </pre>
 <p>これで国を選択できるようになりました。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickHelper = new GPUPickHelper();
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -159,13 +151,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -185,14 +175,12 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
     countryInfo.selected = false;
   });
 }
-
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
 <p>上記のコードでは、国の配列に <code class="notranslate" translate="no">selected</code> プロパティを設定/解除しています。
@@ -204,7 +192,6 @@ canvas.addEventListener('pointerup', pickCountry);
   if (!countryInfos) {
     return;
   }
-
   const large = settings.minArea * settings.minArea;
   // get a matrix that represents a relative orientation of the camera
   normalMatrix.getNormalMatrix(camera.matrixWorldInverse);
@@ -221,7 +208,6 @@ canvas.addEventListener('pointerup', pickCountry);
       elem.style.display = 'none';
       continue;
     }
-
     ...
 </pre>
 <p>これで国を選択できるようになります。</p>
@@ -229,7 +215,6 @@ canvas.addEventListener('pointerup', pickCountry);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>地域に基づいて国を表示しますが、1つをクリックすると1つだけラベルが表示されます。</p>
 <p>国を選択する合理的な解決策のように思えますが、選択された国を強調表示するにはどうでしょうか？</p>
@@ -249,7 +234,6 @@ color 3が何色かは "パレット" と呼ばれる別の場所で定義され
   1, 0, 0, 0, 0, 0, 1,
   0, 1, 1, 1, 1, 1, 1,
 ];
-
 const palette = [
   [255, 255, 255],  // white
   [  0,   0,   0],  // black
@@ -260,7 +244,6 @@ const palette = [
 <p>画像データの各ピクセルがパレットへのインデックスとなります。
 上記のパレットを使い、画像データを解釈すると次のような画像が得られます。</p>
 <div class="threejs_center"><img src="../resources/images/7x7-indexed-face.png"></div>
-
 <p>この場合、上記のテクスチャは国ごとに異なるIDを持っています。
 そこでパレットのテクスチャを通して同じテクスチャを使い、それぞれの国のカラーを出せば良いのです。
 パレットの質感を変える事でそれぞれの国を彩る事ができます。
@@ -316,14 +299,11 @@ void main() {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
   const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
   indexTexture.minFilter = THREE.NearestFilter;
   indexTexture.magFilter = THREE.NearestFilter;
-
   const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
   pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
 +  const fragmentShaderReplacements = [
 +    {
 +      from: '#include &lt;common&gt;',
@@ -349,7 +329,6 @@ void main() {
 +      `,
 +    },
 +  ];
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
 +  material.onBeforeCompile = function(shader) {
@@ -411,7 +390,6 @@ scene.add(new THREE.Mesh(geometry, material));
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-random-colors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-random-colors.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>インデックスとパレットテクスチャの動作が確認できたので、パレットを操作してハイライトにしてみましょう。</p>
 <p>まず、three.jsスタイルカラーを渡してパレットのテクスチャに入れる値を与える関数を作ってみましょう。</p>
@@ -429,17 +407,14 @@ function get255BasedColor(color) {
 const unselectedColor = get255BasedColor('#444');
 const oceanColor = get255BasedColor('rgb(100,200,255)');
 resetPalette();
-
 function setPaletteColor(index, color) {
   palette.set(color, index * 4);
 }
-
 function resetPalette() {
   // make all colors the unselected color
   for (let i = 1; i &lt; maxNumCountries; ++i) {
     setPaletteColor(i, unselectedColor);
   }
-
   // set the ocean color (index #0)
   setPaletteColor(0, oceanColor);
   paletteTexture.needsUpdate = true;
@@ -453,13 +428,11 @@ function resetPalette() {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -477,7 +450,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -491,7 +463,6 @@ function unselectAllCountries() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking-and-highlighting.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking-and-highlighting.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これで動作しました！</p>
 <p>ちょっとした事ですが、選択状態を変えないと地球儀を回せないです。
@@ -513,7 +484,6 @@ function unselectAllCountries() {
 +  startPosition.x = pos.x;
 +  startPosition.y = pos.y;
 +}
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -521,13 +491,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
 +  // if it's been a moment since the user started
 +  // then assume it was a drag action, not a select action
 +  const clickTimeMs = performance.now() - startTimeMs;
@@ -542,7 +510,6 @@ function pickCountry(event) {
 +  if (moveDeltaSq &gt; maxMoveDeltaSq) {
 +    return;
 +  }
-
 -  const position = {x: event.clientX, y: event.clientY};
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -560,7 +527,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -568,7 +534,6 @@ function unselectAllCountries() {
   });
   resetPalette();
 }
-
 +canvas.addEventListener('pointerdown', recordStartTimeAndPosition);
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
@@ -577,21 +542,14 @@ canvas.addEventListener('pointerup', pickCountry);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking-debounced.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking-debounced.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>私はUXの専門家ではないので、もっと良い解決策があれば教えて下さい。</p>
 <p>インデックスグラフィックスがどのように役立つのか、また、three.jsが作るシェーダーを変更してシンプルな機能を追加する方法が少しでも理解してもらえたと思います。
 シェーダーが書かれている言語のGLSLの使い方は、この記事で扱うには内容が大きすぎます。
 <a href="post-processing.html">ポストプロセスの記事</a>にGLSLのリンクがあるので確認してみて下さい。</p>
-
         </div>
       </div>
     </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

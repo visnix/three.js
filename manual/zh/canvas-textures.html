@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -35,14 +33,12 @@
           <p>在<a href="textures.html">上一篇讲解纹理的文章中</a>，我们主要使用图像文件来生成动态纹理，有时候我们想在运行时生成一个纹理。一种可行的方式是使用 <a href="/docs/#api/en/textures/CanvasTexture"><code class="notranslate" translate="no">CanvasTexture</code></a>。</p>
           <p>Canvas纹理 使用一个<code class="notranslate" translate="no">&lt;canvas&gt;</code> 作为它的输入， 如果你还不知道如何使用2D Canvas API来在画布上绘制内容，<a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial">MDN上有一篇很好的文章</a>。</p>
           <p>我们来写一段简单的Canvas代码，这是一个在随机位置上绘制随机颜色的点的程序。</p>
-
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const ctx = document.createElement('canvas').getContext('2d');
 document.body.appendChild(ctx.canvas);
 ctx.canvas.width = 256;
 ctx.canvas.height = 256;
 ctx.fillStyle = '#FFF';
 ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
 function randInt(min, max) {
   if (max === undefined) {
     max = min;
@@ -50,18 +46,15 @@ function randInt(min, max) {
   }
   return Math.random() * (max - min) + min | 0;
 }
-
 function drawRandomDot() {
   ctx.fillStyle = `#${randInt(0x1000000).toString(16).padStart(6, '0')}`;
   ctx.beginPath();
-
   const x = randInt(256);
   const y = randInt(256);
   const radius = randInt(10, 64);
   ctx.arc(x, y, radius, 0, Math.PI * 2);
   ctx.fill();
 }
-
 function render() {
   drawRandomDot();
   requestAnimationFrame(render);
@@ -72,7 +65,6 @@ requestAnimationFrame(render);</pre>
             <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/canvas-random-dots.html"></iframe></div>
             <a class="threejs_center" href="/manual/examples/canvas-random-dots.html" target="_blank">点击在新窗口打开</a>
           </div>
-
           <p></p>
           <p>现在让我们用它来绘制纹理。我们会用从 <a href="textures.html">上一篇文章</a> 中绘制立方体纹理的例子开始。
              我们将删除加载图像的代码，取而代之的是使用我们的Canvas，通过创建一个<a href="/docs/#api/en/textures/CanvasTexture"><code class="notranslate" translate="no">CanvasTexture</code></a>，然后把我们创建好的Canvas对象传入。</p>
@@ -85,7 +77,6 @@ requestAnimationFrame(render);</pre>
 +ctx.fillStyle = '#FFF';
 +ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 +const texture = new THREE.CanvasTexture(ctx.canvas);
-
 const material = new THREE.MeshBasicMaterial({
 -  map: loader.load('resources/images/wall.jpg'),
 +  map: texture,
@@ -96,25 +87,20 @@ cubes.push(cube);  // 添加到cube list中方便旋转</pre>
           <p>然后调用代码，在我们的渲染循环中绘制一个随机点。</p>
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  drawRandomDot();
 +  texture.needsUpdate = true;
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = .2 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }</pre>
           <p>我们只需要做额外的一件事，设置了 <a href="/docs/#api/en/textures/CanvasTexture"><code class="notranslate" translate="no">CanvasTexture</code></a> 的 <code class="notranslate" translate="no">needsUpdate</code>属性来告诉THREE.js来更新纹理画布的最新内容。</p>
@@ -240,7 +226,6 @@ const near = 0.1;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 -camera.position.z = 2;
 +camera.position.set(0, 2, 5);
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 2, 0);
 +controls.update();</pre>
@@ -256,7 +241,6 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
           </ul>
           <p>没有简单的解决方案，还有更复杂的字体渲染技术，据我所知没有插件可以解决这个问题。另外，还需要用户下载字体数据文件，这会变得很慢。</p>
           <p>一种方案是增加标签的分辨率，尝试让尺寸变成现在的2倍，然后设置 <code class="notranslate" translate="no">labelBaseScale</code> 是现在的一半。</p>
-
           <ul>
             <li>名字越长，标签越长。</li>
           </ul>
@@ -270,30 +254,25 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   ctx.font = font;
   // 测量一下name有多长
 +  const textWidth = ctx.measureText(name).width;
-
   const doubleBorderSize = borderSize * 2;
 -  const width = ctx.measureText(name).width + doubleBorderSize;
 +  const width = baseWidth + doubleBorderSize;
   const height = size + doubleBorderSize;
   ctx.canvas.width = width;
   ctx.canvas.height = height;
-
   // 注意，调整画布后需要重新修改字体
   ctx.font = font;
 -  ctx.textBaseline = 'top';
 +  ctx.textBaseline = 'middle';
 +  ctx.textAlign = 'center';
-
   ctx.fillStyle = 'blue';
   ctx.fillRect(0, 0, width, height);
-
 +  // 缩放以适应，但是不要拉伸
 +  const scaleFactor = Math.min(1, baseWidth / textWidth);
 +  ctx.translate(width / 2, height / 2);
 +  ctx.scale(scaleFactor, 1);
   ctx.fillStyle = 'white';
   ctx.fillText(name, borderSize, borderSize);
-
   return ctx.canvas;
 }</pre>
           <p>然后我们可以传入预期标签的长度</p>
@@ -301,11 +280,8 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 -  const canvas = makeLabelCanvas(size, name);
 +function makePerson(x, labelWidth, size, name, color) {
 +  const canvas = makeLabelCanvas(labelWidth, size, name);
-
 ...
-
 }
-
 -makePerson(-3, 32, 'Purple People Eater', 'purple');
 -makePerson(-0, 32, 'Green Machine', 'green');
 -makePerson(+3, 32, 'Red Menace', 'red');
@@ -324,11 +300,8 @@ function makeLabelCanvas(baseWidth, size, name) {
   const borderSize = 2;
 -  const ctx = document.createElement('canvas').getContext('2d');
   const font =  `${size}px bold sans-serif`;
-
   ...
-
 }
-
 +const forceTextureInitialization = function() {
 +  const material = new THREE.MeshBasicMaterial();
 +  const geometry = new THREE.PlaneGeometry();
@@ -341,7 +314,6 @@ function makeLabelCanvas(baseWidth, size, name) {
 +    renderer.render(scene, camera);
 +  };
 +}();
-
 function makePerson(x, labelWidth, size, name, color) {
   const canvas = makeLabelCanvas(labelWidth, size, name);
   const texture = new THREE.CanvasTexture(canvas);
@@ -350,7 +322,6 @@ function makePerson(x, labelWidth, size, name, color) {
   texture.wrapS = THREE.ClampToEdgeWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
 +  forceTextureInitialization(texture);
-
   ...</pre>
           <p></p><div translate="no" class="threejs_example_container notranslate">
             <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/canvas-textured-labels-one-canvas.html"></iframe></div>
@@ -366,11 +337,6 @@ function makePerson(x, labelWidth, size, name, color) {
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

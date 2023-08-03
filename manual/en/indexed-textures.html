@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -70,7 +68,6 @@ tell us the country id.</p>
 <p>So, I <a href="https://github.com/mrdoob/three.js/blob/master/manual/resources/tools/geo-picking/">wrote some code</a>
 to generate such a texture. Here it is. </p>
 <div class="threejs_center"><img src="../examples/resources/data/world/country-index-texture.png" style="width: 700px;"></div>
-
 <p>Note: The data used to generate this texture comes from <a href="http://thematicmapping.org/downloads/world_borders.php">this website</a>
 and is therefore licensed as <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>.</p>
 <p>It's only 217k, much better than the 14meg for the country meshes. In fact we could probably
@@ -86,14 +83,12 @@ picking scene.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
 +  const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
 +  indexTexture.minFilter = THREE.NearestFilter;
 +  indexTexture.magFilter = THREE.NearestFilter;
 +
 +  const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
 +  pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
   scene.add(new THREE.Mesh(geometry, material));
@@ -111,7 +106,6 @@ before with a few minor changes.</p>
   }
   pick(cssPosition, scene, camera) {
     const {pickingTexture, pixelBuffer} = this;
-
     // set the view offset to represent just a single pixel under the mouse
     const pixelRatio = renderer.getPixelRatio();
     camera.setViewOffset(
@@ -136,7 +130,6 @@ before with a few minor changes.</p>
         1,   // width
         1,   // height
         pixelBuffer);
-
 +    const id =
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
@@ -161,7 +154,6 @@ before with a few minor changes.</p>
 </pre>
 <p>Now we can use that to pick countries.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickHelper = new GPUPickHelper();
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -169,13 +161,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -195,14 +185,12 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
     countryInfo.selected = false;
   });
 }
-
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
 <p>The code above sets/unsets the <code class="notranslate" translate="no">selected</code> property on
@@ -215,7 +203,6 @@ let's just update the labels.</p>
   if (!countryInfos) {
     return;
   }
-
   const large = settings.minArea * settings.minArea;
   // get a matrix that represents a relative orientation of the camera
   normalMatrix.getNormalMatrix(camera.matrixWorldInverse);
@@ -232,7 +219,6 @@ let's just update the labels.</p>
       elem.style.display = 'none';
       continue;
     }
-
     ...
 </pre>
 <p>and with that we should be able to pick countries</p>
@@ -240,7 +226,6 @@ let's just update the labels.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>The code stills shows countries based on their area but if you
 click one just that one will have a label.</p>
@@ -266,7 +251,6 @@ defined somewhere else called a "palette".</p>
   1, 0, 0, 0, 0, 0, 1,
   0, 1, 1, 1, 1, 1, 1,
 ];
-
 const palette = [
   [255, 255, 255],  // white
   [  0,   0,   0],  // black
@@ -277,7 +261,6 @@ const palette = [
 <p>Where each pixel in the image data is an index into palette. If you interpreted
 the image data through the palette above you'd get this image</p>
 <div class="threejs_center"><img src="../resources/images/7x7-indexed-face.png"></div>
-
 <p>In our case we already have a texture above that has a different id
 per country. So, we could use that same texture through a palette
 texture to give each country its own color. By changing the palette
@@ -342,14 +325,11 @@ of search and replacement strings and apply them to the shader in
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
   const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
   indexTexture.minFilter = THREE.NearestFilter;
   indexTexture.magFilter = THREE.NearestFilter;
-
   const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
   pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
 +  const fragmentShaderReplacements = [
 +    {
 +      from: '#include &lt;common&gt;',
@@ -375,7 +355,6 @@ of search and replacement strings and apply them to the shader in
 +      `,
 +    },
 +  ];
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
 +  material.onBeforeCompile = function(shader) {
@@ -444,7 +423,6 @@ scene.add(new THREE.Mesh(geometry, material));
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-random-colors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-random-colors.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Now that we can see the index and palette textures are working
 let's manipulate the palette for highlighting.</p>
@@ -466,17 +444,14 @@ palette.</p>
 const unselectedColor = get255BasedColor('#444');
 const oceanColor = get255BasedColor('rgb(100,200,255)');
 resetPalette();
-
 function setPaletteColor(index, color) {
   palette.set(color, index * 4);
 }
-
 function resetPalette() {
   // make all colors the unselected color
   for (let i = 1; i &lt; maxNumCountries; ++i) {
     setPaletteColor(i, unselectedColor);
   }
-
   // set the ocean color (index #0)
   setPaletteColor(0, oceanColor);
   paletteTexture.needsUpdate = true;
@@ -491,13 +466,11 @@ is selected</p>
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -515,7 +488,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -529,7 +501,6 @@ function unselectAllCountries() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking-and-highlighting.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking-and-highlighting.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>That seems to work!</p>
 <p>One minor thing is we can't spin the globe without changing
@@ -552,7 +523,6 @@ to drag the globe.</p>
 +  startPosition.x = pos.x;
 +  startPosition.y = pos.y;
 +}
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -560,13 +530,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
 +  // if it's been a moment since the user started
 +  // then assume it was a drag action, not a select action
 +  const clickTimeMs = performance.now() - startTimeMs;
@@ -581,7 +549,6 @@ function pickCountry(event) {
 +  if (moveDeltaSq &gt; maxMoveDeltaSq) {
 +    return;
 +  }
-
 -  const position = {x: event.clientX, y: event.clientY};
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -599,7 +566,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -607,7 +573,6 @@ function unselectAllCountries() {
   });
   resetPalette();
 }
-
 +canvas.addEventListener('pointerdown', recordStartTimeAndPosition);
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
@@ -616,7 +581,6 @@ canvas.addEventListener('pointerup', pickCountry);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/indexed-textures-picking-debounced.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/indexed-textures-picking-debounced.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I'm not a UX expert so I'd love to hear if there is a better
 solution.</p>
@@ -625,15 +589,9 @@ and how you can modify the shaders three.js makes to add simple features.
 How to use GLSL, the language the shaders are written in, is too much for
 this article. There are a few links to some info in
 <a href="post-processing.html">the article on post processing</a>.</p>
-
         </div>
       </div>
     </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -141,11 +139,9 @@ well as a <code class="notranslate" translate="no">data</code> property with all
     });
   });
 }
-
 function px(v) {
   return `${v | 0}px`;
 }
-
 function hsl(h, s, l) {
   return `hsl(${h * 360 | 0},${s * 100 | 0}%,${l * 100 | 0}%)`;
 }
@@ -160,7 +156,6 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/gpw-data-viewer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/gpw-data-viewer.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>So that seems to work. </p>
 <p>Let's try it in 3D. Starting with the code from <a href="rendering-on-demand.html">rendering on
@@ -168,7 +163,6 @@ demand</a> We'll make one box per data in the
 file.</p>
 <p>First let's make a simple sphere with a texture of the world. Here's the texture</p>
 <div class="threejs_center"><img src="../examples/resources/images/world.jpg" style="width: 600px"></div>
-
 <p>And the code to set it up.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
@@ -186,7 +180,6 @@ make a box per data point.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
   // make one box geometry
   const boxWidth = 1;
   const boxHeight = 1;
@@ -194,7 +187,6 @@ make a box per data point.</p>
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   // make it so it scales away from the positive Z axis
   geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -206,7 +198,6 @@ make a box per data point.</p>
   const positionHelper = new THREE.Object3D();
   positionHelper.position.z = 1;
   latHelper.add(positionHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
   data.forEach((row, latNdx) =&gt; {
@@ -222,16 +213,13 @@ make a box per data point.</p>
       material.color.setHSL(hue, saturation, lightness);
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
       // use the world matrix of the position helper to
       // position this mesh.
       positionHelper.updateWorldMatrix(true, false);
       mesh.applyMatrix4(positionHelper.matrixWorld);
-
       mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     });
   });
@@ -250,7 +238,6 @@ didn't do this it would scale from the center but we want them to grow away from
     <div class="code">adjusted</div>
   </div>
 </div>
-
 <p>Of course we could also solve that by parenting the box to more <a href="/docs/#api/en/core/Object3D"><code class="notranslate" translate="no">THREE.Object3D</code></a>
 objects like we covered in <a href="scenegraph.html">scene graphs</a> but the more
 nodes we add to a scene graph the slower it gets.</p>
@@ -260,7 +247,6 @@ were to place the box. </p>
 <div class="spread">
   <div data-diagram="lonLatPos" style="width: 600px; height: 400px;"></div>
 </div>
-
 <p>Above the <span style="color: green;">green bar</span> represents <code class="notranslate" translate="no">lonHelper</code> and
 is used to rotate toward longitude on the equator. The <span style="color: blue;">
 blue bar</span> represents <code class="notranslate" translate="no">latHelper</code> which is used to rotate to a
@@ -297,7 +283,6 @@ once since we're <a href="rendering-on-demand.html">rendering on demand</a>.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-slow.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-slow.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>If you try to rotate the example above by dragging on the sample you'll likely
 notice it's slow.</p>
@@ -305,10 +290,8 @@ notice it's slow.</p>
 devtools</a> and turning on the browser's frame
 rate meter.</p>
 <div class="threejs_center"><img src="../resources/images/bring-up-fps-meter.gif"></div>
-
 <p>On my machine I see a framerate under 20fps.</p>
 <div class="threejs_center"><img src="../resources/images/fps-meter.gif"></div>
-
 <p>That doesn't feel very good to me and I suspect many people have slower machines
 which would make it even worse. We'd better look into optimizing.</p>
 <p>For this particular problem we can merge all the boxes into a single geometry.
@@ -318,7 +301,6 @@ geometry we'd remove 18999 operations.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
 -  // make one box geometry
 -  const boxWidth = 1;
 -  const boxHeight = 1;
@@ -326,7 +308,6 @@ geometry we'd remove 18999 operations.</p>
 -  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 -  // make it so it scales away from the positive Z axis
 -  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -342,7 +323,6 @@ geometry we'd remove 18999 operations.</p>
 +  const originHelper = new THREE.Object3D();
 +  originHelper.position.z = 0.5;
 +  positionHelper.add(originHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
 +  const geometries = [];
@@ -352,7 +332,6 @@ geometry we'd remove 18999 operations.</p>
         return;
       }
       const amount = (value - min) / range;
-
 -      const material = new THREE.MeshBasicMaterial();
 -      const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 -      const saturation = 1;
@@ -360,23 +339,19 @@ geometry we'd remove 18999 operations.</p>
 -      material.color.setHSL(hue, saturation, lightness);
 -      const mesh = new THREE.Mesh(geometry, material);
 -      scene.add(mesh);
-
 +      const boxWidth = 1;
 +      const boxHeight = 1;
 +      const boxDepth = 1;
 +      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
 -      // use the world matrix of the position helper to
 -      // position this mesh.
 -      positionHelper.updateWorldMatrix(true, false);
 -      mesh.applyMatrix4(positionHelper.matrixWorld);
 -
 -      mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
-
 +      // use the world matrix of the origin helper to
 +      // position this geometry
 +      positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
@@ -386,13 +361,11 @@ geometry we'd remove 18999 operations.</p>
 +      geometries.push(geometry);
     });
   });
-
 +  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 +      geometries, false);
 +  const material = new THREE.MeshBasicMaterial({color:'red'});
 +  const mesh = new THREE.Mesh(mergedGeometry, material);
 +  scene.add(mesh);
-
 }
 </pre>
 <p>Above we removed the code that was changing the box geometry's center point and
@@ -411,7 +384,6 @@ them into a single mesh.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>So that worked but because it's one mesh we only get one material which means we
 only get one color where as before we had a different color on each box. We can
@@ -419,7 +391,6 @@ fix that by using vertex colors.</p>
 <p>Vertex colors add a color per vertex. By setting all the colors of each vertex
 of each box to specific colors every box will have a different color.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const color = new THREE.Color();
-
 const lonFudge = Math.PI * .5;
 const latFudge = Math.PI * -0.135;
 const geometries = [];
@@ -429,22 +400,18 @@ data.forEach((row, latNdx) =&gt; {
       return;
     }
     const amount = (value - min) / range;
-
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
     // adjust the helpers to point to the latitude and longitude
     lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
     latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
     // use the world matrix of the origin helper to
     // position this geometry
     positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     originHelper.updateWorldMatrix(true, false);
     geometry.applyMatrix4(originHelper.matrixWorld);
-
 +    // compute a color
 +    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const saturation = 1;
@@ -466,7 +433,6 @@ data.forEach((row, latNdx) =&gt; {
 +    const normalized = true;
 +    const colorAttrib = new THREE.BufferAttribute(colors, itemSize, normalized);
 +    geometry.setAttribute('color', colorAttrib);
-
     geometries.push(geometry);
   });
 });
@@ -489,7 +455,6 @@ scene.add(mesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged-vertexcolors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged-vertexcolors.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Merging geometry is a common optimization technique. For example rather than
 100 trees you might merge the trees into 1 geometry, a pile of individual rocks
@@ -506,11 +471,6 @@ though there are creative solutions. We'll explore one in
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

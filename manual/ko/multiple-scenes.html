@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -99,7 +97,6 @@
 다이아몬드 모양을 넣을 겁니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // 캔버스 기본값
   const near = 0.1;
@@ -108,7 +105,6 @@
   camera.position.z = 2;
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -116,10 +112,8 @@
     light.position.set(-1, 2, 4);
     scene.add(light);
   }
-
   return { scene, camera, elem };
 }
-
 function setupScene1() {
   const sceneInfo = makeScene(document.querySelector('#box'));
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -129,7 +123,6 @@ function setupScene1() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 function setupScene2() {
   const sceneInfo = makeScene(document.querySelector('#pyramid'));
   const radius = .8;
@@ -145,7 +138,6 @@ function setupScene2() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 const sceneInfo1 = setupScene1();
 const sceneInfo2 = setupScene2();
 </pre>
@@ -155,47 +147,36 @@ const sceneInfo2 = setupScene2();
 장면의 좌표를 설정합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function renderSceneInfo(sceneInfo) {
   const { scene, camera, elem } = sceneInfo;
-
   // 해당 요소의 화면 대비 좌표를 가져옵니다
   const { left, right, top, bottom, width, height } =
       elem.getBoundingClientRect();
-
   const isOffscreen =
       bottom &lt; 0 ||
       top &gt; renderer.domElement.clientHeight ||
       right &lt; 0 ||
       left &gt; renderer.domElement.clientWidth;
-
   if (isOffscreen) {
     return;
   }
-
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-
   const positiveYUpBottom = canvasRect.height - bottom;
   renderer.setScissor(left, positiveYUpBottom, width, height);
   renderer.setViewport(left, positiveYUpBottom, width, height);
-
   renderer.render(scene, camera);
 }
 </pre>
 <p>다음으로 <code class="notranslate" translate="no">render</code> 함수 안에서 먼저 캔버스 전체를 비운 뒤 각 장면을 렌더링합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   sceneInfo1.mesh.rotation.y = time * .1;
   sceneInfo2.mesh.rotation.y = time * .1;
-
   renderSceneInfo(sceneInfo1);
   renderSceneInfo(sceneInfo2);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -204,7 +185,6 @@ const sceneInfo2 = setupScene2();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-v1.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-v1.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>첫 번째 <code class="notranslate" translate="no">&lt;span&gt;</code> 요소가 있는 곳에는 빨간 정육면체가, 두 번째 <code class="notranslate" translate="no">&lt;span&gt;</code> 요소가 있는 곳에는
 파란 다이아몬드가 보일 겁니다.</p>
@@ -226,7 +206,6 @@ const sceneInfo2 = setupScene2();
 <p>그런 다음 <a href="../examples/multiple-scenes-v2.html" target="_blank">빠르게 스크롤을 위아래로 반복해보면</a>
 문제가 보일겁니다. 아래는 스크롤 애니메이션 캡쳐본의 속도를 10배 낮춘 예시입니다.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-skew.gif"></div>
-
 <p>추가로 처리해줘야 할 것이 있긴 하지만, 캔버스의 CSS를 <code class="notranslate" translate="no">position: fixed</code>에서 <code class="notranslate" translate="no">position: absolute</code>로
 바꿔 문제를 해결할 수 있습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-css" translate="no">#c {
@@ -237,7 +216,6 @@ const sceneInfo2 = setupScene2();
 transform 스타일을 지정해줍니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   ...
-
   const transform = `translateY(${ window.scrollY }px)`;
   renderer.domElement.style.transform = transform;
 </pre>
@@ -248,7 +226,6 @@ transform 스타일을 지정해줍니다.</p>
 버벅이지 않고 제자리에 있을 겁니다. 아래는 해당 코드를 적용한 화면의 캡쳐본을 아까와 마찬가지로
 10배 느리게 만든 것입니다.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-fixed.gif"></div>
-
 <h2 id="-">확장하기 쉽게 만들기</h2>
 <p>여러 장면을 구현했으니 이제 이 예제를 좀 더 확장하기 쉽게 만들어보겠습니다.</p>
 <p>먼저 기존처럼 캔버스 전체를 렌더링하는 <code class="notranslate" translate="no">render</code> 함수를 두고, 각 장면에 해당하는 가상 요소,
@@ -260,40 +237,31 @@ transform 스타일을 지정해줍니다.</p>
 function addScene(elem, fn) {
   sceneElements.push({ elem, fn });
 }
-
 function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.setClearColor(clearColor, 0);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   const transform = `translateY(${ window.scrollY }px)`;
   renderer.domElement.style.transform = transform;
-
   for (const { elem, fn } of sceneElements) {
     // 해당 요소의 화면 대비 좌표를 가져옵니다
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
-
     const isOffscreen =
         bottom &lt; 0 ||
         top &gt; renderer.domElement.clientHeight ||
         right &lt; 0 ||
         left &gt; renderer.domElement.clientWidth;
-
     if (!isOffscreen) {
       const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
       renderer.setScissor(left, positiveYUpBottom, width, height);
       renderer.setViewport(left, positiveYUpBottom, width, height);
-
       fn(time, rect);
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -315,7 +283,6 @@ function render(time) {
     renderer.render(scene, camera);
   });
 }
-
 {
   const elem = document.querySelector('#pyramid');
   const { scene, camera } = makeScene();
@@ -343,7 +310,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-generic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-generic.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <h2 id="html-dataset-">HTML Dataset 사용하기</h2>
 <p>HTML의 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">dataset</a>을
@@ -428,7 +394,6 @@ function render(time) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function makeScene() {
 +function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // 캔버스 기본값
   const near = 0.1;
@@ -437,11 +402,9 @@ function render(time) {
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
 +  scene.add(camera);
-
 +  const controls = new TrackballControls(camera, elem);
 +  controls.noZoom = true;
 +  controls.noPan = true;
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -450,7 +413,6 @@ function render(time) {
 -    scene.add(light);
 +    camera.add(light);
   }
-
 -  return { scene, camera };
 + return { scene, camera, controls };
 }
@@ -507,7 +469,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-controls.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-controls.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 기법은 이 사이트 전체에 사용한 기법입니다. <a href="primitives.html">원시 모델에 관한 글</a>과
 <a href="materials.html">재질에 관한 글</a>에서 다양한 예시를 보여주기 위해 사용했죠.</p>
@@ -553,7 +514,6 @@ canvas {
 +  const canvas = document.createElement('canvas');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas, alpha: true});
 +  renderer.setScissorTest(true);
-
   ...
 </pre>
 <p>다음으로 각 장면에 2D 렌더링 컨텍스트를 생성하고 장면에 대응하는 요소에 캔버스를 추가합니다.</p>
@@ -570,7 +530,6 @@ function addScene(elem, fn) {
 가위와 화면을 설정하고, 해당 장면을 렌더링한 뒤, 요소의 캔버스로 렌더링 결과물을 복사합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 -  resizeRendererToDisplaySize(renderer);
 -
 -  renderer.setScissorTest(false);
@@ -580,14 +539,12 @@ function addScene(elem, fn) {
 -
 -  const transform = `translateY(${ window.scrollY }px)`;
 -  renderer.domElement.style.transform = transform;
-
 -  for (const { elem, fn } of sceneElements) {
 +  for (const { elem, fn, ctx } of sceneElements) {
     // 해당 요소의 화면 대비 좌표를 가져옵니다
     const rect = elem.getBoundingClientRect();
     const { left, right, top, bottom, width, height } = rect;
 +    const rendererCanvas = renderer.domElement;
-
     const isOffscreen =
         bottom &lt; 0 ||
 -        top &gt; renderer.domElement.clientHeight ||
@@ -595,12 +552,10 @@ function addScene(elem, fn) {
         right &lt; 0 ||
 -        left &gt; renderer.domElement.clientWidth;
 +        left &gt; window.innerWidth;
-
     if (!isOffscreen) {
 -      const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
 -      renderer.setScissor(left, positiveYUpBottom, width, height);
 -      renderer.setViewport(left, positiveYUpBottom, width, height);
-
 +      // 렌더링용 캔버스 크기 조정
 +      if (rendererCanvas.width &lt; width || rendererCanvas.height &lt; height) {
 +        renderer.setSize(width, height, false);
@@ -614,9 +569,7 @@ function addScene(elem, fn) {
 +
 +      renderer.setScissor(0, 0, width, height);
 +      renderer.setViewport(0, 0, width, height);
-
       fn(time, rect);
-
 +      // 렌더링된 장면을 2D 캔버스에 복사
 +      ctx.globalCompositeOperation = 'copy';
 +      ctx.drawImage(
@@ -625,7 +578,6 @@ function addScene(elem, fn) {
 +          0, 0, width, height);                              // 결과물 사각 좌표
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -634,20 +586,13 @@ function addScene(elem, fn) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-copy-canvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-copy-canvas.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 기법의 다른 장점은 <a href="https://developer.mozilla.org/ko/docs/Web/API/OffscreenCanvas"><code class="notranslate" translate="no">OffscreenCanvas</code></a>
 웹 워커를 이용해 이 기능을 별도 스레드에서 구현할 수 있다는 겁니다. 하지만 아쉽게도
 2020년 7월을 기준으로 <code class="notranslate" translate="no">OffscreenCanvas</code>는 아직 크로미움 기반 브라우저에서만 지원합니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

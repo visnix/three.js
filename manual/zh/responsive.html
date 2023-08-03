@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="utf-8">
   <title>响应式设计</title>
@@ -11,13 +10,11 @@
   <meta property="og:image" content="https://threejs.org/files/share.png">
   <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
   <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
   <link rel="stylesheet" href="../resources/lesson.css">
   <link rel="stylesheet" href="../resources/lang.css">
   <!-- Import maps polyfill -->
   <!-- Remove this when import maps will be widely supported -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
   <script type="importmap">
 {
   "imports": {
@@ -27,7 +24,6 @@
 </script>
   <link rel="stylesheet" href="/manual/zh/lang.css">
 </head>
-
 <body>
   <div class="container">
     <div class="lesson-title">
@@ -76,7 +72,6 @@ html, body {
           </div>
           <a class="threejs_center" href="/manual/examples/responsive-no-resize.html" target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>你可以看到canvas充满了整个页面，但是有两个问题。
           第一是我们的立方体被拉伸了。他们不是立方体了更像是个盒子，太高或者太宽。 在新标签中打开它然后改变尺寸你就能看到立方体是怎么在宽高上被拉伸的。</p>
@@ -90,11 +85,9 @@ html, body {
         <p>我们需要将渲染循环变成这样。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  const canvas = renderer.domElement;
 +  camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +  camera.updateProjectionMatrix();
-
   ...
 </pre>
         <p>现在立方体应该不会变形了。</p>
@@ -106,7 +99,6 @@ html, body {
           <a class="threejs_center" href="/manual/examples/responsive-update-camera.html"
             target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>在新标签页中打开例子你应该能看到立方体的宽高不会再被拉伸了。
           他们都会保持正确的比例不管窗口的尺寸如何。</p>
@@ -149,13 +141,11 @@ html, body {
           来使用我们的新函数。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  if (resizeRendererToDisplaySize(renderer)) {
 +    const canvas = renderer.domElement;
 +    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +    camera.updateProjectionMatrix();
 +  }
-
   ...
 </pre>
         <p>因为只有canvas的显示尺寸变化时宽高比才变化所以我们
@@ -167,7 +157,6 @@ html, body {
               src="/manual/examples/resources/editor.html?url=/manual/examples/responsive.html"></iframe></div>
           <a class="threejs_center" href="/manual/examples/responsive.html" target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>现在渲染的分辨率应该是和canvas的显示尺寸一样的。</p>
         <p>为了说清楚让CSS处理调整尺寸我们将代码放进<a href="../examples/threejs-responsive.js">一个单独的js文件</a>。
@@ -181,7 +170,6 @@ html, body {
           </div>
           <a class="threejs_center" href="/manual/examples/responsive-paragraph.html" target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>这是我们在编辑器样式布局中使用的相同代码，右侧的控制区域可以调整大小。</p>
         <p></p>
@@ -191,7 +179,6 @@ html, body {
           </div>
           <a class="threejs_center" href="/manual/examples/responsive-editor.html" target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>重点注意我们的代码并没有改变，只有我们的HTML和CSS变了。</p>
         <h2 id="-hd-dpi-">应对HD-DPI显示器</h2>
@@ -240,24 +227,16 @@ html, body {
               src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-hd-dpi.html"></iframe></div>
           <a class="threejs_center" href="/manual/examples/responsive-hd-dpi.html" target="_blank">点击此处在新标签页中打开</a>
         </div>
-
         <p></p>
         <p>可能很难看出区别但是如果你有一个HD-DPI显示器
           和上面的例子做对比你就能发现边角更清晰。</p>
         <p>这篇文章涵盖了一个非常基础但是很有必要的主题。接下来我们快速过一遍
           <a href="primitives.html">three.js提供的基本的东西 </a>.
         </p>
-
       </div>
     </div>
   </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

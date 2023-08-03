@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -53,15 +51,12 @@ data and generate 2 more</p>
   const text = await loadFile(info.url);
   info.file = parseData(text);
 }
-
 async function loadAll() {
   const fileInfos = [
     {name: 'men',   hueRange: [0.7, 0.3], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014mt_2010_cntm_1_deg.asc' },
     {name: 'women', hueRange: [0.9, 1.1], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014ft_2010_cntm_1_deg.asc' },
   ];
-
   await Promise.all(fileInfos.map(loadData));
-
   ...
 }
 loadAll();
@@ -123,7 +118,6 @@ all the same properties as <code class="notranslate" translate="no">baseFile</co
   const womenInfo = fileInfos[1];
   const menFile = menInfo.file;
   const womenFile = womenInfo.file;
-
   function amountGreaterThan(a, b) {
     return Math.max(a - b, 0);
   }
@@ -177,7 +171,6 @@ function showFileInfo(fileInfos, fileInfo) {
   });
   requestRenderIfNotRequested();
 }
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
   const boxes = addBoxes(info.file, info.hueRange);
@@ -197,13 +190,10 @@ showFileInfo(fileInfos, fileInfos[0]);
 <code class="notranslate" translate="no">addBoxes</code> take a <code class="notranslate" translate="no">hueRange</code></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function addBoxes(file) {
 +function addBoxes(file, hueRange) {
-
   ...
-
     // compute a color
 -    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const hue = THREE.MathUtils.lerp(...hueRange, amount);
-
   ...
 </pre>
 <p>and with that we should be able to show 4 sets of data. Hover the mouse over the labels
@@ -212,7 +202,6 @@ or touch them to switch sets</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-multiple-data-sets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-multiple-data-sets.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Note, there are a few strange data points that really stick out. I wonder what's up
 with those!??! In any case how do we animate between these 4 sets of data.</p>
@@ -247,9 +236,7 @@ the <code class="notranslate" translate="no">position</code> attribute from each
 +function makeBoxes(file, hueRange) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
 -  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 -      geometries, false);
 -  const material = new THREE.MeshBasicMaterial({
@@ -278,14 +265,11 @@ missing in any set. Let's do the latter.</p>
 +  }
 +  return false;
 +}
-
 -function makeBoxes(file, hueRange) {
 +function makeBoxes(file, hueRange, fileInfos) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
   const geometries = [];
   data.forEach((row, latNdx) =&gt; {
     row.forEach((value, lonNdx) =&gt; {
@@ -293,7 +277,6 @@ missing in any set. Let's do the latter.</p>
 +        return;
 +      }
       const amount = (value - min) / range;
-
   ...
 </pre>
 <p>Now we'll change the code that was calling <code class="notranslate" translate="no">addBoxes</code> to use <code class="notranslate" translate="no">makeBoxes</code>
@@ -323,7 +306,6 @@ and setup morphtargets</p>
 +});
 +const mesh = new THREE.Mesh(baseGeometry, material);
 +scene.add(mesh);
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
 -  const boxes = addBoxes(info.file, info.hueRange);
@@ -422,7 +404,6 @@ if we need to call it again and <code class="notranslate" translate="no">false</
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +  const tweenManager = new TweenManger();
-
   ...
 </pre>
 <p>We'll use it to create our <code class="notranslate" translate="no">Tween</code>s.</p>
@@ -446,17 +427,14 @@ function showFileInfo(fileInfos, fileInfo) {
 if there are still animations running.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
   renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  if (tweenManager.update()) {
 +    requestRenderIfNotRequested();
 +  }
-
   controls.update();
   renderer.render(scene, camera);
 }
@@ -467,7 +445,6 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-morphtargets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-morphtargets.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope going through this was helpful. Using morphtargets is a common technique to
 move lots of objects. As an example we could give every cube a random place in
@@ -482,15 +459,9 @@ other comparisons most cubes would be about 1/2 their maximum height which would
 not make a good visualization. Feel free to change the <code class="notranslate" translate="no">amountGreaterThan</code> from
 <a href="/docs/#api/en/math/Math.max(a - b, 0)"><code class="notranslate" translate="no">Math.max(a - b, 0)</code></a> to something like <code class="notranslate" translate="no">(a - b)</code> "raw difference" or <code class="notranslate" translate="no">a / (a +
 b)</code> "percent" and you'll see what I mean.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -53,7 +51,6 @@ three.jsがサポートするほとんどのブラウザは自動更新される
 <p>Three.jsはcanvasに描画するため、canvasをthree.jsに渡す必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 function main() {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
@@ -137,19 +134,15 @@ const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>私たちの視点からは、これを3Dキューブと言うのは少し難しいです。Z軸がマイナス値で奥にあり、1つの面しか見ていません。</p>
 <p>回転アニメーションさせて、3Dキューブで描画されている事を明らかにします。アニメーションさせるには <a href="https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame"><code class="notranslate" translate="no">requestAnimationFrame</code></a> を使用しループ処理内で描画します。</p>
 <p>これがループです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert time to seconds
-
   cube.rotation.x = time;
   cube.rotation.y = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -169,7 +162,6 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-animation.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-animation.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>少し良くなりましたが、まだ3Dには見えません。3Dに見えるようにいくつか光源を追加します。つまり、ライトを追加しましょう。
 three.jsには <a href="lights.html">今後の記事</a> で紹介する多くの種類のライトがあります。
@@ -194,7 +186,6 @@ three.jsには <a href="lights.html">今後の記事</a> で紹介する多く�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-light.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これでかなり3Dに見えるようになりました。</p>
 <p>楽しんでみるために、さらに2つのキューブを追加しましょう。</p>
@@ -203,12 +194,9 @@ three.jsには <a href="lights.html">今後の記事</a> で紹介する多く�
 次に、指定したジオメトリをシーンに追加し、X位置を設定したメッシュを作成します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
 </pre>
@@ -223,14 +211,12 @@ three.jsには <a href="lights.html">今後の記事</a> で紹介する多く�
 それぞれにわずかに異なる回転を計算し適用します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert time to seconds
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   ...
 </pre>
 <p>それがここにあります。</p>
@@ -238,7 +224,6 @@ three.jsには <a href="lights.html">今後の記事</a> で紹介する多く�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-3-cubes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-3-cubes.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>上記のトップダウン図と比較すると、期待通りである事がわかります。
 X = -2 および X = +2の場合、キューブは部分的に錐台の外側にあります。
@@ -256,9 +241,7 @@ es6モジュールはスクリプトのロードに <code class="notranslate" tr
 </p>
 <pre class="prettyprint">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>
@@ -309,15 +292,9 @@ import {OrbitControls} from './someFolder/addons/controls/OrbitControls.js';
 import {OrbitControls} from 'https://unpkg.com/three@&lt;version&gt;/addons/controls/OrbitControls.js';
 </pre>
 </div>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

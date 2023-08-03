@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -38,9 +36,7 @@ Those are really large topics. If you want to learn GLSL consider checking out
 the first thing I do is change the fragment shader to return a solid
 color. For example at the very bottom of the shader I might put</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">void main() {
-
   ...
-
   gl_FragColor = vec4(1, 0, 0, 1);  // red
 }
 </pre>
@@ -61,7 +57,6 @@ then you have some clue where to look. If you're manipulating normals
 in the fragments shader you can use the same technique to draw the
 result of that manipulation.</p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-normals.jpg" style="width: 650px;"></div>
-
 <p>Similarly if we're using textures there will be texture coordinates and we
 can draw them with something like</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">gl_FragColor = vec4(fract(vUv), 0, 1);
@@ -70,7 +65,6 @@ can draw them with something like</p>
 the 0 to 1 range. This is common if <code class="notranslate" translate="no">texture.repeat</code> is set to something greater
 than 1.</p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-uvs.jpg" style="width: 650px;"></div>
-
 <p>You can do similar things for all values in your fragment shader. Figure out
 what their range is likely to be, add some code to set <code class="notranslate" translate="no">gl_FragColor</code> with
 that range scaled to 0.0 to 1.0</p>
@@ -89,7 +83,6 @@ and last 4 values of each matrix look reasonable for my scene. If I
 expect my scene to be 50x50x50 units and some matrix shows 552352623.123 
 clearly something is wrong there.</p>
 <div class="threejs_center"><img src="../resources/images/inspect-matrices.gif"></div>
-
 <p>Just like we did for the fragment shader we can also draw values from the
 vertex shader by passing them to the fragment shader. Declare a varying
 in both and pass the value you're not sure is correct. In fact if my
@@ -110,15 +103,9 @@ geometry? Usually it's as simple as</p>
 or similar for other browsers. It's a great way to look at how other shaders
 are working. It's also good as you can make some of the changes suggested above
 live while the code is running.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

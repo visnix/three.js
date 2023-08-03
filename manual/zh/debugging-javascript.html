@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8">
 	<title>调试 JavaScript</title>
@@ -11,13 +10,11 @@
 	<meta property="og:image" content="https://threejs.org/files/share.png">
 	<link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
 	<link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
 	<link rel="stylesheet" href="../resources/lesson.css">
 	<link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -26,7 +23,6 @@
 }
 </script>
 </head>
-
 <body>
 	<div class="container">
 		<div class="lesson-title">
@@ -50,20 +46,16 @@
 					来打开开发者工具。快捷键也显示在了上面。</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome.jpg"
 						style="width: 789px;"></div>
-
 				<p>在Firefox中你可以点击<code class="notranslate" translate="no">☰</code> 标志, 选择 "Web Developer", 接着选择
 					"Toggle Tools"</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-firefox.jpg"
 						style="width: 786px;"></div>
-
 				<p>在Safari中你首先要从Advanced Safari Preferences中打开 Develop menu。</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-enable-safari.jpg"
 						style="width: 775px;"></div>
-
 				<p>接着在Develop菜单你可以选择"Show/Connect Web Inspector"。</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-safari.jpg"
 						style="width: 777px;"></div>
-
 				<p>在Chrome中你也可以<a
 						href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">使用电脑端的开发者工具来调试运行在安卓手机或者平板的chrome浏览器上的网页</a>.
 					同样的在Safari中你可以
@@ -78,22 +70,18 @@
 				<p>首先在右上角点击设置按钮</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-settings.jpg"
 						style="width: 778px"></div>
-
 				<p>接着选择"Disable Cache (while DevTools is open)".</p>
 				<div class="threejs_center"><img class="border"
 						src="../resources/images/devtools-chrome-disable-cache.jpg" style="width: 779px"></div>
-
 				<h2 id="use-the-javascript-console">使用JavaScript控制台</h2>
 				<p>在所有开发者工具中都有 <em>控制台</em>。 它显示了警告和错误信息。</p>
 				<p><strong>读这些信息!! </strong></p>
 				<p>通常应该只有 1 或 2 条信息。</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-no-errors.jpg"
 						style="width: 779px"></div>
-
 				<p>如果你看到有其他的消息，请务必 <strong>读它们</strong>。 例如：</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-errors.jpg"
 						style="width: 779px"></div>
-
 				<p>我把 "three" 错拼成了 "threee"</p>
 				<p>通过<code class="notranslate" translate="no">console.log</code> 方法，你也可以打印你自己信息到控制台，比如</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">console.log(someObject.position.x, someObject.position.y, someObject.position.z);
@@ -109,7 +97,6 @@
 				<p>我们接着就可以在JavaScript控制台中展开那个object</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/devtools-console-object.gif">
 				</div>
-
 				<p>你也可以使用 <code class="notranslate" translate="no">console.error</code> 来输出错误信息，该方法会打印一条红色的信息并附上错误栈</p>
 				<h2 id="put-data-on-screen">在屏幕上显示数据</h2>
 				<p>另一个直观的但是经常被忽视的方式是通过添加<code class="notranslate" translate="no">&lt;div&gt;</code> 或 <code
@@ -141,7 +128,6 @@ font-family: monospace;
 const xElem = document.querySelector('#x');
 const yElem = document.querySelector('#y');
 const zElem = document.querySelector('#z');
-
 // at render or update time
 xElem.textContent = someObject.position.x.toFixed(3);
 yElem.textContent = someObject.position.y.toFixed(3);
@@ -156,7 +142,6 @@ zElem.textContent = someObject.position.z.toFixed(3);
 					<a class="threejs_center" href="/manual/examples/debug-js-html-elements.html"
 						target="_blank">点击这里在新窗口中打开</a>
 				</div>
-
 				<p></p>
 				<p>
 					将数据显示在屏幕上的另一种方法是制作一个”清除记录器“。这是我编的一个术语，我参与的很多游戏中都使用了这个方法。其思想是您有一个只显示一帧消息的缓冲区，有显示数据需求的时候，就会调用一些函数向该缓冲区添加每一帧的数据。相对于上一种方法为每个数据都添加一个html元素，这种方法会减少跟多工作量。
@@ -190,9 +175,7 @@ render() {
 					的代码</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.SphereGeometry();
 const material = new THREE.MeshBasicMaterial({color: 'red'});
-
 const things = [];
-
 function rand(min, max) {
 if (max === undefined) {
   max = min;
@@ -200,7 +183,6 @@ if (max === undefined) {
 }
 return Math.random() * (max - min) + min;
 }
-
 function createThing() {
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -210,20 +192,16 @@ things.push({
   velocity: new THREE.Vector3(rand(-5, 5), rand(-5, 5), rand(-5, 5)),
 });
 }
-
 canvas.addEventListener('click', createThing);
 </pre>
 				<p>接着下面的代码描述了如何移动我们创造出来的mesh，记录它们的信息以及当它们的计时器到期的时候删除它们</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const logger = new ClearingLogger(document.querySelector('#debug pre'));
-
 let then = 0;
 function render(now) {
 now *= 0.001;  // convert to seconds
 const deltaTime = now - then;
 then = now;
-
 ...
-
 logger.log('fps:', (1 / deltaTime).toFixed(1));
 logger.log('num things:', things.length);
 for (let i = 0; i &lt; things.length;) {
@@ -243,10 +221,8 @@ for (let i = 0; i &lt; things.length;) {
     ++i;
   }
 }
-
 renderer.render(scene, camera);
 logger.render();
-
 requestAnimationFrame(render);
 }
 </pre>
@@ -259,7 +235,6 @@ requestAnimationFrame(render);
 					<a class="threejs_center" href="/manual/examples/debug-js-clearing-logger.html"
 						target="_blank">点击这里在新窗口中打开</a>
 				</div>
-
 				<p></p>
 				<h2 id="query-parameters">查询参数</h2>
 				<p>另一件需要记住的事情是，网页可以通过查询参数或锚（有时称为搜索和散列）将数据传递到网页中。</p>
@@ -294,7 +269,6 @@ return Object.fromEntries(new URLSearchParams(window.location.search).entries())
 &lt;/div&gt;
 </pre>
 				<p>接着在代码中我们通过获取特定参数来决定当且仅当<code class="notranslate" translate="no">?debug=true</code>传入的时候才显示我们的调试信息</p>
-
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const query = getQuery();
 const debug = query.debug === 'true';
 const logger = debug
@@ -324,7 +298,6 @@ render() {}
 					<code class="notranslate" translate="no">showHelpers=true</code>
 					来决定是否添加一个helper来辅助显示其他课程中提到过的光线、阴影或者相机的视锥
 				</p>
-
 				<h2 id="learn-to-use-the-debugger">学习使用调试器</h2>
 				<p>每个浏览器都有一个调试器，您可以在其中逐行暂停程序并检查所有变量。</p>
 				<p>教您如何使用调试器对于本文来说是一个太大的主题，但这里有几个链接</p>
@@ -344,7 +317,6 @@ render() {}
 				<div class="threejs_center"><img class="border" src="../resources/images/nan-banana.png"
 						style="width: 180px;">
 				</div>
-
 				<p>通常，当我在制作一些东西时，屏幕上什么也没有出现，我会检查一些值，如果我看到<code class="notranslate" translate="no">NaN</code>
 					我会立即知道问题所在</p>
 				<p>举一个例子，当我第一次在
@@ -371,7 +343,6 @@ render() {}
 					就会发现许多的 <code class="notranslate" translate="no">NaN</code> 值。</p>
 				<div class="threejs_center"><img class="border" src="../resources/images/debugging-nan.gif"
 						style="width: 476px;"></div>
-
 				<p>看到矩阵中包含<code class="notranslate" translate="no">NaN</code>值就表明一些像
 					<code class="notranslate" translate="no">position</code>,
 					<code class="notranslate" translate="no">rotation</code>, <code class="notranslate"
@@ -388,9 +359,7 @@ render() {}
 				<p>我经常看到如下的代码</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
  requestAnimationFrame(render);
-
  // -- do stuff --
-
  renderer.render(scene, camera);
 }
 requestAnimationFrame(render);
@@ -398,9 +367,7 @@ requestAnimationFrame(render);
 				<p>我建议将<code class="notranslate" translate="no">requestAnimationFrame</code> 的调用放在底部，如下所示</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
  // -- do stuff --
-
  renderer.render(scene, camera);
-
  requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -411,7 +378,6 @@ requestAnimationFrame(render);
 				<h2 id="check-your-units-">检查你使用的单位</h2>
 				<p>这基本上意味着知道何时使用度（degrees）和何时使用弧度（radians）。不幸的是THREE.js并不是在所有地方都使用相同的单位。
 					现在我能想到的情况就是摄像机的视野是以degrees为单位的。所有其他角度均以radians为单位。</p>
-
 				<p>
 					另一个值得注意的地方是你所使用的长度单位的大小。目前3D应用程序还可以选择他们想要的任何单位大小。
 					一个应用程序可能会选择1个单位=1厘米。另一个可能选择1个单位=1英尺。事实上，你可以为某些应用选择任何你想要的单位。
@@ -421,9 +387,7 @@ requestAnimationFrame(render);
 					在Stack Overflow上制作一个
 					<em>最小的、完整的、可验证的</em> 示例
 				</h2>
-
 				<p>如果你决定问一个关于THREE.js的问题，你需要提供一个MCVE，即最小的（Minimal）、完整的（Complete）、可验证的（Verifiable）示例。</p>
-
 				<p> <strong>最小的(Minimal)</strong> 是很重要的。 比如说在上一个例子<a href="load-gltf.html">loading a gLTF
 						article</a>中你有一个关于运动轨迹的例子。那个例子有很多部分，比如
 				</p>
@@ -458,7 +422,6 @@ requestAnimationFrame(render);
 					<a class="threejs_center" href="/manual/examples/debugging-mcve.html"
 						target="_blank">点击这里在新窗口中打开</a>
 				</div>
-
 				<p></p>
 				<p>我保留了 <code class="notranslate" translate="no">OrbitController</code> 因为它是很有用的——别人可以通过移动相机
 					搞清楚发生了什么。但是根据实际情况你也可以移除它。
@@ -518,17 +481,10 @@ requestAnimationFrame(render);
 				</p>
 				<hr>
 				<p>以上这些就是调试JavaScript的一些建议。让我们开始浏览<a href="debugging-glsl.html">调试GLSL的一些建议</a>吧。</p>
-
 			</div>
 		</div>
 	</div>
-
 	<script src="../resources/prettify.js"></script>
 	<script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

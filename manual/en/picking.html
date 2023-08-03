@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -45,10 +43,8 @@ const near = 0.1;
 *const far = 200;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 *camera.position.z = 30;
-
 const scene = new THREE.Scene();
 +scene.background = new THREE.Color('white');
-
 +// put the camera on a pole (parent it to an object)
 +// so we can spin the pole to move the camera around the scene
 +const cameraPole = new THREE.Object3D();
@@ -68,7 +64,6 @@ and scales.</p>
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -76,20 +71,16 @@ function rand(min, max) {
   }
   return min + (max - min) * Math.random();
 }
-
 function randomColor() {
   return `hsl(${rand(360) | 0}, ${rand(50, 100) | 0}%, 50%)`;
 }
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
     color: randomColor(),
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
@@ -109,7 +100,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
     // cast a ray through the frustum
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // get the list of objects the ray intersected
@@ -130,9 +120,7 @@ for (let i = 0; i &lt; numObjects; ++i) {
 is</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickPosition = {x: 0, y: 0};
 clearPickPosition();
-
 ...
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -140,13 +128,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function setPickPosition(event) {
   const pos = getCanvasRelativePosition(event);
   pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
   pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
 }
-
 function clearPickPosition() {
   // unlike the mouse which always has a position
   // if the user stops touching the screen we want
@@ -155,7 +141,6 @@ function clearPickPosition() {
   pickPosition.x = -100000;
   pickPosition.y = -100000;
 }
-
 window.addEventListener('mousemove', setPickPosition);
 window.addEventListener('mouseout', clearPickPosition);
 window.addEventListener('mouseleave', clearPickPosition);
@@ -167,25 +152,18 @@ window.addEventListener('mouseleave', clearPickPosition);
   event.preventDefault();
   setPickPosition(event.touches[0]);
 }, {passive: false});
-
 window.addEventListener('touchmove', (event) =&gt; {
   setPickPosition(event.touches[0]);
 });
-
 window.addEventListener('touchend', clearPickPosition);
 </pre>
 <p>And finally in our <code class="notranslate" translate="no">render</code> function we call the <code class="notranslate" translate="no">PickHelper</code>'s <code class="notranslate" translate="no">pick</code> function.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const pickHelper = new PickHelper();
-
 function render(time) {
   time *= 0.001;  // convert to seconds;
-
   ...
-
 +  pickHelper.pick(pickPosition, scene, camera, time);
-
   renderer.render(scene, camera);
-
   ...
 </pre>
 <p>and here's the result</p>
@@ -193,7 +171,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>This appears to work great and it probably does for many use cases
 but there are several issues.</p>
@@ -219,11 +196,9 @@ For example AFAIK you can't use this method with skinned objects.</p>
 </ol>
 <p>As an example let's apply this texture to the cubes.</p>
 <div class="threejs_center"><img class="checkerboard" src="../examples/resources/images/frame.png"></div>
-
 <p>We'll just make these changes</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load('resources/images/frame.png');
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
@@ -233,10 +208,8 @@ for (let i = 0; i &lt; numObjects; ++i) {
     +side: THREE.DoubleSide,
     +alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   ...
 </pre>
 <p>And running that you should quickly see the issue</p>
@@ -244,11 +217,9 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster-transparency.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster-transparency.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Try to pick something through a box and you can't</p>
 <div class="threejs_center"><img src="../resources/images/picking-transparent-issue.jpg" style="width: 635px;"></div>
-
 <p>This is because JavaScript can't easily look into the textures and materials and figure out if part of your object is really transparent or not.</p>
 <p>A solution all of these issues is to use GPU based picking. Unfortunately while it is conceptually simple it is more complicated to use than the ray casting method above.</p>
 <p>To do GPU picking we render each object in a unique color offscreen. We then look up the color of the pixel corresponding to the mouse position. The color tells us which object was picked.</p>
@@ -273,15 +244,12 @@ for (let i = 0; i &lt; numObjects; ++i) {
     side: THREE.DoubleSide,
     alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 +  idToObject[id] = cube;
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
-
 +  const pickingMaterial = new THREE.MeshPhongMaterial({
 +    emissive: new THREE.Color(id),
 +    color: new THREE.Color(0, 0, 0),
@@ -323,13 +291,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   }
   pick(cssPosition, scene, camera, time) {
 +    const {pickingTexture, pixelBuffer} = this;
-
     // restore the color if there is a picked object
     if (this.pickedObject) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
 +    // set the view offset to represent just a single pixel under the mouse
 +    const pixelRatio = renderer.getPixelRatio();
 +    camera.setViewOffset(
@@ -360,7 +326,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
 +        (pixelBuffer[2]      );
-
 -    // cast a ray through the frustum
 -    this.raycaster.setFromCamera(normalizedPosition, camera);
 -    // get the list of objects the ray intersected
@@ -368,7 +333,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 -    if (intersectedObjects.length) {
 -      // pick the first object. It's the closest one
 -      this.pickedObject = intersectedObjects[0].object;
-
 +    const intersectedObject = idToObject[id];
 +    if (intersectedObject) {
 +      // pick the first object. It's the closest one
@@ -394,18 +358,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-gpu.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-gpu.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope that gives some idea of how to implement picking. In a future article maybe we can cover how to manipulate objects with the mouse.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

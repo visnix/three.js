@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 	<meta charset="utf-8">
 	<base href="../../../" />
 	<script src="page.js"></script>
 	<link type="text/css" rel="stylesheet" href="page.css" />
 </head>
-
 <body>
 	<h1>Carregando modelos 3D</h1>
-
 	<p>
 		Os modelos 3D estão disponíveis em centenas de formatos de arquivo, cada um com diferentes
 		propósitos, recursos variados e complexidade variável. Embora o
@@ -19,23 +16,18 @@
 		Alguns formatos são difíceis de trabalhar, ineficientes para experiências em tempo real
 		ou simplesmente não são totalmente suportados por enquanto.
 	</p>
-
 	<p>
 		Este guia fornece um fluxo de trabalho recomendado para a maioria dos usuários e sugestões
 		do que tentar se as coisas não correrem como o esperado.
 	</p>
-
 	<h2>Antes de começar</h2>
-
 	<p>
 		Se você é iniciante na execução de um servidor local, comece com
 		[link:#manual/introduction/Installation installation]
 		primeiro. Muitos erros comuns de visualização de modelos 3D podem ser evitados hospedando arquivos
 		corretamente.
 	</p>
-
 	<h2>Fluxo de trabalho recomendado</h2>
-
 	<p>
 		Sempre que possível, recomendamos o uso do glTF (GL Transmission Format). Ambas versões do formato,
 		<small>.GLB</small> e <small>.GLTF</small>, são bem suportadas.
@@ -43,13 +35,11 @@
 		ele é compacto para transmitir e rápido para carregar. Seus recursos incluem meshs, materiais,
 		texturas, skins, skeletons, morph targets, animações, luzes e câmeras.
 	</p>
-
 	<p>
 		Os arquivos glTF de domínio público estão disponíveis em sites como
 		<a href="https://sketchfab.com/models?features=downloadable&sort_by=-likeCount&type=models" target="_blank" rel="noopener">
 		Sketchfab</a>, ou várias ferramentas que incluem exportação glTF:
 	</p>
-
 	<ul>
 		<li><a href="https://www.blender.org/" target="_blank" rel="noopener">Blender</a> da Blender Foundation</li>
 		<li><a href="https://www.allegorithmic.com/products/substance-painter" target="_blank" rel="noopener">Substance Painter</a> da Allegorithmic</li>
@@ -62,60 +52,44 @@
 		<li><a href="https://github.com/AnalyticalGraphicsInc/obj2gltf" target="_blank" rel="noopener">OBJ2GLTF</a> da Analytical Graphics Inc</li>
 		<li>&hellip;e <a href="http://github.khronos.org/glTF-Project-Explorer/" target="_blank" rel="noopener">muito mais</a></li>
 	</ul>
-
 	<p>
 		Se suas ferramentas preferidas não suportam glTF, considere solicitar exportação de glTF para os autores,
 		ou postar no <a href="https://github.com/KhronosGroup/glTF/issues/1051" target="_blank" rel="noopener">glTF roadmap thread</a>.
 	</p>
-
 	<p>
 		Quando o glTF não é uma opção, formatos populares como FBX, OBJ ou COLLADA
 		também estão disponíveis e são mantidos regularmente.
 	</p>
-
 	<h2>Carregando</h2>
-
 	<p>
 		Apenas alguns poucos loaders (por exemplo [page:ObjectLoader]) são incluídos por padrão com o
 		three.js — outros devem ser adicionados ao seu aplicativo individualmente.
 	</p>
-
 	<code>
 		import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 	</code>
-
 	<p>
 		Depois de importar um loader você está pronto para adicionar um modelo à sua cena. A sintaxe varia entre
 		loaders diferentes — ao usar outro formato, verifique os exemplos e a documentação para esse loader.
 		Para glTF, o uso com scripts globais ficaria:
 	</p>
-
 	<code>
 		const loader = new GLTFLoader();
-
 		loader.load( 'path/to/model.glb', function ( gltf ) {
-
 			scene.add( gltf.scene );
-
 		}, undefined, function ( error ) {
-
 			console.error( error );
-
 		} );
 	</code>
-
 	<p>
 		Veja a documentação [page:GLTFLoader GLTFLoader] para mais detalhes.
 	</p>
-
 	<h2>Solução de problemas</h2>
-
 	<p>
 		Você passou horas modelando uma obra-prima artesanal, você a carrega em
 		uma página web e — ah, não! 😭 Está distorcido, descolorido ou totalmente ausente.
 		Comece com estas etapas de solução de problemas:
 	</p>
-
 	<ol>
 		<li>
 			Verifique se há erros no console JavaScript e certifique-se de ter usado um
@@ -146,9 +120,7 @@
 			isso pode exigir edição do arquivo de modelo em um editor de texto.
 		</li>
 	</ol>
-
 	<h2>Pedindo ajuda</h2>
-
 	<p>
 		Se você passou pelo processo de solução de problemas acima e seu modelo
 		ainda não está funcionando, uma abordagem correta para pedir ajuda fará com que você
@@ -159,7 +131,5 @@
 		você tiver disponível. Inclua informações suficientes para outra pessoa reproduzir
 		o problema rapidamente - idealmente, uma demonstração ao vivo.
 	</p>
-
 </body>
-
 </html>

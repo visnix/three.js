@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -40,13 +38,10 @@ x, y, z 값을 받도록 수정하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function makeInstance(geometry, color) {
 +function makeInstance(geometry, color, x, y, z) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
 -  cube.position.x = x;
 +  cube.position.set(x, y, z);
-
   return cube;
 }
 </pre>
@@ -54,11 +49,9 @@ x, y, z 값을 받도록 수정하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function hsl(h, s, l) {
 +  return (new THREE.Color()).setHSL(h, s, l);
 +}
-
 -makeInstance(geometry, 0x44aa88,  0);
 -makeInstance(geometry, 0x8844aa, -2);
 -makeInstance(geometry, 0xaa8844,  2);
-
 +{
 +  const d = 0.8;
 +  makeInstance(geometry, hsl(0 / 8, 1, .5), -d, -d, -d);
@@ -108,12 +101,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 +    opacity: 0.5,
 +    transparent: true,
 +  });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.set(x, y, z);
-
   return cube;
 }
 </pre>
@@ -122,14 +112,12 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>예제를 드래그하면 화면을 회전시킬 수 있습니다.</p>
 <p>완벽한데요, 라고 생각했다면 좀 더 자세히 보세요. 정육면체의 뒷면이 하나도
 보이지 않습니다.</p>
 <div class="threejs_center"><img src="../resources/images/transparency-cubes-no-backs.png" style="width: 416px;"></div>
 <div class="threejs_center">뒷면이 보이지 않는다</div>
-
 <p>이전에 <a href="materials.html">재질(material)에 관해</a> 배울 때 <a href="/docs/#api/ko/materials/Material#side"><code class="notranslate" translate="no">side</code></a>
 속성에 대해 배웠었죠. 이 속성을 <code class="notranslate" translate="no">THREE.DoubleSide</code>로 설정해 정육면체의
 양면이 모두 보이도록 해봅시다.</p>
@@ -145,13 +133,11 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency-doubleside.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency-doubleside.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>예제를 돌려보세요. 뭔가 해결된 듯 하지만 자세히 보면 가끔 뒷면 또는 뒷면의
 일부가 보이지 않습니다.</p>
 <div class="threejs_center"><img src="../resources/images/transparency-cubes-some-backs.png" style="width: 368px;"></div>
 <div class="threejs_center">정육면체의 왼쪽 뒷면이 보이지 않는다</div>
-
 <p>이는 3D 요소를 렌더링하는 방식 때문입니다. WebGL은 각 geometry의 삼각형을
 한 번에 하나씩 렌더링합니다. 그리고 삼각형의 픽셀 하나를 렌더링할 때마다
 2개의 정보를 기록하는데, 하나는 해당 픽셀의 색이고 다른 하나는 픽셀의
@@ -177,10 +163,8 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       transparent: true,
 +      side,
     });
-
     const cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
-
     cube.position.set(x, y, z);
 +  });
 }
@@ -190,7 +174,6 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency-doubleside-hack.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency-doubleside-hack.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>Three.js의 분류 기준은 고정적인 듯합니다. <code class="notranslate" translate="no">side: THREE.BackSide</code> mesh를 먼저
 넣고, 그 다음 정확히 같은 위치에 <code class="notranslate" translate="no">side: THREE.FrontSide</code> mesh를 넣었으니까요.</p>
@@ -199,9 +182,7 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeWidth = 1;
 const planeHeight = 1;
 const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight);
-
 const loader = new THREE.TextureLoader();
-
 function makeInstance(geometry, color, rotY, url) {
   const texture = loader.load(url, render);
   const material = new THREE.MeshPhongMaterial({
@@ -211,13 +192,10 @@ function makeInstance(geometry, color, rotY, url) {
     transparent: true,
     side: THREE.DoubleSide,
   });
-
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
-
   mesh.rotation.y = rotY;
 }
-
 makeInstance(geometry, 'pink',       0,             'resources/images/happyface.png');
 makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.png');
 </pre>
@@ -229,18 +207,15 @@ makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.p
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency-intersecting-planes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency-intersecting-planes.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>아까와 비슷한 문제가 보입니다.</p>
 <div class="threejs_center"><img src="../resources/images/transparency-planes.png" style="width: 408px;"></div>
 <div class="threejs_center">면의 반쪽이 사라졌다</div>
-
 <p>평면을 둘로 쪼개 실제로는 교차하지 않게끔 만들면 문제를 해결할 수 있습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, rotY, url) {
 +  const base = new THREE.Object3D();
 +  scene.add(base);
 +  base.rotation.y = rotY;
-
 +  [-1, 1].forEach((x) =&gt; {
     const texture = loader.load(url, render);
 +    texture.offset.x = x &lt; 0 ? 0 : 0.5;
@@ -252,11 +227,9 @@ makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.p
       transparent: true,
       side: THREE.DoubleSide,
     });
-
     const mesh = new THREE.Mesh(geometry, material);
 -    scene.add(mesh);
 +    base.add(mesh);
-
 -    mesh.rotation.y = rotY;
 +    mesh.position.x = x * .25;
   });
@@ -275,7 +248,6 @@ makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.p
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency-intersecting-planes-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency-intersecting-planes-fixed.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 방법은 교차점이 변하지 않는 정말 간단한 경우에만 가능합니다.</p>
 <p>텍스처가 들어간 요소는 알파 테스트(alpha test)를 활성화해 이를 해결할 수
@@ -289,7 +261,6 @@ makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.p
   <div><img class="checkerboard" src="../examples/resources/images/tree-01.png"></div>
   <div><img class="checkerboard" src="../examples/resources/images/tree-02.png"></div>
 </div>
-
 <p>아까 평면 2개를 교차해놓았던(반으로 가르기 전) 예제를 가져와 이 텍스처에
 <a href="/docs/#api/ko/materials/Material#alphaTest"><code class="notranslate" translate="no">alphaTest</code></a> 속성을 지정하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, rotY, url) {
@@ -302,13 +273,10 @@ makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.p
 +    alphaTest: 0.5,
     side: THREE.DoubleSide,
   });
-
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
-
   mesh.rotation.y = rotY;
 }
-
 -makeInstance(geometry, 'pink',       0,             'resources/images/happyface.png');
 -makeInstance(geometry, 'lightblue',  Math.PI * 0.5, 'resources/images/hmmmface.png');
 +makeInstance(geometry, 'white', 0,             'resources/images/tree-01.png');
@@ -363,11 +331,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/transparency-intersecting-planes-alphatest.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/transparency-intersecting-planes-alphatest.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>예제를 확대해보면 평면에 하얀 테두리가 보일 겁니다.</p>
 <div class="threejs_center"><img src="../resources/images/transparency-alphatest-issues.png" style="width: 532px;"></div>
-
 <p>이는 앞서 봤던 예제와 같은 문제입니다. 하얀 테두리를 가진 요소가 먼저 그려져
 뒤에 있는 요소가 일부 가려진 것이죠. 완벽한 해결책은 없습니다. 그때그때 상황에
 따라 <code class="notranslate" translate="no">alphaTest</code>나 <code class="notranslate" translate="no">transparent</code> 옵션을 조정해서 상황에 맞는 해결책을 찾아야
@@ -379,15 +345,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 Three.js가 렌더링 순서를 제대로 결정할 수 없겠죠.</p>
 <p>식물이나 잔디 등을 구현할 때는 일반적으로 알파 테스트를 사용합니다.</p>
 <p>어떤 방법을 사용할지는 전적으로 상황과 여러분의 판단에 달려 있죠.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

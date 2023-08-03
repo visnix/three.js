@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -60,7 +58,6 @@ const near = 0.1;
 const far = 5;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 2;
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 0, 0);
 +controls.update();
@@ -79,25 +76,20 @@ camera.position.z = 2;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function render(time) {
 -  time *= 0.001;
 +function render() {
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 -  cubes.forEach((cube, ndx) =&gt; {
 -    const speed = 1 + ndx * .1;
 -    const rot = time * speed;
 -    cube.rotation.x = rot;
 -    cube.rotation.y = rot;
 -  });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 -requestAnimationFrame(render);
 </pre>
 <p>then we need to render once</p>
@@ -118,7 +110,6 @@ we are not we need to render when the window changes size.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>The <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> have options to add a kind of inertia to make them feel less
 stiff. We can enable this by setting the <code class="notranslate" translate="no">enableDamping</code> property to true.</p>
@@ -134,27 +125,22 @@ send us a <code class="notranslate" translate="no">change</code> event and call 
 make sure we only ask for a new frame if one has not already been requested
 which we can do by keeping a variable that tracks if we've already requested a frame.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+let renderRequested = false;
-
 function render() {
 +  renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   renderer.render(scene, camera);
 }
 render();
-
 +function requestRenderIfNotRequested() {
 +  if (!renderRequested) {
 +    renderRequested = true;
 +    requestAnimationFrame(render);
 +  }
 +}
-
 -controls.addEventListener('change', render);
 +controls.addEventListener('change', requestRenderIfNotRequested);
 </pre>
@@ -171,7 +157,6 @@ below slides.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-damping.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-damping.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Let's also add a simple lil-gui GUI and make its changes render on demand.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
@@ -188,12 +173,9 @@ lights</a>.</p>
 <code class="notranslate" translate="no">material.color</code> and another for <code class="notranslate" translate="no">cube.scale.x</code>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
 +  const folder = gui.addFolder(`Cube${x}`);
 +  folder.addColor(new ColorGUIHelper(material, 'color'), 'value')
 +      .name('color')
@@ -202,7 +184,6 @@ lights</a>.</p>
 +      .name('scale x')
 +      .onChange(requestRenderIfNotRequested);
 +  folder.open();
-
   return cube;
 }
 </pre>
@@ -214,22 +195,15 @@ folder start expanded.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-gui.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope this gives some idea of how to make three.js render on demand instead of
 continuously. Apps/pages that render three.js on demand are not as common as
 most pages using three.js are either games or 3D animated art but examples of
 pages that might be better rendering on demand would be say a map viewer, a 3d
 editor, a 3d graph generator, a product catalog, etc...</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

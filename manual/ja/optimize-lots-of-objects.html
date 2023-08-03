@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -130,11 +128,9 @@
     });
   });
 }
-
 function px(v) {
   return `${v | 0}px`;
 }
-
 function hsl(h, s, l) {
   return `hsl(${h * 360 | 0},${s * 100 | 0}%,${l * 100 | 0}%)`;
 }
@@ -149,14 +145,12 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/gpw-data-viewer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/gpw-data-viewer.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>どうやら上手くいったようです。</p>
 <p>これを3Dでやってみましょう。
 <a href="rendering-on-demand.html">要求されたレンダリング</a>のコードから始めてファイル内のデータごとに1つのボックスを作ります。</p>
 <p>まずは世界地図テクスチャで簡単な球体を作ってみましょう。テクスチャはこんな感じです。</p>
 <div class="threejs_center"><img src="../examples/resources/images/world.jpg" style="width: 600px"></div>
-
 <p>テクスチャをセットするコードです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
@@ -172,7 +166,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
   // make one box geometry
   const boxWidth = 1;
   const boxHeight = 1;
@@ -180,7 +173,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   // make it so it scales away from the positive Z axis
   geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -192,7 +184,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
   const positionHelper = new THREE.Object3D();
   positionHelper.position.z = 1;
   latHelper.add(positionHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
   data.forEach((row, latNdx) =&gt; {
@@ -208,16 +199,13 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
       material.color.setHSL(hue, saturation, lightness);
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
       // use the world matrix of the position helper to
       // position this mesh.
       positionHelper.updateWorldMatrix(true, false);
       mesh.applyMatrix4(positionHelper.matrixWorld);
-
       mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     });
   });
@@ -235,14 +223,12 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
     <div class="code">adjusted</div>
   </div>
 </div>
-
 <p><a href="scenegraph.html">シーングラフ</a>で説明したように、多くの <a href="/docs/#api/ja/core/Object3D"><code class="notranslate" translate="no">THREE.Object3D</code></a> オブジェクトでボックスを親にして解決できますが、シーングラフにノードを追加すればするほど遅くなってしまいます。</p>
 <p>また <code class="notranslate" translate="no">lonHelper</code>、<code class="notranslate" translate="no">latHelper</code>、<code class="notranslate" translate="no">positionHelper</code>という小さなノード階層を設定します。
 これらのオブジェクトを使用し、ボックスを配置する球体の周りの位置を計算します。</p>
 <div class="spread">
   <div data-diagram="lonLatPos" style="width: 600px; height: 400px;"></div>
 </div>
-
 <p>上記の<span style="color: green;">green bar</span>は <code class="notranslate" translate="no">lonHelper</code> と <code class="notranslate" translate="no">longHelper</code> を表し、赤道上の経度方向に回転させるために使用します。
 <span style="color: blue;">blue bar</span> は <code class="notranslate" translate="no">latHelper</code> を表し、赤道上や赤道下の緯度を回転させるために使用します。
 <span style="color: red;">red sphere</span>は <code class="notranslate" translate="no">positionHelper</code> が提供するオフセットを表します。</p>
@@ -268,15 +254,12 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-slow.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-slow.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>上記のサンプルをドラッグして回転させようとすると遅い事に気づくでしょう。</p>
 <p><a href="debugging-javascript.html">devtoolsを開いて</a>FPS meterをオンにする事でFPSを確認できます。</p>
 <div class="threejs_center"><img src="../resources/images/bring-up-fps-meter.gif"></div>
-
 <p>私のマシンでは20fps以下のFPSが表示されています。</p>
 <div class="threejs_center"><img src="../resources/images/fps-meter.gif"></div>
-
 <p>FPSの遅延はあまり好ましくなく、多くの人々がさらにFPSが遅くなるマシンを持っているのではないでしょうか。最適化を検討した方がいいですね。</p>
 <p>このFPS遅延の問題解決では、全てのボックスを1つのジオメトリに統合する事ができます。
 現在は19000個前後のボックスを描画してます。1つのジオメトリに統合する事で18999個の操作を削除する事ができます。</p>
@@ -284,7 +267,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
 -  // make one box geometry
 -  const boxWidth = 1;
 -  const boxHeight = 1;
@@ -292,7 +274,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 -  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 -  // make it so it scales away from the positive Z axis
 -  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -308,7 +289,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 +  const originHelper = new THREE.Object3D();
 +  originHelper.position.z = 0.5;
 +  positionHelper.add(originHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
 +  const geometries = [];
@@ -318,7 +298,6 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
         return;
       }
       const amount = (value - min) / range;
-
 -      const material = new THREE.MeshBasicMaterial();
 -      const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 -      const saturation = 1;
@@ -326,23 +305,19 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 -      material.color.setHSL(hue, saturation, lightness);
 -      const mesh = new THREE.Mesh(geometry, material);
 -      scene.add(mesh);
-
 +      const boxWidth = 1;
 +      const boxHeight = 1;
 +      const boxDepth = 1;
 +      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
 -      // use the world matrix of the position helper to
 -      // position this mesh.
 -      positionHelper.updateWorldMatrix(true, false);
 -      mesh.applyMatrix4(positionHelper.matrixWorld);
 -
 -      mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
-
 +      // use the world matrix of the origin helper to
 +      // position this geometry
 +      positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
@@ -352,13 +327,11 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
 +      geometries.push(geometry);
     });
   });
-
 +  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 +      geometries, false);
 +  const material = new THREE.MeshBasicMaterial({color:'red'});
 +  const mesh = new THREE.Mesh(mergedGeometry, material);
 +  scene.add(mesh);
-
 }
 </pre>
 <p>上記ではボックスジオメトリの中心点を変更していたコードを削除し、代わりに <code class="notranslate" translate="no">originHelper</code> を追加しています。
@@ -373,13 +346,11 @@ renderが必要なのは連続的なレンダリングでなく、<a href="rende
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これで上手くいったのですが、以前はそれぞれのボックスに異なる色がありましたが、1つのメッシュなので1つのマテリアルとなり1つの色だけになります。
 これは頂点カラーを使い修正できます。</p>
 <p>頂点カラーは頂点ごとに色を追加します。各ボックスの各頂点の全ての色を特定の色に設定する事で、全てのボックスが異なる色を持つようになります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const color = new THREE.Color();
-
 const lonFudge = Math.PI * .5;
 const latFudge = Math.PI * -0.135;
 const geometries = [];
@@ -389,22 +360,18 @@ data.forEach((row, latNdx) =&gt; {
       return;
     }
     const amount = (value - min) / range;
-
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
     // adjust the helpers to point to the latitude and longitude
     lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
     latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
     // use the world matrix of the origin helper to
     // position this geometry
     positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     originHelper.updateWorldMatrix(true, false);
     geometry.applyMatrix4(originHelper.matrixWorld);
-
 +    // compute a color
 +    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const saturation = 1;
@@ -426,7 +393,6 @@ data.forEach((row, latNdx) =&gt; {
 +    const normalized = true;
 +    const colorAttrib = new THREE.BufferAttribute(colors, itemSize, normalized);
 +    geometry.setAttribute('color', colorAttrib);
-
     geometries.push(geometry);
   });
 });
@@ -448,7 +414,6 @@ scene.add(mesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged-vertexcolors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged-vertexcolors.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>ジオメトリのマージは一般的な最適化手法です。
 例えば100本の木を1つのジオメトリに統合したり、個々の岩の山を1つの岩のジオメトリに統合したり、個々の杭から1つの柵メッシュに統合したりする事ができます。
@@ -461,11 +426,6 @@ scene.add(mesh);
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

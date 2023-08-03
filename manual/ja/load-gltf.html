@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -79,7 +77,6 @@ OBJとは異なり、gLTFではマテリアルはフォーマットの直接的�
 <p>ネットで検索したら<a href="https://sketchfab.com/antonmoek">antonmoek</a>さんの<a href="https://sketchfab.com/models/edd1c604e1e045a0a2a552ddd9a293e6">低ポリゴンのシティモデル</a>を見つけました。
 運が良ければ良い例になるように思えました。</p>
 <div class="threejs_center"><img src="../resources/images/cartoon_lowpoly_small_city_free_pack.jpg"></div>
-
 <p><a href="load-obj.html">OBJファイルの読み込みのコード例</a>から始めて、OBJを読み込むコードを削除し、GLTFを読み込むコードに置き換えました。</p>
 <p>以前のOBJコードは</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mtlLoader = new MTLLoader();
@@ -116,7 +113,6 @@ mtlLoader.loadMtl('resources/models/windmill/windmill-fixed.mtl', (mtl) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-gltf.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>魔法だ！テクスチャーも含めて上手くいっています。</p>
 <p>次に走り回る車をアニメーションしたかったので、シーンに車が別のエンティティとして設定されているか、それが使用できるように設定されているか確認する必要があります。</p>
@@ -203,21 +199,17 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 <p><code class="notranslate" translate="no">render</code> 関数で <code class="notranslate" translate="no">cars</code> の全ての子の回転を設定します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function render(time) {
 +  time *= 0.001;  // convert to seconds
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  if (cars) {
 +    for (const car of cars.children) {
 +      car.rotation.y = time;
 +    }
 +  }
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -226,7 +218,6 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf-rotate-cars.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-gltf-rotate-cars.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>うーん、残念ながら子のオリジンが回転目的のために設定されておらず、アニメーション用に設計されてないようです。トラックの回転方向が間違っています。</p>
 <p>3Dで何かする場合の重要なポイントは、事前に計画を立ててアセットを設計する必要があります。アセットを正しい場所に配置し、正しいスケールになるようにデザインします。</p>
@@ -245,7 +236,6 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
   gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) =&gt; {
     const root = gltf.scene;
     scene.add(root);
-
 -    cars = root.getObjectByName('Cars');
 +    const loadedCars = root.getObjectByName('Cars');
 +    const fixes = [
@@ -272,18 +262,15 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf-rotate-cars-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-gltf-rotate-cars-fixed.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>さあ、追い回してみましょう。</p>
 <p>簡単なドライビングシステムを作るのはこの記事では無理がありますが、
 その代わりに入り組んだパスを1本にし、そのパスに車を乗せる事ができそうです。
 以下の画像はBlenderでパスを作っている途中です。</p>
 <div class="threejs_center"><img src="../resources/images/making-path-for-cars.jpg" style="width: 1094px"></div>
-
 <p>Blenderからパスのデータを取り出す方法が必要でした。
 幸運な事にパスだけを選択し、"write nurbs"をチェックしてobjをエクスポートできました。</p>
 <div class="threejs_center"><img src="../resources/images/blender-export-obj-write-nurbs.jpg" style="width: 498px"></div>
-
 <p>OBJファイルを開くと頂点のリストを得る事ができました。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const controlPoints = [
   [1.118281, 5.115846, -3.681386],
@@ -314,13 +301,11 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 この曲線は頂点を通る滑らかな曲線を作ります。</p>
 <p>実際にはこれらの頂点を直接入力すると次のような曲線が生成されます。</p>
 <div class="threejs_center"><img src="../resources/images/car-curves-before.png" style="width: 400px"></div>
-
 <p>しかし、もっと角をシャープにして欲しいです。
 いくつかの頂点を追加し計算すれば、望んだ角度が得られる気がします。
 各頂点のペアで2つのポイントの間の10%と90%の道を計算し、その結果を <a href="/docs/#api/ja/extras/curves/CatmullRomCurve3"><code class="notranslate" translate="no">CatmullRomCurve3</code></a> に渡します。</p>
 <p>このような曲線が得られます。</p>
 <div class="threejs_center"><img src="../resources/images/car-curves-after.png" style="width: 400px"></div>
-
 <p>曲線を作成するコードは以下の通りです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">let curve;
 let curveObject;
@@ -381,10 +366,8 @@ let curveObject;
 </pre>
 <p>そして、カーブがあまりにも小さすぎる事に気がつきました。</p>
 <div class="threejs_center"><img src="../resources/images/car-curves-too-small.png" style="width: 498px"></div>
-
 <p>Blenderで階層を確認してみると、3DCGアーティストが全ての親となるノードをスケーリングしていました。</p>
 <div class="threejs_center"><img src="../resources/images/cars-scale-0.01.png" style="width: 342px;"></div>
-
 <p>リアルタイムの3Dアプリではスケーリングが悪です。
 リアルタイム3Dを行う際には、様々な問題が発生し不満が尽きません。
 3Dアプリ開発ではシーン全体を拡大縮小するのはとても簡単ですが、3DCGアーティストはこれを知らない事が多いです。
@@ -398,7 +381,6 @@ let curveObject;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function dumpVec3(v3, precision = 3) {
 +  return `${v3.x.toFixed(precision)}, ${v3.y.toFixed(precision)}, ${v3.z.toFixed(precision)}`;
 +}
-
 function dumpObject(obj, lines, isLast = true, prefix = '') {
   const localPrefix = isLast ? '└─' : '├─';
   lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
@@ -500,14 +482,11 @@ function dumpObject(obj, lines, isLast = true, prefix = '') {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// create 2 Vector3s we can use for path calculations
 const carPosition = new THREE.Vector3();
 const carTarget = new THREE.Vector3();
-
 function render(time) {
   ...
-
 -  for (const car of cars) {
 -    car.rotation.y = time;
 -  }
-
 +  {
 +    const pathTime = time * .01;
 +    const targetOffset = 0.01;
@@ -543,7 +522,6 @@ const fixes = [
 +  { prefix: 'CAR_03', y: 33, rot: [0, Math.PI, 0], },
 +  { prefix: 'Car_04', y: 40, rot: [0, Math.PI, 0], },
 ];
-
 root.updateMatrixWorld();
 for (const car of loadedCars.children.slice()) {
   const fix = fixes.find(fix =&gt; car.name.startsWith(fix.prefix));
@@ -562,7 +540,6 @@ for (const car of loadedCars.children.slice()) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf-animated-cars.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-gltf-animated-cars.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>数分間の作業にしては悪くない結果です。</p>
 <p>最後にやりたいのはシャドウをつける事です。</p>
@@ -573,7 +550,6 @@ for (const car of loadedCars.children.slice()) {
   gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) =&gt; {
     const root = gltf.scene;
     scene.add(root);
-
 +    root.traverse((obj) =&gt; {
 +      if (obj.castShadow !== undefined) {
 +        obj.castShadow = true;
@@ -595,11 +571,9 @@ for (const car of loadedCars.children.slice()) {
 +  light.castShadow = true;
 *  light.position.set(-250, 800, -850);
 *  light.target.position.set(-550, 40, -450);
-
 +  light.shadow.bias = -0.004;
 +  light.shadow.mapSize.width = 2048;
 +  light.shadow.mapSize.height = 2048;
-
   scene.add(light);
   scene.add(light.target);
 +  const cam = light.shadow.camera;
@@ -621,7 +595,6 @@ for (const car of loadedCars.children.slice()) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf-shadows.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/load-gltf-shadows.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>このプロジェクトを説明する事で、シーングラフを使ってファイルを読込する際の問題点・解決事例をいくつか示せたと思います。</p>
 <p>興味深いのはblendファイルとgltfファイルの場合、blendファイルにはいくつかのライトがありますが、シーンに読み込み後はライトがありません。
@@ -632,15 +605,9 @@ GLTFファイルはただのJSONファイルなので簡単に中身を見れま
 例えば今回は手動で車のパスをエクスポートしました。
 理想的にはGLTFファイルに情報を格納する事ができますが、独自のエクスポーターを作成しエクスポートしたい方法でノードをマークするか、命名スキームなどを使用してデータを作成するために使用しているツールからアプリにデータを取得する必要があります。</p>
 <p>その全ては読者の皆様の演習としてお任せします。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

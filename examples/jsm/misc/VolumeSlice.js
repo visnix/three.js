@@ -8,7 +8,6 @@ import {
 	Texture,
 	SRGBColorSpace
 } from 'three';
-
 /**
  * This class has been made to hold a slice of a volume data
  * @class
@@ -18,9 +17,7 @@ import {
  * @see Volume
  */
 class VolumeSlice {
-
 	constructor( volume, index, axis ) {
-
 		const slice = this;
 		/**
 		 * @member {Volume} volume The associated volume
@@ -32,23 +29,18 @@ class VolumeSlice {
 		index = index || 0;
 		Object.defineProperty( this, 'index', {
 			get: function () {
-
 				return index;
-
 			},
 			set: function ( value ) {
-
 				index = value;
 				slice.geometryNeedsUpdate = true;
 				return index;
-
 			}
 		} );
 		/**
 		 * @member {String} axis The normal axis
 		 */
 		this.axis = axis || 'z';
-
 		/**
 		 * @member {HTMLCanvasElement} canvas The final canvas used for the texture
 		 */
@@ -64,8 +56,6 @@ class VolumeSlice {
 		 */
 		this.canvasBuffer = document.createElement( 'canvas' );
 		this.updateGeometry();
-
-
 		const canvasMap = new Texture( this.canvas );
 		canvasMap.minFilter = LinearFilter;
 		canvasMap.wrapS = canvasMap.wrapT = ClampToEdgeWrapping;
@@ -81,15 +71,12 @@ class VolumeSlice {
 		 */
 		this.geometryNeedsUpdate = true;
 		this.repaint();
-
 		/**
 		 * @member {Number} iLength Width of slice in the original coordinate system, corresponds to the width of the buffer canvas
 		 */
-
 		/**
 		 * @member {Number} jLength Height of slice in the original coordinate system, corresponds to the height of the buffer canvas
 		 */
-
 		/**
 		 * @member {Function} sliceAccess Function that allow the slice to access right data
 		 * @see Volume.extractPerpendicularPlane
@@ -97,30 +84,21 @@ class VolumeSlice {
 		 * @param {Number} j The second coordinate
 		 * @returns {Number} the index corresponding to the voxel in volume.data of the given position in the slice
 		 */
-
-
 	}
-
 	/**
 	 * @member {Function} repaint Refresh the texture and the geometry if geometryNeedsUpdate is set to true
 	 * @memberof VolumeSlice
 	 */
 	repaint() {
-
 		if ( this.geometryNeedsUpdate ) {
-
 			this.updateGeometry();
-
 		}
-
 		const iLength = this.iLength,
 			jLength = this.jLength,
 			sliceAccess = this.sliceAccess,
 			volume = this.volume,
 			canvas = this.canvasBuffer,
 			ctx = this.ctxBuffer;
-
-
 		// get the imageData and pixel array from the canvas
 		const imgData = ctx.getImageData( 0, 0, iLength, jLength );
 		const data = imgData.data;
@@ -129,17 +107,12 @@ class VolumeSlice {
 		const lowerThreshold = volume.lowerThreshold;
 		const windowLow = volume.windowLow;
 		const windowHigh = volume.windowHigh;
-
 		// manipulate some pixel elements
 		let pixelCount = 0;
-
 		if ( volume.dataType === 'label' ) {
-
 			//this part is currently useless but will be used when colortables will be handled
 			for ( let j = 0; j < jLength; j ++ ) {
-
 				for ( let i = 0; i < iLength; i ++ ) {
-
 					let label = volumeData[ sliceAccess( i, j ) ];
 					label = label >= this.colorMap.length ? ( label % this.colorMap.length ) + 1 : label;
 					const color = this.colorMap[ label ];
@@ -148,17 +121,11 @@ class VolumeSlice {
 					data[ 4 * pixelCount + 2 ] = ( color >> 8 ) & 0xff;
 					data[ 4 * pixelCount + 3 ] = color & 0xff;
 					pixelCount ++;
-
 				}
-
 			}
-
 		} else {
-
 			for ( let j = 0; j < jLength; j ++ ) {
-
 				for ( let i = 0; i < iLength; i ++ ) {
-
 					let value = volumeData[ sliceAccess( i, j ) ];
 					let alpha = 0xff;
 					//apply threshold
@@ -166,64 +133,44 @@ class VolumeSlice {
 					//apply window level
 					value = Math.floor( 255 * ( value - windowLow ) / ( windowHigh - windowLow ) );
 					value = value > 255 ? 255 : ( value < 0 ? 0 : value | 0 );
-
 					data[ 4 * pixelCount ] = value;
 					data[ 4 * pixelCount + 1 ] = value;
 					data[ 4 * pixelCount + 2 ] = value;
 					data[ 4 * pixelCount + 3 ] = alpha;
 					pixelCount ++;
-
 				}
-
 			}
-
 		}
-
 		ctx.putImageData( imgData, 0, 0 );
 		this.ctx.drawImage( canvas, 0, 0, iLength, jLength, 0, 0, this.canvas.width, this.canvas.height );
-
-
 		this.mesh.material.map.needsUpdate = true;
-
 	}
-
 	/**
 	 * @member {Function} Refresh the geometry according to axis and index
 	 * @see Volume.extractPerpendicularPlane
 	 * @memberof VolumeSlice
 	 */
 	updateGeometry() {
-
 		const extracted = this.volume.extractPerpendicularPlane( this.axis, this.index );
 		this.sliceAccess = extracted.sliceAccess;
 		this.jLength = extracted.jLength;
 		this.iLength = extracted.iLength;
 		this.matrix = extracted.matrix;
-
 		this.canvas.width = extracted.planeWidth;
 		this.canvas.height = extracted.planeHeight;
 		this.canvasBuffer.width = this.iLength;
 		this.canvasBuffer.height = this.jLength;
 		this.ctx = this.canvas.getContext( '2d' );
 		this.ctxBuffer = this.canvasBuffer.getContext( '2d' );
-
 		if ( this.geometry ) this.geometry.dispose(); // dispose existing geometry
-
 		this.geometry = new PlaneGeometry( extracted.planeWidth, extracted.planeHeight );
-
 		if ( this.mesh ) {
-
 			this.mesh.geometry = this.geometry;
 			//reset mesh matrix
 			this.mesh.matrix.identity();
 			this.mesh.applyMatrix4( this.matrix );
-
 		}
-
 		this.geometryNeedsUpdate = false;
-
 	}
-
 }
-
 export { VolumeSlice };

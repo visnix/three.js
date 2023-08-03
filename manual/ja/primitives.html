@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -70,7 +68,6 @@
 <div id="Diagram-TubeGeometry" data-primitive="TubeGeometry">経路をなぞらせた管</div>
 <div id="Diagram-EdgesGeometry" data-primitive="EdgesGeometry">異なるジオメトリを入力として、その面同士の角度が閾値以上なら角を作り出す、補助オブジェクト。例えば、記事の最初の方で紹介した立方体を見てみると、それぞれの面に、立方体を作っている全ての三角形の線が表示されています。<a href="/docs/#api/ja/geometries/EdgesGeometry"><code class="notranslate" translate="no">EdgesGeometry</code></a>を代わりに使うことで、面内の線は全て除去されます。下記のthresholdAngleを調整してみてください。閾値以下の角が消えて見えるでしょう。</div>
 <div id="Diagram-WireframeGeometry" data-primitive="WireframeGeometry">1つの角ごとに1つの線分（2点）を持つジオメトリを生成する。WebGLは線分を作るのに2点が必要なので、この機能がないと、しばしば角を忘れたり、余分な角を作ってしまうでしょう。例えば、たった3点しかない1つの三角形あるとします。<code class="notranslate" translate="no">wireframe: true</code>のマテリアルを使ってそれを描こうとした場合、1本の線分しか得られません。<a href="/docs/#api/ja/geometries/WireframeGeometry"><code class="notranslate" translate="no">WireframeGeometry</code></a>にその三角形のジオメトリを渡すと、6点からなる3つの線分を持った新しいジオメトリを生成します。</div>
-
 <p><a href="custom-buffergeometry.html">別の記事</a>で、カスタムジオメトリの作成について説明します。
 今はそれぞれの種類のプリミティブを作成する例を作ってみます。
 <a href="responsive.html">以前の記事</a>を例に始めましょう。</p>
@@ -93,11 +90,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 <p><code class="notranslate" translate="no">addObject</code>関数を加えましょう。これはx座標とy座標と<a href="/docs/#api/ja/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>を取り、シーンにオブジェクトを追加します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const objects = [];
 const spread = 15;
-
 function addObject(x, y, obj) {
   obj.position.x = x * spread;
   obj.position.y = y * spread;
-
   scene.add(obj);
   objects.push(obj);
 }
@@ -113,12 +108,10 @@ function addObject(x, y, obj) {
   const material = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
   });
-
   const hue = Math.random();
   const saturation = 1;
   const luminance = .5;
   material.color.setHSL(hue, saturation, luminance);
-
   return material;
 }
 </pre>
@@ -152,7 +145,6 @@ function addObject(x, y, obj) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>上記のパターンには、2つの特筆すべき例外があります。
 一番大きなものは、たぶん<a href="/docs/#api/ja/geometries/TextGeometry"><code class="notranslate" translate="no">TextGeometry</code></a>です。テキストのメッシュを作るときは、事前に3Dフォントデータを読み込む必要があります。このデータの読み込みは非同期的に行われるので、ジオメトリを作ろうとする前に、読み込みを待つ必要があります。フォントの読み込みにpromiseを使うと、もっと速く読み込むことができます。
@@ -167,7 +159,6 @@ function addObject(x, y, obj) {
       loader.load(url, resolve, undefined, reject);
     });
   }
-
   async function doit() {
     const font = await loadFont('resources/threejs/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
     const geometry = new TextGeometry('three.js', {
@@ -183,10 +174,8 @@ function addObject(x, y, obj) {
     const mesh = new THREE.Mesh(geometry, createMaterial());
     geometry.computeBoundingBox();
     geometry.boundingBox.getCenter(mesh.position).multiplyScalar(-1);
-
     const parent = new THREE.Object3D();
     parent.add(mesh);
-
     addObject(-1, -1, parent);
   }
   doit();
@@ -210,7 +199,6 @@ three.jsはデフォルトで、テキストを左端中心に回転するよう
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives-text.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives-text.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>左側のものは自身の中心の周りを回転していませんが、右側のものはそうなっていることに
 注意してください。</p>
@@ -247,7 +235,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="Points"></div>
 </div>
-
 <p>カメラからの距離に関わらず点の大きさを同じにしたいなら、<a href="/docs/#api/ja/materials/PointsMaterial#sizeAttenuation"><code class="notranslate" translate="no">sizeAttenuation</code></a> をfalseにすることで、サイズ変更を止めることができます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const material = new THREE.PointsMaterial({
     color: 'red',
@@ -260,7 +247,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="PointsUniformSize"></div>
 </div>
-
 <p>もう一つ説明が必要な大切なことは、ほとんど全部の形状が、
 どのくらい細分化するか決めるための設定を持っていることです。
 球体のジオメトリが良い例かもしれません。
@@ -271,7 +257,6 @@ scene.add(points);
 <div data-diagram="SphereGeometryMedium"></div>
 <div data-diagram="SphereGeometryHigh"></div>
 </div>
-
 <p>最初の球体は、15セグメントまたは30個の三角形になる、周囲に5セグメント、高さ3です。
 二つ目の球体は、240セグメントまたは480個の三角形になる、周囲に24セグメント、高さ10です。です。
 最後の球体は、2500セグメントまたは5000個の三角形になる、周囲に50セグメント、高さ50です。</p>
@@ -283,7 +268,6 @@ scene.add(points);
 <div data-diagram="SphereGeometryMediumSmooth"></div>
 <div data-diagram="SphereGeometryHighSmooth"></div>
 </div>
-
 <p>5000個の三角形からできる右側の球体が、たった480個の三角形からできる真ん中の球体よりも良いかは、明らかではありません。
 地球の地図のために1個の地球儀を作るときのように、もし少ない数の球体を描くだけなら、
 10000個の三角形の球体でも悪い選択ではありません。
@@ -297,7 +281,6 @@ scene.add(points);
 <div data-diagram="PlaneGeometryLow"></div>
 <div data-diagram="PlaneGeometryHigh"></div>
 </div>
-
 <p>左側の四角形は2個の三角形からできています。右側の四角形は200個の三角形からできています。
 球体のときと異なり、四角形の場合だと、質的なトレードオフは全くありません。
 いくつかの用途で、たいてい四角形を改造したり歪めたりしたいと思っているときに、細分化するだけで良いでしょう。
@@ -311,16 +294,9 @@ scene.add(points);
 <p>次は、<a href="scenegraph.html">threeのシーングラフの動き方と使い方</a>を説明します。</p>
 <p><link rel="stylesheet" href="../resources/threejs-primitives.css"></p>
 <script type="module" src="../resources/threejs-primitives.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script defer src="../resources/prettify.js"></script>
   <script defer src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

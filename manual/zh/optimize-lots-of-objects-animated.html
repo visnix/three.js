@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -46,15 +44,12 @@
   const text = await loadFile(info.url);
   info.file = parseData(text);
 }
-
 async function loadAll() {
   const fileInfos = [
     {name: 'men',   hueRange: [0.7, 0.3], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014mt_2010_cntm_1_deg.asc' },
     {name: 'women', hueRange: [0.9, 1.1], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014ft_2010_cntm_1_deg.asc' },
   ];
-
   await Promise.all(fileInfos.map(loadData));
-
   ...
 }
 loadAll();
@@ -99,7 +94,6 @@ loadAll();
   const womenInfo = fileInfos[1];
   const menFile = menInfo.file;
   const womenFile = womenInfo.file;
-
   function amountGreaterThan(a, b) {
     return Math.max(a - b, 0);
   }
@@ -151,7 +145,6 @@ function showFileInfo(fileInfos, fileInfo) {
   });
   requestRenderIfNotRequested();
 }
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
   const boxes = addBoxes(info.file, info.hueRange);
@@ -170,13 +163,10 @@ showFileInfo(fileInfos, fileInfos[0]);
 <p>和之前例子有所不同的是, 我们还需要让<code class="notranslate" translate="no">addBoxes</code>获取<code class="notranslate" translate="no">hueRange</code></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function addBoxes(file) {
 +function addBoxes(file, hueRange) {
-
   ...
-
     // compute a color
 -    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const hue = THREE.MathUtils.lerp(...hueRange, amount);
-
   ...
 </pre>
 <p>把鼠标放到标签上可以在四组不同的数据集之间切换. </p>
@@ -184,7 +174,6 @@ showFileInfo(fileInfos, fileInfos[0]);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-multiple-data-sets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-multiple-data-sets.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>咋回事, 怎么还有一些点非常突出??!! 而且切换得很生硬也没有动画啊</p>
 <p>有这么一些想法</p>
@@ -206,9 +195,7 @@ showFileInfo(fileInfos, fileInfos[0]);
 +function makeBoxes(file, hueRange) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
 -  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 -      geometries, false);
 -  const material = new THREE.MeshBasicMaterial({
@@ -230,14 +217,11 @@ showFileInfo(fileInfos, fileInfos[0]);
 +  }
 +  return false;
 +}
-
 -function makeBoxes(file, hueRange) {
 +function makeBoxes(file, hueRange, fileInfos) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
   const geometries = [];
   data.forEach((row, latNdx) =&gt; {
     row.forEach((value, lonNdx) =&gt; {
@@ -245,7 +229,6 @@ showFileInfo(fileInfos, fileInfos[0]);
 +        return;
 +      }
       const amount = (value - min) / range;
-
   ...
 </pre>
 <p>现在我们改动一下代码, 把调用<code class="notranslate" translate="no">addBoxes</code>的改成使用<code class="notranslate" translate="no">makeBoxes</code>生成变形目标.</p>
@@ -273,7 +256,6 @@ showFileInfo(fileInfos, fileInfos[0]);
 +});
 +const mesh = new THREE.Mesh(baseGeometry, material);
 +scene.add(mesh);
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
 -  const boxes = addBoxes(info.file, info.hueRange);
@@ -356,7 +338,6 @@ function showFileInfo(fileInfos, fileInfo) {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +  const tweenManager = new TweenManger();
-
   ...
 </pre>
 <p>这是如何创建Tween</p>
@@ -381,17 +362,14 @@ function showFileInfo(fileInfos, fileInfo) {
 <p>我们需要改动render函数来更新tween, 让动画还在跑的时候保持渲染</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
   renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  if (tweenManager.update()) {
 +    requestRenderIfNotRequested();
 +  }
-
   controls.update();
   renderer.render(scene, camera);
 }
@@ -402,7 +380,6 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-morphtargets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-morphtargets.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>我希望上面讲的这些能有用. 通过threejs提供的方法或者自己写着色器来使用变形对象是一种常见的移动大量对象的手段. 作为一个例子, 我们可以给每一个立方体一个随机目标, 然后从这个位置变换到另一个位置. 这可能是一种超酷的介绍地球的方法. </p>
 <p>接下来你可能感兴趣的是给地球上的一个位置添加标签, 这将在<a href="align-html-elements-to-3d.html">3D中排布HTML元素</a>中涉及. </p>
@@ -414,15 +391,9 @@ not make a good visualization. Feel free to change the <code class="notranslate"
 <a href="/docs/#api/zh/math/Math.max(a - b, 0)"><code class="notranslate" translate="no">Math.max(a - b, 0)</code></a> to something like <code class="notranslate" translate="no">(a - b)</code> "raw difference" or <code class="notranslate" translate="no">a / (a +
 b)</code> "percent" and you'll see what I mean.</p>
 <p>注: 我们可以试着用图表表示男性的百分比或女性的百分比或原始差异. 但根据我们显示信息的方式, 也就是从地球表面生长出来的立方体的显示方式, 我们希望大多数立方体都是矮的. 如果我们使用其中一个做基准, 大多数立方体的高度大约是它们最大高度的1/2. 效果会很差. 自己动手改一下<code class="notranslate" translate="no">amountGreaterThan</code>中的<a href="/docs/#api/zh/math/Math.max(a - b, 0)"><code class="notranslate" translate="no">Math.max(a - b, 0)</code></a> 到<code class="notranslate" translate="no">(a - b)</code> "原始差异"或者 <code class="notranslate" translate="no">a / (a + b)</code>"百分比", 你就会明白我什么意思了. </p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

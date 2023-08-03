@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -36,13 +34,11 @@
 위치(positions), 법선(normals), 색(colors), uv 데이터의 배열이고, 이들을 모으면 각 꼭지점에
 대한 <em>평행 배열</em> 형식의 데이터가 됩니다.</p>
 <div class="threejs_center"><img src="../resources/threejs-attributes.svg" style="width: 700px"></div>
-
 <p>그림을 보면 총 4개의 속성(attribute), <code class="notranslate" translate="no">position</code>, <code class="notranslate" translate="no">normal</code>, <code class="notranslate" translate="no">color</code>, <code class="notranslate" translate="no">uv</code>가 있습니다.
 이들은 평행 배열로 각 속성의 N 번째 데이터 묶음이 한 꼭지점의 데이터를 나타냅니다. 표시한
 index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 꼭지점을 정의합니다.</p>
 <p>이해를 돕기 위해 정육면체의 한 모서리를 강조해보겠습니다.</p>
 <div class="threejs_center"><img src="../resources/cube-faces-vertex.svg" style="width: 500px"></div>
-
 <p>이 경우 맞닿은 면의 색이 다르기에, 이 모서리는 각 면에 다른 법선을 제공해야 합니다.
 마찬가지로 UV도 달라야 하죠.
 하나의 <em>꼭지점</em>은 위 4개 속성의 묶음이고, 때문에 속성이 달라진다면 그건 다른 꼭지점이
@@ -60,7 +56,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 0], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
-
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  0,  1], uv: [1, 1], },
@@ -68,7 +63,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [ 1, -1,  1], norm: [ 1,  0,  0], uv: [0, 0], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 1,  0,  0], uv: [1, 1], },
@@ -76,7 +70,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [ 1, -1, -1], norm: [ 0,  0, -1], uv: [0, 0], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
-
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  0, -1], uv: [1, 1], },
@@ -84,7 +77,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [-1, -1, -1], norm: [-1,  0,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
-
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [-1,  0,  0], uv: [1, 1], },
@@ -92,7 +84,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [ 1,  1, -1], norm: [ 0,  1,  0], uv: [0, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  1,  0], uv: [1, 1], },
@@ -100,7 +91,6 @@ index = 4 위치의 꼭지점 데이터를 보세요. 이 묶음이 하나의 �
   { pos: [ 1, -1,  1], norm: [ 0, -1,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
-
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [-1, -1, -1], norm: [ 0, -1,  0], uv: [1, 1], },
@@ -144,7 +134,6 @@ for (const vertex of vertices) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>데이터가 너무 많네요. 크게 구조를 바꾸긴 어렵지만, 꼭지점을 인덱스로 참조하게끔 바꾸면
 조금 나을 듯합니다. 정육면체 데이터를 다시 봅시다. 각 면은 2개의 삼각형, 삼각형 하나에는
@@ -213,7 +202,6 @@ geometry.setAttribute(
 geometry.setAttribute(
     'uv',
     new THREE.BufferAttribute(uvs, uvNumComponents));
-
 +geometry.setIndex([
 +   0,  1,  2,   2,  1,  3,  // 앞쪽
 +   4,  5,  6,   6,  5,  7,  // 오른쪽
@@ -227,7 +215,6 @@ geometry.setAttribute(
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-indexed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-indexed.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><a href="/docs/#api/ko/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a>에 법선을 지정하지 않았다면 <a href="/docs/#api/ko/core/BufferGeometry#computeVertexNormals"><code class="notranslate" translate="no">computeVertexNormals</code></a>
 메서드를 호출해 자동으로 법선을 지정할 수 있습니다. 다만 데이터가 조금이라도 다르다면
@@ -242,7 +229,6 @@ geometry.setAttribute(
     <div class="code">Geometry</div>
   </div>
 </div>
-
 <p>위 두 원통은 <code class="notranslate" translate="no">computeVertexNormals</code> 메서드를 호출해 법선을 생성했습니다. 자세히 보면
 왼쪽 원통에 이음매가 있는 게 보일 텐데, 이는 원통의 끝과 시작점의 UV가 달라 꼭지점을
 공유할 수 없기 때문입니다. 그다지 큰 문제는 아니지만, 알아두어 나쁠 건 없죠. 이를 해결하려면
@@ -278,7 +264,6 @@ for (const vertex of vertices) {
 +  nrmNdx += normalNumComponents;
 +  uvNdx += uvNumComponents;
 }
-
 geometry.setAttribute(
     'position',
 -    new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
@@ -291,7 +276,6 @@ geometry.setAttribute(
     'uv',
 -    new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
 +    new THREE.BufferAttribute(uvs, uvNumComponents));
-
 geometry.setIndex([
    0,  1,  2,   2,  1,  3,  // 앞쪽
    4,  5,  6,   6,  5,  7,  // 오른쪽
@@ -305,7 +289,6 @@ geometry.setIndex([
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-typedarrays.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-typedarrays.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>꼭지점의 일부를 수정하고 싶다면 형식화 배열을 사용하는 게 좋습니다.</p>
 <p>뭔가 꼭지점을 동적으로 수정하는 예제를 찾아보려고 노력했는데, 찾기가 어렵네요.
@@ -321,7 +304,6 @@ geometry.setIndex([
   const numComponents = 3;
   const positions = new Float32Array(numVertices * numComponents);
   const indices = [];
-
   const longHelper = new THREE.Object3D();
   const latHelper = new THREE.Object3D();
   const pointHelper = new THREE.Object3D();
@@ -329,14 +311,12 @@ geometry.setIndex([
   latHelper.add(pointHelper);
   pointHelper.position.z = 1;
   const temp = new THREE.Vector3();
-
   function getPoint(lat, long) {
     latHelper.rotation.x = lat;
     longHelper.rotation.y = long;
     longHelper.updateMatrixWorld(true);
     return pointHelper.getWorldPosition(temp).toArray();
   }
-
   let posNdx = 0;
   let ndx = 0;
   for (let down = 0; down &lt; segmentsDown; ++down) {
@@ -344,18 +324,15 @@ geometry.setIndex([
     const v1 = (down + 1) / segmentsDown;
     const lat0 = (v0 - 0.5) * Math.PI;
     const lat1 = (v1 - 0.5) * Math.PI;
-
     for (let across = 0; across &lt; segmentsAround; ++across) {
       const u0 = across / segmentsAround;
       const u1 = (across + 1) / segmentsAround;
       const long0 = u0 * Math.PI * 2;
       const long1 = u1 * Math.PI * 2;
-
       positions.set(getPoint(lat0, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat0, long1), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long1), posNdx);  posNdx += numComponents;
-
       indices.push(
         ndx, ndx + 1, ndx + 2,
         ndx + 2, ndx + 1, ndx + 3,
@@ -379,7 +356,6 @@ const { positions, indices } = makeSpherePositions(segmentsAround, segmentsDown)
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.BufferGeometry();
 const positionNumComponents = 3;
 const normalNumComponents = 3;
-
 +const positionAttribute = new THREE.BufferAttribute(positions, positionNumComponents);
 +positionAttribute.setUsage(THREE.DynamicDrawUsage);
 geometry.setAttribute(
@@ -395,9 +371,7 @@ geometry.setIndex(indices);
 알려주는 역할이죠.</p>
 <p>이제 <code class="notranslate" translate="no">render</code> 함수에서 매 프레임마다 법선을 기준으로 위치값을 변경해줍니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const temp = new THREE.Vector3();
-
 ...
-
 for (let i = 0; i &lt; positions.length; i += 3) {
   const quad = (i / 12 | 0);
   const ringId = quad / segmentsAround | 0;
@@ -415,21 +389,14 @@ positionAttribute.needsUpdate = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-dynamic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-dynamic.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 글이 <a href="/docs/#api/ko/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a>로 사용자 지정 geometry를 만들고, <a href="/docs/#api/ko/core/BufferAttribute"><code class="notranslate" translate="no">BufferAttribute</code></a>를 다루는
 데 도움이 되었으면 좋겠습니다.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-custom-buffergeometry.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

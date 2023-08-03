@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -51,7 +49,6 @@
 которая приближается к тени, нарисуйте ее над землей под вашим объектом.</p>
 <p>Например, давайте использовать эту текстуру в качестве поддельной тени</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p>Мы будем использовать часть кода из <a href="cameras.html">предыдущей статьи</a>.</p>
 <p>Давайте установим цвет фона на белый. </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -59,10 +56,8 @@
 </pre>
 <p>Затем мы установим ту же самую шахматную доску, но на этот раз она использует <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>, так как нам не нужно освещение для земли.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -70,7 +65,6 @@
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -112,7 +106,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   // so they move together.
   const base = new THREE.Object3D();
   scene.add(base);
-
   // add the shadow to the base
   // note: we make a new material for each sphere
   // so we can set that sphere's material transparency
@@ -128,7 +121,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // add the sphere to the base
   const u = i / numSpheres;   // goes from 0 to 1 as we iterate the spheres.
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -136,7 +128,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // remember all 3 plus the y position
   sphereShadowBases.push({base, sphereMesh, shadowMesh, y: sphereMesh.position.y});
 }
@@ -167,22 +158,17 @@ for (let i = 0; i &lt; numSpheres; ++i) {
 И мы также устанавливаем непрозрачность теневого материала таким образом, чтобы, когда каждая сфера поднималась выше, ее тень исчезала.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert to seconds
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const {base, sphereMesh, shadowMesh, y} = sphereShadowBase;
-
     // u is a value that goes from 0 to 1 as we iterate the spheres
     const u = ndx / sphereShadowBases.length;
-
     // compute a position for the base. This will move
     // both the sphere and its shadow
     const speed = time * .2;
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff is a value that goes from 0 to 1
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // move the sphere up and down
@@ -190,7 +176,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
     // fade the shadow as the sphere goes up
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>И вот 15 видов прыгающих шаров.</p>
@@ -198,7 +183,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>В некоторых приложениях обычно используют круглую или овальную тень для всего, но, конечно, 
 вы также можете использовать теневые текстуры различной формы. Вы также можете придать тени более жесткий край.
@@ -225,9 +209,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -237,7 +219,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Что произошло? Почему части теней отсутствуют? </p>
 <p>Причина в том, что карты теней создаются путем рендеринга сцены с точки зрения света. 
@@ -252,7 +233,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Отрегулируйте целевое значение x назад и вперед, и должно быть довольно ясно, что только то, что находится внутри блока камеры тени, находится там, где рисуются тени. </p>
 <p>Мы можем отрегулировать размер этой коробки, отрегулировав камеру освещения.</p>
@@ -318,13 +298,11 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Установите <code class="notranslate" translate="no">ширину</code> и <code class="notranslate" translate="no">высоту</code> около 30, и вы увидите, что тени правильные и области, которые должны находиться в тени для этой сцены, полностью покрыты. </p>
 <p>Но это поднимает вопрос, почему бы просто не установить <code class="notranslate" translate="no">ширину</code> и <code class="notranslate" translate="no">высоту</code> для некоторых гигантских чисел, 
 чтобы просто покрыть все? Установите <code class="notranslate" translate="no">ширину</code> и <code class="notranslate" translate="no">высоту</code> 100, и вы можете увидеть что-то вроде этого</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>Что происходит с этими тенями в низком разрешении ?!</p>
 <p>Эта проблема - еще один параметр, связанный с тенями, о котором нужно знать. Карты теней - это текстуры, в которые затягиваются тени.
 Эти текстуры имеют размер. Область теневой камеры, которую мы установили выше, 
@@ -350,24 +328,18 @@ Ok but what about `near` and `far` I hear you thinking. Can we set `near` to 0.0
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <!--
 You can notice, just like the last example if we set the angle high
 then the shadow map, the texture is spread over a very large area and
 the resolution of our shadows gets really low.
-
 div class="threejs_center"><img src="../resources/images/low-res-shadow-map-spotlight.png" style="width: 344px"></div>
-
 You can increase the size of the shadow map as mentioned above. You can
 also blur the result
-
 <div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-shadow-radius"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-shadow-radius" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
-
 -->
 <p>И, наконец, есть тени с <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>. Так как <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> светит во всех направлениях, единственные релевантные настройки - ближние и дальние.
 В противном случае тень <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> фактически представляет собой 6 теней <a href="/docs/#api/en/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a>, каждая из которых указывает на грань куба вокруг источника света. 
@@ -391,9 +363,7 @@ also blur the result
 <p>И, конечно же, нам нужно переключить свет на <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // so we can easily see where the point light is
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -402,7 +372,6 @@ also blur the result
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Используйте настройки GUI для перемещения света, и вы увидите, как тени падают на все стены. 
 Вы также можете настроить ближние и дальние настройки и видеть, как и другие тени, 
@@ -410,15 +379,9 @@ also blur the result
 <!--
 self shadow, shadow acne
 -->
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

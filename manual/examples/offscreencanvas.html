@@ -34,37 +34,25 @@
   </body>
 <script type="module">
 function main() { /* eslint consistent-return: 0 */
-
 	const canvas = document.querySelector( '#c' );
 	if ( ! canvas.transferControlToOffscreen ) {
-
 		canvas.style.display = 'none';
 		document.querySelector( '#noOffscreenCanvas' ).style.display = '';
 		return;
-
 	}
-
 	const offscreen = canvas.transferControlToOffscreen();
 	const worker = new Worker( 'offscreencanvas-cubes.js', { type: 'module' } );
 	worker.postMessage( { type: 'main', canvas: offscreen }, [ offscreen ] );
-
 	function sendSize() {
-
 		worker.postMessage( {
 			type: 'size',
 			width: canvas.clientWidth,
 			height: canvas.clientHeight,
 		} );
-
 	}
-
 	window.addEventListener( 'resize', sendSize );
 	sendSize();
-
 }
-
 main();
-
 </script>
 </html>
-

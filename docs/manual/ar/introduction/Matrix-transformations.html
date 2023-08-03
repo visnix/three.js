@@ -8,13 +8,10 @@
 	</head>
 	<body class="rtl">
 		<h1>تحولات المصفوفة ([name])</h1>
-
 		<p>
 			يستخدم *Three.js* المصفوفات لتشفير عمليات التحويل ثلاثية الأبعاد --- الترجمات (الموضع) والتدوير والقياس. يحتوي كل مثيل [page:Object3D] على [page:Object3D.matrix matrix] يخزن موضع هذا الكائن وتدويره ومقياسه. تصف هذه الصفحة كيفية تحديث تحول الكائن.
 		</p>
-
 		<h2>خصائص الراحة و *matrixAutoUpdate*</h2>
-
 		<p>
 			هناك طريقتان لتحديث تحول الكائن(object):
 		</p>
@@ -44,7 +41,6 @@ object.matrixAutoUpdate = false;
 				لاحظ أنه <em>يجب</em> ضبط *matrixAutoUpdate* على *false* في هذه الحالة ، ويجب عليك التأكد من <em>عدم</em> استدعاء *updateMatrix*. سيؤدي استدعاء *updateMatrix* إلى إعاقة التغييرات اليدوية التي تم إجراؤها على المصفوفة ، وإعادة حساب المصفوفة من *position* ، *scale* ، وما إلى ذلك.
 			</li>
 		</ol>
-
 		<h2>مصفوفات وعالم الكائن</h2>
 		<p>
 		يخزن [page:Object3D.matrix matrix] كائن تحويل الكائن <em>بالنسبة</em> إلى [page:Object3D.parent parent] الكائن ؛ للحصول على تحول الكائن في إحداثيات <em>العالم</em> ، يجب عليك الوصول إلى [page:Object3D.matrixWorld] الكائن.
@@ -52,7 +48,6 @@ object.matrixAutoUpdate = false;
 		<p>
 		عندما تتغير حالة الكائن الأصل أو الكائن الفرعي ، يمكنك طلب تحديث [page:Object3D.matrixWorld matrixWorld] الكائن الفرعي عن طريق استدعاء [page:Object3D.updateMatrixWorld updateMatrixWorld]().
 		</p>
-
 		<h2>الدوران و Quaternion</h2>
 		<p>
 			يوفر Three.js طريقتين لتمثيل التدوير ثلاثي الأبعاد: [page:Euler Euler angles] و [page:Quaternion Quaternions] ، بالإضافة إلى طرق التحويل بين الاثنين. تخضع زوايا أويلر لمشكلة تسمى "gimballock" ، حيث يمكن أن تفقد بعض التكوينات درجة من الحرية (تمنع تدوير الكائن حول محور واحد). لهذا السبب ، يتم تخزين استدارة الكائن <em>دائمًا</em> في [page:Object3D.quaternion quaternion].
@@ -60,6 +55,5 @@ object.matrixAutoUpdate = false;
 		<p>
 			تضمنت الإصدارات السابقة من المكتبة خاصية *useQuaternion* والتي ، عند ضبطها على false ، ستؤدي إلى حساب [page:Object3D.matrix matrix] للكائن من زاوية أويلر. تم إيقاف هذه الممارسة - بدلاً من ذلك ، يجب عليك استخدام طريقة [page:Object3D.setRotationFromEuler setRotationFromEuler] ، والتي ستعمل على تحديث الرباعية.
 		</p>
-
 	</body>
 </html>

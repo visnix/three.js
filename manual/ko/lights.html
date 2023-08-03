@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -67,12 +65,10 @@ controls.update();
     width: 128px;
   ">
 </div>
-
 <p>일단 텍스처를 불러온 뒤, 반복하도록 래핑(wrapping)을 설정해줍니다. 필터는
 <code class="notranslate" translate="no">NearestFilter</code>, 텍스처가 2x2 픽셀의 체크판이니 <code class="notranslate" translate="no">repeat</code> 속성을 평면의
 반으로 설정하면 체크판의 각 칸은 정확히 (장면의) 1칸이 될 겁니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeSize = 40;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -150,7 +146,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-ambient.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-ambient.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>카메라를 <em>공전시키기(orbit)</em> 위해 화면을 드래그해보세요.</p>
 <p>물체들이 평평하고, 윤곽이 뚜렷하지 않습니다. <a href="/docs/#api/ko/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a>는 물체와
@@ -183,7 +178,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-hemisphere.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-hemisphere.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 또한 그다지 입체적이지 않습니다. 아까보다는 낮지만 전체적으로 2D처럼
 보이네요. <a href="/docs/#api/ko/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a>는 주로 풍경을 표현하거나 할 때 다른 조명과
@@ -215,7 +209,6 @@ gui.add(light.target.position, 'y', 0, 10);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>조명의 위치가 보이지 않으니 정확한 동작을 확인하기가 좀 어렵네요.
 다행히 Three.js에는 눈에 보이지 않는 요소의 시각화를 도와주는
@@ -247,11 +240,9 @@ scene.add(helper);
 +  helper.update();
 +}
 +updateLight();
-
 const gui = new GUI();
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
-
 +makeXYZGUI(gui, light.position, 'position', updateLight);
 +makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -260,7 +251,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional-w-helper.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>카메라를 돌려보면 아까보다 훨씬 동작이 명확하게 보일 겁니다.
 평면은 <a href="/docs/#api/ko/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a>를 나타내는데, 이는 직사광이 어느
@@ -303,7 +293,6 @@ scene.add(helper);
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
 +gui.add(light, 'distance', 0, 40).onChange(updateLight);
-
 makeXYZGUI(gui, light.position, 'position', updateLight);
 -makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -312,7 +301,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-point.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-point.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">distance</code>가 0보다 클 때 조명의 밝기를 잘 관찰해보세요.</p>
 <h2 id="-spotlight-"><a href="/docs/#api/ko/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a></h2>
@@ -331,7 +319,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
 +const light = new THREE.SpotLight(color, intensity);
 scene.add(light);
 scene.add(light.target);
-
 -const helper = new THREE.DirectionalLightHelper(light);
 +const helper = new THREE.SpotLightHelper(light);
 scene.add(helper);
@@ -352,7 +339,6 @@ scene.add(helper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-spot-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-spot-w-helper.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">penumbra</code> 속성이 0일 때는 빛의 경계가 굉장히 분명한 것이 보일 겁니다.
 <code class="notranslate" translate="no">penumbra</code> 속성을 1에 가깝게 조정하면 경계가 점점 흐릿해지죠.</p>
@@ -365,7 +351,6 @@ scene.add(helper);
 <p><a href="/docs/#api/ko/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a>는 <a href="/docs/#api/ko/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a>과 <a href="/docs/#api/ko/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>만
 지원합니다. 예전 코드에서 재질(material)을 <a href="/docs/#api/ko/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a>로 바꾸겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
 -  const planeMat = new THREE.MeshPhongMaterial({
 +  const planeMat = new THREE.MeshStandardMaterial({
@@ -420,7 +405,6 @@ scene.add(helper);
 light.position.set(0, 10, 0);
 +light.rotation.x = THREE.MathUtils.degToRad(-90);
 scene.add(light);
-
 *const helper = new RectAreaLightHelper(light);
 *light.add(helper);
 </pre>
@@ -436,30 +420,21 @@ gui.add(light, 'height', 0, 20);
 gui.add(new DegRadHelper(light.rotation, 'x'), 'value', -180, 180).name('x rotation');
 gui.add(new DegRadHelper(light.rotation, 'y'), 'value', -180, 180).name('y rotation');
 gui.add(new DegRadHelper(light.rotation, 'z'), 'value', -180, 180).name('z rotation');
-
 makeXYZGUI(gui, light.position, 'position');
 </pre>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-rectarea.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-rectarea.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
-
 <p>조명은 <code class="notranslate" translate="no">renderer</code>가 장면을 렌더링하는 속도에 영향을 미칩니다. 그러니
 가능한 적은 조명을 쓰는 게 좋죠.</p>
 <p>다음 장에서는 <a href="cameras.html">카메라 조작법</a>에 대해 알아보겠습니다.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lights.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

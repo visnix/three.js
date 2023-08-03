@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -53,16 +51,13 @@ requestAnimationFrame(render);
 <p>먼저 뭔가 변화를 일으킬 수 있는 요소가 필요하니 <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a>를 추가합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
 +import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
 ...
-
 const fov = 75;
 const aspect = 2;  // canvas 기본값
 const near = 0.1;
 const far = 5;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 2;
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 0, 0);
 +controls.update();
@@ -81,25 +76,20 @@ camera.position.z = 2;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function render(time) {
 -  time *= 0.001;
 +function render() {
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 -  cubes.forEach((cube, ndx) =&gt; {
 -    const speed = 1 + ndx * .1;
 -    const rot = time * speed;
 -    cube.rotation.x = rot;
 -    cube.rotation.y = rot;
 -  });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 -requestAnimationFrame(render);
 </pre>
 <p>그리고 <code class="notranslate" translate="no">render</code> 함수를 직접 호출합니다.</p>
@@ -119,7 +109,6 @@ camera.position.z = 2;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a>에는 관성(inertia) 옵션이 있습니다. <code class="notranslate" translate="no">enableDamping</code> 속성을 ture로
 설정하면 동작이 좀 더 부드러워지죠.</p>
@@ -135,28 +124,23 @@ camera.position.z = 2;
 있습니다. 너무 많은 프레임을 막기 위해 변수 하나를 두어 요청한 프레임이 없을 경우에만
 프레임을 요청하도록 하면 되겠네요.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+let renderRequested = false;
-
 function render() {
 +  renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 + controls.update();
   renderer.render(scene, camera);
 }
 render();
-
 +function requestRenderIfNotRequested() {
 +  if (!renderRequested) {
 +    renderRequested = true;
 +    requestAnimationFrame(render);
 +  }
 +}
-
 -controls.addEventListener('change', render);
 +controls.addEventListener('change', requestRenderIfNotRequested);
 </pre>
@@ -171,7 +155,6 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-damping.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-damping.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>간단한 lil-gui를 추가해 반복 렌더링 여부를 제어할 수 있도록 하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
@@ -187,12 +170,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 추가합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
 +  const folder = gui.addFolder(`Cube${ x }`);
 +  folder.addColor(new ColorGUIHelper(material, 'color'), 'value')
 +      .name('color')
@@ -201,7 +181,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 +      .name('scale x')
 +      .onChange(requestRenderIfNotRequested);
 +  folder.open();
-
   return cube;
 }
 </pre>
@@ -212,21 +191,14 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-gui.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 글이 불필요한 렌더링 제거에 대한 개념을 조금이라도 잡아주었길 바랍니다. 보통
 Three.js를 사용할 때는 이렇게 렌더링 루프를 제어할 일이 없습니다. 대게 게임 또는
 애니메이션이 들어간 3D 컨텐츠이기 때문이죠. 하지만 지도나, 3D 에디터, 3D 그래프,
 상품 목록 등에서는 이런 기법이 필요할 수도 있습니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

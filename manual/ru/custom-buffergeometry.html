@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -31,18 +29,15 @@
       <div class="lesson">
         <div class="lesson-main">
           <p></p>
-
 <p><a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> с другой стороны использует названный <code class="notranslate" translate="no">BufferAttributes</code>. 
 Каждый атрибут <a href="/docs/#api/en/core/BufferAttribute"><code class="notranslate" translate="no">BufferAttribute</code></a> представляет собой массив данных одного типа: позиции, нормали, цвета и ультрафиолетовые лучи. 
 Вместе добавленные атрибуты <code class="notranslate" translate="no">BufferAttributes</code> представляют параллельные массивы всех данных для каждой вершины. </p>
 <div class="threejs_center"><img src="../resources/threejs-attributes.svg" style="width: 700px"></div>
-
 <p>Вы можете видеть, что у нас есть 4 атрибута: <code class="notranslate" translate="no">position</code>, <code class="notranslate" translate="no">normal</code>, <code class="notranslate" translate="no">color</code>, <code class="notranslate" translate="no">uv</code>. 
 Они представляют параллельные массивы, что означает, что N-й набор данных в каждом атрибуте принадлежит одной и той же вершине. 
 Вершина с индексом = 4 подсвечивается, чтобы показать, что параллельные данные по всем атрибутам определяют одну вершину. </p>
 <p>Это поднимает точку, вот схема куба с одним выделенным углом. </p>
 <div class="threejs_center"><img src="../resources/cube-faces-vertex.svg" style="width: 500px"></div>
-
 <p>Думая об этом, один угол нуждается в разной нормали для каждой грани куба. 
 Для каждой стороны тоже нужны разные ультрафиолеты. Это указывает на самую большую разницу между <code class="notranslate" translate="no">Geometry</code> и <a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a>. Ничего общего с <a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a>.
 Одна вершина - это комбинация всех ее частей. Если вершина нуждается в какой-либо части, то она должна быть другой. </p>
@@ -62,7 +57,6 @@
   { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 0], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
-
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  0,  1], uv: [1, 1], },
@@ -70,7 +64,6 @@
   { pos: [ 1, -1,  1], norm: [ 1,  0,  0], uv: [0, 0], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 1,  0,  0], uv: [1, 1], },
@@ -78,7 +71,6 @@
   { pos: [ 1, -1, -1], norm: [ 0,  0, -1], uv: [0, 0], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
-
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  0, -1], uv: [1, 1], },
@@ -86,7 +78,6 @@
   { pos: [-1, -1, -1], norm: [-1,  0,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
-
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [-1,  0,  0], uv: [1, 1], },
@@ -94,7 +85,6 @@
   { pos: [ 1,  1, -1], norm: [ 0,  1,  0], uv: [0, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  1,  0], uv: [1, 1], },
@@ -102,7 +92,6 @@
   { pos: [ 1, -1,  1], norm: [ 0, -1,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
-
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [-1, -1, -1], norm: [ 0, -1,  0], uv: [1, 1], },
@@ -143,7 +132,6 @@ for (const vertex of vertices) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Это много данных. Небольшая вещь, которую мы можем сделать, это использовать индексы для ссылки на вершины. 
 Оглядываясь назад на данные нашего куба, каждая грань состоит из 2 треугольников с 3 вершинами в каждом, всего 6 вершин, но 2 из этих вершин абсолютно одинаковы; 
@@ -211,7 +199,6 @@ geometry.setAttribute(
 geometry.setAttribute(
     'uv',
     new THREE.BufferAttribute(uvs, uvNumComponents));
-
 +geometry.setIndex([
 +   0,  1,  2,   2,  1,  3,  // front
 +   4,  5,  6,   6,  5,  7,  // right
@@ -225,7 +212,6 @@ geometry.setAttribute(
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-indexed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-indexed.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Как и в <code class="notranslate" translate="no">Geometry</code>, в <a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> есть метод <a href="/docs/#api/en/core/BufferGeometry#computeVertexNormals"><code class="notranslate" translate="no">computeVertexNormals</code></a> для вычисления нормалей,
 если вы их не предоставляете. В отличие от версии <code class="notranslate" translate="no">Geometry</code> той же функции, 
@@ -240,7 +226,6 @@ geometry.setAttribute(
     <div class="code">Geometry</div>
   </div>
 </div>
-
 <p>Вот 2 цилиндра, где нормали были созданы с использованием <code class="notranslate" translate="no">computeVertexNormals</code>. 
 Если вы посмотрите внимательно, на левом цилиндре есть шов. Это связано с тем, 
 что нет возможности совместно использовать вершины в начале и конце цилиндра, так как они требуют разных UV.
@@ -276,7 +261,6 @@ for (const vertex of vertices) {
 +  nrmNdx += normalNumComponents;
 +  uvNdx += uvNumComponents;
 }
-
 geometry.setAttribute(
     'position',
 -    new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
@@ -289,7 +273,6 @@ geometry.setAttribute(
     'uv',
 -    new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
 +    new THREE.BufferAttribute(uvs, uvNumComponents));
-
 geometry.setIndex([
    0,  1,  2,   2,  1,  3,  // front
    4,  5,  6,   6,  5,  7,  // right
@@ -303,7 +286,6 @@ geometry.setIndex([
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-typedarrays.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-typedarrays.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Хорошая причина использовать typedarrays - если вы хотите динамически обновлять любую часть вершин. </p>
 <p>Я не мог придумать действительно хороший пример динамического обновления вершин,
@@ -317,7 +299,6 @@ geometry.setIndex([
   const numComponents = 3;
   const positions = new Float32Array(numVertices * numComponents);
   const indices = [];
-
   const longHelper = new THREE.Object3D();
   const latHelper = new THREE.Object3D();
   const pointHelper = new THREE.Object3D();
@@ -325,14 +306,12 @@ geometry.setIndex([
   latHelper.add(pointHelper);
   pointHelper.position.z = 1;
   const temp = new THREE.Vector3();
-
   function getPoint(lat, long) {
     latHelper.rotation.x = lat;
     longHelper.rotation.y = long;
     longHelper.updateMatrixWorld(true);
     return pointHelper.getWorldPosition(temp).toArray();
   }
-
   let posNdx = 0;
   let ndx = 0;
   for (let down = 0; down &lt; segmentsDown; ++down) {
@@ -340,18 +319,15 @@ geometry.setIndex([
     const v1 = (down + 1) / segmentsDown;
     const lat0 = (v0 - 0.5) * Math.PI;
     const lat1 = (v1 - 0.5) * Math.PI;
-
     for (let across = 0; across &lt; segmentsAround; ++across) {
       const u0 = across / segmentsAround;
       const u1 = (across + 1) / segmentsAround;
       const long0 = u0 * Math.PI * 2;
       const long1 = u1 * Math.PI * 2;
-
       positions.set(getPoint(lat0, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat0, long1), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long1), posNdx);  posNdx += numComponents;
-
       indices.push(
         ndx, ndx + 1, ndx + 2,
         ndx + 2, ndx + 1, ndx + 3,
@@ -375,7 +351,6 @@ const {positions, indices} = makeSpherePositions(segmentsAround, segmentsDown);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.BufferGeometry();
 const positionNumComponents = 3;
 const normalNumComponents = 3;
-
 +const positionAttribute = new THREE.BufferAttribute(positions, positionNumComponents);
 +positionAttribute.setUsage(THREE.DynamicDrawUsage);
 geometry.setAttribute(
@@ -390,9 +365,7 @@ geometry.setIndex(indices);
 Мы также отмечаем его как динамический. Это намек на THREE.js, что мы будем часто менять содержимое атрибута. </p>
 <p>В нашем цикле рендеринга мы обновляем позиции на основе их нормалей каждый кадр.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const temp = new THREE.Vector3();
-
 ...
-
 for (let i = 0; i &lt; positions.length; i += 3) {
   const quad = (i / 12 | 0);
   const ringId = quad / segmentsAround | 0;
@@ -410,7 +383,6 @@ positionAttribute.needsUpdate = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-dynamic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-dynamic.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Я надеюсь, что это были полезные примеры того, как использовать
 <a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> напрямую для создания собственной геометрии и как динамически 
@@ -418,16 +390,9 @@ positionAttribute.needsUpdate = true;
 действительно зависит от ваших потребностей. </p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-custom-buffergeometry.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

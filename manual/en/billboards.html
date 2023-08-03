@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,25 +42,20 @@ to use <a href="/docs/#api/en/objects/Sprite"><code class="notranslate" translat
   texture.minFilter = THREE.LinearFilter;
   texture.wrapS = THREE.ClampToEdgeWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
-
 -  const labelMaterial = new THREE.MeshBasicMaterial({
 +  const labelMaterial = new THREE.SpriteMaterial({
     map: texture,
 -    side: THREE.DoubleSide,
     transparent: true,
   });
-
   const root = new THREE.Object3D();
   root.position.x = x;
-
   const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
   root.add(body);
   body.position.y = bodyHeight / 2;
-
   const head = new THREE.Mesh(headGeometry, bodyMaterial);
   root.add(head);
   head.position.y = bodyHeight + headRadius * 1.1;
-
 -  const label = new THREE.Mesh(labelGeometry, labelMaterial);
 +  const label = new THREE.Sprite(labelMaterial);
   root.add(label);
@@ -74,12 +67,10 @@ to use <a href="/docs/#api/en/objects/Sprite"><code class="notranslate" translat
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/billboard-labels-w-sprites.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/billboard-labels-w-sprites.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>One problem is from certain angles the labels now intersect the
 characters. </p>
 <div class="threejs_center"><img src="../resources/images/billboard-label-z-issue.png" style="width: 455px;"></div>
-
 <p>We can move the position of the labels to fix.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+// if units are meters then 0.01 here makes size
 +// of the label into centimeters.
@@ -89,7 +80,6 @@ root.add(label);
 -label.position.y = bodyHeight * 4 / 5;
 -label.position.z = bodyRadiusTop * 1.01;
 +label.position.y = head.position.y + headRadius + size * labelBaseScale;
-
 -// if units are meters then 0.01 here makes size
 -// of the label into centimeters.
 -const labelBaseScale = 0.01;
@@ -100,7 +90,6 @@ label.scale.y = canvas.height * labelBaseScale;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/billboard-labels-w-sprites-adjust-height.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/billboard-labels-w-sprites-adjust-height.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Another thing we can do with billboards is draw facades.</p>
 <p>Instead of drawing 3D objects we draw 2D planes with an image
@@ -114,13 +103,11 @@ const trunkHeight = 1;
 const trunkRadialSegments = 12;
 const trunkGeometry = new THREE.CylinderGeometry(
     trunkRadius, trunkRadius, trunkHeight, trunkRadialSegments);
-
 const topRadius = trunkRadius * 4;
 const topHeight = trunkHeight * 2;
 const topSegments = 12;
 const topGeometry = new THREE.ConeGeometry(
     topRadius, topHeight, topSegments);
-
 const trunkMaterial = new THREE.MeshPhongMaterial({color: 'brown'});
 const topMaterial = new THREE.MeshPhongMaterial({color: 'green'});
 </pre>
@@ -131,14 +118,11 @@ of a tree and parents both to an <a href="/docs/#api/en/core/Object3D"><code cla
   const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
   trunk.position.y = trunkHeight / 2;
   root.add(trunk);
-
   const top = new THREE.Mesh(topGeometry, topMaterial);
   top.position.y = trunkHeight + topHeight / 2;
   root.add(top);
-
   root.position.set(x, 0, z);
   scene.add(root);
-
   return root;
 }
 </pre>
@@ -170,7 +154,6 @@ of a tree and parents both to an <a href="/docs/#api/en/core/Object3D"><code cla
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/billboard-trees-no-billboards.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/billboard-trees-no-billboards.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>There are 11x11 or 121 trees. Each tree is made from a 12 polygon
 cone and a 48 polygon trunk so each tree is 60 polygons. 121 * 60
@@ -187,45 +170,33 @@ in <a href="rendertargets.html">the article on render targets</a>.</p>
   const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
   const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
   const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
-
   camera.position.copy(boxCenter);
   camera.position.z += distance;
-
   // pick some near and far values for the frustum that
   // will contain the box.
   camera.near = boxSize / 100;
   camera.far = boxSize * 100;
-
   camera.updateProjectionMatrix();
 }
-
 function makeSpriteTexture(textureSize, obj) {
   const rt = new THREE.WebGLRenderTarget(textureSize, textureSize);
-
   const aspect = 1;  // because the render target is square
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
   scene.add(obj);
-
   // compute the box that contains obj
   const box = new THREE.Box3().setFromObject(obj);
-
   const boxSize = box.getSize(new THREE.Vector3());
   const boxCenter = box.getCenter(new THREE.Vector3());
-
   // set the camera to frame the box
   const fudge = 1.1;
   const size = Math.max(...boxSize.toArray()) * fudge;
   frameArea(size, size, boxCenter, camera);
-
   renderer.autoClear = false;
   renderer.setRenderTarget(rt);
   renderer.render(scene, camera);
   renderer.setRenderTarget(null);
   renderer.autoClear = true;
-
   scene.remove(obj);
-
   return {
     position: boxCenter.multiplyScalar(fudge),
     scale: size,
@@ -279,7 +250,6 @@ const treeSpriteInfo = makeSpriteTexture(facadeSize, tree);
 +      offset.z + z);
 +  sprite.scale.set(scale, scale, scale);
 +}
-
 for (let z = -50; z &lt;= 50; z += 10) {
   for (let x = -50; x &lt;= 50; x += 10) {
 -    makeTree(x, z);
@@ -297,7 +267,6 @@ appears the same place the original tree would have appeared.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/billboard-trees-static-billboards.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/billboard-trees-static-billboards.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Compare to the trees models above and you can see it looks fairly similar.
 We used a low-res texture, just 64x64 pixels so the facades are blocky.
@@ -311,15 +280,9 @@ and then setting which facade to show based on which direction the camera
 is looking at the facade.</p>
 <p>Whether or not you use facades is up to you but hopefully this article
 gave you some ideas and suggested some solutions if you decide to use them.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

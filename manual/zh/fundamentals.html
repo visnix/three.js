@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -50,7 +48,6 @@ ES6的语法。<a href="prerequisites.html">点击这里查看你需要提前掌
 所以我们从"Hello Cube!"开始。</p>
 <p>在我们开始前，让我们试着让你了解一下一个three.js应用的整体结构。一个three.js应用需要创建很多对象，并且将他们关联在一起。下图是一个基础的three.js应用结构。</p>
 <div class="threejs_center"><img src="../resources/images/threejs-structure.svg" style="width: 768px;"></div>
-
 <p>上图需要注意的事项：</p>
 <ul>
 <li><p>首先有一个<a href="/docs/#api/zh/constants/Renderer">渲染器(<code class="notranslate" translate="no">Renderer</code>)</a>。这可以说是three.js的主要对象。你传入一个<a href="/docs/#api/zh/scenes/Scene">场景(<code class="notranslate" translate="no">Scene</code>)</a>和一个<a href="/docs/#api/zh/cameras/Camera">摄像机(<code class="notranslate" translate="no">Camera</code>)</a>到<a href="/docs/#api/zh/constants/Renderer">渲染器(<code class="notranslate" translate="no">Renderer</code>)</a>中，然后它会将摄像机视椎体中的三维场景渲染成一个二维图片显示在画布上。</p>
@@ -71,7 +68,6 @@ ES6的语法。<a href="prerequisites.html">点击这里查看你需要提前掌
 </ul>
 <p>有了以上基本概念，我们接下来就来画个下图所示的<em>"Hello Cube"</em>吧。</p>
 <div class="threejs_center"><img src="../resources/images/threejs-1cube-no-light-scene.svg" style="width: 500px;"></div>
-
 <p>首先是加载three.js</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
@@ -86,7 +82,6 @@ import * as THREE from 'three';
 <p>Three.js需要使用这个canvas标签来绘制，所以我们要先获取它然后传给three.js。</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 +function main() {
 +  const canvas = document.querySelector('#c');
 +  const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
@@ -149,7 +144,6 @@ const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>很难看出来这是一个三维的立方体，因为我们直视Z轴的负方向并且立方体和坐标轴是对齐的，所以我们只能看到一个面。</p>
 <p>我们来让立方体旋转起来，以便更好的在三维环境中显示。为了让它动起来我们需要用到一个渲染循环函数
@@ -157,12 +151,9 @@ const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 <p>代码如下：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // 将时间单位变为秒
-
   cube.rotation.x = time;
   cube.rotation.y = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -176,7 +167,6 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-animation.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-animation.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>效果好了一些但还是很难看出是三维的。我们来添加些光照效果，应该会有点帮助。three.js中有很多种类型的灯光，我们将在<a href="lights.html">后期文章</a>中详细讨论。现在我们先创建一盏平行光。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
@@ -195,13 +185,11 @@ requestAnimationFrame(render);
 </pre>
 <p>这是我们新的项目结构</p>
 <div class="threejs_center"><img src="../resources/images/threejs-1cube-with-directionallight.svg" style="width: 500px;"></div>
-
 <p>下面开始生效了。</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-light.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>现在应该可以很清楚的看出是三维立方体了。</p>
 <p>我们再添加两个立方体来增添点趣味性。</p>
@@ -209,12 +197,9 @@ requestAnimationFrame(render);
 <p>首先我们创建一个根据指定的颜色生成新材质的函数。它会根据指定的几何体生成对应网格，然后将网格添加进场景并设置其X轴的位置。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
 </pre>
@@ -228,14 +213,12 @@ requestAnimationFrame(render);
 <p>最后我们将在渲染函数中旋转三个立方体。我们给每个立方体设置了稍微不同的旋转角度。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // 将时间单位变为秒
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   ...
 </pre>
 <p>这里是结果。</p>
@@ -243,12 +226,10 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-3-cubes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-3-cubes.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>如果你对比上面的示意图可以看到此效果符合我们的预想。位置为X = -2 和 X = +2的立方体有一部分在我们的视椎体外面。他们大部分是被包裹的，因为水平方向的视角非常大。</p>
 <p>我们的项目现在有了这样的结构</p>
 <div class="threejs_center"><img src="../resources/images/threejs-3cubes-scene.svg" style="width: 610px;"></div>
-
 <p>正如你看见的那样，我们有三个<a href="/docs/#api/zh/objects/Mesh">网格(<code class="notranslate" translate="no">Mesh</code>)</a>引用了相同的<a href="/docs/#api/zh/geometries/BoxGeometry">立方几何体(<code class="notranslate" translate="no">BoxGeometry</code>)</a>。每个<a href="/docs/#api/zh/objects/Mesh">网格(<code class="notranslate" translate="no">Mesh</code>)</a>引用了一个单独的<a href="/docs/#api/zh/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a>材质来显示不同的颜色。</p>
 <p>希望这个简短的介绍能帮助你起步。<a href="responsive.html">接下来我们将介绍如何使我们的代码具有响应性，从而使其能够适应多种情况</a>.</p>
 <div id="es6" class="threejs_bottombar">
@@ -259,9 +240,7 @@ requestAnimationFrame(render);
 </p>
 <pre class="prettyprint">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>
@@ -313,11 +292,6 @@ import {OrbitControls} from 'https://unpkg.com/three@&lt;version&gt;/addons/cont
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

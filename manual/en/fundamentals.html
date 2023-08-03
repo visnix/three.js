@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -57,7 +55,6 @@ of a three.js app. A three.js app requires you to create a bunch of
 objects and connect them together. Here's a diagram that represents
 a small three.js app</p>
 <div class="threejs_center"><img src="../resources/images/threejs-structure.svg" style="width: 768px;"></div>
-
 <p>Things to notice about the diagram above.</p>
 <ul>
 <li><p>There is a <a href="/docs/#api/en/constants/Renderer"><code class="notranslate" translate="no">Renderer</code></a>. This is arguably the main object of three.js. You pass a
@@ -113,7 +110,6 @@ to wrap an image onto the surface of a geometry.</p>
 <p>Given all of that we're going to make the smallest <em>"Hello Cube"</em> setup
 that looks like this</p>
 <div class="threejs_center"><img src="../resources/images/threejs-1cube-no-light-scene.svg" style="width: 500px;"></div>
-
 <p>First let's load three.js</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
@@ -132,7 +128,6 @@ they are dependent on.</p>
 <p>We will ask three.js to draw into that canvas so we need to look it up.</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 +function main() {
 +  const canvas = document.querySelector('#c');
 +  const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
@@ -226,7 +221,6 @@ and passing it the scene and the camera</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>It's kind of hard to tell that is a 3D cube since we're viewing
 it directly down the -Z axis and the cube itself is axis aligned
@@ -237,12 +231,9 @@ it clear it's being drawn in 3D. To animate it we'll render inside a render loop
 <p>Here's our loop</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert time to seconds
-
   cube.rotation.x = time;
   cube.rotation.y = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -266,7 +257,6 @@ our loop.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-animation.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-animation.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>It's a little better but it's still hard to see the 3d. What would help is to
 add some lighting so let's add a light. There are many kinds of lights in
@@ -290,13 +280,11 @@ lights. Let's change it to a <a href="/docs/#api/en/materials/MeshPhongMaterial"
 </pre>
 <p>Here is our new program structure</p>
 <div class="threejs_center"><img src="../resources/images/threejs-1cube-with-directionallight.svg" style="width: 500px;"></div>
-
 <p>And here it is working.</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-light.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>It should now be pretty clearly 3D.</p>
 <p>Just for the fun of it let's add 2 more cubes.</p>
@@ -308,12 +296,9 @@ the specified geometry and adds it to the scene and
 sets its X position.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
 </pre>
@@ -329,14 +314,12 @@ saving the <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" transl
 compute a slightly different rotation for each one.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert time to seconds
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   ...
 </pre>
 <p>and here's that.</p>
@@ -344,7 +327,6 @@ compute a slightly different rotation for each one.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-3-cubes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-3-cubes.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>If you compare it to the top down diagram above you can see
 it matches our expectations. With cubes at X = -2 and X = +2
@@ -353,7 +335,6 @@ somewhat exaggeratedly warped since the field of view
 across the canvas is so extreme.</p>
 <p>Our program now has this structure</p>
 <div class="threejs_center"><img src="../resources/images/threejs-3cubes-scene.svg" style="width: 610px;"></div>
-
 <p>As you can see we have 3 <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a> objects each referencing the same <a href="/docs/#api/en/geometries/BoxGeometry"><code class="notranslate" translate="no">BoxGeometry</code></a>.
 Each <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a> references a unique <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> so that each cube can have
 a different color.</p>
@@ -368,9 +349,7 @@ or inline via a <code class="notranslate" translate="no">&lt;script type="module
 </p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>
@@ -424,7 +403,6 @@ You can also use a CDN
 To conclude, the recommended way of using three.js is
 </p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"&gt;&lt;/script&gt;
-
 &lt;script type="importmap"&gt;
 {
   "imports": {
@@ -433,29 +411,19 @@ To conclude, the recommended way of using three.js is
   }
 }
 &lt;/script&gt;
-
 &lt;script type="module"&gt;
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-
 ...
-
 &lt;/script&gt;
 </pre>
 </div>
-
 <!-- needed in English only to prevent warning from outdated translations -->
 <p><a href="geometry.html"></a>
 <a href="Geometry"></a></p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,73 +8,54 @@
 	</head>
 	<body>
 		[page:Loader] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
       Classe per il caricamento di un [link:https://developer.mozilla.org/en-US/docs/Web/API/AudioBuffer AudioBuffer].
       Utilizza internamente il [page:FileLoader] per caricare i file.
 		</p>
-
 		<h2>Codice di Esempio</h2>
-
 		<code>
 		// istanzia il listener
 		const audioListener = new THREE.AudioListener();
-
 		// aggiunge il listener alla telecamera
 		camera.add( audioListener );
-
 		// istanzia un oggetto audio
 		const oceanAmbientSound = new THREE.Audio( audioListener );
-
 		// aggiunge l'oggetto audio alla scena
 		scene.add( oceanAmbientSound );
-
 		// istanzia un loader
 		const loader = new THREE.AudioLoader();
-
 		// carica una risorsa
 		loader.load(
 			// URL della risorsa
 			'audio/ambient_ocean.ogg',
-
 			// onLoad callback
 			function ( audioBuffer ) {
 				// imposta il buffer dell'oggetto audio nell'oggetto caricato
 				oceanAmbientSound.setBuffer( audioBuffer );
-
 				// avvia l'audio
 				oceanAmbientSound.play();
 			},
-
 			// onProgress callback
 			function ( xhr ) {
 				console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
 			},
-
 			// onError callback
 			function ( err ) {
 				console.log( 'An error happened' );
 			}
 		);
 		</code>
-
 		<h2>Costruttore</h2>
-
 		<h3>[name]( [param:LoadingManager manager] )</h3>
 		<p>
 		[page:LoadingManager manager] — Il [page:LoadingManager loadingManager] del loader da utilizzare. Il valore predefinito è [page:LoadingManager THREE.DefaultLoadingManager].<br /><br />
-
 		Crea un nuovo [name].
 		</p>
-
 		<h2>Proprietà</h2>
 		<p>Vedi la classe base [page:Loader] per le proprietà comuni.</p>
-
 		<h2>Metodi</h2>
 		<p>Vedi la classe base [page:Loader] per i metodi comuni.</p>
-
 		<h3>[method:undefined load]( [param:String url], [param:Function onLoad], [param:Function onProgress], [param:Function onError] )</h3>
 		<p>
 		[page:String url] — Il path o URL del file. Questo può anche essere un
@@ -87,9 +68,7 @@
 		<p>
       Inizia il caricamento dall'url e passa l'[page:String AudioBuffer] caricato a onLoad.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

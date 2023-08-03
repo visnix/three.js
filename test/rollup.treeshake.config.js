@@ -5,24 +5,17 @@ import terser from '@rollup/plugin-terser';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { glsl } from '../utils/build/rollup.config.js';
 import chalk from 'chalk';
-
 const statsFile = path.resolve( 'test/treeshake/stats.html' );
-
 function logStatsFile() {
-
 	return {
 		writeBundle() {
-
 			console.log();
 			console.log( 'Open the following url in a browser to analyze the tree-shaken bundle.' );
 			console.log( chalk.blue.bold.underline( statsFile ) );
 			console.log();
-
 		}
 	};
-
 }
-
 export default [
 	{
 		input: 'test/treeshake/index.js',

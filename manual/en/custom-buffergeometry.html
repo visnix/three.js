@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -36,14 +34,12 @@ Each <a href="/docs/#api/en/core/BufferAttribute"><code class="notranslate" tran
 normals, colors, uv, etc... Together, the named <a href="/docs/#api/en/core/BufferAttribute"><code class="notranslate" translate="no">BufferAttribute</code></a>s represent
 <em>parallel arrays</em> of all the data for each vertex.</p>
 <div class="threejs_center"><img src="../resources/threejs-attributes.svg" style="width: 700px"></div>
-
 <p>Above you can see we have 4 attributes: <code class="notranslate" translate="no">position</code>, <code class="notranslate" translate="no">normal</code>, <code class="notranslate" translate="no">color</code>, <code class="notranslate" translate="no">uv</code>.
 They represent <em>parallel arrays</em> which means that the Nth set of data in each
 attribute belongs to the same vertex. The vertex at index = 4 is highlighted
 to show that the parallel data across all attributes defines one vertex.</p>
 <p>This brings up a point, here's a diagram of a cube with one corner highlighted.</p>
 <div class="threejs_center"><img src="../resources/cube-faces-vertex.svg" style="width: 500px"></div>
-
 <p>Thinking about it that single corner needs a different normal for each face of the
 cube. A normal is info about which direction something faces. In the diagram
 the normals are presented by the arrows around the corner vertex showing that each
@@ -70,7 +66,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [-1, -1,  1], norm: [ 0,  0,  1], uv: [0, 0], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
-
   { pos: [-1,  1,  1], norm: [ 0,  0,  1], uv: [0, 1], },
   { pos: [ 1, -1,  1], norm: [ 0,  0,  1], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  0,  1], uv: [1, 1], },
@@ -78,7 +73,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [ 1, -1,  1], norm: [ 1,  0,  0], uv: [0, 0], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 1,  0,  0], uv: [0, 1], },
   { pos: [ 1, -1, -1], norm: [ 1,  0,  0], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 1,  0,  0], uv: [1, 1], },
@@ -86,7 +80,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [ 1, -1, -1], norm: [ 0,  0, -1], uv: [0, 0], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
-
   { pos: [ 1,  1, -1], norm: [ 0,  0, -1], uv: [0, 1], },
   { pos: [-1, -1, -1], norm: [ 0,  0, -1], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  0, -1], uv: [1, 1], },
@@ -94,7 +87,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [-1, -1, -1], norm: [-1,  0,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
-
   { pos: [-1,  1, -1], norm: [-1,  0,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [-1,  0,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [-1,  0,  0], uv: [1, 1], },
@@ -102,7 +94,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [ 1,  1, -1], norm: [ 0,  1,  0], uv: [0, 0], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
-
   { pos: [ 1,  1,  1], norm: [ 0,  1,  0], uv: [0, 1], },
   { pos: [-1,  1, -1], norm: [ 0,  1,  0], uv: [1, 0], },
   { pos: [-1,  1,  1], norm: [ 0,  1,  0], uv: [1, 1], },
@@ -110,7 +101,6 @@ to make a cube requires 36 vertices. 2 triangles per face, 3 vertices per triang
   { pos: [ 1, -1,  1], norm: [ 0, -1,  0], uv: [0, 0], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
-
   { pos: [ 1, -1, -1], norm: [ 0, -1,  0], uv: [0, 1], },
   { pos: [-1, -1,  1], norm: [ 0, -1,  0], uv: [1, 0], },
   { pos: [-1, -1, -1], norm: [ 0, -1,  0], uv: [1, 1], },
@@ -157,7 +147,6 @@ x, y, and z. For the UVs we have 2, u and v.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>That's a lot of data. A small thing we can do is use indices to reference
 the vertices. Looking back at our cube data, each face is made from 2 triangles
@@ -227,7 +216,6 @@ geometry.setAttribute(
 geometry.setAttribute(
     'uv',
     new THREE.BufferAttribute(uvs, uvNumComponents));
-
 +geometry.setIndex([
 +   0,  1,  2,   2,  1,  3,  // front
 +   4,  5,  6,   6,  5,  7,  // right
@@ -241,7 +229,6 @@ geometry.setAttribute(
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-indexed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-indexed.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p><a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> has a <a href="/docs/#api/en/core/BufferGeometry#computeVertexNormals"><code class="notranslate" translate="no">computeVertexNormals</code></a> method for computing normals if you
 are not supplying them. Unfortunately, 
@@ -253,7 +240,6 @@ geometry is supposed to connect to itself like a sphere or a cylinder.</p>
     <div data-diagram="bufferGeometryCylinder"></div>
   </div>
 </div>
-
 <p>For the cylinder above the normals were created using <code class="notranslate" translate="no">computeVertexNormals</code>.
 If you look closely there is a seam on the cylinder. This is because there
 is no way to share the vertices at the start and end of the cylinder since they
@@ -292,7 +278,6 @@ for (const vertex of vertices) {
 +  nrmNdx += normalNumComponents;
 +  uvNdx += uvNumComponents;
 }
-
 geometry.setAttribute(
     'position',
 -    new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
@@ -305,7 +290,6 @@ geometry.setAttribute(
     'uv',
 -    new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
 +    new THREE.BufferAttribute(uvs, uvNumComponents));
-
 geometry.setIndex([
    0,  1,  2,   2,  1,  3,  // front
    4,  5,  6,   6,  5,  7,  // right
@@ -319,7 +303,6 @@ geometry.setIndex([
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-cube-typedarrays.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-cube-typedarrays.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>A good reason to use typedarrays is if you want to dynamically update any
 part of the vertices.</p>
@@ -336,7 +319,6 @@ sphere points. How this works is explained in <a href="optimize-lots-of-objects.
   const numComponents = 3;
   const positions = new Float32Array(numVertices * numComponents);
   const indices = [];
-
   const longHelper = new THREE.Object3D();
   const latHelper = new THREE.Object3D();
   const pointHelper = new THREE.Object3D();
@@ -344,14 +326,12 @@ sphere points. How this works is explained in <a href="optimize-lots-of-objects.
   latHelper.add(pointHelper);
   pointHelper.position.z = 1;
   const temp = new THREE.Vector3();
-
   function getPoint(lat, long) {
     latHelper.rotation.x = lat;
     longHelper.rotation.y = long;
     longHelper.updateMatrixWorld(true);
     return pointHelper.getWorldPosition(temp).toArray();
   }
-
   let posNdx = 0;
   let ndx = 0;
   for (let down = 0; down &lt; segmentsDown; ++down) {
@@ -359,18 +339,15 @@ sphere points. How this works is explained in <a href="optimize-lots-of-objects.
     const v1 = (down + 1) / segmentsDown;
     const lat0 = (v0 - 0.5) * Math.PI;
     const lat1 = (v1 - 0.5) * Math.PI;
-
     for (let across = 0; across &lt; segmentsAround; ++across) {
       const u0 = across / segmentsAround;
       const u1 = (across + 1) / segmentsAround;
       const long0 = u0 * Math.PI * 2;
       const long1 = u1 * Math.PI * 2;
-
       positions.set(getPoint(lat0, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long0), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat0, long1), posNdx);  posNdx += numComponents;
       positions.set(getPoint(lat1, long1), posNdx);  posNdx += numComponents;
-
       indices.push(
         ndx, ndx + 1, ndx + 2,
         ndx + 2, ndx + 1, ndx + 3,
@@ -394,7 +371,6 @@ values we need for normals so we can just duplicated them for the normals.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.BufferGeometry();
 const positionNumComponents = 3;
 const normalNumComponents = 3;
-
 +const positionAttribute = new THREE.BufferAttribute(positions, positionNumComponents);
 +positionAttribute.setUsage(THREE.DynamicDrawUsage);
 geometry.setAttribute(
@@ -410,9 +386,7 @@ We also mark it as dynamic. This is a hint to THREE.js that we're going to be ch
 the contents of the attribute often.</p>
 <p>In our render loop we update the positions based off their normals every frame.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const temp = new THREE.Vector3();
-
 ...
-
 for (let i = 0; i &lt; positions.length; i += 3) {
   const quad = (i / 12 | 0);
   const ringId = quad / segmentsAround | 0;
@@ -430,7 +404,6 @@ positionAttribute.needsUpdate = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/custom-buffergeometry-dynamic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/custom-buffergeometry-dynamic.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I hope these were useful examples of how to use <a href="/docs/#api/en/core/BufferGeometry"><code class="notranslate" translate="no">BufferGeometry</code></a> directly to
 make your own geometry and how to dynamically update the contents of a
@@ -439,16 +412,9 @@ make your own geometry and how to dynamically update the contents of a
 <p><a href="resources/threejs-geometry.svg"></a></p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-custom-buffergeometry.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

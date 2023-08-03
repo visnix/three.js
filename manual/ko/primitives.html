@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -70,7 +68,6 @@
 <div id="Diagram-TubeGeometry" data-primitive="TubeGeometry">패스를 따라 이어진 원입니다.</div>
 <div id="Diagram-EdgesGeometry" data-primitive="EdgesGeometry">다른 <code class="notranslate" translate="no">geometry</code>를 받는 헬퍼 객체로, 각 면 사이의 각이 일정 값 이상일 때만 모서리를 표시합니다. 상단의 육면체 예제를 보면 육면체를 만드는 삼각형이 표면에 전부 표시된 것을 확인할 수 있는데, <a href="/docs/#api/ko/geometries/EdgesGeometry"><code class="notranslate" translate="no">EdgesGeometry</code></a>를 사용할 경우 표면에 있던 선들이 전부 사라집니다. 아래 예제의 <code class="notranslate" translate="no">thresholdAngle</code> 값을 조정해 해당 값 이하인 모서리가 전부 사라지는 것을 확인해보세요.</div>
 <div id="Diagram-WireframeGeometry" data-primitive="WireframeGeometry">매개변수로 받은 <code class="notranslate" translate="no">geometry</code>의 모서리 하나당 하나의 선분(2개의 점)을 가진 <code class="notranslate" translate="no">geometry</code>를 생성합니다. WebGl은 보통 선분 하나당 2개의 점을 필요로 합니다. 때문에 이 모델을 사용하지 않는 경우, 모서리가 없어지거나 추가되는 현상이 발생할 수 있습니다. 예를 들어 2D 삼각형을 만드는 경우, 대부분 3개의 점을 이용해 삼각형을 만들려고 할 겁니다. <code class="notranslate" translate="no">wireframe: true</code>라는 옵션이 있기는 하나, 이를 이용해 삼각형을 만들면 (WebGl은 삼각형을 만들 때 6개의 점을 요구하므로. 역주) 출력되는 건 선 하나 뿐일 겁니다. 삼각형 <code class="notranslate" translate="no">geometry</code>를 <a href="/docs/#api/ko/geometries/WireframeGeometry"><code class="notranslate" translate="no">WireframeGeometry</code></a>에 넘겨주면 6개의 점과 3개의 선분을 가진 새 <code class="notranslate" translate="no">geometry</code>를 생성합니다.</div>
-
 <p><a href="custom-buffergeometry.html">커스텀 geometry를 만드는 법</a>에 대해서는
 나중에 자세히 다룰 것이므로, 지금은 각 원시 모델로 예제를 만들어 보겠습니다.
 예제 코드는 <a href="responsive.html">지난 글</a>에서 썼던 예제를 쓸 거에요.</p>
@@ -94,11 +91,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 함수를 만듭니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const objects = [];
 const spread = 15;
-
 function addObject(x, y, obj) {
   obj.position.x = x * spread;
   obj.position.y = y * spread;
-
   scene.add(obj);
   objects.push(obj);
 }
@@ -116,12 +111,10 @@ function addObject(x, y, obj) {
   const material = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
   });
-
   const hue = Math.random();
   const saturation = 1;
   const luminance = .5;
   material.color.setHSL(hue, saturation, luminance);
-
   return material;
 }
 </pre>
@@ -157,7 +150,6 @@ function addObject(x, y, obj) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>몇몇 예외가 보일 텐데, 가장 크게 두드러진 것은 아마 <a href="/docs/#api/ko/geometries/TextGeometry"><code class="notranslate" translate="no">TextGeometry</code></a>일 겁니다.
 <a href="/docs/#api/ko/geometries/TextGeometry"><code class="notranslate" translate="no">TextGeometry</code></a>는 텍스트의 <code class="notranslate" translate="no">mesh</code>를 생성하기 위해 3D 폰트 데이터를 필요로 합니다.
@@ -174,7 +166,6 @@ function addObject(x, y, obj) {
       loader.load(url, resolve, undefined, reject);
     });
   }
-
   async function doit() {
     const font = await loadFont('resources/threejs/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
     const geometry = new TextGeometry('three.js', {
@@ -190,10 +181,8 @@ function addObject(x, y, obj) {
     const mesh = new THREE.Mesh(geometry, createMaterial());
     geometry.computeBoundingBox();
     geometry.boundingBox.getCenter(mesh.position).multiplyScalar(-1);
-
     const parent = new THREE.Object3D();
     parent.add(mesh);
-
     addObject(-1, -1, parent);
   }
   doit();
@@ -220,7 +209,6 @@ function addObject(x, y, obj) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives-text.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives-text.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>예제의 왼쪽 텍스트는 회전축이 중앙에서 벗어났지만, 오른쪽 텍스트는
 중앙을 중심으로 회전합니다.</p>
@@ -256,7 +244,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="Points"></div>
 </div>
-
 <p><a href="/docs/#api/ko/materials/PointsMaterial#sizeAttenuation"><code class="notranslate" translate="no">sizeAttenuation</code></a>을 <code class="notranslate" translate="no">false</code>로 지정하면
 카메라로부터의 거리에 상관없이 점의 크기가 일정하게 보입니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const material = new THREE.PointsMaterial({
@@ -270,7 +257,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="PointsUniformSize"></div>
 </div>
-
 <p>또 하나 집고 넘어가야 하는 것은 Three.js의 물체 대부분이
 세분값에 대한 설정이 다양하다는 겁니다. 좋은 예로 구체가
 있죠. 구체는 얼마나 물체를 세분할지에 대한 값을 매개변수로
@@ -280,7 +266,6 @@ scene.add(points);
 <div data-diagram="SphereGeometryMedium"></div>
 <div data-diagram="SphereGeometryHigh"></div>
 </div>
-
 <p>위 그림에서 첫 번째 구체는 둘레로 5개, 높이로 3개의 면으로 분할되었습니다.
 이는 15개의 면 또는 30개의 삼각형이죠. 두 번째 구체는 24 x 10, 240면 또는
 480개의 삼각형입니다. 마지막 구체는 50 x 50으로 무려 2500면 또는 5000개의
@@ -293,7 +278,6 @@ scene.add(points);
 <div data-diagram="SphereGeometryMediumSmooth"></div>
 <div data-diagram="SphereGeometryHighSmooth"></div>
 </div>
-
 <p>5000 삼각형인 오른쪽 구체가 480 삼각형인 중간 구체보다 훨씬 좋다고
 이야기하기 모호합니다. 만약 지구본을 만들기 위한 구체 하나를 만든다고
 하면, 10000개의 삼각형으로 구체를 만드는 것이 나쁜 선택은 아닙니다.
@@ -306,7 +290,6 @@ scene.add(points);
 <div data-diagram="PlaneGeometryLow"></div>
 <div data-diagram="PlaneGeometryHigh"></div>
 </div>
-
 <p>왼쪽의 평면은 2 삼각형입니다. 오른쪽 평면은 200 삼각형이죠.
 구체와 다르게 평면은 대부분의 경우 퀄리티 저하가 아예 없습니다.
 평면을 변형해 다른 것을 만드는 경우가 아니면, 평면을 분할해야할
@@ -322,16 +305,9 @@ scene.add(points);
 알아보겠습니다.</p>
 <p><link rel="stylesheet" href="../resources/threejs-primitives.css"></p>
 <script type="module" src="../resources/threejs-primitives.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script defer src="../resources/prettify.js"></script>
   <script defer src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

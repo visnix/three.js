@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -105,7 +103,6 @@
 К одной сцене мы добавим куб, а к другой ромб.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // по умолчанию для холста
   const near = 0.1;
@@ -114,7 +111,6 @@
   camera.position.z = 2;
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -122,10 +118,8 @@
     light.position.set(-1, 2, 4);
     scene.add(light);
   }
-
   return {scene, camera, elem};
 }
-
 function setupScene1() {
   const sceneInfo = makeScene(document.querySelector('#box'));
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -135,7 +129,6 @@ function setupScene1() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 function setupScene2() {
   const sceneInfo = makeScene(document.querySelector('#pyramid'));
   const radius = .8;
@@ -151,7 +144,6 @@ function setupScene2() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 const sceneInfo1 = setupScene1();
 const sceneInfo2 = setupScene2();
 </pre>
@@ -162,28 +154,22 @@ const sceneInfo2 = setupScene2();
 <a href="/docs/#api/en/constants/Renderer.setViewport"><code class="notranslate" translate="no">Renderer.setViewport</code></a> и <a href="/docs/#api/en/constants/Renderer.setScissor"><code class="notranslate" translate="no">Renderer.setScissor</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function renderSceneInfo(sceneInfo) {
   const {scene, camera, elem} = sceneInfo;
-
   // получаем относительную позицию окна просмотра этого элемента
   const {left, right, top, bottom, width, height} =
       elem.getBoundingClientRect();
-
   const isOffscreen =
       bottom &lt; 0 ||
       top &gt; renderer.domElement.clientHeight ||
       right &lt; 0 ||
       left &gt; renderer.domElement.clientWidth;
-
   if (isOffscreen) {
     return;
   }
-
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-
   const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
   renderer.setScissor(left, positiveYUpBottom, width, height);
   renderer.setViewport(left, positiveYUpBottom, width, height);
-
   renderer.render(scene, camera);
 }
 </pre>
@@ -191,19 +177,14 @@ const sceneInfo2 = setupScene2();
 а затем отрисует каждую сцену.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   sceneInfo1.mesh.rotation.y = time * .1;
   sceneInfo2.mesh.rotation.y = time * .1;
-
   renderSceneInfo(sceneInfo1);
   renderSceneInfo(sceneInfo2);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -212,7 +193,6 @@ const sceneInfo2 = setupScene2();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-v1.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-v1.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Вы можете увидеть, где на первом месте <code class="notranslate" translate="no">&lt;span&gt;</code> находится красный куб, 
 а на втором <code class="notranslate" translate="no">span</code> - синий ромб.</p>
@@ -236,7 +216,6 @@ const sceneInfo2 = setupScene2();
 <p>И если мы <a href="../examples/multiple-scenes-v2.html" target="_blank">быстро прокрутим вверх и вниз</a> 
 мы увидим проблему. Вот анимация прокрутки, замедленная в 10 раз.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-skew.gif"></div>
-
 <p>Мы можем использовать другой метод, который имеет другой компромисс. 
 Мы переключим CSS холста с <code class="notranslate" translate="no">position: fixed</code> на <code class="notranslate" translate="no">position: absolute</code>. </p>
 <pre class="prettyprint showlinemods notranslate lang-css" translate="no">#c {
@@ -248,7 +227,6 @@ const sceneInfo2 = setupScene2();
 на которую в данный момент прокручивается страница.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   ...
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
 </pre>
@@ -264,7 +242,6 @@ const sceneInfo2 = setupScene2();
 <a href="../examples/multiple-scenes-v2.html" target="_blank"> материал в середине страницы должен совпадать</a>, 
 а не скользить. Вот представление результатов нового метода, замедленного в 10 раз.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-fixed.gif"></div>
-
 <h2 id="-">Делаем это более универсальным</h2>
 <p>Теперь, когда у нас работает несколько сцен, давайте сделаем это немного более обобщенным.</p>
 <p>Мы могли бы сделать так, чтобы основная функция рендеринга, управляющая холстом, просто имела 
@@ -277,40 +254,31 @@ const sceneInfo2 = setupScene2();
 function addScene(elem, fn) {
   sceneElements.push({elem, fn});
 }
-
 function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.setClearColor(clearColor, 0);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
-
   for (const {elem, fn} of sceneElements) {
     // получаем относительную позицию окна просмотра этого элемента
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
-
     const isOffscreen =
         bottom &lt; 0 ||
         top &gt; renderer.domElement.clientHeight ||
         right &lt; 0 ||
         left &gt; renderer.domElement.clientWidth;
-
     if (!isOffscreen) {
       const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
       renderer.setScissor(left, positiveYUpBottom, width, height);
       renderer.setViewport(left, positiveYUpBottom, width, height);
-
       fn(time, rect);
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -333,7 +301,6 @@ function render(time) {
     renderer.render(scene, camera);
   });
 }
-
 {
   const elem = document.querySelector('#pyramid');
   const {scene, camera} = makeScene();
@@ -361,7 +328,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-generic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-generic.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <h2 id="-html">Использование набора данных в HTML</h2>
 <p>Еще одна, еще более общая вещь, которую мы можем сделать, это использовать 
@@ -446,7 +412,6 @@ function render(time) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function makeScene() {
 +function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // по умолчанию для canvas
   const near = 0.1;
@@ -455,11 +420,9 @@ function render(time) {
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
 +  scene.add(camera);
-
 +  const controls = new TrackballControls(camera, elem);
 +  controls.noZoom = true;
 +  controls.noPan = true;
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -468,7 +431,6 @@ function render(time) {
 -    scene.add(light);
 +    camera.add(light);
   }
-
 -  return {scene, camera};
 + return {scene, camera, controls};
 }
@@ -526,15 +488,9 @@ function render(time) {
 <p>Эти методы используются на самом сайте. В частности, 
 <a href="primitives.html">статья о примитивах</a> и <a href="materials.html">о материалах</a> 
 используют эту технику для добавления различных примеров по всей статье.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

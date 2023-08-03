@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -47,7 +45,6 @@ Three.jsの場合、たくさんのメッシュが入ったシーンがあり、
 <p>次に <code class="notranslate" translate="no">EffectComposer.addPass</code> を呼び出し、それぞれのPassに適用したい順番で追加します。
 Passは<em>次の図のように</em>適用されます。</p>
 <div class="threejs_center"><img src="../resources/images/threejs-postprocessing.svg" style="width: 600px"></div>
-
 <p><code class="notranslate" translate="no">RenderPass</code>に渡されたシーンは、まず<strong>rtA</strong>にレンダリングされ<strong>rtA</strong>は次のPassに渡されます。
 このPassは<strong>rtA</strong>を入力として使用し、<strong>rtB</strong>に結果を書き込みます。
 その後に<strong>rtB</strong>は次のPassに渡され、<strong>rtB</strong>を入力として使用し<strong>rtA</strong>に書き戻します。
@@ -107,14 +104,12 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 +  now *= 0.001;  // convert to seconds
 +  const deltaTime = now - then;
 +  then = now;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
 +    composer.setSize(canvas.width, canvas.height);
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
 -    const rot = time * speed;
@@ -122,10 +117,8 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
 -  renderer.render(scene, camera);
 +  composer.render(deltaTime);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -136,7 +129,6 @@ deltaTimeをアニメーションしてる様々なエフェクトに渡しま�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>実行時にエフェクトパラメーターを変更するには、uniformの値を設定する必要があります。
 パラメータを調整するためのGUIを追加してみましょう。
@@ -178,7 +170,6 @@ if ( scanlinesCount !== undefined ) this.uniforms.sCount.value = scanlinesCount;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-gui.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これはあなた自身のエフェクトを作る小さな1歩です。</p>
 <p>ポストプロセスエフェクトではシェーダーを使用します。
@@ -241,7 +232,6 @@ gui.add(colorPass.uniforms.color.value, 'b', 0, 4).name('blue');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-custom.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-custom.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>GLSLやカスタムシェーダーの詳細は、ネット上にたくさんの記事があります。
 WebGL自体がどのように動作するかを知りたいならば、<a href="https://webglfundamentals.org">これらの記事</a>をチェックしてみて下さい。
@@ -250,15 +240,9 @@ WebGL自体がどのように動作するかを知りたいならば、<a href="
 <p>残念ながらThree.jsレポートにあるほとんどのポストプロセスエフェクトは文書化されていないので、使用するには<a href="https://github.com/mrdoob/three.js/tree/master/examples">この例</a>か
 <a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/postprocessing">エフェクト自体のコード</a>を読んで下さい。
 これらのシンプルな例と<a href="rendertargets.html">レンダーターゲット</a>の記事がポストプロセスを始めるのに十分な知識を提供してくれると思います。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

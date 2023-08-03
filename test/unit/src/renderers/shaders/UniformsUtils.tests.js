@@ -1,5 +1,4 @@
 /* global QUnit */
-
 import { UniformsUtils } from '../../../../../src/renderers/shaders/UniformsUtils.js';
 import { Color } from '../../../../../src/math/Color.js';
 import { Vector2 } from '../../../../../src/math/Vector2.js';
@@ -11,36 +10,22 @@ import { Quaternion } from '../../../../../src/math/Quaternion.js';
 import { Texture } from '../../../../../src/textures/Texture.js';
 import { CubeReflectionMapping, UVMapping } from '../../../../../src/constants.js';
 import { CONSOLE_LEVEL } from '../../../utils/console-wrapper.js';
-
 export default QUnit.module( 'Renderers', () => {
-
 	QUnit.module( 'Shaders', () => {
-
 		QUnit.module( 'UniformsUtils', () => {
-
 			// INSTANCING - LEGACY
 			QUnit.test( 'Instancing', ( assert ) => {
-
 				assert.ok( UniformsUtils, 'UniformsUtils is defined.' );
-
 			} );
-
 			// LEGACY
 			QUnit.todo( 'UniformsUtils.clone', ( assert ) => {
-
 				assert.ok( false, 'everything\'s gonna be alright' );
-
 			} );
-
 			QUnit.todo( 'UniformsUtils.merge', ( assert ) => {
-
 				assert.ok( false, 'everything\'s gonna be alright' );
-
 			} );
-
 			// PUBLIC
 			QUnit.test( 'cloneUniforms copies values', ( assert ) => {
-
 				const uniforms = {
 					floatValue: { value: 1.23 },
 					intValue: { value: 1 },
@@ -55,9 +40,7 @@ export default QUnit.module( 'Renderers', () => {
 					arrayValue: { value: [1, 2, 3, 4] },
 					textureValue: { value: new Texture(null, CubeReflectionMapping) },
 				};
-
 				const uniformClones = UniformsUtils.clone(uniforms);
-	
 				assert.ok( uniforms.floatValue.value === uniformClones.floatValue.value );
 				assert.ok( uniforms.intValue.value === uniformClones.intValue.value );
 				assert.ok( uniforms.boolValue.value === uniformClones.boolValue.value );
@@ -74,9 +57,7 @@ export default QUnit.module( 'Renderers', () => {
 					assert.ok( uniforms.arrayValue.value[i] === uniformClones.arrayValue.value[i] );
 				}
 			} );
-
 			QUnit.test( 'cloneUniforms clones properties', ( assert ) => {
-
 				const uniforms = {
 					floatValue: { value: 1.23 },
 					intValue: { value: 1 },
@@ -91,9 +72,7 @@ export default QUnit.module( 'Renderers', () => {
 					arrayValue: { value: [1, 2, 3, 4] },
 					textureValue: { value: new Texture(null, CubeReflectionMapping) },
 				};
-	
 				const uniformClones = UniformsUtils.clone(uniforms);
-
 				// Modify the originals
 				uniforms.floatValue.value = 123.0;
 				uniforms.intValue.value = 123;
@@ -107,7 +86,6 @@ export default QUnit.module( 'Renderers', () => {
 				uniforms.quatValue.value.x = 123.0;
 				uniforms.arrayValue.value[0] = 123.0;
 				uniforms.textureValue.value.mapping = UVMapping;
-
 				assert.ok( uniforms.floatValue.value !== uniformClones.floatValue.value );
 				assert.ok( uniforms.intValue.value !== uniformClones.intValue.value );
 				assert.ok( uniforms.boolValue.value !== uniformClones.boolValue.value );
@@ -120,49 +98,28 @@ export default QUnit.module( 'Renderers', () => {
 				assert.ok( !uniforms.quatValue.value.equals(uniformClones.quatValue.value) );
 				assert.ok( uniforms.textureValue.value.mapping !== uniformClones.textureValue.value.mapping );
 				assert.ok( uniforms.arrayValue.value[0] !== uniformClones.arrayValue.value[0] );
-
 				// Texture source remains same
 				assert.ok( uniforms.textureValue.value.source.uuid === uniformClones.textureValue.value.source.uuid );
-
 			} );
-
 			QUnit.test( 'cloneUniforms skips render target textures', ( assert ) => {
-
 				const uniforms = {
 					textureValue: { value: new Texture(null, CubeReflectionMapping) },
 				};
-
 				uniforms.textureValue.value.isRenderTargetTexture = true;
-
 				console.level = CONSOLE_LEVEL.OFF;
 				const uniformClones = UniformsUtils.clone(uniforms);
 				console.level = CONSOLE_LEVEL.DEFAULT;
-
 				assert.ok( uniformClones.textureValue.value === null );
-
 			} );
-
-
 			QUnit.todo( 'mergeUniforms', ( assert ) => {
-
 				assert.ok( false, 'everything\'s gonna be alright' );
-
 			} );
-
 			QUnit.todo( 'cloneUniformsGroups', ( assert ) => {
-
 				assert.ok( false, 'everything\'s gonna be alright' );
-
 			} );
-
 			QUnit.todo( 'getUnlitUniformColorSpace', ( assert ) => {
-
 				assert.ok( false, 'everything\'s gonna be alright' );
-
 			} );
-
 		} );
-
 	} );
-
 } );

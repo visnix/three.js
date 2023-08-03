@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -48,7 +46,6 @@ const rtNear = 0.1;
 const rtFar = 5;
 const rtCamera = new THREE.PerspectiveCamera(rtFov, rtAspect, rtNear, rtFar);
 rtCamera.position.z = 2;
-
 const rtScene = new THREE.Scene();
 rtScene.background = new THREE.Color('red');
 </pre>
@@ -64,23 +61,17 @@ rtScene.background = new THREE.Color('red');
   light.position.set(-1, 2, 4);
 *  rtScene.add(light);
 }
-
 const boxWidth = 1;
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
 *  rtScene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
-
 *const rtCubes = [
   makeInstance(geometry, 0x44aa88,  0),
   makeInstance(geometry, 0x8844aa, -2),
@@ -99,9 +90,7 @@ scene.add(cube);
 <p>그리고 <code class="notranslate" translate="no">render</code> 함수 안에서 렌더 타겟의 장면을 먼저 렌더링한 뒤,</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   ...
-
   // 렌더 타겟의 장면 안에서 정육면체를 각각 회전시킵니다
   rtCubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
@@ -109,7 +98,6 @@ scene.add(cube);
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   // 렌더 타겟의 장면을 렌더 타겟에 렌더링합니다
   renderer.setRenderTarget(renderTarget);
   renderer.render(rtScene, rtCamera);
@@ -119,7 +107,6 @@ scene.add(cube);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // 장면 중앙의 정육면체를 회전시킵니다
   cube.rotation.x = time;
   cube.rotation.y = time * 1.1;
-
   // 장면은 canvas에 렌더링합니다
   renderer.render(scene, camera);
 </pre>
@@ -128,7 +115,6 @@ scene.add(cube);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-target.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-target.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>정육면체가 빨간 건 정육면체를 잘 보이도록 하기 위해 <code class="notranslate" translate="no">rtScene</code>의 <code class="notranslate" translate="no">background</code>
 속성을 빨강으로 설정했기 때문입니다.</p>
@@ -151,27 +137,19 @@ scene.add(cube);
 <p>앞선 예제에서는 렌더 타겟을 생성할 때 고정 사이즈, 512x512를 사용했습니다. 하지만 후처리 등에서 렌더 타겟을 사용할 경우, canvas 크기와 렌더 타겟의 크기를 똑같이 설정하는 것이 일반적입니다. 예제를 바탕으로 이를 구현하려면 canvas의 사이즈가 변경되었을 때 카메라와 렌더 타겟의 사이즈를 변경해주어야 하죠.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
-
 +    renderTarget.setSize(canvas.width, canvas.height);
 +    rtCamera.aspect = camera.aspect;
 +    rtCamera.updateProjectionMatrix();
 }
 </pre></li>
 </ul>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

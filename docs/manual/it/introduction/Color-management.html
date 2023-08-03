@@ -13,31 +13,25 @@
 				border-left: 4px solid #cccccc;
 				padding: 1em 2em 1em 2em;
 			}
-
 			blockquote p:first-child {
 				margin-top: 0;
 			}
-
 			blockquote p:last-child {
 				margin-bottom: 0;
 			}
-
 			figure {
 				width: 100%;
 				margin: 1em 0;
 				font-style: italic;
 			}
-
 			figure img {
 				width: 100%;
 			}
-
 			figure.float {
 				float: right;
 				max-width: 30%;
 				margin: 1em;
 			}
-
 			@media all and (max-width: 640px) {
 				figure.float {
 					float: none;
@@ -46,12 +40,9 @@
 			}
 		</style>
 	</head>
-
 	<body>
 		<h1>Gestione del colore ([name])</h1>
-
 		<h2>Cos'è lo spazio colore?</h2>
-
 		<p>
 			Ogni spazio colore è una collezione di diverse decisioni progettuali,
 			scelte insieme per supportare un'ampia gamma di colori e al contempo
@@ -61,7 +52,6 @@
 			proprietà e come le proprietà di uno spazio colore si relazionano con
 			altri spazi colore nella scena.
 		</p>
-
 		<figure class="float">
 			<img src="resources/srgb_gamut.png" alt="" />
 			<figcaption>
@@ -76,7 +66,6 @@
 				>
 			</figcaption>
 		</figure>
-
 		<ul>
 			<li>
 				<b>Colori primari:</b> I colori primari (rosso, verde, blu) non sono
@@ -112,12 +101,10 @@
 				è ambiguo e dovrebbe essere evitato in questo contesto.
 			</li>
 		</ul>
-
 		Questi tre parametri - colori primari, punto di bianco e funzioni di
 		trasferimento - definiscono uno spazio colore, ognuno scelto per obiettivi
 		specifici. Dopo aver definito i parametri, sono utili alcuni termini
 		aggiuntivi:
-
 		<ul>
 			<li>
 				<b>Modello di colore:</b> Sintassi per identificare numericamente i
@@ -138,7 +125,6 @@
 				infinito.
 			</li>
 		</ul>
-
 		<p>
 			Consideriamo due spazi colori comuni: [page:SRGBColorSpace] ("sRGB") e
 			[page:LinearSRGBColorSpace] ("Linear-sRGB"). Entrambi usano gli stessi
@@ -150,7 +136,6 @@
 			cui l'occhio umano percepisce la luce e alla reattività dei comuni
 			dispositivi di visualizzazione.
 		</p>
-
 		<p>
 			Questa differenza è importante. I calcoli di illuminazione e altre
 			operazioni di rendering devono generalmente avvenire in uno spazio di
@@ -160,7 +145,6 @@
 			le texture di input e l'immagine finale renderizzata utilizzano
 			generalmente lo spazio di colore sRGB non lineare.
 		</p>
-
 		<blockquote>
 			<p>
 				ℹ️
@@ -172,18 +156,14 @@
 				</i>
 			</p>
 		</blockquote>
-
 		<h2>Ruoli degli spazi colore</h2>
-
 		<p>
 			Un flusso di lavoro lineare - richiesto per moderni metodi di rendering -
 			generalmente coinvolge più di uno spazio di colore, ognuno assegnato ad un
 			ruolo specifico. Spazi colore lineari o non lineari sono adatti a ruoli
 			diversi, come spiegato di seguito.
 		</p>
-
 		<h3>Input color space</h3>
-
 		<p>
 			I colori forniti a three.js - dai color picker, dalle texture, dai modelli
 			3D e da altre risorse - hanno ciascuno uno spazio colore associato. Quelli
@@ -194,9 +174,7 @@
 			gestione del colore legacy è disabilitata prima dell'inizializzazione dei
 			colori:
 		</p>
-
 		<code> THREE.ColorManagement.enabled = true; </code>
-
 		<ul>
 			<li>
 				<b>Materiali, luci, e shader:</b> I colori nei materiali, nelle luci e
@@ -207,7 +185,6 @@
 				<b>Colori dei vertici:</b> [page:BufferAttribute BufferAttributes]
 				memorizza i componenti RGB nello spazio colore di lavoro Linear-sRGB.
 			</li>
-
 			<li>
 				<b>Colori delle texture:</b> Le [page:Texture Texture] PNG o JPEG
 				contenti informazioni sul colore (come .map o .emissiveMap) usano lo
@@ -226,7 +203,6 @@
 				motivi tecnici.
 			</li>
 		</ul>
-
 		<blockquote>
 			<p>
 				⚠️
@@ -242,18 +218,14 @@
 				</i>
 			</p>
 		</blockquote>
-
 		<h3>Spazio colore di lavoro</h3>
-
 		<p>
 			Rendering, interpolazione e molte altre operazioni devono essere eseguite
 			in uno spazio colore di lavoro lineare, nel quale i componenti RGB sono
 			proporzionali all'illuminazione fisica. In three.js, lo spazio colore di
 			lavoro è Linear-sRGB.
 		</p>
-
 		<h3>Output color space</h3>
-
 		<p>
 			L'output su un dispositivo di visualizzazione, a un'immagine o a un video,
 			può comportare la conversione dallo spazio colore di lavoro Linear-sRGB di
@@ -261,11 +233,9 @@
 			eseguita nel passaggio di rendering principale
 			([page:WebGLRenderer.outputColorSpace]), o durante il post-processing.
 		</p>
-
 		<code>
 			renderer.outputColorSpace = THREE.SRGBColorSpace; // optional with post-processing
 		</code>
-
 		<ul>
 			<li>
 				<b>Display:</b> I colori scritti in un canvas WebGL per i display devono
@@ -281,7 +251,6 @@
 				immagine compatibile come OpenEXR.
 			</li>
 		</ul>
-
 		<blockquote>
 			<p>
 				⚠️
@@ -296,14 +265,11 @@
 				>
 			</p>
 		</blockquote>
-
 		<p>
 			Custom materials based on [page:ShaderMaterial] and [page:RawShaderMaterial] have to implement their own output color space conversion.
 			For instances of `ShaderMaterial`, adding the `colorspace_fragment` shader chunk to the fragment shader's `main()` function should be sufficient.
 		</p>
-
 		<h2>Lavorare con le istanze di THREE.Color</h2>
-
 		<p>
 			I metodi di lettura o modifica delle istanze [page:Color] presuppongono
 			che i dati siano già nello spazio colore di lavoro di three.js,
@@ -312,18 +278,15 @@
 			I dati di Color possono essere esplicitamenre convertiti con
 			<i>.convertLinearToSRGB()</i> o <i>.convertSRGBToLinear()</i>.
 		</p>
-
 		<code>
 		// RGB components (no change).
 		color.r = color.g = color.b = 0.5;
 		console.log( color.r ); // → 0.5
-
 		// Manual conversion.
 		color.r = 0.5;
 		color.convertSRGBToLinear();
 		console.log( color.r ); // → 0.214041140
 		</code>
-
 		<p>
 			Con <i>ColorManagement.enabled = true</i> impostato (consigliato),
 			alcune conversioni vengono effettuate automaticamente. Poiché i colori
@@ -332,26 +295,21 @@
 			setter, oppure convertiranno da Linear-sRGB a sRGB quando restituiscono
 			output esadecimali o CSS dai getter.
 		</p>
-
 		<code>
 		// Hexadecimal conversion.
 		color.setHex( 0x808080 );
 		console.log( color.r ); // → 0.214041140
 		console.log( color.getHex() ); // → 0x808080
-
 		// CSS conversion.
 		color.setStyle( 'rgb( 0.5, 0.5, 0.5 )' );
 		console.log( color.r ); // → 0.214041140
-
 		// Override conversion with 'colorSpace' argument.
 		color.setHex( 0x808080, LinearSRGBColorSpace );
 		console.log( color.r ); // → 0.5
 		console.log( color.getHex( LinearSRGBColorSpace ) ); // → 0x808080
 		console.log( color.getHex( SRGBColorSpace ) ); // → 0xBCBCBC
 		</code>
-
 		<h2>Errori comuni</h2>
-
 		<p>
 			Quando un singolo colore o una texture non sono configurati correttamente,
 			apparirà più scuro o più chiaro del previsto. Quando lo spazio colore di
@@ -361,7 +319,6 @@
 			caso il problema potrebbe non essere uniforme e semplicemente
 			aumentare/dimunire la luminosità non lo risolverebbe.
 		</p>
-
 		<p>
       Un problema più sottile si verifica quando <i>entrambi</i> lo spazio colore di
       input e quello di output non sono corretti - i livelli di luminosità complessivi
@@ -371,9 +328,7 @@
       che lo spazio colore di lavoro sia lineare ("riferito alla scena") e che lo spazio di colore 
       dell'output sia non lineare ("riferito alla visualizzazione").
 		</p>
-
 		<h2>Ulteriori letture</h2>
-
 		<ul>
 			<li>
 				<a

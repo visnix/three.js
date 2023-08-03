@@ -8,9 +8,7 @@
 	</head>
 	<body>
 		[page:Material] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			Un matériau rendu avec des shaders personnalisés. Un shader est un petit programme écrit en
 			[link:https://www.khronos.org/files/opengles_shading_language.pdf GLSL] qui s'exécute sur le GPU.
@@ -20,7 +18,6 @@
 				<li>combiner de nombreux objets en une seule [page:BufferGeometry] afin d'améliorer les performances</li>
 			</ul>
 			Il y a les notes suivantes à garder à l'esprit lors de l'utilisation d'un `ShaderMaterial` :
-
 		<ul>
 			<li>
 				Un `ShaderMaterial` ne sera rendu correctement que par [page: WebGLRenderer],
@@ -59,37 +56,25 @@
 				<code>
 		#pragma unroll_loop_start
 		for ( int i = 0; i < 10; i ++ ) {
-
 			// ...
-
 		}
 		#pragma unroll_loop_end
 				</code>
 			</li>
 		</ul>
 		</p>
-
 		<h2>Code Example</h2>
-
 		<code>
 		const material = new THREE.ShaderMaterial( {
-
 			uniforms: {
-
 				time: { value: 1.0 },
 				resolution: { value: new THREE.Vector2() }
-
 			},
-
 			vertexShader: document.getElementById( 'vertexShader' ).textContent,
-
 			fragmentShader: document.getElementById( 'fragmentShader' ).textContent
-
 		} );
 		</code>
-
 		<h2>Exemples</h2>
-
 		<p>
 			[example:webgl_buffergeometry_custom_attributes_particles webgl / buffergeometry / custom / attributes / particles]<br />
 			[example:webgl_buffergeometry_selective_draw webgl / buffergeometry / selective / draw]<br />
@@ -113,9 +98,7 @@
 			[example:webgl_postprocessing_dof2 webgl / postprocessing / dof2]<br />
 			[example:webgl_postprocessing_godrays webgl / postprocessing / godrays]
 		</p>
-
 		<h2>Shaders de vertex et shaders de fragments</h2>
-
 		<div>
 			<p>Vous pouvez spécifier deux types de shaders différents pour chaque matériau :</p>
 			<ul>
@@ -150,10 +133,7 @@
 				vous ne pouvez modifier leurs valeurs qu'en transmettant des valeurs différentes aux tampons à partir de votre code JavaScript.
 			</p>
 		</div>
-
-
 	<h2>Attributs et uniformes intégrés</h2>
-
 	<div>
 			<p>
 				La [page:WebGLRenderer] fournit de nombreux attributs et uniformes aux shaders par défaut ;
@@ -172,10 +152,7 @@
 				[page:RawShaderMaterial] au lieu de cette classe.
 			</p>
 		</div>
-
-
 		<h2>Attributs et uniformes personnalisés</h2>
-
 		<div>
 			<p>
 				Les attributs personnalisés et les uniformes doivent être déclarés dans votre code de shader GLSL
@@ -194,7 +171,6 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 				[page:BufferGeometry], votre valeur de tableau typée doit être créée avec une longueur de 3000 * 3,
 				ou 9000 (une valeur par composant). Un tableau de la taille de chaque type de données est présenté ci-dessous à titre de référence :
 			</p>
-
 			<table>
 				<caption><a id="attribute-sizes">Taille des attributs</a></caption>
 				<thead>
@@ -232,13 +208,11 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 					</tr>
 				</tbody>
 			</table>
-
 			<p>
 			Notez que les tampons d'attributs ne sont `pas` actualisés automatiquement lorsque leurs valeurs changent. Pour mettre à jour les attributs personnalisés,
 			définissez le paramètre `needsUpdate` sur true sur le [page:BufferAttribute] de la géométrie (voir [page:BufferGeometry]
 			pour plus de détails).
 			</p>
-
 			<p>
 			Pour déclarer un [page:Uniform] personnalisé, utilisez la propriété `uniforms` :
 			<code>
@@ -248,37 +222,29 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 			}
 			</code>
 			</p>
-
 			<p>
 				Il est recommandé de mettre à jour les valeurs [page:Uniform] personnalisées en fonction de [page:Object3D object] et [page:Camera camera]
 				dans [page:Object3D.onBeforeRender] car [page:Material] peut être partagé entre [page:Mesh meshes], [page:Matrix4 matrixWorld]
 				de [page:Scene] et [page:Camera] sont mis à jour dans [page:WebGLRenderer.render], et certains effets rendent une [page:Scene scene]
 				avec leur propre [page : cameras] privées.
 			</p>
-
 		</div>
-
 		<h2>Constructeur</h2>
-
 		<h3>[name]( [param:Object parameters] )</h3>
 		<p>
 			[page:Object parameters] - (optionnel) un objet avec une ou plusieurs propriétés définissant l'apparence du matériau.
 		Toute propriété du matériau (y compris toute proprioété héritée de [page:Material]) peut être passée dans l'objet.
 		</p>
-
 		<h2>Propriétés</h2>
 		<p>Voir la classe [page:Material] pour les propriétés communes.</p>
-
 		<h3>[property:Boolean clipping]</h3>
 		<p>
 			Définit si ce matériau prend en charge l'écrêtage ; true pour laisser le moteur de rendu transmettre l'uniforme clippingPlanes. La valeur par défaut est false.
 		</p>
-
 		<h3>[property:Object defaultAttributeValues]</h3>
 		<p>
 			Lorsque la géométrie rendue n'inclut pas ces attributs mais que le matériau le fait,
 			ces valeurs par défaut seront transmises aux shaders. Cela évite les erreurs lorsque des données de tampon sont manquantes.
-
 		<code>
 			this.defaultAttributeValues = {
 				'color': [ 1, 1, 1 ],
@@ -286,10 +252,7 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 				'uv1': [ 0, 0 ]
 			};
 		</code>
-
 		</p>
-
-
 		<h3>[property:Object defines]</h3>
 		<p>
 		Définit des constantes personnalisées à l'aide des directives `#define` dans le code GLSL pour les deux
@@ -307,7 +270,6 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 		</code>
 		in the GLSL code.
 		</p>
-
 		<h3>[property:Object extensions]</h3>
 		<p>
 		Un objet avec les propriétés suivantes :
@@ -320,59 +282,46 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 			};
 		</code>
 		</p>
-
-
 		<h3>[property:Boolean fog]</h3>
 		<p>
 			Définissez si la couleur du matériau est affectée par les paramètres de brouillard globaux ; vrai pour passer
 			les uniformes de brouillard au shader. La valeur par défaut est false.
 		</p>
-
-
 		<h3>[property:String fragmentShader]</h3>
 		<p>
 			Code GLSL du shader de fragment. C'est le code réel du shader. Dans l'exemple ci-dessus,
 			le code `vertexShader` et `fragmentShader` est extrait du DOM ; il peut être passé
 			sous forme de chaîne de caractères ou chargé via AJAX à la place.
 		</p>
-
 		<h3>[property:String glslVersion]</h3>
 		<p>
 			Définit la version GLSL du code de shader personnalisé. Pertinent uniquement pour WebGL 2 afin de définir s'il faut spécifier
 			GLSL 3.0 ou pas. Les valeurs valides sont `THREE.GLSL1` ou `THREE.GLSL3`. La valeur par défaut est `null`.
 		</p>
-
 		<h3>[property:String index0AttributeName]</h3>
 		<p>
 			Si définit, cela appelle [link:https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bindAttribLocation gl.bindAttribLocation]
 			pour lier un index de sommet générique à une variable d'attribut.
 			La valeur par défaut est undefined.
-
 		</p>
-
 		<h3>[property:Boolean isShaderMaterial]</h3>
 		<p>
 			Attribut en lecture seule pour vérifier si l'object donné est de type [name].
 		</p>
-
 		<h3>[property:Boolean lights]</h3>
 		<p>
 		Définit si ce matériau utilise l'éclairage ; true pour transmettre des données uniformes liées à l'éclairage à ce shader. La valeur par défaut est false.
 		</p>
-
 		<h3>[property:Float linewidth]</h3>
 		<p>Contrôle l'épaisseur du filaire. La valeur par défaut est 1.<br /><br />
-
 		A cause des limitations de [link:https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf OpenGL Core Profile]
 			avec le moteur de rendu [page:WebGLRenderer WebGL] sur la plupârt des plateformes, l'épaisseur de ligne (linewidth) sera toujours 
 			à 1, indépendamment de la valeur définie.
 		</p>
-
 		<h3>[property:Boolean flatShading]</h3>
 		<p>
 		Définit si le matériau est rendu avec un ombrage plat. La valeur par défaut est false.
 		</p>
-
 		<h3>[property:Object uniforms]</h3>
 		<p>
 			Un object de la forme:
@@ -387,42 +336,32 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 		tel que défini dans le code GLSL. A noter que les uniformes sont rafraichis à chaque frame,
 		donc la mise à jour de la valeur de l'uniforme mettra immédiatement à jour la valeur disponible pour le code GLSL.
 		</p>
-
 		<h3>[property:Boolean uniformsNeedUpdate]</h3>
 		<p>
 		Peut être utilisé pour forcer une mise à jour uniforme lors du changement d'uniformes dans [page:Object3D.onBeforeRender](). La valeur par défaut est `false`.
 		</p>
-
 		<h3>[property:Boolean vertexColors]</h3>
 		<p>
 		Définit si la coloration des sommets est utilisée. La valeur par défaut est `false`.
 		</p>
-
 		<h3>[property:String vertexShader]</h3>
 		<p>
 			Code GLSL du vertex shader. C'est le code réel du shader. Dans l'exemple ci-dessus,
 			le code `vertexShader` et `fragmentShader` est extrait du DOM ; il peut être passé
 			sous forme de chaîne de caractères ou chargé via AJAX à la place.
 		</p>
-
 		<h3>[property:Boolean wireframe]</h3>
 		<p>
 			Rendre la géométrie en fil de fer (en utilisant GL_LINES au lieu de GL_TRIANGLES). La valeur par défaut est false (c'est-à-dire rendre sous forme de polygones plats).
 		</p>
-
 		<h3>[property:Float wireframeLinewidth]</h3>
 		<p>Contrôle l'épaisseur du filaire. La valeur par défaut est 1.<br /><br />
-
 		A cause des limitations de [link:https://www.khronos.org/registry/OpenGL/specs/gl/glspec46.core.pdf OpenGL Core Profile]
 			avec le moteur de rendu [page:WebGLRenderer WebGL] sur la plupârt des plateformes, l'épaisseur de ligne (linewidth) sera toujours 
 			à 1, indépendamment de la valeur définie.
 		</p>
-
-
-
 		<h2>Méthodes</h2>
 		<p>Voir la classe [page:Material] pour les méthodes communes.</p>
-
 		<h3>[method:ShaderMaterial clone]()</h3>
 		<p>
 			Génère une copie superficielle de ce matériau. Notez que le vertexShader et le fragmentShader
@@ -431,9 +370,7 @@ et la page [page:BufferAttribute] pour un aperçu détaillé de l'API `BufferAtt
 			`uniformes` sont copiés `par valeur`, ce qui vous permet d'avoir différents ensembles d'uniformes
 			pour différentes copies du matériel.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

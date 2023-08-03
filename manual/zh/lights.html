@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -58,10 +56,8 @@ controls.update();
     width: 128px;
   ">
 </div>
-
 <p>首先加载这个纹理，设置重复模式（<a href="/docs/#api/zh/textures/Texture#wrapS"><code class="notranslate" translate="no">wrapS</code></a>, <a href="/docs/#api/zh/textures/Texture#wrapT"><code class="notranslate" translate="no">wrapT</code></a>），采样模式（<a href="/docs/#api/zh/textures/Texture#magFilter"><code class="notranslate" translate="no">magFilter</code></a>）以及重复的次数。因为贴图是 2x2 大小，通过设置成平铺模式，并且重复次数是边长的一半，就可以让每个格子正好是1个单位的大小。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeSize = 40;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -134,7 +130,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-ambient.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-ambient.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>可以在场景内点击和拖拽鼠标来改变相机的位置，观察场景。</p>
 <p>可以看到场景内的物体看起来没有立体感。环境光 （<a href="/docs/#api/zh/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a>）只是简单地将材质的颜色与光照颜色进行叠加（PhotoShop 里的正片叠底模式），再乘以光照强度。</p>
@@ -165,7 +160,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-hemisphere.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-hemisphere.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>场景基本上也没有太大的立体感。半球光 （<a href="/docs/#api/zh/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a>） 与其他类型光照结合使用，可以很好地表现天空和地面颜色照射到物体上时的效果。所以最好的使用场景就是与其他光照结合使用，或者作为环境光（<a href="/docs/#api/zh/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a>）的一种替代方案。</p>
 <h2 id="-directionallight-">方向光（<a href="/docs/#api/zh/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a>）</h2>
@@ -192,7 +186,6 @@ gui.add(light.target.position, 'y', 0, 10);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>目前有点难以观察。Three.js 提供了一些辅助对象，添加到场景中之后就可以显示出场景中的不可见对象（例如光照、相机等）。在这里我们使用 <a href="/docs/#api/zh/helpers/DirectionalLightHelper"><code class="notranslate" translate="no">DirectionalLightHelper</code></a>，它会绘制一个方形的小平面代表方向光的位置，一条连接光源与目标点的直线，代表了光的方向。创建对象时，传入光源对象作为参数，然后添加到场景中，就可以呈现。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const helper = new THREE.DirectionalLightHelper(light);
@@ -214,11 +207,9 @@ scene.add(helper);
 +  helper.update();
 +}
 +updateLight();
-
 const gui = new GUI();
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
-
 +makeXYZGUI(gui, light.position, 'position', updateLight);
 +makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -227,7 +218,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional-w-helper.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>旋转相机可以看得更清楚。方形的小平面代表了一个方向光（<a href="/docs/#api/zh/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a>），方向光表示的是来自一个方向上的光，并不是从某个点发射出来的，而是从一个无限大的平面内，发射出全部相互平行的光线。</p>
 <h2 id="-pointlight-">点光源（<a href="/docs/#api/zh/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>）</h2>
@@ -262,7 +252,6 @@ scene.add(helper);
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
 +gui.add(light, 'distance', 0, 40).onChange(updateLight);
-
 makeXYZGUI(gui, light.position, 'position', updateLight);
 -makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -271,7 +260,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-point.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-point.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>注意 <code class="notranslate" translate="no">distance</code> &gt; 0 时光照强度的衰减现象。</p>
 <h2 id="-spotlight-">聚光灯（<a href="/docs/#api/zh/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a>）</h2>
@@ -285,7 +273,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
 +const light = new THREE.SpotLight(color, intensity);
 scene.add(light);
 scene.add(light.target);
-
 -const helper = new THREE.DirectionalLightHelper(light);
 +const helper = new THREE.SpotLightHelper(light);
 scene.add(helper);
@@ -300,7 +287,6 @@ scene.add(helper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-spot-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-spot-w-helper.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>注意观察，当 <code class="notranslate" translate="no">penumbra</code> 为默认值 0 的时候，聚光灯会有非常清晰的边缘，而当把 <code class="notranslate" translate="no">penumbra</code> 向 1 调节的时候，边缘会开始模糊。</p>
 <p>示例中有点难以看到聚光灯的整个圆锥体，因为圆锥底部在平面下方。将 <code class="notranslate" translate="no">distance</code> 减小到 5 左右，就可以看到圆锥的底部。</p>
@@ -308,7 +294,6 @@ scene.add(helper);
 <p>Three.js 中还有一种类型的光照，矩形区域光（<a href="/docs/#api/zh/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a>）, 顾名思义，表示一个矩形区域的发射出来的光照，例如长条的日光灯或者天花板上磨砂玻璃透进来的自然光。</p>
 <p><a href="/docs/#api/zh/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a> 只能影响 <a href="/docs/#api/zh/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> 和 <a href="/docs/#api/zh/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>，所以我们把所有的材质都改为 <a href="/docs/#api/zh/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a>。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
 -  const planeMat = new THREE.MeshPhongMaterial({
 +  const planeMat = new THREE.MeshStandardMaterial({
@@ -361,7 +346,6 @@ scene.add(helper);
 light.position.set(0, 10, 0);
 +light.rotation.x = THREE.MathUtils.degToRad(-90);
 scene.add(light);
-
 *const helper = new RectAreaLightHelper(light);
 *light.add(helper);
 </pre>
@@ -375,7 +359,6 @@ gui.add(light, 'height', 0, 20);
 gui.add(new DegRadHelper(light.rotation, 'x'), 'value', -180, 180).name('x rotation');
 gui.add(new DegRadHelper(light.rotation, 'y'), 'value', -180, 180).name('y rotation');
 gui.add(new DegRadHelper(light.rotation, 'z'), 'value', -180, 180).name('z rotation');
-
 makeXYZGUI(gui, light.position, 'position');
 </pre>
 <p>场景如下所示：</p>
@@ -383,22 +366,14 @@ makeXYZGUI(gui, light.position, 'position');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-rectarea.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-rectarea.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
-
 <p>需要注意，每添加一个光源到场景中，都会降低 three.js 渲染场景的速度，所以应该尽量使用最少的资源来实现想要的效果。</p>
 <p>接下来我们学习 three.js 中的 <a href="cameras.html">相机</a>。</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lights.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,7 +42,6 @@
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function main() {
   const canvas = document.querySelector('#c');
   const offscreen = canvas.transferControlToOffscreen();
-
   ...
 </pre>
 <p><code class="notranslate" translate="no">new Worker(pathToScript, {type: 'module'})</code>でWorkerを起動し、<code class="notranslate" translate="no">offscreen</code> オブジェクトを渡します。</p>
@@ -76,7 +73,6 @@ Workerは、送られたメッセージに返信してWebページにメッセ�
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const handlers = {
   main,
 };
-
 self.onmessage = function(e) {
   const fn = handlers[e.data.type];
   if (typeof fn !== 'function') {
@@ -93,7 +89,6 @@ self.onmessage = function(e) {
 +function main(data) {
 +  const {canvas} = data;
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
-
   ...
 </pre>
 <p>最初の問題はWorkerからDOMを参照できず、<code class="notranslate" translate="no">resizeRendererToDisplaySize</code> が <code class="notranslate" translate="no">canvas.clientWidth</code> と <code class="notranslate" translate="no">canvas.clientHeight</code> を参照できない事です。
@@ -122,7 +117,6 @@ self.onmessage = function(e) {
 +  state.width = data.width;
 +  state.height = data.height;
 +}
-
 const handlers = {
   main,
 +  size,
@@ -145,19 +139,16 @@ const handlers = {
 <p>以下も同様の変更が必要です。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
 -    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +    camera.aspect = state.width / state.height;
     camera.updateProjectionMatrix();
   }
-
   ...
 </pre>
 <p>メインページに戻りページのリサイズの度に <code class="notranslate" translate="no">size</code> イベントを送信します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const worker = new Worker('offscreencanvas-picking.js', {type: 'module'});
 worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
-
 +function sendSize() {
 +  worker.postMessage({
 +    type: 'size',
@@ -202,7 +193,6 @@ worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
   const offscreen = canvas.transferControlToOffscreen();
   const worker = new Worker('offscreencanvas-picking.js', {type: 'module});
   worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
-
   ...
 </pre>
 <p>ブラウザが <code class="notranslate" translate="no">OffscreenCanvas</code> をサポートしていれば、このサンプルは動作するはずです。</p>
@@ -210,7 +200,6 @@ worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/offscreencanvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/offscreencanvas.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これは素晴らしい事ですが、今の所は全てのブラウザが <code class="notranslate" translate="no">OffscreenCanvas</code> をサポートしている訳ではなく、
 <code class="notranslate" translate="no">OffscreenCanvas</code> サポートありとサポートなしの両方で動作するコードに変更し、サポートなしの場合はメインページのキャンバスを通常のように表示します。</p>
@@ -237,13 +226,11 @@ worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
 <p>まず <code class="notranslate" translate="no">offscreencanvas-cubes.js</code> を全て <code class="notranslate" translate="no">shared-cube.js</code> にコピーします。
 次にHTMLファイルには既に <code class="notranslate" translate="no">main</code> があり、<code class="notranslate" translate="no">init</code> と <code class="notranslate" translate="no">state</code> をエクスポートする必要があるため <code class="notranslate" translate="no">main</code> の名前を <code class="notranslate" translate="no">init</code> に変更します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
-
 -const state = {
 +export const state = {
   width: 300,   // canvas default
   height: 150,  // canvas default
 };
-
 -function main(data) {
 +export function init(data) {
   const {canvas} = data;
@@ -270,18 +257,15 @@ worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
 </pre>
 <p>削除した部分を <code class="notranslate" translate="no">offscreencanvas-worker-cubes.js</code> にコピーして <code class="notranslate" translate="no">shared-cubes.js</code> をインポートし、<code class="notranslate" translate="no">main</code> の代わりに <code class="notranslate" translate="no">init</code> を呼び出します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {init, state} from './shared-cubes.js';
-
 function size(data) {
   state.width = data.width;
   state.height = data.height;
 }
-
 const handlers = {
 -  main,
 +  init,
   size,
 };
-
 self.onmessage = function(e) {
   const fn = handlers[e.data.type];
   if (typeof fn !== 'function') {
@@ -336,7 +320,6 @@ self.onmessage = function(e) {
   const offscreen = canvas.transferControlToOffscreen();
   const worker = new Worker('offscreencanvas-worker-cubes.js', {type: 'module'});
   worker.postMessage({type: 'main', canvas: offscreen}, [offscreen]);
-
   function sendSize() {
     worker.postMessage({
       type: 'size',
@@ -344,10 +327,8 @@ self.onmessage = function(e) {
       height: canvas.clientHeight,
     });
   }
-
   window.addEventListener('resize', sendSize);
   sendSize();
-
   console.log('using OffscreenCanvas');
 }
 </pre>
@@ -358,14 +339,12 @@ self.onmessage = function(e) {
 <p>メインページで開始するには次のようにします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function startMainPage(canvas) {
   init({canvas});
-
   function sendSize() {
     state.width = canvas.clientWidth;
     state.height = canvas.clientHeight;
   }
   window.addEventListener('resize', sendSize);
   sendSize();
-
   console.log('using regular canvas');
 }
 </pre>
@@ -374,7 +353,6 @@ self.onmessage = function(e) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/offscreencanvas-w-fallback.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/offscreencanvas-w-fallback.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>比較的簡単でした。ピッキングしてみましょう。
 <a href="picking.html">ピッキングの記事</a>にある <code class="notranslate" translate="no">RayCaster</code> の例からコードをいくつか取り出し、画面外でオフスクリーンが動作するようにします。</p>
@@ -392,7 +370,6 @@ self.onmessage = function(e) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
     // cast a ray through the frustum
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // get the list of objects the ray intersected
@@ -407,7 +384,6 @@ self.onmessage = function(e) {
     }
   }
 }
-
 const pickPosition = {x: 0, y: 0};
 const pickHelper = new PickHelper();
 </pre>
@@ -419,7 +395,6 @@ const pickHelper = new PickHelper();
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function setPickPosition(event) {
   const pos = getCanvasRelativePosition(event);
   pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
@@ -433,18 +408,15 @@ window.addEventListener('mousemove', setPickPosition);
   state.width = data.width;
   state.height = data.height;
 }
-
 +function mouse(data) {
 +  pickPosition.x = data.x;
 +  pickPosition.y = data.y;
 +}
-
 const handlers = {
   init,
 +  mouse,
   size,
 };
-
 self.onmessage = function(e) {
   const fn = handlers[e.data.type];
   if (typeof fn !== 'function') {
@@ -455,12 +427,10 @@ self.onmessage = function(e) {
 </pre>
 <p>メインページに戻ってマウスをWorkerやメインページに渡すコードを追加します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+let sendMouse;
-
 function startWorker(canvas) {
   const offscreen = canvas.transferControlToOffscreen();
   const worker = new Worker('offscreencanvas-worker-picking.js', {type: 'module'});
   worker.postMessage({type: 'init', canvas: offscreen}, [offscreen]);
-
 +  sendMouse = (x, y) =&gt; {
 +    worker.postMessage({
 +      type: 'mouse',
@@ -468,7 +438,6 @@ function startWorker(canvas) {
 +      y,
 +    });
 +  };
-
   function sendSize() {
     worker.postMessage({
       type: 'size',
@@ -476,28 +445,22 @@ function startWorker(canvas) {
       height: canvas.clientHeight,
     });
   }
-
   window.addEventListener('resize', sendSize);
   sendSize();
-
   console.log('using OffscreenCanvas');  /* eslint-disable-line no-console */
 }
-
 function startMainPage(canvas) {
   init({canvas});
-
 +  sendMouse = (x, y) =&gt; {
 +    pickPosition.x = x;
 +    pickPosition.y = y;
 +  };
-
   function sendSize() {
     state.width = canvas.clientWidth;
     state.height = canvas.clientHeight;
   }
   window.addEventListener('resize', sendSize);
   sendSize();
-
   console.log('using regular canvas');  /* eslint-disable-line no-console */
 }
 </pre>
@@ -510,7 +473,6 @@ function startMainPage(canvas) {
 +      (pos.x / canvas.clientWidth ) *  2 - 1,
 +      (pos.y / canvas.clientHeight) * -2 + 1);  // note we flip Y
 }
-
 function clearPickPosition() {
   // unlike the mouse which always has a position
   // if the user stops touching the screen we want
@@ -523,17 +485,14 @@ function clearPickPosition() {
 window.addEventListener('mousemove', setPickPosition);
 window.addEventListener('mouseout', clearPickPosition);
 window.addEventListener('mouseleave', clearPickPosition);
-
 window.addEventListener('touchstart', (event) =&gt; {
   // prevent the window from scrolling
   event.preventDefault();
   setPickPosition(event.touches[0]);
 }, {passive: false});
-
 window.addEventListener('touchmove', (event) =&gt; {
   setPickPosition(event.touches[0]);
 });
-
 window.addEventListener('touchend', clearPickPosition);
 </pre>
 <p>これでこのピッキングは <code class="notranslate" translate="no">OffscreenCanvas</code> で動作するはずです。</p>
@@ -541,7 +500,6 @@ window.addEventListener('touchend', clearPickPosition);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/offscreencanvas-w-picking.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/offscreencanvas-w-picking.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>もう1歩踏み込んで <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> を追加してみましょう。
 これはもう少し複雑です。
@@ -571,7 +529,6 @@ OrbitControlsが必要とする機能をサポートする必要があります�
 また、ある時はWorkerで実行され、全てのイベント、DOMイベントと同じ構造をもつイベントをメインページに渡すので、OrbitControlsは違いを見分けられません。</p>
 <p>ここにWorker部分のコードがあります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import {EventDispatcher} from 'three';
-
 class ElementProxyReceiver extends EventDispatcher {
   constructor() {
     super();
@@ -607,7 +564,6 @@ class ElementProxyReceiver extends EventDispatcher {
 <p><code class="notranslate" translate="no">ProxyManager</code>のインスタンスを作成し <code class="notranslate" translate="no">makeProxy</code> メソッドにidを指定して呼び出す事で、そのidを持つメッセージに応答する <code class="notranslate" translate="no">ElementProxyReceiver</code> を作成できます。</p>
 <p>Workerのメッセージハンドラに接続してみましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const proxyManager = new ProxyManager();
-
 function start(data) {
   const proxy = proxyManager.getProxy(data.canvasId);
   init({
@@ -615,13 +571,10 @@ function start(data) {
     inputElement: proxy,
   });
 }
-
 function makeProxy(data) {
   proxyManager.makeProxy(data);
 }
-
 ...
-
 const handlers = {
 -  init,
 -  mouse,
@@ -630,7 +583,6 @@ const handlers = {
 +  event: proxyManager.handleEvent,
    size,
 };
-
 self.onmessage = function(e) {
   const fn = handlers[e.data.type];
   if (typeof fn !== 'function') {
@@ -642,12 +594,10 @@ self.onmessage = function(e) {
 <p>共有のthree.jsコードでは <a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> をインポートして設定する必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
 +import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-
 export function init(data) {
 -  const {canvas} = data;
 +  const {canvas, inputElement} = data;
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
-
 +  const controls = new OrbitControls(camera, inputElement);
 +  controls.target.set(0, 0, 0);
 +  controls.update();
@@ -663,7 +613,6 @@ export function init(data) {
     y: event.clientY - rect.top,
   };
 }
-
 function setPickPosition(event) {
   const pos = getCanvasRelativePosition(event);
 -  sendMouse(
@@ -672,7 +621,6 @@ function setPickPosition(event) {
 +  pickPosition.x = (pos.x / inputElement.clientWidth ) *  2 - 1;
 +  pickPosition.y = (pos.y / inputElement.clientHeight) * -2 + 1;  // note we flip Y
 }
-
 function clearPickPosition() {
   // unlike the mouse which always has a position
   // if the user stops touching the screen we want
@@ -682,21 +630,17 @@ function clearPickPosition() {
 +  pickPosition.x = -100000;
 +  pickPosition.y = -100000;
 }
-
 *inputElement.addEventListener('mousemove', setPickPosition);
 *inputElement.addEventListener('mouseout', clearPickPosition);
 *inputElement.addEventListener('mouseleave', clearPickPosition);
-
 *inputElement.addEventListener('touchstart', (event) =&gt; {
   // prevent the window from scrolling
   event.preventDefault();
   setPickPosition(event.touches[0]);
 }, {passive: false});
-
 *inputElement.addEventListener('touchmove', (event) =&gt; {
   setPickPosition(event.touches[0]);
 });
-
 *inputElement.addEventListener('touchend', clearPickPosition);
 </pre>
 <p>メインページに戻り、上記で列挙した全てのイベントにメッセージを送信するコードが必要です。</p>
@@ -712,7 +656,6 @@ class ElementProxy {
         data,
       });
     };
-
     // register an id
     worker.postMessage({
       type: 'makeProxy',
@@ -735,7 +678,6 @@ Workerは <code class="notranslate" translate="no">ElementProxyReceiver</code> �
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function startWorker(canvas) {
   const offscreen = canvas.transferControlToOffscreen();
   const worker = new Worker('offscreencanvas-worker-orbitcontrols.js', {type: 'module'});
-
 +  const eventHandlers = {
 +    contextmenu: preventDefaultHandler,
 +    mousedown: mouseEventHandler,
@@ -784,22 +726,18 @@ const keydownEventHandler = makeSendPropertiesHandler([
   'shiftKey',
   'keyCode',
 ]);
-
 function wheelEventHandler(event, sendFn) {
   event.preventDefault();
   wheelEventHandlerImpl(event, sendFn);
 }
-
 function preventDefaultHandler(event) {
   event.preventDefault();
 }
-
 function copyProperties(src, properties, dst) {
   for (const name of properties) {
       dst[name] = src[name];
   }
 }
-
 function makeSendPropertiesHandler(properties) {
   return function sendProperties(event, sendFn) {
     const data = {type: event.type};
@@ -807,7 +745,6 @@ function makeSendPropertiesHandler(properties) {
     sendFn(data);
   };
 }
-
 function touchEventHandler(event, sendFn) {
   const touches = [];
   const data = {type: event.type, touches};
@@ -820,7 +757,6 @@ function touchEventHandler(event, sendFn) {
   }
   sendFn(data);
 }
-
 // The four arrow keys
 const orbitKeys = {
   '37': true,  // left
@@ -854,7 +790,6 @@ function filteredKeydownEventHandler(event, sendFn) {
 メインページでは既に対応してるのでそれらも不要になります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function noop() {
 +}
-
 class ElementProxyReceiver extends THREE.EventDispatcher {
   constructor() {
     super();
@@ -923,7 +858,6 @@ class ElementProxyReceiver extends THREE.EventDispatcher {
         data,
       });
     };
-
     // register an id
     worker.postMessage({
       type: 'makeProxy',
@@ -935,7 +869,6 @@ class ElementProxyReceiver extends THREE.EventDispatcher {
         handler(event, sendEvent);
       });
     }
-
 +    function sendSize() {
 +      const rect = element.getBoundingClientRect();
 +      sendEvent({
@@ -956,9 +889,7 @@ class ElementProxyReceiver extends THREE.EventDispatcher {
 -  width: 300,   // canvas default
 -  height: 150,  // canvas default
 -};
-
 ...
-
 function resizeRendererToDisplaySize(renderer) {
   const canvas = renderer.domElement;
 -  const width = state.width;
@@ -971,16 +902,13 @@ function resizeRendererToDisplaySize(renderer) {
   }
   return needResize;
 }
-
 function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
 -    camera.aspect = state.width / state.height;
 +    camera.aspect = inputElement.clientWidth / inputElement.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   ...
 </pre>
 <p>他にもいくつかのハックがあります。
@@ -1016,22 +944,15 @@ Worker内の <code class="notranslate" translate="no">ElementProxyReceiver</code
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/offscreencanvas-w-orbitcontrols.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/offscreencanvas-w-orbitcontrols.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これはおそらくこのサイトで最も複雑な例です。
 各サンプルには3つのファイルが含まれているので少しわかりにくいです。
 HTMLファイル、Workerファイル、共有のthree.jsコードなどです。</p>
 <p>理解する事が難し過ぎず、少しでも参考になれば幸いです。
 three.js、OffscreenCanvas、Web Workerを使った動作の便利な例を紹介しました。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

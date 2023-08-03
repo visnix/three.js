@@ -8,7 +8,6 @@ import {
 } from 'three';
 import { Pass, FullScreenQuad } from './Pass.js';
 import { CopyShader } from '../shaders/CopyShader.js';
-
 /**
 *
 * Supersample Anti-Aliasing Render Pass
@@ -18,27 +17,19 @@ import { CopyShader } from '../shaders/CopyShader.js';
 * References: https://en.wikipedia.org/wiki/Supersampling
 *
 */
-
 class SSAARenderPass extends Pass {
-
 	constructor( scene, camera, clearColor, clearAlpha ) {
-
 		super();
-
 		this.scene = scene;
 		this.camera = camera;
-
 		this.sampleLevel = 4; // specified as n, where the number of samples is 2^n, so sampleLevel = 4, is 2^4 samples, 16.
 		this.unbiased = true;
-
 		// as we need to clear the buffer in this pass, clearColor must be set to something, defaults to black.
 		this.clearColor = ( clearColor !== undefined ) ? clearColor : 0x000000;
 		this.clearAlpha = ( clearAlpha !== undefined ) ? clearAlpha : 0;
 		this._oldClearColor = new Color();
-
 		const copyShader = CopyShader;
 		this.copyUniforms = UniformsUtils.clone( copyShader.uniforms );
-
 		this.copyMaterial = new ShaderMaterial(	{
 			uniforms: this.copyUniforms,
 			vertexShader: copyShader.vertexShader,
@@ -49,145 +40,85 @@ class SSAARenderPass extends Pass {
 			premultipliedAlpha: true,
 			blending: AdditiveBlending
 		} );
-
 		this.fsQuad = new FullScreenQuad( this.copyMaterial );
-
 	}
-
 	dispose() {
-
 		if ( this.sampleRenderTarget ) {
-
 			this.sampleRenderTarget.dispose();
 			this.sampleRenderTarget = null;
-
 		}
-
 		this.copyMaterial.dispose();
-
 		this.fsQuad.dispose();
-
 	}
-
 	setSize( width, height ) {
-
 		if ( this.sampleRenderTarget )	this.sampleRenderTarget.setSize( width, height );
-
 	}
-
 	render( renderer, writeBuffer, readBuffer ) {
-
 		if ( ! this.sampleRenderTarget ) {
-
 			this.sampleRenderTarget = new WebGLRenderTarget( readBuffer.width, readBuffer.height, { type: HalfFloatType } );
 			this.sampleRenderTarget.texture.name = 'SSAARenderPass.sample';
-
 		}
-
 		const jitterOffsets = _JitterVectors[ Math.max( 0, Math.min( this.sampleLevel, 5 ) ) ];
-
 		const autoClear = renderer.autoClear;
 		renderer.autoClear = false;
-
 		renderer.getClearColor( this._oldClearColor );
 		const oldClearAlpha = renderer.getClearAlpha();
-
 		const baseSampleWeight = 1.0 / jitterOffsets.length;
 		const roundingRange = 1 / 32;
 		this.copyUniforms[ 'tDiffuse' ].value = this.sampleRenderTarget.texture;
-
 		const viewOffset = {
-
 			fullWidth: readBuffer.width,
 			fullHeight: readBuffer.height,
 			offsetX: 0,
 			offsetY: 0,
 			width: readBuffer.width,
 			height: readBuffer.height
-
 		};
-
 		const originalViewOffset = Object.assign( {}, this.camera.view );
-
 		if ( originalViewOffset.enabled ) Object.assign( viewOffset, originalViewOffset );
-
 		// render the scene multiple times, each slightly jitter offset from the last and accumulate the results.
 		for ( let i = 0; i < jitterOffsets.length; i ++ ) {
-
 			const jitterOffset = jitterOffsets[ i ];
-
 			if ( this.camera.setViewOffset ) {
-
 				this.camera.setViewOffset(
-
 					viewOffset.fullWidth, viewOffset.fullHeight,
-
 					viewOffset.offsetX + jitterOffset[ 0 ] * 0.0625, viewOffset.offsetY + jitterOffset[ 1 ] * 0.0625, // 0.0625 = 1 / 16
-
 					viewOffset.width, viewOffset.height
-
 				);
-
 			}
-
 			let sampleWeight = baseSampleWeight;
-
 			if ( this.unbiased ) {
-
 				// the theory is that equal weights for each sample lead to an accumulation of rounding errors.
 				// The following equation varies the sampleWeight per sample so that it is uniformly distributed
 				// across a range of values whose rounding errors cancel each other out.
-
 				const uniformCenteredDistribution = ( - 0.5 + ( i + 0.5 ) / jitterOffsets.length );
 				sampleWeight += roundingRange * uniformCenteredDistribution;
-
 			}
-
 			this.copyUniforms[ 'opacity' ].value = sampleWeight;
 			renderer.setClearColor( this.clearColor, this.clearAlpha );
 			renderer.setRenderTarget( this.sampleRenderTarget );
 			renderer.clear();
 			renderer.render( this.scene, this.camera );
-
 			renderer.setRenderTarget( this.renderToScreen ? null : writeBuffer );
-
 			if ( i === 0 ) {
-
 				renderer.setClearColor( 0x000000, 0.0 );
 				renderer.clear();
-
 			}
-
 			this.fsQuad.render( renderer );
-
 		}
-
 		if ( this.camera.setViewOffset && originalViewOffset.enabled ) {
-
 			this.camera.setViewOffset(
-
 				originalViewOffset.fullWidth, originalViewOffset.fullHeight,
-
 				originalViewOffset.offsetX, originalViewOffset.offsetY,
-
 				originalViewOffset.width, originalViewOffset.height
-
 			);
-
 		} else if ( this.camera.clearViewOffset ) {
-
 			this.camera.clearViewOffset();
-
 		}
-
 		renderer.autoClear = autoClear;
 		renderer.setClearColor( this._oldClearColor, oldClearAlpha );
-
 	}
-
 }
-
-
 // These jitter vectors are specified in integers because it is easier.
 // I am assuming a [-8,8) integer grid, but it needs to be mapped onto [-0.5,0.5)
 // before being used, thus these integers need to be scaled by 1/16.
@@ -224,5 +155,4 @@ const _JitterVectors = [
 		[ 2, 5 ], [ 7, 5 ], [ 5, 6 ], [ 3, 7 ]
 	]
 ];
-
 export { SSAARenderPass };

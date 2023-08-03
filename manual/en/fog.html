@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -76,7 +74,6 @@ past that distance.</p>
     <div class="code">THREE.FogExp2</div>
   </div>
 </div>
-
 <p>It's important to note that the fog is applied to <em>things that are rendered</em>.
 It is part of the calculation of each pixel of the color of the object.
 What that means is if you want your scene to fade to a certain color you
@@ -96,12 +93,10 @@ property. To pick a background color you attach a <a href="/docs/#api/en/math/Co
     <div class="code">fog blue, background blue</div>
   </div>
 </div>
-
 <p>Here is one of our previous examples with fog added. The only addition
 is right after setting up the scene we add the fog and set the scene's
 background color</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
-
 +{
 +  const near = 1;
 +  const far = 2;
@@ -118,7 +113,6 @@ will fade out right around their center.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Let's add an interface so we can adjust the fog. Again we'll use
 <a href="https://github.com/georgealways/lil-gui">lil-gui</a>. lil-gui takes
@@ -220,7 +214,6 @@ class FogGUIHelper {
   const color = 'lightblue';
   scene.fog = new THREE.Fog(color, near, far);
   scene.background = new THREE.Color(color);
-
 *  const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
   gui.add(fogGUIHelper, 'near', near, far).listen();
   gui.add(fogGUIHelper, 'far', near, far).listen();
@@ -231,7 +224,6 @@ class FogGUIHelper {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog-gui.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>You can see setting <code class="notranslate" translate="no">near</code> to like 1.9 and <code class="notranslate" translate="no">far</code> to 2.0 gives
 a very sharp transition between un-fogged and completely fogged.
@@ -259,7 +251,6 @@ like it's in the fog.</p>
     <div class="code">fog: true, all</div>
   </div>
 </div>
-
 <p>Notice the walls and ceiling at the far end of the room are getting fog applied.
 By turning fog off on the materials for the house we can fix that issue.</p>
 <div class="spread">
@@ -268,18 +259,11 @@ By turning fog off on the materials for the house we can fix that issue.</p>
     <div class="code">fog: true, only outside materials</div>
   </div>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-fog.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

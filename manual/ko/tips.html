@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -46,7 +44,6 @@ elem.addEventListener('click', () =&gt; {
     saveBlob(blob, `screencapture-${ canvas.width }x${ canvas.height }.png`);
   });
 });
-
 const saveBlob = (function() {
   const a = document.createElement('a');
   document.body.appendChild(a);
@@ -64,11 +61,9 @@ const saveBlob = (function() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-screenshot-bad.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-screenshot-bad.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>하지만 막상 스크린샷을 찍어보니 아래와 같은 결과가 나옵니다.</p>
 <div class="threejs_center"><img src="../resources/images/screencapture-413x313.png"></div>
-
 <p>그냥 텅 빈 이미지네요.</p>
 <p>물론 브라우저나/OS에 따라 잘 나오는 경우도 있을 수 있지만 대게의 경우 텅 빈 이미지가 나올 겁니다.</p>
 <p>이건 성능 관련 문제입니다. 기본적으로 브라우저는 화면을 렌더링한 후 WebGL 캔버스의 드로잉 버퍼를 바로 비웁니다.</p>
@@ -77,7 +72,6 @@ const saveBlob = (function() {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const state = {
 +  time: 0,
 +};
-
 -function render(time) {
 -  time *= 0.001;
 +function render() {
@@ -86,7 +80,6 @@ const saveBlob = (function() {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
 -    const rot = time * speed;
@@ -94,12 +87,9 @@ const saveBlob = (function() {
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 +function animate(time) {
 +  state.time = time * 0.001;
 +
@@ -123,7 +113,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-screenshot-good.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-screenshot-good.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>다른 방법에 대해서는 다음 글을 보기 바랍니다.</p>
 <hr>
@@ -143,7 +132,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-preservedrawingbuffer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-preservedrawingbuffer.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>만약 진짜 드로잉 프로그램을 만들 계획이라면 이 방법은 쓰지 않는 게 좋습니다. 해상도가 변경될 때마다 브라우저가 캔버스를 초기화할 테니까요. 현재 예제에서는 해상도를 캔버스 크기에 맞춰 변경합니다. 그리고 캔버스 크기는 화면 크기에 맞춰 조정되죠. 파일을 다운받거나, 탭을 바꾸거나, 상태표시줄이 추가되는 등 화면 크기가 바뀌는 경우는 다양합니다. 모바일 환경이라면 화면을 회전시키는 경우도 포함되겠죠.</p>
 <p>드로잉 프로그램을 만들려면 <a href="rendertargets.html">렌더 타겟을 이용해 텍스처로 화면을 렌더링</a>하는 게 좋을 겁니다.</p>
@@ -172,7 +160,6 @@ elem.addEventListener('click', () =&gt; {
 <p>그리고 모든 캔버스에 이벤트 리스너를 추가합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">document.querySelectorAll('canvas').forEach((canvas) =&gt; {
   const ctx = canvas.getContext('2d');
-
   function draw(str) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'center';
@@ -180,15 +167,12 @@ elem.addEventListener('click', () =&gt; {
     ctx.fillText(str, canvas.width / 2, canvas.height / 2);
   }
   draw(canvas.id);
-
   canvas.addEventListener('focus', () =&gt; {
     draw('has focus press a key');
   });
-
   canvas.addEventListener('blur', () =&gt; {
     draw('lost focus');
   });
-
   canvas.addEventListener('keydown', (e) =&gt; {
     draw(`keyCode: ${e.keyCode}`);
   });
@@ -199,7 +183,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-tabindex.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-tabindex.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <hr>
 <p><a id="transparent-canvas" data-toc="캔버스를 투명하게 만들기"></a></p>
@@ -231,7 +214,6 @@ const renderer = new THREE.WebGLRenderer({
 +    color,
 +    opacity: 0.5,
 +  });
-
 ...
 </pre>
 <p>여기에 HTML로 텍스트를 추가합니다.</p>
@@ -275,7 +257,6 @@ const renderer = new THREE.WebGLRenderer({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-transparent-canvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-transparent-canvas.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <hr>
 <p><a id="html-background" data-toc="Three.js를 HTML 요소의 배경으로 사용하기"></a></p>
@@ -320,17 +301,10 @@ const renderer = new THREE.WebGLRenderer({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-html-background.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-html-background.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

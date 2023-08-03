@@ -5,19 +5,15 @@
 // Sean McCullough banksean@gmail.com
 //
 // Added 4D noise
-
 /**
  * You can pass in a random number generator object if you like.
  * It is assumed to have a random() method.
  */
 class SimplexNoise {
-
 	constructor( r = Math ) {
-
 		this.grad3 = [[ 1, 1, 0 ], [ - 1, 1, 0 ], [ 1, - 1, 0 ], [ - 1, - 1, 0 ],
 			[ 1, 0, 1 ], [ - 1, 0, 1 ], [ 1, 0, - 1 ], [ - 1, 0, - 1 ],
 			[ 0, 1, 1 ], [ 0, - 1, 1 ], [ 0, 1, - 1 ], [ 0, - 1, - 1 ]];
-
 		this.grad4 = [[ 0, 1, 1, 1 ], [ 0, 1, 1, - 1 ], [ 0, 1, - 1, 1 ], [ 0, 1, - 1, - 1 ],
 			[ 0, - 1, 1, 1 ], [ 0, - 1, 1, - 1 ], [ 0, - 1, - 1, 1 ], [ 0, - 1, - 1, - 1 ],
 			[ 1, 0, 1, 1 ], [ 1, 0, 1, - 1 ], [ 1, 0, - 1, 1 ], [ 1, 0, - 1, - 1 ],
@@ -26,24 +22,15 @@ class SimplexNoise {
 			[ - 1, 1, 0, 1 ], [ - 1, 1, 0, - 1 ], [ - 1, - 1, 0, 1 ], [ - 1, - 1, 0, - 1 ],
 			[ 1, 1, 1, 0 ], [ 1, 1, - 1, 0 ], [ 1, - 1, 1, 0 ], [ 1, - 1, - 1, 0 ],
 			[ - 1, 1, 1, 0 ], [ - 1, 1, - 1, 0 ], [ - 1, - 1, 1, 0 ], [ - 1, - 1, - 1, 0 ]];
-
 		this.p = [];
-
 		for ( let i = 0; i < 256; i ++ ) {
-
 			this.p[ i ] = Math.floor( r.random() * 256 );
-
 		}
-
 		// To remove the need for index wrapping, double the permutation table length
 		this.perm = [];
-
 		for ( let i = 0; i < 512; i ++ ) {
-
 			this.perm[ i ] = this.p[ i & 255 ];
-
 		}
-
 		// A lookup table to traverse the simplex around a given point in 4D.
 		// Details can be found where this table is used, in the 4D noise method.
 		this.simplex = [
@@ -55,29 +42,17 @@ class SimplexNoise {
 			[ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ],
 			[ 2, 0, 1, 3 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 3, 0, 1, 2 ], [ 3, 0, 2, 1 ], [ 0, 0, 0, 0 ], [ 3, 1, 2, 0 ],
 			[ 2, 1, 0, 3 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 3, 1, 0, 2 ], [ 0, 0, 0, 0 ], [ 3, 2, 0, 1 ], [ 3, 2, 1, 0 ]];
-
 	}
-
 	dot( g, x, y ) {
-
 		return g[ 0 ] * x + g[ 1 ] * y;
-
 	}
-
 	dot3( g, x, y, z ) {
-
 		return g[ 0 ] * x + g[ 1 ] * y + g[ 2 ] * z;
-
 	}
-
 	dot4( g, x, y, z, w ) {
-
 		return g[ 0 ] * x + g[ 1 ] * y + g[ 2 ] * z + g[ 3 ] * w;
-
 	}
-
 	noise( xin, yin ) {
-
 		let n0; // Noise contributions from the three corners
 		let n1;
 		let n2;
@@ -92,24 +67,16 @@ class SimplexNoise {
 		const Y0 = j - t;
 		const x0 = xin - X0; // The x,y distances from the cell origin
 		const y0 = yin - Y0;
-
 		// For the 2D case, the simplex shape is an equilateral triangle.
 		// Determine which simplex we are in.
 		let i1; // Offsets for second (middle) corner of simplex in (i,j) coords
-
 		let j1;
 		if ( x0 > y0 ) {
-
 			i1 = 1; j1 = 0;
-
 			// lower triangle, XY order: (0,0)->(1,0)->(1,1)
-
 		}	else {
-
 			i1 = 0; j1 = 1;
-
 		} // upper triangle, YX order: (0,0)->(0,1)->(1,1)
-
 		// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
 		// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
 		// c = (3-sqrt(3))/6
@@ -127,39 +94,27 @@ class SimplexNoise {
 		let t0 = 0.5 - x0 * x0 - y0 * y0;
 		if ( t0 < 0 ) n0 = 0.0;
 		else {
-
 			t0 *= t0;
 			n0 = t0 * t0 * this.dot( this.grad3[ gi0 ], x0, y0 ); // (x,y) of grad3 used for 2D gradient
-
 		}
-
 		let t1 = 0.5 - x1 * x1 - y1 * y1;
 		if ( t1 < 0 ) n1 = 0.0;
 		else {
-
 			t1 *= t1;
 			n1 = t1 * t1 * this.dot( this.grad3[ gi1 ], x1, y1 );
-
 		}
-
 		let t2 = 0.5 - x2 * x2 - y2 * y2;
 		if ( t2 < 0 ) n2 = 0.0;
 		else {
-
 			t2 *= t2;
 			n2 = t2 * t2 * this.dot( this.grad3[ gi2 ], x2, y2 );
-
 		}
-
 		// Add contributions from each corner to get the final noise value.
 		// The result is scaled to return values in the interval [-1,1].
 		return 70.0 * ( n0 + n1 + n2 );
-
 	}
-
 	// 3D simplex noise
 	noise3d( xin, yin, zin ) {
-
 		let n0; // Noise contributions from the four corners
 		let n1;
 		let n2;
@@ -178,58 +133,35 @@ class SimplexNoise {
 		const x0 = xin - X0; // The x,y,z distances from the cell origin
 		const y0 = yin - Y0;
 		const z0 = zin - Z0;
-
 		// For the 3D case, the simplex shape is a slightly irregular tetrahedron.
 		// Determine which simplex we are in.
 		let i1; // Offsets for second corner of simplex in (i,j,k) coords
-
 		let j1;
 		let k1;
 		let i2; // Offsets for third corner of simplex in (i,j,k) coords
 		let j2;
 		let k2;
 		if ( x0 >= y0 ) {
-
 			if ( y0 >= z0 ) {
-
 				i1 = 1; j1 = 0; k1 = 0; i2 = 1; j2 = 1; k2 = 0;
-
 				// X Y Z order
-
 			} else if ( x0 >= z0 ) {
-
 				i1 = 1; j1 = 0; k1 = 0; i2 = 1; j2 = 0; k2 = 1;
-
 				// X Z Y order
-
 			} else {
-
 				i1 = 0; j1 = 0; k1 = 1; i2 = 1; j2 = 0; k2 = 1;
-
 			} // Z X Y order
-
 		} else { // x0<y0
-
 			if ( y0 < z0 ) {
-
 				i1 = 0; j1 = 0; k1 = 1; i2 = 0; j2 = 1; k2 = 1;
-
 				// Z Y X order
-
 			} else if ( x0 < z0 ) {
-
 				i1 = 0; j1 = 1; k1 = 0; i2 = 0; j2 = 1; k2 = 1;
-
 				// Y Z X order
-
 			} else {
-
 				i1 = 0; j1 = 1; k1 = 0; i2 = 1; j2 = 1; k2 = 0;
-
 			} // Y X Z order
-
 		}
-
 		// A step of (1,0,0) in (i,j,k) means a step of (1-c,-c,-c) in (x,y,z),
 		// a step of (0,1,0) in (i,j,k) means a step of (-c,1-c,-c) in (x,y,z), and
 		// a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
@@ -255,53 +187,37 @@ class SimplexNoise {
 		let t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
 		if ( t0 < 0 ) n0 = 0.0;
 		else {
-
 			t0 *= t0;
 			n0 = t0 * t0 * this.dot3( this.grad3[ gi0 ], x0, y0, z0 );
-
 		}
-
 		let t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
 		if ( t1 < 0 ) n1 = 0.0;
 		else {
-
 			t1 *= t1;
 			n1 = t1 * t1 * this.dot3( this.grad3[ gi1 ], x1, y1, z1 );
-
 		}
-
 		let t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
 		if ( t2 < 0 ) n2 = 0.0;
 		else {
-
 			t2 *= t2;
 			n2 = t2 * t2 * this.dot3( this.grad3[ gi2 ], x2, y2, z2 );
-
 		}
-
 		let t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
 		if ( t3 < 0 ) n3 = 0.0;
 		else {
-
 			t3 *= t3;
 			n3 = t3 * t3 * this.dot3( this.grad3[ gi3 ], x3, y3, z3 );
-
 		}
-
 		// Add contributions from each corner to get the final noise value.
 		// The result is scaled to stay just inside [-1,1]
 		return 32.0 * ( n0 + n1 + n2 + n3 );
-
 	}
-
 	// 4D simplex noise
 	noise4d( x, y, z, w ) {
-
 		// For faster and easier lookups
 		const grad4 = this.grad4;
 		const simplex = this.simplex;
 		const perm = this.perm;
-
 		// The skewing and unskewing factors are hairy again for the 4D case
 		const F4 = ( Math.sqrt( 5.0 ) - 1.0 ) / 4.0;
 		const G4 = ( 5.0 - Math.sqrt( 5.0 ) ) / 20.0;
@@ -325,7 +241,6 @@ class SimplexNoise {
 		const y0 = y - Y0;
 		const z0 = z - Z0;
 		const w0 = w - W0;
-
 		// For the 4D case, the simplex is a 4D shape I won't even try to describe.
 		// To find out which of the 24 possible simplices we're in, we need to
 		// determine the magnitude ordering of x0, y0, z0 and w0.
@@ -341,7 +256,6 @@ class SimplexNoise {
 		const c5 = ( y0 > w0 ) ? 2 : 0;
 		const c6 = ( z0 > w0 ) ? 1 : 0;
 		const c = c1 + c2 + c3 + c4 + c5 + c6;
-
 		// simplex[c] is a 4-vector with the numbers 0, 1, 2 and 3 in some order.
 		// Many values of c will never occur, since e.g. x>y>z>w makes x<z, y<w and x<w
 		// impossible. Only the 24 indices which have non-zero entries make any sense.
@@ -392,53 +306,35 @@ class SimplexNoise {
 		let t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
 		if ( t0 < 0 ) n0 = 0.0;
 		else {
-
 			t0 *= t0;
 			n0 = t0 * t0 * this.dot4( grad4[ gi0 ], x0, y0, z0, w0 );
-
 		}
-
 		let t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
 		if ( t1 < 0 ) n1 = 0.0;
 		else {
-
 			t1 *= t1;
 			n1 = t1 * t1 * this.dot4( grad4[ gi1 ], x1, y1, z1, w1 );
-
 		}
-
 		let t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
 		if ( t2 < 0 ) n2 = 0.0;
 		else {
-
 			t2 *= t2;
 			n2 = t2 * t2 * this.dot4( grad4[ gi2 ], x2, y2, z2, w2 );
-
 		}
-
 		let t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
 		if ( t3 < 0 ) n3 = 0.0;
 		else {
-
 			t3 *= t3;
 			n3 = t3 * t3 * this.dot4( grad4[ gi3 ], x3, y3, z3, w3 );
-
 		}
-
 		let t4 = 0.6 - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
 		if ( t4 < 0 ) n4 = 0.0;
 		else {
-
 			t4 *= t4;
 			n4 = t4 * t4 * this.dot4( grad4[ gi4 ], x4, y4, z4, w4 );
-
 		}
-
 		// Sum up and scale the result to cover the range [-1,1]
 		return 27.0 * ( n0 + n1 + n2 + n3 + n4 );
-
 	}
-
 }
-
 export { SimplexNoise };

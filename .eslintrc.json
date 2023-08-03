@@ -43,6 +43,8 @@
     "jsonlint": "readonly"
   },
   "rules": {
+    "padded-blocks":"off",
+    "padding-line-between-statements":"off",
     "no-throw-literal": [
       "error"
     ],

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -61,7 +59,6 @@
 땅 위에 그림자가 있을 만한 위치에 가져다 놓는 것이죠.</p>
 <p>예를 들어 아래 텍스처를 사용해 가짜 그림자를 만들어보겠습니다.</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p><a href="cameras.html">이전 글</a>에서 작성했던 코드를 일부 활용하겠습니다.</p>
 <p>먼저 배경을 흰색으로 칠합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -70,10 +67,8 @@
 <p>같은 체크판 무늬 땅을 사용하되, 땅이 조명의 영향을 받을 필요는 없으니
 <a href="/docs/#api/ko/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>을 사용하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -81,7 +76,6 @@
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -127,7 +121,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   // 구체와 그림자가 같이 움직이도록 컨테이너(base)를 만듭니다
   const base = new THREE.Object3D();
   scene.add(base);
-
   /**
    * 그림자를 컨테이너에 추가합니다
    * 주의: 여기서는 각 구체의 투명도를 따로 설정할 수 있도록
@@ -144,7 +137,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // 구체를 컨테이너에 추가
   const u = i / numSpheres;   // 반복문이 진행됨에 따라 0에서 1사이 값을 지정
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -152,7 +144,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // y축 좌표를 포함해 나머지 요소를 기록
   sphereShadowBases.push({ base, sphereMesh, shadowMesh, y: sphereMesh.position.y });
 }
@@ -185,15 +176,11 @@ for (let i = 0; i &lt; numSpheres; ++i) {
 높을수록 그림자가 옅어지도록 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // 초 단위로 변환
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const { base, sphereMesh, shadowMesh, y } = sphereShadowBase;
-
     // u는 구체의 반복문을 실행하면서 인덱스에 따라 0 이상, 1 이하로 지정됩니다
     const u = ndx / sphereShadowBases.length;
-
     /**
      * 컨테이너의 위치를 계산합니다. 구체와 그림자가
      * 컨테이너에 종속적이므로 위치가 같이 변합니다
@@ -202,7 +189,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff 값은 0 이상 1 이하입니다
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // 구체를 위아래로 튕김
@@ -210,7 +196,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
     // 구체가 위로 올라갈수록 그림자가 옅어짐
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>15가지 색상의 탱탱볼을 완성했습니다.</p>
@@ -218,7 +203,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>물론 다른 모양의 그림자를 사용해야 하는 경우도 있습니다. 그림자의 경계를 분명하게
 하고 싶을 수도 있죠. 하지만 모든 물체의 그림자를 둥글게 표현하는 것이 좋은 경우도
@@ -246,9 +230,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -258,7 +240,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이런, 그림자 일부가 잘려나간 것이 보이나요?</p>
 <p>이는 빛의 시점에서 장면을 렌더링해 그림자 맵을 만들기 때문입니다. 위 예제를 예로 들면
@@ -276,7 +257,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>target의 x 값을 조정해보면 그림자용 카메라 범위 안에 있는 곳에만 그림자가 보이는
 것을 확인할 수 있을 겁니다.</p>
@@ -344,7 +324,6 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">width</code>와 <code class="notranslate" translate="no">height</code> 속성을 30 정도로 조정하면 그림자가 있어야 할만한 공간은
 대부분 그림자용 카메라 안에 속할 겁니다.</p>
@@ -352,7 +331,6 @@ updateCamera();
 설정해 모든 요소를 다 포함하도록 하지 않는 걸까요? <code class="notranslate" translate="no">width</code>와 <code class="notranslate" translate="no">height</code>를 100 정도로
 설정해보세요. 아래와 같은 현상이 나타날 겁니다.</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>왜 그림자의 해상도가 낮아졌을까요?</p>
 <p>이는 그림자 관련 설정을 할 때 항상 주의해야하는 부분입니다. 사실 그림자 맵은 그림자가
 포함된 하나의 텍스처입니다. 이 텍스처는 크기가 정해져 있죠. 위 예제에서 카메라의 공간을
@@ -376,7 +354,6 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>마지막으로 <a href="/docs/#api/ko/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>를 살펴보죠. <a href="/docs/#api/ko/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>는 모든 방향으로 빛을 발산하기에
 관련 설정은 <code class="notranslate" translate="no">near</code>와 <code class="notranslate" translate="no">far</code> 정도입니다. 그리고 사실 <a href="/docs/#api/ko/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>의 그림자는 정육면체의
@@ -402,9 +379,7 @@ updateCamera();
 <p>물론 조명도 <a href="/docs/#api/ko/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>로 바꿔야죠.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // 조명이 위치를 확인하기 쉽도록 헬퍼 추가
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -413,20 +388,13 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>GUI의 <code class="notranslate" translate="no">position</code> 속성을 조정해 조명을 움직이면 벽에 그림자가 지는 걸
 확인할 수 있을 겁니다. 다른 그림자와 마찬가지로 <code class="notranslate" translate="no">near</code> 값보다 가까운
 곳은 그림자가 지지 않고, <code class="notranslate" translate="no">far</code> 값보다 먼 곳은 항상 그림자가 지죠.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -14,77 +14,47 @@ import {
 	Vector3
 } from 'three';
 import * as fflate from '../libs/fflate.module.js';
-
 class TiltLoader extends Loader {
-
 	load( url, onLoad, onProgress, onError ) {
-
 		const scope = this;
-
 		const loader = new FileLoader( this.manager );
 		loader.setPath( this.path );
 		loader.setResponseType( 'arraybuffer' );
 		loader.setWithCredentials( this.withCredentials );
-
 		loader.load( url, function ( buffer ) {
-
 			try {
-
 				onLoad( scope.parse( buffer ) );
-
 			} catch ( e ) {
-
 				if ( onError ) {
-
 					onError( e );
-
 				} else {
-
 					console.error( e );
-
 				}
-
 				scope.manager.itemError( url );
-
 			}
-
 		}, onProgress, onError );
-
 	}
-
 	parse( buffer ) {
-
 		const group = new Group();
 		// https://docs.google.com/document/d/11ZsHozYn9FnWG7y3s3WAyKIACfbfwb4PbaS8cZ_xjvo/edit#
-
 		const zip = fflate.unzipSync( new Uint8Array( buffer.slice( 16 ) ) );
-
 		/*
 		const thumbnail = zip[ 'thumbnail.png' ].buffer;
 		const img = document.createElement( 'img' );
 		img.src = URL.createObjectURL( new Blob( [ thumbnail ] ) );
 		document.body.appendChild( img );
 		*/
-
 		const metadata = JSON.parse( fflate.strFromU8( zip[ 'metadata.json' ] ) );
-
 		/*
 		const blob = new Blob( [ zip[ 'data.sketch' ].buffer ], { type: 'application/octet-stream' } );
 		window.open( URL.createObjectURL( blob ) );
 		*/
-
 		const data = new DataView( zip[ 'data.sketch' ].buffer );
-
 		const num_strokes = data.getInt32( 16, true );
-
 		const brushes = {};
-
 		let offset = 20;
-
 		for ( let i = 0; i < num_strokes; i ++ ) {
-
 			const brush_index = data.getInt32( offset, true );
-
 			const brush_color = [
 				data.getFloat32( offset + 4, true ),
 				data.getFloat32( offset + 8, true ),
@@ -94,176 +64,115 @@ class TiltLoader extends Loader {
 			const brush_size = data.getFloat32( offset + 20, true );
 			const stroke_mask = data.getUint32( offset + 24, true );
 			const controlpoint_mask = data.getUint32( offset + 28, true );
-
 			let offset_stroke_mask = 0;
 			let offset_controlpoint_mask = 0;
-
 			for ( let j = 0; j < 4; j ++ ) {
-
 				// TOFIX: I don't understand these masks yet
-
 				const byte = 1 << j;
 				if ( ( stroke_mask & byte ) > 0 ) offset_stroke_mask += 4;
 				if ( ( controlpoint_mask & byte ) > 0 ) offset_controlpoint_mask += 4;
-
 			}
-
 			// console.log( { brush_index, brush_color, brush_size, stroke_mask, controlpoint_mask } );
 			// console.log( offset_stroke_mask, offset_controlpoint_mask );
-
 			offset = offset + 28 + offset_stroke_mask + 4; // TOFIX: This is wrong
-
 			const num_control_points = data.getInt32( offset, true );
-
 			// console.log( { num_control_points } );
-
 			const positions = new Float32Array( num_control_points * 3 );
 			const quaternions = new Float32Array( num_control_points * 4 );
-
 			offset = offset + 4;
-
 			for ( let j = 0, k = 0; j < positions.length; j += 3, k += 4 ) {
-
 				positions[ j + 0 ] = data.getFloat32( offset + 0, true );
 				positions[ j + 1 ] = data.getFloat32( offset + 4, true );
 				positions[ j + 2 ] = data.getFloat32( offset + 8, true );
-
 				quaternions[ k + 0 ] = data.getFloat32( offset + 12, true );
 				quaternions[ k + 1 ] = data.getFloat32( offset + 16, true );
 				quaternions[ k + 2 ] = data.getFloat32( offset + 20, true );
 				quaternions[ k + 3 ] = data.getFloat32( offset + 24, true );
-
 				offset = offset + 28 + offset_controlpoint_mask; // TOFIX: This is wrong
-
 			}
-
 			if ( brush_index in brushes === false ) {
-
 				brushes[ brush_index ] = [];
-
 			}
-
 			brushes[ brush_index ].push( [ positions, quaternions, brush_size, brush_color ] );
-
 		}
-
 		for ( const brush_index in brushes ) {
-
 			const geometry = new StrokeGeometry( brushes[ brush_index ] );
 			const material = getMaterial( metadata.BrushIndex[ brush_index ] );
-
 			group.add( new Mesh( geometry, material ) );
-
 		}
-
 		return group;
-
 	}
-
 }
-
 class StrokeGeometry extends BufferGeometry {
-
 	constructor( strokes ) {
-
 		super();
-
 		const vertices = [];
 		const colors = [];
 		const uvs = [];
-
 		const position = new Vector3();
 		const prevPosition = new Vector3();
-
 		const quaternion = new Quaternion();
 		const prevQuaternion = new Quaternion();
-
 		const vector1 = new Vector3();
 		const vector2 = new Vector3();
 		const vector3 = new Vector3();
 		const vector4 = new Vector3();
-
 		const color = new Color();
-
 		// size = size / 2;
-
 		for ( const k in strokes ) {
-
 			const stroke = strokes[ k ];
 			const positions = stroke[ 0 ];
 			const quaternions = stroke[ 1 ];
 			const size = stroke[ 2 ];
 			const rgba = stroke[ 3 ];
 			const alpha = stroke[ 3 ][ 3 ];
-
 			color.fromArray( rgba ).convertSRGBToLinear();
-
 			prevPosition.fromArray( positions, 0 );
 			prevQuaternion.fromArray( quaternions, 0 );
-
 			for ( let i = 3, j = 4, l = positions.length; i < l; i += 3, j += 4 ) {
-
 				position.fromArray( positions, i );
 				quaternion.fromArray( quaternions, j );
-
 				vector1.set( - size, 0, 0 );
 				vector1.applyQuaternion( quaternion );
 				vector1.add( position );
-
 				vector2.set( size, 0, 0 );
 				vector2.applyQuaternion( quaternion );
 				vector2.add( position );
-
 				vector3.set( size, 0, 0 );
 				vector3.applyQuaternion( prevQuaternion );
 				vector3.add( prevPosition );
-
 				vector4.set( - size, 0, 0 );
 				vector4.applyQuaternion( prevQuaternion );
 				vector4.add( prevPosition );
-
 				vertices.push( vector1.x, vector1.y, - vector1.z );
 				vertices.push( vector2.x, vector2.y, - vector2.z );
 				vertices.push( vector4.x, vector4.y, - vector4.z );
-
 				vertices.push( vector2.x, vector2.y, - vector2.z );
 				vertices.push( vector3.x, vector3.y, - vector3.z );
 				vertices.push( vector4.x, vector4.y, - vector4.z );
-
 				prevPosition.copy( position );
 				prevQuaternion.copy( quaternion );
-
 				colors.push( ...color, alpha );
 				colors.push( ...color, alpha );
 				colors.push( ...color, alpha );
-
 				colors.push( ...color, alpha );
 				colors.push( ...color, alpha );
 				colors.push( ...color, alpha );
-
 				const p1 = i / l;
 				const p2 = ( i - 3 ) / l;
-
 				uvs.push( p1, 0 );
 				uvs.push( p1, 1 );
 				uvs.push( p2, 0 );
-
 				uvs.push( p1, 1 );
 				uvs.push( p2, 1 );
 				uvs.push( p2, 0 );
-
 			}
-
 		}
-
 		this.setAttribute( 'position', new BufferAttribute( new Float32Array( vertices ), 3 ) );
 		this.setAttribute( 'color', new BufferAttribute( new Float32Array( colors ), 4 ) );
 		this.setAttribute( 'uv', new BufferAttribute( new Float32Array( uvs ), 2 ) );
-
 	}
-
 }
-
 const BRUSH_LIST_ARRAY = {
 	'89d104cd-d012-426b-b5b3-bbaee63ac43c': 'Bubbles',
 	'700f3aa8-9a7c-2384-8b8a-ea028905dd8c': 'CelVinyl',
@@ -333,11 +242,8 @@ const BRUSH_LIST_ARRAY = {
 	'e814fef1-97fd-7194-4a2f-50c2bb918be2': 'WigglyGraphiteSingleSided',
 	'4391385a-cf83-4396-9e33-31e4e4930b27': 'Wire'
 };
-
 const common = {
-
 	'colors': {
-
 		'BloomColor': `
 			vec3 BloomColor(vec3 color, float gain) {
 				// Guarantee that there's at least a little bit of all 3 channels.
@@ -352,7 +258,6 @@ const common = {
 				return color;
 			}
 		`,
-
 		'LinearToSrgb': `
 			vec3 LinearToSrgb(vec3 color) {
 				// Approximation http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
@@ -364,34 +269,27 @@ const common = {
 				return color;
 			}
 		`,
-
 		'hsv': `
 			// uniform sampler2D lookupTex;
 			vec4 lookup(vec4 textureColor) {
 				return textureColor;
 			}
-
 			vec3 lookup(vec3 textureColor) {
 				return textureColor;
 			}
-
 			vec3 hsv2rgb( vec3 hsv ) {
 				vec3 rgb = clamp( abs(mod(hsv.x*6.0+vec3(0.0,4.0,2.0),6.0)-3.0)-1.0, 0.0, 1.0 );
 				return hsv.z * mix( vec3(1.0), rgb, hsv.y);
 			}
-
 			vec3 rgb2hsv( vec3 rgb ) {
 				vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
 				vec4 p = mix(vec4(rgb.bg, K.wz), vec4(rgb.gb, K.xy), step(rgb.b, rgb.g));
 				vec4 q = mix(vec4(p.xyw, rgb.r), vec4(rgb.r, p.yzx), step(p.x, rgb.r));
-
 				float d = q.x - min(q.w, q.y);
 				float e = 1.0e-10;
-
 				return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
 			}
 		`,
-
 		'SrgbToLinear': `
 			vec3 SrgbToLinear(vec3 color) {
 				// Approximation http://chilliant.blogspot.com/2012/08/srgb-approximations-for-hlsl.html
@@ -400,19 +298,12 @@ const common = {
 				return color;
 			}
 		`
-
 	}
-
 };
-
 let shaders = null;
-
 function getShaders() {
-
 	if ( shaders === null ) {
-
 		const loader = new TextureLoader().setPath( './textures/tiltbrush/' );
-
 		shaders = {
 			'Light': {
 				uniforms: {
@@ -424,51 +315,36 @@ function getShaders() {
 				vertexShader: `
 					precision highp float;
 					precision highp int;
-
 					attribute vec2 uv;
 					attribute vec4 color;
 					attribute vec3 position;
-
 					uniform mat4 modelMatrix;
 					uniform mat4 modelViewMatrix;
 					uniform mat4 projectionMatrix;
 					uniform mat4 viewMatrix;
 					uniform mat3 normalMatrix;
 					uniform vec3 cameraPosition;
-
 					varying vec2 vUv;
 					varying vec3 vColor;
-
 					${ common.colors.LinearToSrgb }
 					${ common.colors.hsv }
-
 					void main() {
-
 						vUv = uv;
-
 						vColor = lookup(color.rgb);
-
 						vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-
 						gl_Position = projectionMatrix * mvPosition;
-
 					}
 				`,
 				fragmentShader: `
 					precision highp float;
 					precision highp int;
-
 					uniform float emission_gain;
-
 					uniform sampler2D mainTex;
 					uniform float alphaTest;
-
 					varying vec2 vUv;
 					varying vec3 vColor;
-
 					${ common.colors.BloomColor }
 					${ common.colors.SrgbToLinear }
-
 					void main(){
 						vec4 col = texture2D(mainTex, vUv);
 						vec3 color = vColor;
@@ -492,29 +368,17 @@ function getShaders() {
 				blendSrc: 201,
 				blendSrcAlpha: 201,
 			}
-
 		};
-
 	}
-
 	return shaders;
-
 }
-
 function getMaterial( GUID ) {
-
 	const name = BRUSH_LIST_ARRAY[ GUID ];
-
 	switch ( name ) {
-
 		case 'Light':
 			return new RawShaderMaterial( getShaders().Light );
-
 		default:
 			return new MeshBasicMaterial( { vertexColors: true, side: DoubleSide } );
-
 	}
-
 }
-
 export { TiltLoader };

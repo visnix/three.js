@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -59,7 +57,6 @@ sine waves like this</p>
 0 I created a mesh with a cube.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshPhongMaterial({color: 'green'});
-
 for (let y = 0; y &lt; cellSize; ++y) {
   for (let z = 0; z &lt; cellSize; ++z) {
     for (let x = 0; x &lt; cellSize; ++x) {
@@ -80,7 +77,6 @@ for (let y = 0; y &lt; cellSize; ++y) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/voxel-geometry-separate-cubes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/voxel-geometry-separate-cubes.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>It takes a while to start and if you try to move the camera
 it's likely too slow. Like <a href="optimize-lots-of-objects.html">the article on how to optimize lots of objects</a>
@@ -115,12 +111,10 @@ we can actually never see.</p>
 <div class="spread">
   <div data-diagram="mergedCubes" style="height: 300px;"></div>
 </div>
-
 <p>but we really want this</p>
 <div class="spread">
   <div data-diagram="culledCubes" style="height: 300px;"></div>
 </div>
-
 <p>In the top box there are faces between the voxels. Faces
 that are a waste since they can't be seen. It's not just
 one face between each voxel, there are 2 faces, one for
@@ -190,7 +184,6 @@ happen to be in neighboring cells.</p>
 +    }
 +  }
 }
-
 +VoxelWorld.faces = [
 +  { // left
 +    dir: [ -1,  0,  0, ],
@@ -225,7 +218,6 @@ happen to be in neighboring cells.</p>
     const startX = cellX * cellSize;
     const startY = cellY * cellSize;
     const startZ = cellZ * cellSize;
-
     for (let y = 0; y &lt; cellSize; ++y) {
       const voxelY = startY + y;
       for (let z = 0; z &lt; cellSize; ++z) {
@@ -264,7 +256,6 @@ happen to be in neighboring cells.</p>
     };
   }
 }
-
 VoxelWorld.faces = [
   { // left
     dir: [ -1,  0,  0, ],
@@ -354,7 +345,6 @@ the <code class="notranslate" translate="no">getVoxel</code> function. Let's sta
 +    return cell[voxelOffset];
 +  }
   generateGeometryDataForCell(cellX, cellY, cellZ) {
-
   ...
 }
 </pre>
@@ -404,7 +394,6 @@ so we can set some data.</p>
     return cell[voxelOffset];
   }
   generateGeometryDataForCell(cellX, cellY, cellZ) {
-
   ...
 }
 </pre>
@@ -465,15 +454,12 @@ so we can set some data.</p>
     return cell[voxelOffset];
   }
   generateGeometryDataForCell(cellX, cellY, cellZ) {
-
   ...
 }
 </pre>
 <p>Now let's make some code to fill out the first cell with voxels.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const cellSize = 32;
-
 const world = new VoxelWorld(cellSize);
-
 for (let y = 0; y &lt; cellSize; ++y) {
   for (let z = 0; z &lt; cellSize; ++z) {
     for (let x = 0; x &lt; cellSize; ++x) {
@@ -490,7 +476,6 @@ for (let y = 0; y &lt; cellSize; ++y) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const {positions, normals, indices} = world.generateGeometryDataForCell(0, 0, 0);
 const geometry = new THREE.BufferGeometry();
 const material = new THREE.MeshLambertMaterial({color: 'green'});
-
 const positionNumComponents = 3;
 const normalNumComponents = 3;
 geometry.setAttribute(
@@ -508,7 +493,6 @@ scene.add(mesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/voxel-geometry-culled-faces.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/voxel-geometry-culled-faces.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>That seems to be working! Okay, let's add in textures.</p>
 <p>Searching on the net I found <a href="https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/resource-packs/1245961-16x-1-7-4-wip-flourish">this set</a>
@@ -516,7 +500,6 @@ of <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC-BY-NC-SA</a> 
 by <a href="https://www.minecraftforum.net/members/Joshtimus">Joshtimus</a>.
 I picked a few at random and built this <a href="https://www.google.com/search?q=texture+atlas">texture atlas</a>.</p>
 <div class="threejs_center"><img class="checkerboard" src="../examples/resources/images/minecraft/flourish-cc-by-nc-sa.png" style="width: 512px; image-rendering: pixelated;"></div>
-
 <p>To make things simple they are arranged a voxel type per column
 where the top row is the side of a voxel. The 2nd row is
 the top of voxel, and the 3rd row is the bottom of the voxel.</p>
@@ -625,9 +608,7 @@ of the texture.</p>
 +    this.cellSliceSize = cellSize * cellSize;
 +    this.cell = new Uint8Array(cellSize * cellSize * cellSize);
   }
-
   ...
-
   generateGeometryDataForCell(cellX, cellY, cellZ) {
 -    const {cellSize} = this;
 +    const {cellSize, tileSize, tileTextureWidth, tileTextureHeight} = this;
@@ -638,7 +619,6 @@ of the texture.</p>
     const startX = cellX * cellSize;
     const startY = cellY * cellSize;
     const startZ = cellZ * cellSize;
-
     for (let y = 0; y &lt; cellSize; ++y) {
       const voxelY = startY + y;
       for (let z = 0; z &lt; cellSize; ++z) {
@@ -676,7 +656,6 @@ of the texture.</p>
         }
       }
     }
-
     return {
       positions,
       normals,
@@ -717,7 +696,6 @@ const geometry = new THREE.BufferGeometry();
 +  alphaTest: 0.1,
 +  transparent: true,
 +});
-
 const positionNumComponents = 3;
 const normalNumComponents = 3;
 +const uvNumComponents = 2;
@@ -747,7 +725,6 @@ to use different textures.</p>
     }
   }
 }
-
 +function randInt(min, max) {
 +  return Math.floor(Math.random() * (max - min) + min);
 +}
@@ -757,7 +734,6 @@ to use different textures.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/voxel-geometry-culled-faces-with-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/voxel-geometry-culled-faces-with-textures.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Let's make it support more than one cell.</p>
 <p>To do this lets store cells in an object using cell ids.
@@ -792,7 +768,6 @@ that is in cell 1,0,0 so its id is <code class="notranslate" translate="no">"1,0
 -    return this.cell;
 +    return this.cells[this.computeCellId(x, y, z)];
   }
-
    ...
 }
 </pre>
@@ -896,11 +871,9 @@ deselect the selected tile type by clicking it again.</p>
 radio button.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">let currentVoxel = 0;
 let currentId;
-
 document.querySelectorAll('#ui .tiles input[type=radio][name=voxel]').forEach((elem) =&gt; {
   elem.addEventListener('click', allowUncheck);
 });
-
 function allowUncheck() {
   if (this.id === currentId) {
     this.checked = false;
@@ -926,17 +899,14 @@ hit.</p>
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function placeVoxel(event) {
   const pos = getCanvasRelativePosition(event);
   const x = (pos.x / canvas.width ) *  2 - 1;
   const y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
-
   const start = new THREE.Vector3();
   const end = new THREE.Vector3();
   start.setFromMatrixPosition(camera.matrixWorld);
   end.set(x, y, 1).unproject(camera);
-
   const intersection = world.intersectRay(start, end);
   if (intersection) {
     const voxelId = event.shiftKey ? 0 : currentVoxel;
@@ -952,12 +922,10 @@ function placeVoxel(event) {
     requestRenderIfNotRequested();
   }
 }
-
 const mouse = {
   x: 0,
   y: 0,
 };
-
 function recordStartPosition(event) {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
@@ -1052,7 +1020,6 @@ function updateCellGeometry(x, y, z) {
   const cellId = world.computeCellId(x, y, z);
   let mesh = cellIdToMesh[cellId];
   const geometry = mesh ? mesh.geometry : new THREE.BufferGeometry();
-
   const {positions, normals, uvs, indices} = world.generateGeometryDataForCell(cellX, cellY, cellZ);
   const positionNumComponents = 3;
   geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), positionNumComponents));
@@ -1062,7 +1029,6 @@ function updateCellGeometry(x, y, z) {
   geometry.setAttribute('uv', new THREE.BufferAttribute(new Float32Array(uvs), uvNumComponents));
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
-
   if (!mesh) {
     mesh = new THREE.Mesh(geometry, material);
     mesh.name = cellId;
@@ -1080,7 +1046,6 @@ At the end we update the attributes and indices with the new data.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/voxel-geometry-culled-faces-ui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/voxel-geometry-culled-faces-ui.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Some notes:</p>
 <p><code class="notranslate" translate="no">RayCaster</code> might have worked just fine. I didn't try it.
@@ -1122,16 +1087,9 @@ I hope this has given you some ideas where to start and how
 to generate some what efficient geometry.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-voxel-geometry.js"></script>
-
-
         </div>
       </div>
     </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

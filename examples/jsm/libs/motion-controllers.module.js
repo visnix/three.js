@@ -1,27 +1,23 @@
 /**
  * @webxr-input-profiles/motion-controllers 1.0.0 https://github.com/immersive-web/webxr-input-profiles
  */
-
 const Constants = {
   Handedness: Object.freeze({
     NONE: 'none',
     LEFT: 'left',
     RIGHT: 'right'
   }),
-
   ComponentState: Object.freeze({
     DEFAULT: 'default',
     TOUCHED: 'touched',
     PRESSED: 'pressed'
   }),
-
   ComponentProperty: Object.freeze({
     BUTTON: 'button',
     X_AXIS: 'xAxis',
     Y_AXIS: 'yAxis',
     STATE: 'state'
   }),
-
   ComponentType: Object.freeze({
     TRIGGER: 'trigger',
     SQUEEZE: 'squeeze',
@@ -29,17 +25,13 @@ const Constants = {
     THUMBSTICK: 'thumbstick',
     BUTTON: 'button'
   }),
-
   ButtonTouchThreshold: 0.05,
-
   AxisTouchThreshold: 0.1,
-
   VisualResponseProperty: Object.freeze({
     TRANSFORM: 'transform',
     VISIBILITY: 'visibility'
   })
 };
-
 /**
  * @description Static helper function to fetch a JSON file and turn it into a JS object
  * @param {string} path - Path to JSON file to be fetched
@@ -52,29 +44,23 @@ async function fetchJsonFile(path) {
     return response.json();
   }
 }
-
 async function fetchProfilesList(basePath) {
   if (!basePath) {
     throw new Error('No basePath supplied');
   }
-
   const profileListFileName = 'profilesList.json';
   const profilesList = await fetchJsonFile(`${basePath}/${profileListFileName}`);
   return profilesList;
 }
-
 async function fetchProfile(xrInputSource, basePath, defaultProfile = null, getAssetPath = true) {
   if (!xrInputSource) {
     throw new Error('No xrInputSource supplied');
   }
-
   if (!basePath) {
     throw new Error('No basePath supplied');
   }
-
   // Get the list of profiles
   const supportedProfilesList = await fetchProfilesList(basePath);
-
   // Find the relative path to the first requested profile that is recognized
   let match;
   xrInputSource.profiles.some((profileId) => {
@@ -88,26 +74,21 @@ async function fetchProfile(xrInputSource, basePath, defaultProfile = null, getA
     }
     return !!match;
   });
-
   if (!match) {
     if (!defaultProfile) {
       throw new Error('No matching profile name found');
     }
-
     const supportedProfile = supportedProfilesList[defaultProfile];
     if (!supportedProfile) {
       throw new Error(`No matching profile name found and default profile "${defaultProfile}" missing.`);
     }
-
     match = {
       profileId: defaultProfile,
       profilePath: `${basePath}/${supportedProfile.path}`,
       deprecated: !!supportedProfile.deprecated
     };
   }
-
   const profile = await fetchJsonFile(match.profilePath);
-
   let assetPath;
   if (getAssetPath) {
     let layout;
@@ -121,15 +102,12 @@ async function fetchProfile(xrInputSource, basePath, defaultProfile = null, getA
         `No matching handedness, ${xrInputSource.handedness}, in profile ${match.profileId}`
       );
     }
-
     if (layout.assetPath) {
       assetPath = match.profilePath.replace('profile.json', layout.assetPath);
     }
   }
-
   return { profile, assetPath };
 }
-
 /** @constant {Object} */
 const defaultComponentValues = {
   xAxis: 0,
@@ -137,7 +115,6 @@ const defaultComponentValues = {
   button: 0,
   state: Constants.ComponentState.DEFAULT
 };
-
 /**
  * @description Converts an X, Y coordinate from the range -1 to 1 (as reported by the Gamepad
  * API) to the range 0 to 1 (for interpolation). Also caps the X, Y values to be bounded within
@@ -149,7 +126,6 @@ const defaultComponentValues = {
 function normalizeAxes(x = 0, y = 0) {
   let xAxis = x;
   let yAxis = y;
-
   // Determine if the point is outside the bounds of the circle
   // and, if so, place it on the edge of the circle
   const hypotenuse = Math.sqrt((x * x) + (y * y));
@@ -158,7 +134,6 @@ function normalizeAxes(x = 0, y = 0) {
     xAxis = Math.cos(theta);
     yAxis = Math.sin(theta);
   }
-
   // Scale and move the circle so values are in the interpolation range.  The circle's origin moves
   // from (0, 0) to (0.5, 0.5). The circle's radius scales from 1 to be 0.5.
   const result = {
@@ -167,7 +142,6 @@ function normalizeAxes(x = 0, y = 0) {
   };
   return result;
 }
-
 /**
  * Contains the description of how the 3D model should visually respond to a specific user input.
  * This is accomplished by initializing the object with the name of a node in the 3D model and
@@ -182,17 +156,14 @@ class VisualResponse {
     this.states = visualResponseDescription.states;
     this.valueNodeName = visualResponseDescription.valueNodeName;
     this.valueNodeProperty = visualResponseDescription.valueNodeProperty;
-
     if (this.valueNodeProperty === Constants.VisualResponseProperty.TRANSFORM) {
       this.minNodeName = visualResponseDescription.minNodeName;
       this.maxNodeName = visualResponseDescription.maxNodeName;
     }
-
     // Initializes the response's current value based on default data
     this.value = 0;
     this.updateFromComponent(defaultComponentValues);
   }
-
   /**
    * Computes the visual response's interpolation weight based on component state
    * @param {Object} componentValues - The component from which to update
@@ -227,7 +198,6 @@ class VisualResponse {
     }
   }
 }
-
 class Component {
   /**
    * @param {Object} componentId - Id of the component
@@ -241,22 +211,18 @@ class Component {
      || Object.keys(componentDescription.gamepadIndices).length === 0) {
       throw new Error('Invalid arguments supplied');
     }
-
     this.id = componentId;
     this.type = componentDescription.type;
     this.rootNodeName = componentDescription.rootNodeName;
     this.touchPointNodeName = componentDescription.touchPointNodeName;
-
     // Build all the visual responses for this component
     this.visualResponses = {};
     Object.keys(componentDescription.visualResponses).forEach((responseName) => {
       const visualResponse = new VisualResponse(componentDescription.visualResponses[responseName]);
       this.visualResponses[responseName] = visualResponse;
     });
-
     // Set default values
     this.gamepadIndices = Object.assign({}, componentDescription.gamepadIndices);
-
     this.values = {
       state: Constants.ComponentState.DEFAULT,
       button: (this.gamepadIndices.button !== undefined) ? 0 : undefined,
@@ -264,12 +230,10 @@ class Component {
       yAxis: (this.gamepadIndices.yAxis !== undefined) ? 0 : undefined
     };
   }
-
   get data() {
     const data = { id: this.id, ...this.values };
     return data;
   }
-
   /**
    * @description Poll for updated data based on current gamepad state
    * @param {Object} gamepad - The gamepad object from which the component data should be polled
@@ -277,7 +241,6 @@ class Component {
   updateFromGamepad(gamepad) {
     // Set the state to default before processing other data sources
     this.values.state = Constants.ComponentState.DEFAULT;
-
     // Get and normalize button
     if (this.gamepadIndices.button !== undefined
         && gamepad.buttons.length > this.gamepadIndices.button) {
@@ -285,7 +248,6 @@ class Component {
       this.values.button = gamepadButton.value;
       this.values.button = (this.values.button < 0) ? 0 : this.values.button;
       this.values.button = (this.values.button > 1) ? 1 : this.values.button;
-
       // Set the state based on the button
       if (gamepadButton.pressed || this.values.button === 1) {
         this.values.state = Constants.ComponentState.PRESSED;
@@ -293,42 +255,36 @@ class Component {
         this.values.state = Constants.ComponentState.TOUCHED;
       }
     }
-
     // Get and normalize x axis value
     if (this.gamepadIndices.xAxis !== undefined
         && gamepad.axes.length > this.gamepadIndices.xAxis) {
       this.values.xAxis = gamepad.axes[this.gamepadIndices.xAxis];
       this.values.xAxis = (this.values.xAxis < -1) ? -1 : this.values.xAxis;
       this.values.xAxis = (this.values.xAxis > 1) ? 1 : this.values.xAxis;
-
       // If the state is still default, check if the xAxis makes it touched
       if (this.values.state === Constants.ComponentState.DEFAULT
         && Math.abs(this.values.xAxis) > Constants.AxisTouchThreshold) {
         this.values.state = Constants.ComponentState.TOUCHED;
       }
     }
-
     // Get and normalize Y axis value
     if (this.gamepadIndices.yAxis !== undefined
         && gamepad.axes.length > this.gamepadIndices.yAxis) {
       this.values.yAxis = gamepad.axes[this.gamepadIndices.yAxis];
       this.values.yAxis = (this.values.yAxis < -1) ? -1 : this.values.yAxis;
       this.values.yAxis = (this.values.yAxis > 1) ? 1 : this.values.yAxis;
-
       // If the state is still default, check if the yAxis makes it touched
       if (this.values.state === Constants.ComponentState.DEFAULT
         && Math.abs(this.values.yAxis) > Constants.AxisTouchThreshold) {
         this.values.state = Constants.ComponentState.TOUCHED;
       }
     }
-
     // Update the visual response weights based on the current component data
     Object.values(this.visualResponses).forEach((visualResponse) => {
       visualResponse.updateFromComponent(this.values);
     });
   }
 }
-
 /**
   * @description Builds a motion controller with components and visual responses based on the
   * supplied profile description. Data is polled from the xrInputSource's gamepad.
@@ -344,15 +300,12 @@ class MotionController {
     if (!xrInputSource) {
       throw new Error('No xrInputSource supplied');
     }
-
     if (!profile) {
       throw new Error('No profile supplied');
     }
-
     this.xrInputSource = xrInputSource;
     this.assetUrl = assetUrl;
     this.id = profile.profileId;
-
     // Build child components as described in the profile description
     this.layoutDescription = profile.layouts[xrInputSource.handedness];
     this.components = {};
@@ -360,19 +313,15 @@ class MotionController {
       const componentDescription = this.layoutDescription.components[componentId];
       this.components[componentId] = new Component(componentId, componentDescription);
     });
-
     // Initialize components based on current gamepad state
     this.updateFromGamepad();
   }
-
   get gripSpace() {
     return this.xrInputSource.gripSpace;
   }
-
   get targetRaySpace() {
     return this.xrInputSource.targetRaySpace;
   }
-
   /**
    * @description Returns a subset of component data for simplified debugging
    */
@@ -383,7 +332,6 @@ class MotionController {
     });
     return data;
   }
-
   /**
    * @description Poll for updated data based on current gamepad state
    */
@@ -393,5 +341,4 @@ class MotionController {
     });
   }
 }
-
 export { Constants, MotionController, fetchProfile, fetchProfilesList };

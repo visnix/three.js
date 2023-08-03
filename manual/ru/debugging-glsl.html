@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -36,9 +34,7 @@
 <p>Когда я делаю новый шейдер GLSL, и вообще ничего не появляется, первое, что я делаю,
 это изменяю фрагментный шейдер, чтобы он возвращал сплошной цвет. Например, в самом низу шейдера я мог бы поставить </p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">void main() {
-
   ...
-
   gl_FragColor = vec4(1, 0, 0, 1);  // red
 }
 </pre>
@@ -55,14 +51,12 @@
 Если ваши нормали не выглядят нормально, то у вас есть ключ к пониманию, где искать.
 Если вы манипулируете нормалями в шейдере фрагментов, вы можете использовать ту же технику, чтобы нарисовать результат этой манипуляции. </p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-normals.jpg" style="width: 650px;"></div>
-
 <p>Точно так же, если мы используем текстуры, будут координаты текстуры, и мы можем нарисовать их чем-то вроде </p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">gl_FragColor = vec4(fract(vUv), 0, 1);
 </pre>
 <p><code class="notranslate" translate="no">fract</code> есть в случае, если мы используем текстурные координаты, которые выходят за пределы диапазона от 0 до 1.
 Это часто встречается, если для <code class="notranslate" translate="no">texture.repeat</code> установлено значение больше 1. </p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-uvs.jpg" style="width: 650px;"></div>
-
 <p>Вы можете делать подобные вещи для всех значений в вашем фрагментном шейдере.
 Выясните, каким может быть их диапазон, добавьте код для установки <code class="notranslate" translate="no">gl_FragColor</code> с диапазоном от 0,0 до 1,0. </p>
 <p>Чтобы проверить текстуры, попробуйте <a href="/docs/#api/en/textures/CanvasTexture"><code class="notranslate" translate="no">CanvasTexture</code></a> или <a href="/docs/#api/en/textures/DataTexture"><code class="notranslate" translate="no">DataTexture</code></a>, которые, как вы знаете, работают. </p>
@@ -74,7 +68,6 @@
 Расширяя сцену и глядя на ее <code class="notranslate" translate="no">children</code>, я бы проверил, что мировые матрицы выглядят разумно (без <code class="notranslate" translate="no">NaN</code>) и последние 4 значения каждой матрицы выглядят разумно для моей сцены. 
 Если я ожидаю, что моя сцена будет иметь размеры 50x50x50 единиц, а некоторые матрицы показывают 552352623.123, то явно что-то не так. </p>
 <div class="threejs_center"><img src="../resources/images/inspect-matrices.gif"></div>
-
 <p>Как и в случае с фрагментным шейдером, мы также можем рисовать значения из вершинного шейдера, передавая их фрагментному шейдеру. 
 Объявите переменные в обоих и передайте значение, которое вы не уверены, правильно. Фактически, если мой шейдер использует нормали, 
 я изменю фрагментный шейдер так, чтобы он отображался так, как указано выше, а затем просто установите для <code class="notranslate" translate="no">vNormal</code> значение, которое я хочу отобразить,
@@ -90,15 +83,9 @@
 <a href="https://chrome.google.com/webstore/detail/shader-editor/ggeaidddejpbakgafapihjbgdlbbbpob?hl=en">Shader Editor для Chrome</a>
 или аналогичное для других браузеров. Это отличный способ посмотреть, как работают другие шейдеры. Это также хорошо,
 поскольку вы можете внести некоторые из предложенных выше изменений во время работы кода. </p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

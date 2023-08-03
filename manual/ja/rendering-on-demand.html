@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -54,7 +52,6 @@ const near = 0.1;
 const far = 5;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 camera.position.z = 2;
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 0, 0);
 +controls.update();
@@ -73,25 +70,20 @@ camera.position.z = 2;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function render(time) {
 -  time *= 0.001;
 +function render() {
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 -  cubes.forEach((cube, ndx) =&gt; {
 -    const speed = 1 + ndx * .1;
 -    const rot = time * speed;
 -    cube.rotation.x = rot;
 -    cube.rotation.y = rot;
 -  });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 -requestAnimationFrame(render);
 </pre>
 <p>そして、もう一度レンダリングする必要があります。</p>
@@ -110,7 +102,6 @@ camera.position.z = 2;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p><a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> には慣性のようなものを追加して動きを滑らかにするオプションがあります。
 これを有効にするには <code class="notranslate" translate="no">enableDamping</code> プロパティをtrueに設定します。</p>
@@ -124,27 +115,22 @@ controlsは <code class="notranslate" translate="no">change</code> イベント�
 <p>この問題は <code class="notranslate" translate="no">requestAnimationFrame</code> を使い <code class="notranslate" translate="no">render</code> を呼び出す事で解決できます。
 まだ新しいフレームが要求されていない場合、新しいフレームを要求するようにしなければなりません。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+let renderRequested = false;
-
 function render() {
 +  renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   renderer.render(scene, camera);
 }
 render();
-
 +function requestRenderIfNotRequested() {
 +  if (!renderRequested) {
 +    renderRequested = true;
 +    requestAnimationFrame(render);
 +  }
 +}
-
 -controls.addEventListener('change', render);
 +controls.addEventListener('change', requestRenderIfNotRequested);
 </pre>
@@ -159,7 +145,6 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-damping.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-damping.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>シンプルなlil-guiを追加し、GUIで値の変更時にレンダリングを要求してみましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
@@ -175,12 +160,9 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 1つは <code class="notranslate" translate="no">material.color</code>、もう1つは <code class="notranslate" translate="no">cube.scale.x</code>です。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
 +  const folder = gui.addFolder(`Cube${x}`);
 +  folder.addColor(new ColorGUIHelper(material, 'color'), 'value')
 +      .name('color')
@@ -189,7 +171,6 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 +      .name('scale x')
 +      .onChange(requestRenderIfNotRequested);
 +  folder.open();
-
   return cube;
 }
 </pre>
@@ -199,19 +180,12 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-on-demand-w-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-on-demand-w-gui.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>three.jsを連続したレンダリングでなく、要求に応じてレンダリングさせる方法のヒントになれば幸いです。
 three.jsを要求に応じてレンダリングするアプリ/ページはあまり一般的ではありませんが、three.jsを使用しているページの多くはゲームや3Dアニメーション、エディタ、3Dグラフ生成、商品カタログなどのアートです。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -4,7 +4,6 @@ fflate - fast JavaScript compression/decompression
 Licensed under MIT. https://github.com/101arrowz/fflate/blob/master/LICENSE
 version 0.6.9
 */
-
 // DEFLATE is a complex format; to read this code, you should probably check the RFC first:
 // https://tools.ietf.org/html/rfc1951
 // You may also wish to take a look at the guide I made about this program:
@@ -33,7 +32,6 @@ var wk = (function (c, id, msg, transfer, cb) {
     w.postMessage(msg, transfer);
     return w;
 });
-
 // aliases for shorter compressed code (most minifers don't do this)
 var u8 = Uint8Array, u16 = Uint16Array, u32 = Uint32Array;
 // fixed length extra bits

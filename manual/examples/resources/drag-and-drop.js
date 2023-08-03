@@ -1,9 +1,7 @@
 const handlers = {
 	onDropFile: () => {},
 };
-
 export function setup( options ) {
-
 	const html = `
   <style>
     .dragInfo {
@@ -35,76 +33,44 @@ export function setup( options ) {
     </div>
   </div>
   `;
-
 	const elem = document.createElement( 'div' );
 	elem.innerHTML = html;
 	document.body.appendChild( elem );
-
 	const dragInfo = document.querySelector( '.dragInfo' );
 	function showDragInfo( show ) {
-
 		dragInfo.style.display = show ? '' : 'none';
-
 	}
-
 	document.body.addEventListener( 'dragenter', () => {
-
 		showDragInfo( true );
-
 	} );
-
 	const dragElem = dragInfo;
-
 	dragElem.addEventListener( 'dragover', ( e ) => {
-
 		e.preventDefault();
 		return false;
-
 	} );
-
 	dragElem.addEventListener( 'dragleave', () => {
-
 		showDragInfo( false );
 		return false;
-
 	} );
-
 	dragElem.addEventListener( 'dragend', () => {
-
 		showDragInfo( false );
 		return false;
-
 	} );
-
 	dragElem.addEventListener( 'drop', ( e ) => {
-
 		e.preventDefault();
 		showDragInfo( false );
 		if ( e.dataTransfer.items ) {
-
 			let fileNdx = 0;
 			for ( let i = 0; i < e.dataTransfer.items.length; ++ i ) {
-
 				const item = e.dataTransfer.items[ i ];
 				if ( item.kind === 'file' ) {
-
 					handlers.onDropFile( item.getAsFile(), fileNdx ++ );
-
 				}
-
 			}
-
 		}
-
 		return false;
-
 	} );
-
 }
-
 export function onDropFile( fn ) {
-
 	handlers.onDropFile = fn;
-
 }
-

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -78,7 +76,6 @@ En passant le canvas à <code class="notranslate" translate="no">block</code>, c
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-no-resize.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-no-resize.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Le canvas, comme nous le voyons, remplit maintenant la page mais il y a deux
 problèmes. Tout d'abord, nos cubes sont étirés et ressemblent à des boîtes trop
@@ -97,11 +94,9 @@ en utilisant les propriétés <code class="notranslate" translate="no">clientWid
 <p>Nous mettons alors notre boucle de rendu comme cela :</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  const canvas = renderer.domElement;
 +  camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +  camera.updateProjectionMatrix();
-
   ...
 </pre>
 <p>A présent les cubes ne devraient plus être déformés.</p>
@@ -109,7 +104,6 @@ en utilisant les propriétés <code class="notranslate" translate="no">clientWid
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-update-camera.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-update-camera.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Ouvrez l'exemple dans une fenêtre séparée et redimensionnez la.
 Vous devriez voir que les cubes ne sont plus étirés, que ce soit
@@ -160,13 +154,11 @@ Nous pouvons l'utiliser pour vérifier si d'autre choses doivent être mises à 
 Modifions à présent notre boucle de rendu pour utiliser la nouvelle fonction :</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  if (resizeRendererToDisplaySize(renderer)) {
 +    const canvas = renderer.domElement;
 +    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +    camera.updateProjectionMatrix();
 +  }
-
   ...
 </pre>
 <p>Puisque l'aspect ne change que si la taille d'affichage du canvas change,
@@ -176,7 +168,6 @@ retourne <code class="notranslate" translate="no">true</code>.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Le rendu devrait à présent avoir une résolution correspondant à
 la taille d'affichage du canvas.</p>
@@ -188,14 +179,12 @@ eu aucun code à modifier pour qu'ils fonctionnent.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-paragraph.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-paragraph.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>et voici notre même code utilisé dans un éditeur où la zone de contrôle à droite peut être redimensionnée.</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-editor.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-editor.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Le point important à remarquer est que le code n'est pas modifié, seulement
 le HTML et le CSS.</p>
@@ -267,7 +256,6 @@ seul autrement.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-hd-dpi.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-hd-dpi.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Il vous est peut-être difficile de voir la différence, mais si vous avez
 un affichage HD-DPI et que vous comparez cet exemple aux autres plus
@@ -275,15 +263,9 @@ haut, vous devriez remarquer que les arêtes sont plus vives.</p>
 <p>Cet article a couvert un sujet très basique mais fondamental.
 Dans l'article suivant, nous allons rapidement
 <a href="primitives.html">passer en revue les primitives de base proposées par Three.js</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

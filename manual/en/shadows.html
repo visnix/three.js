@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -65,7 +63,6 @@ texture in the plane that approximates a shadow,
 draw it above the ground below your object.</p>
 <p>For example let's use this texture as a fake shadow</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p>We'll use some of the code from <a href="cameras.html">the previous article</a>.</p>
 <p>Let's set the background color to white.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -74,10 +71,8 @@ draw it above the ground below your object.</p>
 <p>Then we'll setup the same checkerboard ground but this time it's using
 a <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> as we don't need lighting for the ground.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -85,7 +80,6 @@ a <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" 
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -132,7 +126,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   // so they move together.
   const base = new THREE.Object3D();
   scene.add(base);
-
   // add the shadow to the base
   // note: we make a new material for each sphere
   // so we can set that sphere's material transparency
@@ -148,7 +141,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // add the sphere to the base
   const u = i / numSpheres;   // goes from 0 to 1 as we iterate the spheres.
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -156,7 +148,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // remember all 3 plus the y position
   sphereShadowBases.push({base, sphereMesh, shadowMesh, y: sphereMesh.position.y});
 }
@@ -189,22 +180,17 @@ which gives us a bouncy animation. And, we also set the shadow material's
 opacity so that as each sphere goes higher its shadow fades out.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert to seconds
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const {base, sphereMesh, shadowMesh, y} = sphereShadowBase;
-
     // u is a value that goes from 0 to 1 as we iterate the spheres
     const u = ndx / sphereShadowBases.length;
-
     // compute a position for the base. This will move
     // both the sphere and its shadow
     const speed = time * .2;
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff is a value that goes from 0 to 1
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // move the sphere up and down
@@ -212,7 +198,6 @@ opacity so that as each sphere goes higher its shadow fades out.</p>
     // fade the shadow as the sphere goes up
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>And here's 15 kind of bouncing balls.</p>
@@ -220,7 +205,6 @@ opacity so that as each sphere goes higher its shadow fades out.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>In some apps it's common to use a round or oval shadow for everything but
 of course you could also use different shaped shadow textures. You might also
@@ -251,9 +235,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -263,7 +245,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>What happened? Why are parts of the shadows missing?</p>
 <p>The reason is shadow maps are created by rendering the scene from the point
@@ -281,7 +262,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Adjust the target x value back and forth and it should be pretty clear that only
 what's inside the light's shadow camera box is where shadows are drawn.</p>
@@ -351,7 +331,6 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Set the <code class="notranslate" translate="no">width</code> and <code class="notranslate" translate="no">height</code> to about 30 and you can see the shadows are correct
 and the areas that need to be in shadow for this scene are entirely covered.</p>
@@ -359,7 +338,6 @@ and the areas that need to be in shadow for this scene are entirely covered.</p>
 giant numbers to just cover everything? Set the <code class="notranslate" translate="no">width</code> and <code class="notranslate" translate="no">height</code> to 100
 and you might see something like this</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>What's going on with these low-res shadows?!</p>
 <p>This issue is yet another shadow related setting to be aware of.
 Shadow maps are textures the shadows get drawn into.
@@ -389,24 +367,18 @@ from our <a href="lights.html">article about lights</a>.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <!--
 You can notice, just like the last example if we set the angle high
 then the shadow map, the texture is spread over a very large area and
 the resolution of our shadows gets really low.
-
 div class="threejs_center"><img src="../resources/images/low-res-shadow-map-spotlight.png" style="width: 344px"></div>
-
 You can increase the size of the shadow map as mentioned above. You can
 also blur the result
-
 <div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-shadow-radius"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-shadow-radius" target="_blank">click here to open in a separate window</a>
 </div>
-
-
 -->
 <p>And finally there's shadows with a <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>. Since a <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>
 shines in all directions the only relevant settings are <code class="notranslate" translate="no">near</code> and <code class="notranslate" translate="no">far</code>.
@@ -436,9 +408,7 @@ of the box don't z-fight.</p>
 <p>And of course we need to switch the light to a <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // so we can easily see where the point light is
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -447,7 +417,6 @@ of the box don't z-fight.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Use the <code class="notranslate" translate="no">position</code> GUI settings to move the light around
 and you'll see the shadows fall on all the walls. You can
@@ -458,15 +427,9 @@ they are always in shadow.</p>
 <!--
 self shadow, shadow acne
 -->
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

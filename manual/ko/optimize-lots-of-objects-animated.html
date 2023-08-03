@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -46,15 +44,12 @@
   const text = await loadFile(info.url);
   info.file = parseData(text);
 }
-
 async function loadAll() {
   const fileInfos = [
     { name: 'men',   hueRange: [0.7, 0.3], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014mt_2010_cntm_1_deg.asc' },
     { name: 'women', hueRange: [0.9, 1.1], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014ft_2010_cntm_1_deg.asc' },
   ];
-
   await Promise.all(fileInfos.map(loadData));
-
   ...
 }
 loadAll();
@@ -99,7 +94,6 @@ loadAll();
   const womenInfo = fileInfos[1];
   const menFile = menInfo.file;
   const womenFile = womenInfo.file;
-
   function amountGreaterThan(a, b) {
     return Math.max(a - b, 0);
   }
@@ -150,7 +144,6 @@ function showFileInfo(fileInfos, fileInfo) {
   });
   requestRenderIfNotRequested();
 }
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
   const boxes = addBoxes(info.file, info.hueRange);
@@ -169,13 +162,10 @@ showFileInfo(fileInfos, fileInfos[0]);
 <p>추가로 이전 예제에서 하드 코딩했던 색상값을 <code class="notranslate" translate="no">hueRange</code>로 쓰도록 바꿉니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function addBoxes(file) {
 +function addBoxes(file, hueRange) {
-
   ...
-
     // 색상값을 구합니다
 -    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const hue = THREE.MathUtils.lerp(...hueRange, amount);
-
   ...
 </pre>
 <p>이제 4가지 데이터를 볼 수 있을 겁니다. 각 이름에 마우스를 올리거나 터치하면 해당 데이터로 바뀝니다.</p>
@@ -183,7 +173,6 @@ showFileInfo(fileInfos, fileInfos[0]);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-multiple-data-sets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-multiple-data-sets.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>뭔가 앞뒤가 맞지 않는 데이터가 몇 개 보입니다. 대체 무슨 영문인지 모르겠네요. 어쨌든 일단은 이 4가지 데이터가 자연스럽게 바뀌도록 애니메이션을 넣는 데 집중합시다.</p>
 <p>당장 떠오르는 방법은 3가지 정도입니다.</p>
@@ -205,9 +194,7 @@ showFileInfo(fileInfos, fileInfos[0]);
 +function makeBoxes(file, hueRange) {
   const { min, max, data } = file;
   const range = max - min;
-
   ...
-
 -  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 -      geometries, false);
 -  const material = new THREE.MeshBasicMaterial({
@@ -229,14 +216,11 @@ showFileInfo(fileInfos, fileInfos[0]);
 +  }
 +  return false;
 +}
-
 -function makeBoxes(file, hueRange) {
 +function makeBoxes(file, hueRange, fileInfos) {
   const { min, max, data } = file;
   const range = max - min;
-
   ...
-
   const geometries = [];
   data.forEach((row, latNdx) =&gt; {
     row.forEach((value, lonNdx) =&gt; {
@@ -244,7 +228,6 @@ showFileInfo(fileInfos, fileInfos[0]);
 +        return;
 +      }
       const amount = (value - min) / range;
-
   ...
 </pre>
 <p>다음으로 <code class="notranslate" translate="no">addBoxes</code>를 <code class="notranslate" translate="no">makeBoxes</code>로 교체한 뒤, morphtargets를 설정합니다.</p>
@@ -272,7 +255,6 @@ showFileInfo(fileInfos, fileInfos[0]);
 ++});
 +const mesh = new THREE.Mesh(baseGeometry, material);
 +scene.add(mesh);
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
 -  const boxes = addBoxes(info.file, info.hueRange);
@@ -356,7 +338,6 @@ function showFileInfo(fileInfos, fileInfo) {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +  const tweenManager = new TweenManger();
-
   ...
 </pre>
 <p>생성한 인스턴스로 <code class="notranslate" translate="no">Tween</code> 인스턴스를 생성합니다.</p>
@@ -381,17 +362,14 @@ function showFileInfo(fileInfos, fileInfo) {
 <p>그리고 tween 애니메이션이 남아있다면 계속 렌더링 루프를 반복하도록 <code class="notranslate" translate="no">render</code> 함수를 수정합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
   renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  if (tweenManager.update()) {
 +    requestRenderIfNotRequested();
 +  }
-
   controls.update();
   renderer.render(scene, camera);
 }
@@ -402,22 +380,15 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-morphtargets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-morphtargets.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>여기서 살펴본 내용이 유익했다면 좋겠습니다. Three.js가 제공하는 모듈을 만드는 것과, 직접 쉐이더를 만드는 것 둘 다 morphtargets를 이용해 애니메이션을 구현할 때 자주 사용하는 방법입니다. 예를 들어 각 육면체 그래프를 임의의 요소에 두고 해당 위치에서 지구본 위로 이동하는 애니메이션을 줄 수도 있죠. 그것도 그래프를 표현하는 멋진 방법 중 하나일 겁니다.</p>
 <p>혹시 위 지구본에 각 나라의 이름을 띄워보고 싶진 않나요? 그렇다면 <a href="align-html-elements-to-3d.html">HTML 요소를 3D로 정렬하기</a>를 참고해보세요.</p>
 <blockquote>
 <p>참고: 예제에서 남성 인구 비율이나 여성 인구 비율 또는 두 데이터의 차이를 견본 데이터로 사용할 수도 있었지만, 에제에 적용한 애니메이션은 땅에서 그래프가 올라오는 형식입니다. 비율로 처리한다면 대게의 값이 비슷비슷할 테고, 그래프의 높이도 2/1 정도는 더 낮아 시각적 효과가 그다지 크지 않았겠죠. <code class="notranslate" translate="no">amountGreaterThan</code>을 <a href="/docs/#api/ko/math/Math.max(a - b, 0)"><code class="notranslate" translate="no">Math.max(a - b, 0)</code></a>에서 <code class="notranslate" translate="no">(a - b)</code> 등으로 바꿔 두 데이터의 차이를 보거나, <code class="notranslate" translate="no">a / (a + b)</code>로 바꿔 성비를 볼 수 있습니다.</p>
 </blockquote>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

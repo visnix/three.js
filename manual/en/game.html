@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -64,10 +62,8 @@ these ideas.</p>
 <p>At <a href="https://opengameart.org">opengameart.org</a> I found this <a href="https://opengameart.org/content/lowpoly-animated-knight">animated knight
 model</a> by <a href="https://opengameart.org/users/quaternius">quaternius</a></p>
 <div class="threejs_center"><img src="../resources/images/knight.jpg" style="width: 375px;"></div>
-
 <p><a href="https://opengameart.org/users/quaternius">quaternius</a> also made <a href="https://opengameart.org/content/lowpoly-animated-farm-animal-pack">these animated animals</a>.</p>
 <div class="threejs_center"><img src="../resources/images/animals.jpg" style="width: 606px;"></div>
-
 <p>These seem like good models to start with so the first thing we need to
 do is load them.</p>
 <p>We covered <a href="load-gltf.html">loading glTF files before</a>. 
@@ -103,7 +99,6 @@ const models = {
     });
   }
 }
-
 function init() {
   // TBD
 }
@@ -136,7 +131,6 @@ of items loaded so far as well as the total number of items.</p>
 to show our progress. All we need to do is set that in our callback.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const manager = new THREE.LoadingManager();
 manager.onLoad = init;
-
 +const progressbarElem = document.querySelector('#progressbar');
 +manager.onProgress = (url, itemsLoaded, itemsTotal) =&gt; {
 +  progressbarElem.style.width = `${itemsLoaded / itemsTotal * 100 | 0}%`;
@@ -192,7 +186,6 @@ a CSS animation of diagonal stripes.</p>
   background-size: 50px 50px;
   animation: progressanim 2s linear infinite;
 }
-
 @keyframes progressanim {
   0% {
     background-position: 50px 50px;
@@ -216,12 +209,10 @@ each model to do that. Note of course this means animations must have unique nam
 +    model.animations = animsByName;
 +  });
 +}
-
 function init() {
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
 +  prepModelsAndAnimations();
 }
 </pre>
@@ -244,9 +235,7 @@ import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  Object.values(models).forEach((model, ndx) =&gt; {
 +    const clonedScene = SkeletonUtils.clone(model.gltf.scene);
 +    const root = new THREE.Object3D();
@@ -268,21 +257,17 @@ action or cross fading between actions. Let's just get the first
 <a href="/docs/#api/en/animation/AnimationClip"><code class="notranslate" translate="no">AnimationClip</code></a> and create an action for it. The default is for
 an action to play its clip in a loop forever.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const mixers = [];
-
 function init() {
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
   Object.values(models).forEach((model, ndx) =&gt; {
     const clonedScene = SkeletonUtils.clone(model.gltf.scene);
     const root = new THREE.Object3D();
     root.add(clonedScene);
     scene.add(root);
     root.position.x = (ndx - 3) * 3;
-
 +    const mixer = new THREE.AnimationMixer(clonedScene);
 +    const firstClip = Object.values(model.animations)[0];
 +    const action = mixer.clipAction(firstClip);
@@ -300,19 +285,15 @@ function render(now) {
 +  now *= 0.001;  // convert to seconds
 +  const deltaTime = now - then;
 +  then = now;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  for (const mixer of mixers) {
 +    mixer.update(deltaTime);
 +  }
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -321,28 +302,23 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-load-models.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-load-models.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Let's make it so we can check all of the animations.
 We'll add all of the clips as actions and then enable just one at 
 a time.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const mixers = [];
 +const mixerInfos = [];
-
 function init() {
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
   Object.values(models).forEach((model, ndx) =&gt; {
     const clonedScene = SkeletonUtils.clone(model.gltf.scene);
     const root = new THREE.Object3D();
     root.add(clonedScene);
     scene.add(root);
     root.position.x = (ndx - 3) * 3;
-
     const mixer = new THREE.AnimationMixer(clonedScene);
 -    const firstClip = Object.values(model.animations)[0];
 -    const action = mixer.clipAction(firstClip);
@@ -360,7 +336,6 @@ function init() {
 +    playNextAction(mixerInfo);
   });
 }
-
 +function playNextAction(mixerInfo) {
 +  const {actions, actionNdx} = mixerInfo;
 +  const nextActionNdx = (actionNdx + 1) % actions.length;
@@ -401,7 +376,6 @@ to cycle each of the models through their available animations.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-check-animations.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-check-animations.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>So that is arguably the sum-total of the three.js portion of this
 article. We covered loading multiple files, cloning skinned models,
@@ -421,7 +395,6 @@ of components and a three.js <a href="/docs/#api/en/core/Object3D"><code class="
     array.splice(ndx, 1);
   }
 }
-
 class GameObject {
   constructor(parent, name) {
     this.name = name;
@@ -715,14 +688,11 @@ All it does is create a <code class="notranslate" translate="no">GameObject</cod
   deltaTime: 0,
 };
 +const gameObjectManager = new GameObjectManager();
-
 function init() {
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  {
 +    const gameObject = gameObjectManager.createGameObject(scene, 'player');
 +    gameObject.addComponent(Player);
@@ -737,20 +707,16 @@ function render(now) {
   // make sure delta time isn't too big.
   globals.deltaTime = Math.min(globals.time - then, 1 / 20);
   then = globals.time;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 -  for (const {mixer} of mixerInfos) {
 -    mixer.update(deltaTime);
 -  }
 +  gameObjectManager.update();
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -759,7 +725,6 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-just-player.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-just-player.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>That was a lot of code just for an entity component system but
 it's infrastructure that most games need.</p>
@@ -785,18 +750,15 @@ class InputManager {
   constructor() {
     this.keys = {};
     const keyMap = new Map();
-
     const setKey = (keyName, pressed) =&gt; {
       const keyState = this.keys[keyName];
       keyState.justPressed = pressed &amp;&amp; !keyState.down;
       keyState.down = pressed;
     };
-
     const addKey = (keyCode, name) =&gt; {
       this.keys[name] = { down: false, justPressed: false };
       keyMap.set(keyCode, name);
     };
-
     const setKeyFromKeyCode = (keyCode, pressed) =&gt; {
       const keyName = keyMap.get(keyCode);
       if (!keyName) {
@@ -804,14 +766,12 @@ class InputManager {
       }
       setKey(keyName, pressed);
     };
-
     addKey(37, 'left');
     addKey(39, 'right');
     addKey(38, 'up');
     addKey(40, 'down');
     addKey(90, 'a');
     addKey(88, 'b');
-
     window.addEventListener('keydown', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, true);
     });
@@ -844,12 +804,9 @@ const gameObjectManager = new GameObjectManager();
 </pre>
 <p>and update it in our render loop</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(now) {
-
   ...
-
   gameObjectManager.update();
 +  inputManager.update();
-
   ...
 }
 </pre>
@@ -862,7 +819,6 @@ const globals = {
   deltaTime: 0,
 +  moveSpeed: 16,
 };
-
 class Player extends Component {
   constructor(gameObject) {
     super(gameObject);
@@ -919,14 +875,11 @@ gameobject with a component to manage a frustum.</p>
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  {
 +    const gameObject = gameObjectManager.createGameObject(camera, 'camera');
 +    globals.cameraInfo = gameObject.addComponent(CameraInfo);
 +  }
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
     gameObject.addComponent(Player);
@@ -952,7 +905,6 @@ gameobject with a component to manage a frustum.</p>
                   (inputManager.keys.right.down ? -1 : 0);
     transform.rotation.y += this.turnSpeed * delta * deltaTime;
     transform.translateOnAxis(kForward, moveSpeed * deltaTime);
-
 +    const {frustum} = cameraInfo;
 +    if (frustum.containsPoint(transform.position)) {
 +      this.offscreenTimer = 0;
@@ -1025,18 +977,15 @@ which seemed better than just small arrows.</p>
   constructor() {
     this.keys = {};
     const keyMap = new Map();
-
     const setKey = (keyName, pressed) =&gt; {
       const keyState = this.keys[keyName];
       keyState.justPressed = pressed &amp;&amp; !keyState.down;
       keyState.down = pressed;
     };
-
     const addKey = (keyCode, name) =&gt; {
       this.keys[name] = { down: false, justPressed: false };
       keyMap.set(keyCode, name);
     };
-
     const setKeyFromKeyCode = (keyCode, pressed) =&gt; {
       const keyName = keyMap.get(keyCode);
       if (!keyName) {
@@ -1044,21 +993,18 @@ which seemed better than just small arrows.</p>
       }
       setKey(keyName, pressed);
     };
-
     addKey(37, 'left');
     addKey(39, 'right');
     addKey(38, 'up');
     addKey(40, 'down');
     addKey(90, 'a');
     addKey(88, 'b');
-
     window.addEventListener('keydown', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, true);
     });
     window.addEventListener('keyup', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, false);
     });
-
 +    const sides = [
 +      { elem: document.querySelector('#left'),  key: 'left'  },
 +      { elem: document.querySelector('#right'), key: 'right' },
@@ -1122,7 +1068,6 @@ cursor keys or with our fingers on a touchscreen</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-player-input.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-player-input.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Ideally we'd do something else if the player went off the screen like move
 the camera or maybe offscreen = death but this article is already going to be
@@ -1146,19 +1091,16 @@ adjust the move speed the animation will speed up or slow down as well.</p>
   // hide the loading bar
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
   {
     const gameObject = gameObjectManager.createGameObject(camera, 'camera');
     globals.cameraInfo = gameObject.addComponent(CameraInfo);
   }
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
     globals.player = gameObject.addComponent(Player);
     globals.congaLine = [gameObject];
   }
-
 +  const animalModelNames = [
 +    'pig',
 +    'cow',
@@ -1241,17 +1183,14 @@ function isClose(obj1, obj1Radius, obj2, obj2Radius) {
   const dist = obj1.position.distanceTo(obj2.position);
   return dist &lt; minDist;
 }
-
 // keeps v between -min and +min
 function minMagnitude(v, min) {
   return Math.abs(v) &gt; min
       ? min * Math.sign(v)
       : v;
 }
-
 const aimTowardAndGetDistance = function() {
   const delta = new THREE.Vector3();
-
   return function aimTowardAndGetDistance(source, targetPos, maxTurn) {
     delta.subVectors(targetPos, source.position);
     // compute the direction we want to be facing
@@ -1267,7 +1206,6 @@ const aimTowardAndGetDistance = function() {
     return delta.length();
   };
 }();
-
 class Animal extends Component {
   constructor(gameObject, model) {
     super(gameObject);
@@ -1360,15 +1298,12 @@ Hopefully of you walk through each state it will be clear.</p>
 to the globals so the animals can find it and we need to start the
 conga line with the player's <code class="notranslate" translate="no">GameObject</code>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function init() {
-
   ...
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
 +    globals.player = gameObject.addComponent(Player);
 +    globals.congaLine = [gameObject];
   }
-
 }
 </pre>
 <p>We also need to compute a size for each model</p>
@@ -1457,14 +1392,12 @@ the techniques covered in <a href="align-html-elements-to-3d.html">the article o
 </pre>
 <p>Then here's the component</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const labelContainerElem = document.querySelector('#labels');
-
 class StateDisplayHelper extends Component {
   constructor(gameObject, size) {
     super(gameObject);
     this.elem = document.createElement('div');
     labelContainerElem.appendChild(this.elem);
     this.pos = new THREE.Vector3();
-
     this.helper = new THREE.PolarGridHelper(size / 2, 1, 1, 16);
     gameObject.transform.add(this.helper);
   }
@@ -1480,16 +1413,13 @@ class StateDisplayHelper extends Component {
     const {transform} = this.gameObject;
     const {canvas} = globals;
     pos.copy(transform.position);
-
     // get the normalized screen coordinate of that position
     // x and y will be in the -1 to +1 range with x = -1 being
     // on the left and y = -1 being on the bottom
     pos.project(globals.camera);
-
     // convert the normalized position to CSS coordinates
     const x = (pos.x *  .5 + .5) * canvas.clientWidth;
     const y = (pos.y * -.5 + .5) * canvas.clientHeight;
-
     // move the elem to that position
     this.elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
   }
@@ -1500,9 +1430,7 @@ class StateDisplayHelper extends Component {
   constructor(gameObject, model) {
     super(gameObject);
 +    this.helper = gameObject.addComponent(StateDisplayHelper, model.size);
-
      ...
-
   }
   update() {
     this.fsm.update();
@@ -1522,23 +1450,18 @@ import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const gui = new GUI();
 +gui.add(globals, 'debug').onChange(showHideDebugInfo);
 +showHideDebugInfo();
-
 const labelContainerElem = document.querySelector('#labels');
 +function showHideDebugInfo() {
 +  labelContainerElem.style.display = globals.debug ? '' : 'none';
 +}
 +showHideDebugInfo();
-
 class StateDisplayHelper extends Component {
-
   ...
-
   update() {
 +    this.helper.visible = globals.debug;
 +    if (!globals.debug) {
 +      return;
 +    }
-
     ...
   }
 }
@@ -1548,7 +1471,6 @@ class StateDisplayHelper extends Component {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-conga-line.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-conga-line.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Originally I set out to make a <a href="https://www.google.com/search?q=snake+game">snake game</a>
 where as you add animals to your line it gets harder because you need to avoid
@@ -1556,11 +1478,9 @@ crashing into them. I'd also have put some obstacles in the scene and maybe a fe
 barrier around the perimeter.</p>
 <p>Unfortunately the animals are long and thin. From above here's the zebra.</p>
 <div class="threejs_center"><img src="../resources/images/zebra.png" style="width: 113px;"></div>
-
 <p>The code so far is using circle collisions which means if we had obstacles like a fence
 then this would be considered a collision</p>
 <div class="threejs_center"><img src="../resources/images/zebra-collisions.svg" style="width: 400px;"></div>
-
 <p>That's no good. Even animal to animal we'd have the same issue</p>
 <p>I thought about writing a 2D rectangle to rectangle collision system but I
 quickly realized it could really be a lot of code. Checking that 2 arbitrarily
@@ -1611,7 +1531,6 @@ let's do it using coroutines.</p>
     yield;
   }
 }
-
 class CoroutineRunner {
   constructor() {
     this.generatorStacks = [];
@@ -1697,17 +1616,13 @@ To remove a coroutine early, before it reaches the end you need to keep
 a reference to its generator like this</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const gen = count0To9();
 runner.add(gen);
-
 // sometime later
-
 runner.remove(gen);
 </pre>
 <p>In any case, in the player let's use a coroutine to emit a note every half second to 1 second</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class Player extends Component {
   constructor(gameObject) {
-
     ...
-
 +    this.runner = new CoroutineRunner();
 +
 +    function* emitNotes() {
@@ -1724,12 +1639,9 @@ runner.remove(gen);
   }
   update() {
 +    this.runner.update();
-
   ...
-
   }
 }
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -1776,7 +1688,6 @@ It uses <a href="/docs/#api/en/materials/SpriteMaterial"><code class="notranslat
     transform.add(note);
     this.runner = new CoroutineRunner();
     const direction = new THREE.Vector3(rand(-0.2, 0.2), 1, rand(-0.2, 0.2));
-
     function* moveAndRemove() {
       for (let i = 0; i &lt; 60; ++i) {
         transform.translateOnAxis(direction, globals.deltaTime * 10);
@@ -1786,7 +1697,6 @@ It uses <a href="/docs/#api/en/materials/SpriteMaterial"><code class="notranslat
       transform.parent.remove(transform);
       gameObjectManager.removeGameObject(gameObject);
     }
-
     this.runner.add(moveAndRemove());
   }
   update() {
@@ -1801,9 +1711,7 @@ After the loop it the removes the transform
 from the scene and the note itself from active gameobjects.</p>
 <p>One last thing, let's add a few more animals</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function init() {
-
    ...
-
   const animalModelNames = [
     'pig',
     'cow',
@@ -1839,7 +1747,6 @@ from the scene and the note itself from active gameobjects.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-conga-line-w-notes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-conga-line-w-notes.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>You might be asking, why not use <code class="notranslate" translate="no">setTimeout</code>? The problem with <code class="notranslate" translate="no">setTimeout</code>
 is it's not related to the game clock. For example above we made the maximum
@@ -1926,11 +1833,6 @@ If you make a cool game post a link in the comments below.</p>
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

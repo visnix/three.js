@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="utf-8">
   <title>广告牌(Billboards)</title>
@@ -11,13 +10,11 @@
   <meta property="og:image" content="https://threejs.org/files/share.png">
   <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
   <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
   <link rel="stylesheet" href="../resources/lesson.css">
   <link rel="stylesheet" href="../resources/lang.css">
   <!-- Import maps polyfill -->
   <!-- Remove this when import maps will be widely supported -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
   <script type="importmap">
 {
   "imports": {
@@ -27,7 +24,6 @@
 </script>
   <link rel="stylesheet" href="/manual/zh/lang.css">
 </head>
-
 <body>
   <div class="container">
     <div class="lesson-title">
@@ -42,14 +38,11 @@
           <a href="/docs/#api/en/materials/SpriteMaterial"><code class="notranslate"
               translate="no">SpriteMaterial</code></a> 来实现这个功能。
         </p>
-
-
         <p>我们修改这个徽标的例子 <a href="canvas-textures.html">使用Canvas作为纹理</a>，
           应用 <a href="/docs/#api/en/objects/Sprite"><code class="notranslate" translate="no">Sprite</code></a> and
           <a href="/docs/#api/en/materials/SpriteMaterial"><code class="notranslate"
               translate="no">SpriteMaterial</code></a>
         </p>
-
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makePerson(x, labelWidth, size, name, color) {
   const canvas = makeLabelCanvas(labelWidth, size, name);
   const texture = new THREE.CanvasTexture(canvas);
@@ -58,25 +51,20 @@
   texture.minFilter = THREE.LinearFilter;
   texture.wrapS = THREE.ClampToEdgeWrapping;
   texture.wrapT = THREE.ClampToEdgeWrapping;
-
 -  const labelMaterial = new THREE.MeshBasicMaterial({
 +  const labelMaterial = new THREE.SpriteMaterial({
     map: texture,
 -    side: THREE.DoubleSide,
     transparent: true,
   });
-
   const root = new THREE.Object3D();
   root.position.x = x;
-
   const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
   root.add(body);
   body.position.y = bodyHeight / 2;
-
   const head = new THREE.Mesh(headGeometry, bodyMaterial);
   root.add(head);
   head.position.y = bodyHeight + headRadius * 1.1;
-
 -  const label = new THREE.Mesh(labelGeometry, labelMaterial);
 +  const label = new THREE.Sprite(labelMaterial);
   root.add(label);
@@ -104,7 +92,6 @@ root.add(label);
 -label.position.y = bodyHeight * 4 / 5;
 -label.position.z = bodyRadiusTop * 1.01;
 +label.position.y = head.position.y + headRadius + size * labelBaseScale;
-
 -// 如果单位是米，这里就用0.01
 -// 也就是以厘米作为标签的单位
 -const labelBaseScale = 0.01;
@@ -129,13 +116,11 @@ const trunkHeight = 1;
 const trunkRadialSegments = 12;
 const trunkGeometry = new THREE.CylinderGeometry(
     trunkRadius, trunkRadius, trunkHeight, trunkRadialSegments);
-
 const topRadius = trunkRadius * 4;
 const topHeight = trunkHeight * 2;
 const topSegments = 12;
 const topGeometry = new THREE.ConeGeometry(
     topRadius, topHeight, topSegments);
-
 const trunkMaterial = new THREE.MeshPhongMaterial({color: 'brown'});
 const topMaterial = new THREE.MeshPhongMaterial({color: 'green'});</pre>
         <p>然后我们创建一个函数，对每一棵树的树干和树顶创建一个 <a href="/docs/#api/en/objects/Mesh"><code class="notranslate"
@@ -148,14 +133,11 @@ function makeTree(x, z) {
   const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
   trunk.position.y = trunkHeight / 2;
   root.add(trunk);
-
   const top = new THREE.Mesh(topGeometry, topMaterial);
   top.position.y = trunkHeight + topHeight / 2;
   root.add(top);
-
   root.position.set(x, 0, z);
   scene.add(root);
-
   return root;
 }</pre>
         <p>然后我们会创建一个循环，生成树网络。</p>
@@ -177,7 +159,6 @@ for (let z = -50; z &lt;= 50; z += 10) {
   scene.add(mesh);
 }</pre>
         <p>然后把背景调整为浅蓝(lightblue)</p>
-
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">
 const scene = new THREE.Scene();
 -scene.background = new THREE.Color('white');
@@ -206,45 +187,33 @@ function frameArea(sizeToFitOnScreen, boxSize, boxCenter, camera) {
   const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
   const halfFovY = THREE.MathUtils.degToRad(camera.fov * .5);
   const distance = halfSizeToFitOnScreen / Math.tan(halfFovY);
-
   camera.position.copy(boxCenter);
   camera.position.z += distance;
-
   // 为视锥体选择合适的near和far值
   // 可以把盒模型包裹进来
   camera.near = boxSize / 100;
   camera.far = boxSize * 100;
-
   camera.updateProjectionMatrix();
 }
-
 function makeSpriteTexture(textureSize, obj) {
   const rt = new THREE.WebGLRenderTarget(textureSize, textureSize);
-
   const aspect = 1;  // 因为Render Target是正方形
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-
   scene.add(obj);
-
   // 计算对象的盒模型
   const box = new THREE.Box3().setFromObject(obj);
-
   const boxSize = box.getSize(new THREE.Vector3());
   const boxCenter = box.getCenter(new THREE.Vector3());
-
   // 设置相机去构建盒模型
   const fudge = 1.1;
   const size = Math.max(...boxSize.toArray()) * fudge;
   frameArea(size, size, boxCenter, camera);
-
   renderer.autoClear = false;
   renderer.setRenderTarget(rt);
   renderer.render(scene, camera);
   renderer.setRenderTarget(null);
   renderer.autoClear = true;
-
   scene.remove(obj);
-
   return {
     position: boxCenter.multiplyScalar(fudge),
     scale: size,
@@ -291,7 +260,6 @@ const treeSpriteInfo = makeSpriteTexture(facadeSize, tree);</pre>
 +      offset.z + z);
 +  sprite.scale.set(scale, scale, scale);
 +}
-
 for (let z = -50; z &lt;= 50; z += 10) {
   for (let x = -50; x &lt;= 50; x += 10) {
 -    makeTree(x, z);
@@ -320,13 +288,7 @@ for (let z = -50; z &lt;= 50; z += 10) {
       </div>
     </div>
   </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

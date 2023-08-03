@@ -5,7 +5,6 @@ export const GPUPrimitiveTopology = {
 	TriangleList: 'triangle-list',
 	TriangleStrip: 'triangle-strip',
 };
-
 export const GPUCompareFunction = {
 	Never: 'never',
 	Less: 'less',
@@ -16,33 +15,27 @@ export const GPUCompareFunction = {
 	GreaterEqual: 'greater-equal',
 	Always: 'always'
 };
-
 export const GPUStoreOp = {
 	Store: 'store',
 	Discard: 'discard'
 };
-
 export const GPULoadOp = {
 	Load: 'load',
 	Clear: 'clear'
 };
-
 export const GPUFrontFace = {
 	CCW: 'ccw',
 	CW: 'cw'
 };
-
 export const GPUCullMode = {
 	None: 'none',
 	Front: 'front',
 	Back: 'back'
 };
-
 export const GPUIndexFormat = {
 	Uint16: 'uint16',
 	Uint32: 'uint32'
 };
-
 export const GPUVertexFormat = {
 	Uint8x2: 'uint8x2',
 	Uint8x4: 'uint8x4',
@@ -75,18 +68,13 @@ export const GPUVertexFormat = {
 	Sint32x3: 'sint32x3',
 	Sint32x4: 'sint32x4'
 };
-
 export const GPUTextureFormat = {
-
 	// 8-bit formats
-
 	R8Unorm: 'r8unorm',
 	R8Snorm: 'r8snorm',
 	R8Uint: 'r8uint',
 	R8Sint: 'r8sint',
-
 	// 16-bit formats
-
 	R16Uint: 'r16uint',
 	R16Sint: 'r16sint',
 	R16Float: 'r16float',
@@ -94,9 +82,7 @@ export const GPUTextureFormat = {
 	RG8Snorm: 'rg8snorm',
 	RG8Uint: 'rg8uint',
 	RG8Sint: 'rg8sint',
-
 	// 32-bit formats
-
 	R32Uint: 'r32uint',
 	R32Sint: 'r32sint',
 	R32Float: 'r32float',
@@ -114,37 +100,27 @@ export const GPUTextureFormat = {
 	RGB9E5UFloat: 'rgb9e5ufloat',
 	RGB10A2Unorm: 'rgb10a2unorm',
 	RG11B10uFloat: 'rgb10a2unorm',
-
 	// 64-bit formats
-
 	RG32Uint: 'rg32uint',
 	RG32Sint: 'rg32sint',
 	RG32Float: 'rg32float',
 	RGBA16Uint: 'rgba16uint',
 	RGBA16Sint: 'rgba16sint',
 	RGBA16Float: 'rgba16float',
-
 	// 128-bit formats
-
 	RGBA32Uint: 'rgba32uint',
 	RGBA32Sint: 'rgba32sint',
 	RGBA32Float: 'rgba32float',
-
 	// Depth and stencil formats
-
 	Stencil8: 'stencil8',
 	Depth16Unorm: 'depth16unorm',
 	Depth24Plus: 'depth24plus',
 	Depth24PlusStencil8: 'depth24plus-stencil8',
 	Depth32Float: 'depth32float',
-
 	// 'depth32float-stencil8' extension
-
 	Depth32FloatStencil8: 'depth32float-stencil8',
-
 	// BC compressed formats usable if 'texture-compression-bc' is both
 	// supported by the device/user agent and enabled in requestDevice.
-
 	BC1RGBAUnorm: 'bc1-rgba-unorm',
 	BC1RGBAUnormSRGB: 'bc1-rgba-unorm-srgb',
 	BC2RGBAUnorm: 'bc2-rgba-unorm',
@@ -159,10 +135,8 @@ export const GPUTextureFormat = {
 	BC6HRGBFloat: 'bc6h-rgb-float',
 	BC7RGBAUnorm: 'bc7-rgba-unorm',
 	BC7RGBAUnormSRGB: 'bc7-rgba-srgb',
-
 	// ETC2 compressed formats usable if 'texture-compression-etc2' is both
 	// supported by the device/user agent and enabled in requestDevice.
-
 	ETC2RGB8Unorm: 'etc2-rgb8unorm',
 	ETC2RGB8UnormSRGB: 'etc2-rgb8unorm-srgb',
 	ETC2RGB8A1Unorm: 'etc2-rgb8a1unorm',
@@ -173,10 +147,8 @@ export const GPUTextureFormat = {
 	EACR11Snorm: 'eac-r11snorm',
 	EACRG11Unorm: 'eac-rg11unorm',
 	EACRG11Snorm: 'eac-rg11snorm',
-
 	// ASTC compressed formats usable if 'texture-compression-astc' is both
 	// supported by the device/user agent and enabled in requestDevice.
-
 	ASTC4x4Unorm: 'astc-4x4-unorm',
 	ASTC4x4UnormSRGB: 'astc-4x4-unorm-srgb',
 	ASTC5x4Unorm: 'astc-5x4-unorm',
@@ -205,20 +177,16 @@ export const GPUTextureFormat = {
 	ASTC12x10UnormSRGB: 'astc-12x10-unorm-srgb',
 	ASTC12x12Unorm: 'astc-12x12-unorm',
 	ASTC12x12UnormSRGB: 'astc-12x12-unorm-srgb',
-
 };
-
 export const GPUAddressMode = {
 	ClampToEdge: 'clamp-to-edge',
 	Repeat: 'repeat',
 	MirrorRepeat: 'mirror-repeat'
 };
-
 export const GPUFilterMode = {
 	Linear: 'linear',
 	Nearest: 'nearest'
 };
-
 export const GPUBlendFactor = {
 	Zero: 'zero',
 	One: 'one',
@@ -234,7 +202,6 @@ export const GPUBlendFactor = {
 	Constant: 'constant',
 	OneMinusConstant: 'one-minus-constant'
 };
-
 export const GPUBlendOperation = {
 	Add: 'add',
 	Subtract: 'subtract',
@@ -242,7 +209,6 @@ export const GPUBlendOperation = {
 	Min: 'min',
 	Max: 'max'
 };
-
 export const GPUColorWriteFlags = {
 	None: 0,
 	Red: 0x1,
@@ -251,7 +217,6 @@ export const GPUColorWriteFlags = {
 	Alpha: 0x8,
 	All: 0xF
 };
-
 export const GPUStencilOperation = {
 	Keep: 'keep',
 	Zero: 'zero',
@@ -262,19 +227,16 @@ export const GPUStencilOperation = {
 	IncrementWrap: 'increment-wrap',
 	DecrementWrap: 'decrement-wrap'
 };
-
 export const GPUBufferBindingType = {
 	Uniform: 'uniform',
 	Storage: 'storage',
 	ReadOnlyStorage: 'read-only-storage'
 };
-
 export const GPUSamplerBindingType = {
 	Filtering: 'filtering',
 	NonFiltering: 'non-filtering',
 	Comparison: 'comparison'
 };
-
 export const GPUTextureSampleType = {
 	Float: 'float',
 	UnfilterableFloat: 'unfilterable-float',
@@ -282,13 +244,11 @@ export const GPUTextureSampleType = {
 	SInt: 'sint',
 	UInt: 'uint'
 };
-
 export const GPUTextureDimension = {
 	OneD: '1d',
 	TwoD: '2d',
 	ThreeD: '3d'
 };
-
 export const GPUTextureViewDimension = {
 	OneD: '1d',
 	TwoD: '2d',
@@ -297,18 +257,15 @@ export const GPUTextureViewDimension = {
 	CubeArray: 'cube-array',
 	ThreeD: '3d'
 };
-
 export const GPUTextureAspect = {
 	All: 'all',
 	StencilOnly: 'stencil-only',
 	DepthOnly: 'depth-only'
 };
-
 export const GPUInputStepMode = {
 	Vertex: 'vertex',
 	Instance: 'instance'
 };
-
 export const GPUFeatureName = {
 	DepthClipControl: 'depth-clip-control',
 	Depth32FloatStencil8: 'depth32float-stencil8',

@@ -18,19 +18,15 @@ scene.add( object );
 			<code>
 const object1 = new THREE.Object3D();
 const object2 = new THREE.Object3D();
-
 object1.add( object2 );
 scene.add( object1 ); //object1 and object2 will automatically update their matrices
 			</code>
 		</div>
-
 		<p>However, if you know the object will be static, you can disable this and update the transform matrix manually just when needed.</p>
-
 		<code>
 object.matrixAutoUpdate = false;
 object.updateMatrix();
 		</code>
-
 		<h2>BufferGeometry</h2>
 		<div>
 			<p>
@@ -57,21 +53,16 @@ object.updateMatrix();
 			</p>
 			<code>
 const MAX_POINTS = 500;
-
 // geometry
 const geometry = new THREE.BufferGeometry();
-
 // attributes
 const positions = new Float32Array( MAX_POINTS * 3 ); // 3 vertices per point
 geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
-
 // draw range
 const drawCount = 2; // draw the first 2 points, only
 geometry.setDrawRange( 0, drawCount );
-
 // material
 const material = new THREE.LineBasicMaterial( { color: 0xff0000 } );
-
 // line
 const line = new THREE.Line( geometry, material );
 scene.add( line );
@@ -81,17 +72,12 @@ scene.add( line );
 			</p>
 			<code>
 const positionAttribute = line.geometry.getAttribute( 'position' );
-
 let x = 0, y = 0, z = 0;
-
 for ( let i = 0; i < positionAttribute.count; i ++ ) {
-
 	positionAttribute.setXYZ( i, x, y, z );
-
     x += ( Math.random() - 0.5 ) * 30;
     y += ( Math.random() - 0.5 ) * 30;
     z += ( Math.random() - 0.5 ) * 30;
-
 }
 			</code>
 			<p>
@@ -107,7 +93,6 @@ line.geometry.setDrawRange( 0, newValue );
 			<code>
 positionAttribute.needsUpdate = true; // required after the first render
 			</code>
-
 			<p>
 				If you change the position data values after the initial render, you may need to recompute
 				bounding volumes so other features of the engine like view frustum culling or helpers properly work.
@@ -116,26 +101,19 @@ positionAttribute.needsUpdate = true; // required after the first render
 line.geometry.computeBoundingBox();
 line.geometry.computeBoundingSphere();
 			</code>
-
 			<p>
 				[link:https://jsfiddle.net/t4m85pLr/1/ Here is a fiddle] showing an animated line which you can adapt to your use case.
 			</p>
-
 			<h3>Examples</h3>
-
 			<p>
 				[example:webgl_custom_attributes WebGL / custom / attributes]<br />
 				[example:webgl_buffergeometry_custom_attributes_particles WebGL / buffergeometry / custom / attributes / particles]
 			</p>
-
 		</div>
-
 		<h2>Materials</h2>
 		<div>
 			<p>All uniforms values can be changed freely (e.g. colors, textures, opacity, etc), values are sent to the shader every frame.</p>
-
 			<p>Also GLstate related parameters can change any time (depthTest, blending, polygonOffset, etc).</p>
-
 			<p>The following properties can't be easily changed at runtime (once the material is rendered at least once):</p>
 			<ul>
 				<li>numbers and types of uniforms</li>
@@ -151,29 +129,20 @@ line.geometry.computeBoundingSphere();
 					</ul>
 				</li>
 			</ul>
-
 			<p>Changes in these require building of new shader program. You'll need to set</p>
 			<code>material.needsUpdate = true</code>
-
 			<p>Bear in mind this might be quite slow and induce jerkiness in framerate (especially on Windows, as shader compilation is slower in DirectX than OpenGL).</p>
-
 			<p>For smoother experience you can emulate changes in these features to some degree by having "dummy" values like zero intensity lights, white textures, or zero density fog.</p>
-
 			<p>You can freely change the material used for geometry chunks, however you cannot change how an object is divided into chunks (according to face materials). </p>
-
 			<h3>If you need to have different configurations of materials during runtime:</h3>
 			<p>If the number of materials / chunks is small, you could pre-divide the object beforehand (e.g. hair / face / body / upper clothes / trousers for a human, front / sides / top / glass / tire / interior for a car). </p>
-
 			<p>If the number is large (e.g. each face could be potentially different), consider a different solution, such as using attributes / textures to drive different per-face look.</p>
-
 			<h3>Examples</h3>
 			<p>
 				[example:webgl_materials_car WebGL / materials / car]<br />
 				[example:webgl_postprocessing_dof WebGL / webgl_postprocessing / dof]
 			</p>
 		</div>
-
-
 		<h2>Textures</h2>
 		<div>
 			<p>Image, canvas, video and data textures need to have the following flag set if they are changed:</p>
@@ -181,16 +150,12 @@ line.geometry.computeBoundingSphere();
 				texture.needsUpdate = true;
 			</code>
 			<p>Render targets update automatically.</p>
-
 			<h3>Examples</h3>
 			<p>
 				[example:webgl_materials_video WebGL / materials / video]<br />
 				[example:webgl_rtt WebGL / rtt]
 			</p>
-
 		</div>
-
-
 		<h2>Cameras</h2>
 		<div>
 			<p>A camera's position and target is updated automatically. If you need to change</p>

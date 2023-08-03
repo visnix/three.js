@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -48,7 +46,6 @@
 <p></p><div class="threejs_diagram_container">
   <iframe class="threejs_diagram " style="width: 400px; height: 300px;" src="/manual/foo/../resources/moon-orbit.html"></iframe>
 </div>
-
 <p></p>
 <p>Чтобы думать об этом иначе, вы, живущие на Земле, не должны думать о вращении 
 Земли вокруг своей оси или о вращении вокруг Солнца. Вы просто идете или едете, 
@@ -67,14 +64,12 @@
 целей мы подделаем это с помощью графа сцены.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// массив объектов, направление которых обновляется
 const objects = [];
-
 // использовать только одну сферу для всего
 const radius = 1;
 const widthSegments = 6;
 const heightSegments = 6;
 const sphereGeometry = new THREE.SphereGeometry(
     radius, widthSegments, heightSegments);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);  // сделать солнце большим
@@ -122,7 +117,6 @@ camera.lookAt(0, 0, 0);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Теперь давайте добавим землю.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
@@ -140,7 +134,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Вы можете видеть, что Солнце и Земля вращаются, но Земля не вращается вокруг Солнца. 
 Давайте сделаем землю дитя солнца</p>
@@ -152,7 +145,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Что случилось? Почему Земля такого же размера, как Солнце, и почему она так далеко? 
 На самом деле мне пришлось передвинуть камеру с 50 единиц сверху до 150 единиц 
@@ -169,14 +161,12 @@ objects.push(earthMesh);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const solarSystem = new THREE.Object3D();
 +scene.add(solarSystem);
 +objects.push(solarSystem);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);
 -scene.add(sunMesh);
 +solarSystem.add(sunMesh);
 objects.push(sunMesh);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 earthMesh.position.x = 10;
@@ -196,7 +186,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit-fixed.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Намного лучше. Земля меньше Солнца, и она вращается вокруг Солнца и вращается сама.</p>
 <p>Продолжая ту же самую модель, давайте добавим луну.</p>
@@ -204,17 +193,14 @@ objects.push(earthMesh);
 +earthOrbit.position.x = 10;
 +solarSystem.add(earthOrbit);
 +objects.push(earthOrbit);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 -solarSystem.add(earthMesh);
 +earthOrbit.add(earthMesh);
 objects.push(earthMesh);
-
 +const moonOrbit = new THREE.Object3D();
 +moonOrbit.position.x = 2;
 +earthOrbit.add(moonOrbit);
-
 +const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
 +const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
 +moonMesh.scale.set(.5, .5, .5);
@@ -229,7 +215,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Вы можете видеть, что луна следует шаблону спирографа, показанному в верхней части этой 
 статьи, но нам не пришлось вычислять ее вручную. Мы просто настраиваем наш 
@@ -258,7 +243,6 @@ objects.forEach((node) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Мы можем видеть оси
 <span style="color:red">x (красная)</span> и
@@ -286,7 +270,6 @@ lil-gui принимает объект и имя свойства для это
 -  axes.renderOrder = 1;
 -  node.add(axes);
 -});
-
 +function makeAxisGrid(node, label, units) {
 +  const helper = new AxisGridHelper(node, units);
 +  gui.add(helper, 'visible').name(label);
@@ -318,12 +301,10 @@ class AxisGridHelper {
     axes.material.depthTest = false;
     axes.renderOrder = 2;  // после сетки
     node.add(axes);
-
     const grid = new THREE.GridHelper(units, units);
     grid.material.depthTest = false;
     grid.renderOrder = 1;
     node.add(grid);
-
     this.grid = grid;
     this.axes = axes;
     this.visible = false;
@@ -345,7 +326,6 @@ class AxisGridHelper {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes-grids.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes-grids.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Включите <code class="notranslate" translate="no">solarSystem</code> и вы увидите, что Земля находится точно в 10 единицах от центра, 
 как мы установили выше. Вы можете увидеть , как земля находится в 
@@ -372,15 +352,9 @@ class AxisGridHelper {
 колеса автомобиля относительно его тела, было бы очень сложно, но с 
 помощью графа сцены это становится намного проще.</p>
 <p><a href="materials.html">Далее мы пройдемся по материалам</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

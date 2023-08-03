@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -48,15 +46,12 @@
   const text = await loadFile(info.url);
   info.file = parseData(text);
 }
-
 async function loadAll() {
   const fileInfos = [
     {name: 'men',   hueRange: [0.7, 0.3], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014mt_2010_cntm_1_deg.asc' },
     {name: 'women', hueRange: [0.9, 1.1], url: 'resources/data/gpw/gpw_v4_basic_demographic_characteristics_rev10_a000_014ft_2010_cntm_1_deg.asc' },
   ];
-
   await Promise.all(fileInfos.map(loadData));
-
   ...
 }
 loadAll();
@@ -108,7 +103,6 @@ fnには値と行と列のインデックスを渡します。</p>
   const womenInfo = fileInfos[1];
   const menFile = menInfo.file;
   const womenFile = womenInfo.file;
-
   function amountGreaterThan(a, b) {
     return Math.max(a - b, 0);
   }
@@ -160,7 +154,6 @@ function showFileInfo(fileInfos, fileInfo) {
   });
   requestRenderIfNotRequested();
 }
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
   const boxes = addBoxes(info.file, info.hueRange);
@@ -179,13 +172,10 @@ showFileInfo(fileInfos, fileInfos[0]);
 <p>もう1つ変更が必要で <code class="notranslate" translate="no">addBoxes</code> の引数に <code class="notranslate" translate="no">hueRange</code> があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function addBoxes(file) {
 +function addBoxes(file, hueRange) {
-
   ...
-
     // compute a color
 -    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const hue = THREE.MathUtils.lerp(...hueRange, amount);
-
   ...
 </pre>
 <p>これで4つのデータセットを表示できるようになるはずです。ラベルの上にマウスを置いたり、タッチしてデータセットを切り替える事ができます。</p>
@@ -193,7 +183,6 @@ showFileInfo(fileInfos, fileInfos[0]);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-multiple-data-sets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-multiple-data-sets.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>注意してほしいのは突出したいくつかの奇妙なデータポイントがあります。</p>
 <p>これは何が起きてるのでしょう！？</p>
@@ -221,9 +210,7 @@ depth関数とブレンディングを使い修正できる可能性がありま
 +function makeBoxes(file, hueRange) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
 -  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 -      geometries, false);
 -  const material = new THREE.MeshBasicMaterial({
@@ -250,14 +237,11 @@ depth関数とブレンディングを使い修正できる可能性がありま
 +  }
 +  return false;
 +}
-
 -function makeBoxes(file, hueRange) {
 +function makeBoxes(file, hueRange, fileInfos) {
   const {min, max, data} = file;
   const range = max - min;
-
   ...
-
   const geometries = [];
   data.forEach((row, latNdx) =&gt; {
     row.forEach((value, lonNdx) =&gt; {
@@ -265,7 +249,6 @@ depth関数とブレンディングを使い修正できる可能性がありま
 +        return;
 +      }
       const amount = (value - min) / range;
-
   ...
 </pre>
 <p><code class="notranslate" translate="no">addBoxes</code> を呼び出していたコードを <code class="notranslate" translate="no">makeBoxes</code> に変更し、モーフターゲットを設定します。</p>
@@ -294,7 +277,6 @@ depth関数とブレンディングを使い修正できる可能性がありま
 +});
 +const mesh = new THREE.Mesh(baseGeometry, material);
 +scene.add(mesh);
-
 const uiElem = document.querySelector('#ui');
 fileInfos.forEach((info) =&gt; {
 -  const boxes = addBoxes(info.file, info.hueRange);
@@ -386,7 +368,6 @@ TweenManagerは <code class="notranslate" translate="no">update</code> メソッ
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 +  const tweenManager = new TweenManger();
-
   ...
 </pre>
 <p>TweenMangerを使って <code class="notranslate" translate="no">Tween</code> を作成します。</p>
@@ -411,17 +392,14 @@ function showFileInfo(fileInfos, fileInfo) {
 <p>次にtweenManagerを更新するためにレンダーループを修正し、アニメーションが実行されている場合はレンダリングを継続します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
   renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  if (tweenManager.update()) {
 +    requestRenderIfNotRequested();
 +  }
-
   controls.update();
   renderer.render(scene, camera);
 }
@@ -432,7 +410,6 @@ render();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-morphtargets.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-morphtargets.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これがお役に立てれば幸いです。
 three.jsが提供するサービスを利用するか、カスタムシェーダーを使ってモーフターゲットを使うのは多くのオブジェクトを移動させるための一般的なテクニックです。
@@ -442,15 +419,9 @@ three.jsが提供するサービスを利用するか、カスタムシェーダ
 <p>注: 男性や女性の割合、または正の差をグラフ化する事もできますが、情報を表示する方法に基づいて地表から成長するキューブはほとんどのキューブが低い方が良いでしょう。
 これらの他の比較を使用した場合、ほとんどのキューブは最大高さの約1/2の大きさになり可視化として良くありません。
 <code class="notranslate" translate="no">amountGreaterThan</code> を変えたように感じますが、このような場合は <a href="/docs/#api/ja/math/Math.max(a - b, 0)"><code class="notranslate" translate="no">Math.max(a - b, 0)</code></a> を <code class="notranslate" translate="no">(a - b)</code> "正の差" や <code class="notranslate" translate="no">a / (a +b)</code> "パーセント" のようなものに変えると何を言っているのかわかるでしょう。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -95,7 +93,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
   </div>
 </div>
 <div class="threejs_center code">同じマテリアルでポリゴン数を変えたモデル</div>
-
 <p><a href="/docs/#api/ja/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a>の<code class="notranslate" translate="no">shininess</code>設定は特定のハイライトの<em>輝き</em>を決めます。デフォルトは30です。</p>
 <div class="spread">
   <div>
@@ -111,7 +108,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
     <div class="code">shininess: 150</div>
   </div>
 </div>
-
 <p><a href="/docs/#api/ja/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a>か<a href="/docs/#api/ja/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a>のどちらかで、colorに対して<code class="notranslate" translate="no">emissive</code>属性を設定し、
 色を黒（phongなら<code class="notranslate" translate="no">shininess</code>を0）に設定すると、ちょうど<a href="/docs/#api/ja/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>のように見えることに注意してください。</p>
 <div class="spread">
@@ -140,7 +136,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
     </div>
   </div>
 </div>
-
 <p><a href="/docs/#api/ja/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a>は<a href="/docs/#api/ja/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>や<a href="/docs/#api/ja/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a>と同じようにできるのに、なぜ3種もあるのでしょうか。
 理由は、より洗練されたマテリアルは、描写するのにGPUパワーを必要とするためです。
 携帯電話といった、遅いGPCでは、より簡単なマテリアルを使うことで、描画に必要なGPUパワーを削減できるかもしれません。
@@ -153,7 +148,6 @@ const m5 = new THREE.MeshBasicMaterial({color: 'hsl(0,100%,50%)'}); // red
 <div class="spread">
   <div data-diagram="MeshToonMaterial"></div>
 </div>
-
 <p>続いて２つの<em>物理ベースレンダリング</em>のマテリアルがあります。
 物理ベースレンダリングはよくPBRと略します。</p>
 <p>上記のマテリアルは、3Dに見えるマテリアルを簡単な数学で作っていますが、
@@ -174,7 +168,6 @@ roughnessは0から1の間をとります。</p>
 右に行くにつれて、<code class="notranslate" translate="no">roughness</code>は0から1に変わります。
 下に行くにつれて、<code class="notranslate" translate="no">metalness</code>は0から1に変わります。</p>
 <div data-diagram="MeshStandardMaterial" style="min-height: 400px"></div>
-
 <p><a href="/docs/#api/ja/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>は、<a href="/docs/#api/ja/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a>と同様ですが、
 <code class="notranslate" translate="no">clearcoat</code>パラメータが追加されています。このパラメータは、0から1につれて、
 clearcoat光沢層が適用されます。
@@ -182,7 +175,6 @@ clearcoat光沢層が適用されます。
 <p>ここに、上と同じ<code class="notranslate" translate="no">metalness</code>と<code class="notranslate" translate="no">roughness</code>のグリッドがあります。
 ただし、<code class="notranslate" translate="no">clearcoat</code>と<code class="notranslate" translate="no">clearCoatRoughness</code>の設定が付いています。</p>
 <div data-diagram="MeshPhysicalMaterial" style="min-height: 400px"></div>
-
 <p>様々な標準のマテリアルのうち、高速なものから低速なものを並べると、
 <a href="/docs/#api/ja/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> ➡ <a href="/docs/#api/ja/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a> ➡ <a href="/docs/#api/ja/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> ➡
 <a href="/docs/#api/ja/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> ➡ <a href="/docs/#api/ja/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>になります。
@@ -200,8 +192,6 @@ clearcoat光沢層が適用されます。
     <div data-diagram="MeshDepthMaterial"></div>
   </div>
 </div>
-
-
 <p><a href="/docs/#api/ja/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a>はジオメトリの<em>法線</em>を表示します。
 <em>法線</em>は、特定の三角形かピクセル表面の方向です。
 <a href="/docs/#api/ja/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a>は見えている空間の法線を描画します（法線はカメラに依存します）。</p>
@@ -218,7 +208,6 @@ clearcoat光沢層が適用されます。
     <div data-diagram="MeshNormalMaterial"></div>
   </div>
 </div>
-
 <p><a href="/docs/#api/ja/materials/ShaderMaterial"><code class="notranslate" translate="no">ShaderMaterial</code></a>は、three.jsのシェーダーシステムを使ったカスタムマテリアルを作るためのものです
 <a href="/docs/#api/ja/materials/RawShaderMaterial"><code class="notranslate" translate="no">RawShaderMaterial</code></a>は、three.jsの補助なしで、完全に独自シェーダーを作るためのものです。
 これらのトピックはどちらも大きいため、後ほど説明します。</p>
@@ -235,7 +224,6 @@ clearcoat光沢層が適用されます。
     <div class="code">flatShading: true</div>
   </div>
 </div>
-
 <p><a href="/docs/#api/ja/materials/Material#side"><code class="notranslate" translate="no">side</code></a>：三角形の両面を表示するか。デフォルトは<code class="notranslate" translate="no">THREE.FrontSide</code>です。
 ほかのオプションは <code class="notranslate" translate="no">THREE.BackSide</code>と<code class="notranslate" translate="no">THREE.DoubleSide</code>(両面)です。
 threeで描写されるほとんどの3Dオブジェクトは、たぶん不透明な固体です。
@@ -253,13 +241,11 @@ threeで描写されるほとんどの3Dオブジェクトは、たぶん不透�
     <div class="code">side: THREE.DoubleSide</div>
   </div>
 </div>
-
 <p>マテリアルについては、本当にたくさん考えることがあり、実際にはもっとたくさんの説明したいパラメータがあります。
 特に、私たちは多くのオプションの話につながる、テクスチャをほとんど無視していました。
 テクスチャを説明する前に、休憩を取って、<a href="setup.html">開発環境のセットアップ</a>を説明する必要があります。</p>
 <div class="threejs_bottombar">
 <h3>material.needsUpdate</h3>
-
 <p>
 このトピックはめったにthree.jsアプリに影響しませんが、単にFYIのつもりで...。
 Three.jsはマテリアルが"使われた"ときに設定を適用します。
@@ -267,7 +253,6 @@ Three.jsはマテリアルが"使われた"ときに設定を適用します。
 マテリアルの設定はたった一度だけ適用されます。変更するとthree.jsに多くの仕事が必要になります。
 変更するケースでは、three.jsに変更を伝えるため、<code class="notranslate" translate="no">material.needsUpdate = true</code>を設定する必要があります。
 マテリアルを試用した後で、<code class="notranslate" translate="no">needsUpdate</code>の設定を必要とする一般的な設定はこのようになります：
-
 </p>
 <ul>
   <li><code class="notranslate" translate="no">flatShading</code></li>
@@ -287,19 +272,11 @@ Three.jsはマテリアルが"使われた"ときに設定を適用します。
 めったに一方からもう一方に切り替えたりしません。
 </p>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-materials.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -134,11 +132,9 @@
     });
   });
 }
-
 function px(v) {
   return `${v | 0}px`;
 }
-
 function hsl(h, s, l) {
   return `hsl(${h * 360 | 0},${s * 100 | 0}%,${l * 100 | 0}%)`;
 }
@@ -153,13 +149,11 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/gpw-data-viewer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/gpw-data-viewer.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Так что, кажется, это работает. </p>
 <p>Давайте попробуем это в 3D. Начиная с кода от <a href="rendering-on-demand.html">рендеринга по требованию</a> мы сделаем один блок на данные в файле. </p>
 <p>Сначала давайте сделаем простую сферу с текстурой мира. Вот текстура </p>
 <div class="threejs_center"><img src="../examples/resources/images/world.jpg" style="width: 600px"></div>
-
 <p>И код для его настройки. </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
@@ -175,7 +169,6 @@ function hsl(h, s, l) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
   // make one box geometry
   const boxWidth = 1;
   const boxHeight = 1;
@@ -183,7 +176,6 @@ function hsl(h, s, l) {
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   // make it so it scales away from the positive Z axis
   geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -195,7 +187,6 @@ function hsl(h, s, l) {
   const positionHelper = new THREE.Object3D();
   positionHelper.position.z = 1;
   latHelper.add(positionHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
   data.forEach((row, latNdx) =&gt; {
@@ -211,16 +202,13 @@ function hsl(h, s, l) {
       material.color.setHSL(hue, saturation, lightness);
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
       // use the world matrix of the position helper to
       // position this mesh.
       positionHelper.updateWorldMatrix(true, false);
       mesh.applyMatrix4(positionHelper.matrixWorld);
-
       mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     });
   });
@@ -239,7 +227,6 @@ function hsl(h, s, l) {
     <div class="code">adjusted</div>
   </div>
 </div>
-
 <p>Конечно, мы могли бы также решить эту проблему, добавив в родительский блок больше объектов 
 THREE.Object3D, как мы покрывали в <a href="scenegraph.html">графах сцены</a> 
 но чем больше узлов мы добавляем в граф сцены, тем медленнее он становится. </p>
@@ -248,7 +235,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 <div class="spread">
   <div data-diagram="lonLatPos" style="width: 600px; height: 400px;"></div>
 </div>
-
 <p>Над <span style="color: green;">зелёной полосой</span> изображен  <code class="notranslate" translate="no">lonHelper</code> и используется для поворота в направлении долготы на экваторе.
 <span style="color: blue;">Синяя полоса</span> обозначает <code class="notranslate" translate="no">latHelper</code> который используется для поворота на широту выше или ниже экватора. 
 <span style="color: red;">Красная сфера</span> представляет смещение, которое обеспечивает этот <code class="notranslate" translate="no">positionHelper</code>.</p>
@@ -280,15 +266,12 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-slow.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-slow.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Если вы попытаетесь повернуть приведенный выше пример, перетащив образец, вы, вероятно, заметите, что он медленный. </p>
 <p>Мы можем проверить частоту кадров, <a href="debugging-javascript.html">открыв devtools</a> и включив индикатор частоты кадров браузера.</p>
 <div class="threejs_center"><img src="../resources/images/bring-up-fps-meter.gif"></div>
-
 <p>На моей машине я вижу частоту кадров ниже 20 кадров в секунду. </p>
 <div class="threejs_center"><img src="../resources/images/fps-meter.gif"></div>
-
 <p>Это не очень хорошо для меня, и я подозреваю, что многие люди имеют более медленные машины, которые сделали бы это еще хуже. Нам лучше взглянуть на оптимизацию. </p>
 <p>Для этой конкретной задачи мы можем объединить все блоки в одну геометрию. 
 В настоящее время мы рисуем около 19000 коробок. Объединяя их в одну геометрию, мы удалили 18999 операций. </p>
@@ -296,7 +279,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
 -  // make one box geometry
 -  const boxWidth = 1;
 -  const boxHeight = 1;
@@ -304,7 +286,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 -  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 -  // make it so it scales away from the positive Z axis
 -  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // these helpers will make it easy to position the boxes
   // We can rotate the lon helper on its Y axis to the longitude
   const lonHelper = new THREE.Object3D();
@@ -320,7 +301,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 +  const originHelper = new THREE.Object3D();
 +  originHelper.position.z = 0.5;
 +  positionHelper.add(originHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
 +  const geometries = [];
@@ -330,7 +310,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
         return;
       }
       const amount = (value - min) / range;
-
 -      const material = new THREE.MeshBasicMaterial();
 -      const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 -      const saturation = 1;
@@ -338,23 +317,19 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 -      material.color.setHSL(hue, saturation, lightness);
 -      const mesh = new THREE.Mesh(geometry, material);
 -      scene.add(mesh);
-
 +      const boxWidth = 1;
 +      const boxHeight = 1;
 +      const boxDepth = 1;
 +      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
       // adjust the helpers to point to the latitude and longitude
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
 -      // use the world matrix of the position helper to
 -      // position this mesh.
 -      positionHelper.updateWorldMatrix(true, false);
 -      mesh.applyMatrix4(positionHelper.matrixWorld);
 -
 -      mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
-
 +      // use the world matrix of the origin helper to
 +      // position this geometry
 +      positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
@@ -364,13 +339,11 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 +      geometries.push(geometry);
     });
   });
-
 +  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 +      geometries, false);
 +  const material = new THREE.MeshBasicMaterial({color:'red'});
 +  const mesh = new THREE.Mesh(mergedGeometry, material);
 +  scene.add(mesh);
-
 }
 </pre>
 <p>Выше мы удалили код, который изменял центральную точку геометрии бокса,
@@ -387,7 +360,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Так что это сработало, но поскольку это одна сетка, мы получаем только один материал, 
 что означает, что мы получаем только один цвет, тогда как раньше у нас был другой цвет 
@@ -395,7 +367,6 @@ THREE.Object3D, как мы покрывали в <a href="scenegraph.html">гр
 <p>Цвета вершин добавляют цвет для каждой вершины. Установив все цвета каждой 
 вершины каждого блока на определенные цвета, каждый блок будет иметь другой цвет. </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const color = new THREE.Color();
-
 const lonFudge = Math.PI * .5;
 const latFudge = Math.PI * -0.135;
 const geometries = [];
@@ -405,22 +376,18 @@ data.forEach((row, latNdx) =&gt; {
       return;
     }
     const amount = (value - min) / range;
-
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
     // adjust the helpers to point to the latitude and longitude
     lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
     latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
     // use the world matrix of the origin helper to
     // position this geometry
     positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     originHelper.updateWorldMatrix(true, false);
     geometry.applyMatrix4(originHelper.matrixWorld);
-
 +    // compute a color
 +    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const saturation = 1;
@@ -442,7 +409,6 @@ data.forEach((row, latNdx) =&gt; {
 +    const normalized = true;
 +    const colorAttrib = new THREE.BufferAttribute(colors, itemSize, normalized);
 +    geometry.setAttribute('color', colorAttrib);
-
     geometries.push(geometry);
   });
 });
@@ -466,7 +432,6 @@ scene.add(mesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged-vertexcolors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged-vertexcolors.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Объединение геометрии является распространенным методом оптимизации.
 Например, вместо 100 деревьев вы можете объединить деревья в одну геометрию, 
@@ -478,15 +443,9 @@ scene.add(mesh);
 <a href="optimize-lots-of-objects-animated.html">другой статье</a>.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lots-of-objects.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

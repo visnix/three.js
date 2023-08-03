@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,10 +42,8 @@ const near = 0.1;
 *const far = 200;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 *camera.position.z = 30;
-
 const scene = new THREE.Scene();
 +scene.background = new THREE.Color('white');
-
 +// 카메라를 봉(pole)에 추가합니다.
 +// 이러면 봉을 회전시켜 카메라가 장면 주위를 돌도록 할 수 있습니다
 +const cameraPole = new THREE.Object3D();
@@ -66,7 +62,6 @@ const scene = new THREE.Scene();
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -74,20 +69,16 @@ function rand(min, max) {
   }
   return min + (max - min) * Math.random();
 }
-
 function randomColor() {
   return `hsl(${ rand(360) | 0 }, ${ rand(50, 100) | 0 }%, 50%)`;
 }
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
     color: randomColor(),
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
@@ -107,7 +98,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
     // 절두체 안에 광선을 쏩니다
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // 광선과 교차하는 물체들을 배열로 만듭니다
@@ -127,9 +117,7 @@ for (let i = 0; i &lt; numObjects; ++i) {
 <p>사용자가 마우스를 눌렀을 때(down)만 이 함수가 작동하도록 할 수도 있지만, 예제에서는 마우스 포인터 아래의 있는 요소를 피킹하도록 하겠습니다. 이를 구현하려면 먼저 포인터를 추적해야 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickPosition = { x: 0, y: 0 };
 clearPickPosition();
-
 ...
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -137,13 +125,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function setPickPosition(event) {
   const pos = getCanvasRelativePosition(event);
   pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
   pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // Y 축을 뒤집었음
 }
-
 function clearPickPosition() {
   /**
    * 마우스의 경우는 항상 위치가 있어 그다지 큰
@@ -154,7 +140,6 @@ function clearPickPosition() {
   pickPosition.x = -100000;
   pickPosition.y = -100000;
 }
-
 window.addEventListener('mousemove', setPickPosition);
 window.addEventListener('mouseout', clearPickPosition);
 window.addEventListener('mouseleave', clearPickPosition);
@@ -165,25 +150,18 @@ window.addEventListener('mouseleave', clearPickPosition);
   event.preventDefault(); // 스크롤 이벤트 방지
   setPickPosition(event.touches[0]);
 }, { passive: false });
-
 window.addEventListener('touchmove', (event) =&gt; {
   setPickPosition(event.touches[0]);
 });
-
 window.addEventListener('touchend', clearPickPosition);
 </pre>
 <p>마지막으로 <code class="notranslate" translate="no">render</code> 함수에서 <code class="notranslate" translate="no">PickHelper</code>의 <code class="notranslate" translate="no">pick</code> 메서드를 호출합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const pickHelper = new PickHelper();
-
 function render(time) {
   time *= 0.001;  // 초 단위로 변환
-
   ...
-
 +  pickHelper.pick(pickPosition, scene, camera, time);
-
   renderer.render(scene, camera);
-
   ...
 </pre>
 <p>결과를 볼까요?</p>
@@ -191,7 +169,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>딱히 문제는 없어 보입니다. 실제로 사용하는 경우도 대부분 문제 없이 잘 되겠지만, 이 방법에는 몇 가지 문제점이 있습니다.</p>
 <ol>
@@ -208,11 +185,9 @@ function render(time) {
 </ol>
 <p>예제를 하나 만들어보죠. 아래와 같은 텍스처를 정육면체에 적용해봅시다.</p>
 <div class="threejs_center"><img class="checkerboard" src="../examples/resources/images/frame.png"></div>
-
 <p>그다지 추가할 건 많지 않습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load('resources/images/frame.png');
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
@@ -222,10 +197,8 @@ for (let i = 0; i &lt; numObjects; ++i) {
     +side: THREE.DoubleSide,
     +alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   ...
 </pre>
 <p>예제를 실행시키면 바로 문제가 보일 겁니다.</p>
@@ -233,11 +206,9 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster-transparency.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster-transparency.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>정육면체의 빈 공간을 통해 무언가를 선택할 수가 없죠.</p>
 <div class="threejs_center"><img src="../resources/images/picking-transparent-issue.jpg" style="width: 635px;"></div>
-
 <p>이는 자바스크립트가 텍스처나 재질을 보고 해당 요소가 투명한지 판단하기가 어렵기 때문입니다.</p>
 <p>이 문제를 해결하려면 GPU 기반 피킹을 구현해야 합니다. 이론적으로는 간단하지만 위에서 사용한 광선 투사법보다는 좀 더 복잡하죠.</p>
 <p>GPU 피킹을 구현하려면 각 요소를 별도의 화면에서 고유한 색상으로 렌더링해야 합니다. 그리고 포인터 아래에 있는 픽셀의 색을 가져와 해당 요소가 선택됐는지 확인하는 거죠.</p>
@@ -262,15 +233,12 @@ for (let i = 0; i &lt; numObjects; ++i) {
     side: THREE.DoubleSide,
     alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 +  idToObject[id] = cube;
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
-
 +  const pickingMaterial = new THREE.MeshPhongMaterial({
 +    emissive: new THREE.Color(id),
 +    color: new THREE.Color(0, 0, 0),
@@ -312,13 +280,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   }
   pick(cssPosition, scene, camera, time) {
 +    const {pickingTexture, pixelBuffer} = this;
-
     // 기존에 선택된 요소가 있는 경우 색을 복원합니다
     if (this.pickedObject) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
 +    // view offset을 마우스 포인터 아래 1픽셀로 설정합니다
 +    const pixelRatio = renderer.getPixelRatio();
 +    camera.setViewOffset(
@@ -349,7 +315,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
 +        (pixelBuffer[2]      );
-
     // 절두체 안에 광선을 쏩니다
 -    this.raycaster.setFromCamera(normalizedPosition, camera);
     // 광선과 교차하는 물체들을 배열로 만듭니다
@@ -357,7 +322,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 -    if (intersectedObjects.length) {
       // 첫 번째 물체가 제일 가까우므로 해당 물체를 고릅니다
 -      this.pickedObject = intersectedObjects[0].object;
-
 +    const intersectedObject = idToObject[id];
 +    if (intersectedObject) {
       // 첫 번째 물체가 제일 가까우므로 해당 물체를 고릅니다
@@ -383,18 +347,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-gpu.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-gpu.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 글이 피킹을 구현하는 데 도움이 되었으면 좋겠네요. 나중에 요소를 마우스로 조작하는 법에 대해서도 한 번 써보겠습니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

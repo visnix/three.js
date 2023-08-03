@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -38,7 +36,6 @@
 <p>理解<code class="notranslate" translate="no">EffectComposer</code>是如何工作的是有一点重要的。它创建两个<a href="rendertargets.html">render targets</a>。让我们称他们为<strong>rtA</strong>和<strong>rtB</strong></p>
 <p>然后你调用<code class="notranslate" translate="no">EffectComposer.addPass</code>按照你想要应用它们的顺序增加<code class="notranslate" translate="no">pass</code>。然后它们就被向下图所示的被应用。</p>
 <div class="threejs_center"><img src="../resources/images/threejs-postprocessing.svg" style="width: 600px"></div>
-
 <p>首先 你传入<code class="notranslate" translate="no">RenderPass</code>的场景被渲染到rtA，不管rta的内容是啥，它继续向下一个<code class="notranslate" translate="no">pass</code>传递。下一个<code class="notranslate" translate="no">pass</code>将它作为输入做一些操作然后将其写入到rtB。然后rtB传到下一个<code class="notranslate" translate="no">pass</code>,将rtB作为输入作一些操作然后在写回rtA。这个过程在整个pass过程中持续发生。</p>
 <p>每个<code class="notranslate" translate="no">pass</code>都有4个基础选项</p>
 <h2 id="enabled">enabled</h2>
@@ -90,14 +87,12 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 +  now *= 0.001;  // convert to seconds
 +  const deltaTime = now - then;
 +  then = now;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
 +    composer.setSize(canvas.width, canvas.height);
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
 -    const rot = time * speed;
@@ -105,10 +100,8 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
 -  renderer.render(scene, camera);
 +  composer.render(deltaTime);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -117,7 +110,6 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>要在运行时更改效果参数，通常需要设置统一的值。让我们添加一个GUI来调整一些参数。为了您可以轻松调整哪些值以及如何调整它们您需要深入了解该效果的代码。</p>
 <p>查看<code class="notranslate" translate="no">BloomPass.js</code>，我找到了这一行</p>
@@ -157,7 +149,6 @@ if ( scanlinesCount !== undefined ) this.uniforms.sCount.value = scanlinesCount;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-gui.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>这是实现我们自己后期效果的一小步。</p>
 <p>后期效果需要使用着色器。着色器用称为GLSL（图形库着色语言）的语言编写 。对于这些文章，讲述整个是一个太大的话题。一些入门的资料 ，可以是<a href="https://webglfundamentals.org/webgl/lessons/webgl-shaders-and-glsl.html">这篇文章</a> 也可以是这本书 <a href="https://thebookofshaders.com/">the books of shaders</a>。</p>
@@ -210,19 +201,12 @@ gui.add(colorPass.uniforms.color.value, 'b', 0, 4).name('blue');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-custom.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-custom.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>如前所述，对于这些文章来说，要讲述如何编写GLSL和自定义着色器的所有细节太多了。如果您真的想知道WebGL本身是如何工作的，请查看<a href="https://webglfundamentals.org">这些文章</a>。另一个很棒的资源是<a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/shaders">read through the existing post processing shaders in the THREE.js repo</a>。有些是较为复杂的，但是如果你从简单开始，你会大概率能够了解它们是如何工作的。</p>
 <p>不幸的是，THREE.js存储库中的大多数后期处理效果都没有记录在案，因此要使用它们，你必须通读<a href="https://github.com/mrdoob/three.js/tree/master/examples">示例</a>或者<a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/postprocessing">源码</a>。希望这些简单的示例以及有关<a href="notion://www.notion.so/threejs-rendertargets.html">render targets</a>的文章 提供足够的上下文来帮助你开始</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

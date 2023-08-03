@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -64,7 +62,6 @@ drawing anything are transparent.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/background-css.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/background-css.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>If we want the background to be able to be affected by <a href="post-processing.html">post processing
 effects</a> then we need to draw the background using
@@ -81,15 +78,12 @@ scene.background = bgTexture;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/background-scene-background.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/background-scene-background.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>This gets us a background image but its stretched to fit the screen.</p>
 <p>We can solve this issue by setting the <code class="notranslate" translate="no">repeat</code> and <code class="notranslate" translate="no">offset</code> properties of
 the texture to show only a portion of image.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
-
    ...
-
 +  // Set the repeat and offset properties of the background texture
 +  // to keep the image's aspect correct.
 +  // Note the image may not have loaded yet.
@@ -102,11 +96,8 @@ the texture to show only a portion of image.</p>
 +
 +  bgTexture.offset.y = aspect &gt; 1 ? 0 : (1 - aspect) / 2;
 +  bgTexture.repeat.y = aspect &gt; 1 ? 1 : aspect;
-
   ...
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -117,7 +108,6 @@ effect</a> the background would be affected too.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/background-scene-background-fixed-aspect.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/background-scene-background-fixed-aspect.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Of course a static background is not usually what we want in a 3D scene. Instead
 we usually want some kind of <em>skybox</em>. A skybox is just that, box with the sky
@@ -149,7 +139,6 @@ View, California.</p>
   <img src="../examples/resources/images/cubemaps/computer-history-museum/pos-z.jpg" style="width: 200px" class="border">
   <img src="../examples/resources/images/cubemaps/computer-history-museum/neg-z.jpg" style="width: 200px" class="border">
 </div>
-
 <p>To use them we use <a href="/docs/#api/en/loaders/CubeTextureLoader"><code class="notranslate" translate="no">CubeTextureLoader</code></a> to load them and then use that as a the
 scene's background.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
@@ -167,9 +156,7 @@ scene's background.</p>
 </pre>
 <p>At render time we don't need to adjust the texture like we did above</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
-
    ...
-
 -  // Set the repeat and offset properties of the background texture
 -  // to keep the image's aspect correct.
 -  // Note the image may not have loaded yet.
@@ -182,11 +169,8 @@ scene's background.</p>
 -
 -  bgTexture.offset.y = aspect &gt; 1 ? 0 : (1 - aspect) / 2;
 -  bgTexture.repeat.y = aspect &gt; 1 ? 1 : aspect;
-
   ...
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -201,7 +185,6 @@ const near = 0.1;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 -camera.position.z = 2;
 +camera.position.z = 3;
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 0, 0);
 +controls.update();
@@ -212,14 +195,12 @@ surrounds us.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/background-cubemap.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/background-cubemap.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Another option is to use an Equirectangular map. This is the kind of picture a
 <a href="https://google.com/search?q=360+camera">360 camera</a> takes.</p>
 <p><a href="https://hdrihaven.com/hdri/?h=tears_of_steel_bridge">Here's one</a> I found from
 <a href="https://hdrihaven.com">this site</a>.</p>
 <div class="threejs_center"><img src="../examples/resources/images/equirectangularmaps/tears_of_steel_bridge_2k.jpg" style="width: 600px"></div>
-
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
 -  const loader = new THREE.CubeTextureLoader();
 -  const texture = loader.load([
@@ -246,19 +227,12 @@ surrounds us.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/background-equirectangularmap.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/background-equirectangularmap.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Rather than do it at load time you can also convert an equirectangular image
 to a cubemap beforehand. <a href="https://matheowis.github.io/HDRI-to-CubeMap/">Here's a site that will do it for you</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

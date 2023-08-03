@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -89,7 +87,6 @@
 <p>现在，创建两个<a href="/docs/#api/zh/scenes/Scene"><code class="notranslate" translate="no">Scene</code></a>，其中一个添加了立方体，另一个为菱形，并分别为这两个<a href="/docs/#api/zh/scenes/Scene"><code class="notranslate" translate="no">Scene</code></a>添加灯光<code class="notranslate" translate="no">（Light）</code>和相机<code class="notranslate" translate="no">（Camera）</code>。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // the canvas default
   const near = 0.1;
@@ -98,7 +95,6 @@
   camera.position.z = 2;
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -106,10 +102,8 @@
     light.position.set(-1, 2, 4);
     scene.add(light);
   }
-
   return {scene, camera, elem};
 }
-
 function setupScene1() {
   const sceneInfo = makeScene(document.querySelector('#box'));
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -119,7 +113,6 @@ function setupScene1() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 function setupScene2() {
   const sceneInfo = makeScene(document.querySelector('#pyramid'));
   const radius = .8;
@@ -135,7 +128,6 @@ function setupScene2() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 const sceneInfo1 = setupScene1();
 const sceneInfo2 = setupScene2();
 </pre>
@@ -153,47 +145,36 @@ Renderer.### <a href="">setViewport</a> ( x : Integer, y : Integer, width : Inte
 <p>视图信息获取函数如下：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function renderSceneInfo(sceneInfo) {
   const {scene, camera, elem} = sceneInfo;
-
   // get the viewport relative position of this element
   const {left, right, top, bottom, width, height} =
       elem.getBoundingClientRect();
-
   const isOffscreen =
       bottom &lt; 0 ||
       top &gt; renderer.domElement.clientHeight ||
       right &lt; 0 ||
       left &gt; renderer.domElement.clientWidth;
-
   if (isOffscreen) {
     return;
   }
-
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-
   const positiveYUpBottom = canvasRect.height - bottom;
   renderer.setScissor(left, positiveYUpBottom, width, height);
   renderer.setViewport(left, positiveYUpBottom, width, height);
-
   renderer.render(scene, camera);
 }
 </pre>
 <p>视图渲染函数如下：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   sceneInfo1.mesh.rotation.y = time * .1;
   sceneInfo2.mesh.rotation.y = time * .1;
-
   renderSceneInfo(sceneInfo1);
   renderSceneInfo(sceneInfo2);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -202,7 +183,6 @@ Renderer.### <a href="">setViewport</a> ( x : Integer, y : Integer, width : Inte
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-multiple-scenes-v1.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-multiple-scenes-v1.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>可以看到，两个物体被分别渲染到了对应的位置。</p>
 <h2 id="-">同步滚动</h2>
@@ -228,7 +208,6 @@ Renderer.### <a href="">setViewport</a> ( x : Integer, y : Integer, width : Inte
 <p>为了解决这个问题，先将<code class="notranslate" translate="no">Canvas</code>的定位方式由<code class="notranslate" translate="no">position: fixed</code> 改为<code class="notranslate" translate="no">position: absolute</code>。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   ...
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
 </pre>
@@ -242,40 +221,31 @@ Renderer.### <a href="">setViewport</a> ( x : Integer, y : Integer, width : Inte
 function addScene(elem, fn) {
   sceneElements.push({elem, fn});
 }
-
 function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.setClearColor(clearColor, 0);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
-
   for (const {elem, fn} of sceneElements) {
     // get the viewport relative position of this element
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
-
     const isOffscreen =
         bottom &lt; 0 ||
         top &gt; renderer.domElement.clientHeight ||
         right &lt; 0 ||
         left &gt; renderer.domElement.clientWidth;
-
     if (!isOffscreen) {
       const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
       renderer.setScissor(left, positiveYUpBottom, width, height);
       renderer.setViewport(left, positiveYUpBottom, width, height);
-
       fn(time, rect);
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -296,7 +266,6 @@ function render(time) {
     renderer.render(scene, camera);
   });
 }
-
 {
   const elem = document.querySelector('#pyramid');
   const {scene, camera} = makeScene();
@@ -323,7 +292,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-multiple-scenes-generic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-multiple-scenes-generic.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <h3 id="-html-dataset">使用HTML Dataset</h3>
 <p>更好用的最后一步就是使用HTML <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">dataset</a>，这是一种将自己的数据添加到HTML元素中的方法，我们不再使用<code class="notranslate" translate="no">id="..."</code>，而是使用<code class="notranslate" translate="no">data-diagram="..."</code>，就像这样：</p>
@@ -403,7 +371,6 @@ function render(time) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function makeScene() {
 +function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // the canvas default
   const near = 0.1;
@@ -412,11 +379,9 @@ function render(time) {
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
 +  scene.add(camera);
-
 +  const controls = new TrackballControls(camera, elem);
 +  controls.noZoom = true;
 +  controls.noPan = true;
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -425,7 +390,6 @@ function render(time) {
 -    scene.add(light);
 +    camera.add(light);
   }
-
 -  return {scene, camera};
 + return {scene, camera, controls};
 }
@@ -480,8 +444,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-multiple-scenes-controls.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-multiple-scenes-controls.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
-
 上面提到的方法在本网站上可以找到很多实例，比如<a href="https://threejsfundamentals.org/threejs/lessons/threejs-primitives.html">Three.js 图元</a>和<a href="https://threejsfundamentals.org/threejs/lessons/threejs-materials.html">Three.js 材质</a> 这两篇文章。<p></p>
 <h2 id="-">另一个方法</h2>
 <p>还有一个方法也可以实现这种效果，原理是渲染到屏幕外的画布上，并将结果复制到对应的2D画布上。这个方法的优点是对如何组合每个独立区域没有限制，因此只需正常编写HTML即可。而第一种方法则需要在背景设置一个<code class="notranslate" translate="no">Canvas</code>。</p>
@@ -520,7 +482,6 @@ canvas {
 +  const canvas = document.createElement('canvas');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas, alpha: true});
 +  renderer.setScissorTest(true);
-
   ...
 </pre>
 <p>然后，对于每个场景，我们创建一个二维渲染上下文，并将其画布添加到该场景对应的元素中:</p>
@@ -535,7 +496,6 @@ function addScene(elem, fn) {
 <p>在渲染时，如果渲染器的画布不够大导致无法渲染在这个区域，就增加其大小；如果这个区域的画布大小错误，就改变它的大小。最后，设置剪裁区域和视口大小、渲染该区域的场景并将结果复制到该区域的画布上。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 -  resizeRendererToDisplaySize(renderer);
 -
 -  renderer.setScissorTest(false);
@@ -545,14 +505,12 @@ function addScene(elem, fn) {
 -
 -  const transform = `translateY(${window.scrollY}px)`;
 -  renderer.domElement.style.transform = transform;
-
 -  for (const {elem, fn} of sceneElements) {
 +  for (const {elem, fn, ctx} of sceneElements) {
     // get the viewport relative position of this element
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
 +    const rendererCanvas = renderer.domElement;
-
     const isOffscreen =
         bottom &lt; 0 ||
 -        top &gt; renderer.domElement.clientHeight ||
@@ -560,12 +518,10 @@ function addScene(elem, fn) {
         right &lt; 0 ||
 -        left &gt; renderer.domElement.clientWidth;
 +        left &gt; window.innerWidth;
-
     if (!isOffscreen) {
 -      const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
 -      renderer.setScissor(left, positiveYUpBottom, width, height);
 -      renderer.setViewport(left, positiveYUpBottom, width, height);
-
 +      // make sure the renderer's canvas is big enough
 +      if (rendererCanvas.width &lt; width || rendererCanvas.height &lt; height) {
 +        renderer.setSize(width, height, false);
@@ -579,9 +535,7 @@ function addScene(elem, fn) {
 +
 +      renderer.setScissor(0, 0, width, height);
 +      renderer.setViewport(0, 0, width, height);
-
       fn(time, rect);
-
 +      // copy the rendered scene to this element's canvas
 +      ctx.globalCompositeOperation = 'copy';
 +      ctx.drawImage(
@@ -590,7 +544,6 @@ function addScene(elem, fn) {
 +          0, 0, width, height);                              // dst rect
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -599,19 +552,12 @@ function addScene(elem, fn) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-multiple-scenes-copy-canvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-multiple-scenes-copy-canvas.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <h2 id="-">更新的方法</h2>
 <p>还有一种方法是利用<a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas"><code class="notranslate" translate="no">OffscreenCanvas</code></a>方法，但是截至2020年7月，只有Chrome支持这个方法，感兴趣的小伙伴可以点击查看文档。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

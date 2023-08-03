@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -66,12 +64,10 @@ controls.update();
     width: 128px;
   ">
 </div>
-
 <p>最初にテクスチャを読み込み、何回テクスチャのリピートを繰り返すかを設定し、フィルターはニアレスト(nearest)にします。
 テクスチャは2 x 2ピクセルのチェッカーボードです。
 テクスチャのリピートは平面の半分の大きさにし、チェッカーボードの1つのチェック部分は1にします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeSize = 40;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -149,7 +145,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-ambient.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-ambient.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>シーンをクリックしてドラッグして、カメラを<em>軌道</em>に乗せます。</p>
 <p>環境光源だけでは正しくライティング表現できてません。キューブと球体に陰影がなく形状が平面に見えます。
@@ -182,7 +177,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-hemisphere.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-hemisphere.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>まだ正しくライティング表現ができてなく、キューブと球体が平面に見えます。
 別のライトと組み合わせて使用される <a href="/docs/#api/ja/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a> は、空や地面の色に良い影響を与えます。
@@ -212,7 +206,6 @@ gui.add(light.target.position, 'y', 0, 10);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>なんだか見づらいですね。
 Three.jsにはシーンに追加できるヘルパーオブジェクトがたくさんあり、シーンの見えない部分を視覚化するのに役立ちます。
@@ -239,11 +232,9 @@ scene.add(helper);
 +  helper.update();
 +}
 +updateLight();
-
 const gui = new GUI();
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
-
 +makeXYZGUI(gui, light.position, 'position', updateLight);
 +makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -252,7 +243,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional-w-helper.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>カメラを軌道に乗せると見やすくなります。
 この平面は <a href="/docs/#api/ja/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a> を表しており、DirectionalLightが一方向からのライティングを計算します。
@@ -293,7 +283,6 @@ scene.add(helper);
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
 +gui.add(light, 'distance', 0, 40).onChange(updateLight);
-
 makeXYZGUI(gui, light.position, 'position', updateLight);
 -makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -302,7 +291,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-point.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-point.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">distance</code> が &gt; 0 の時にライトがフェードアウトしている事に注目して下さい。</p>
 <h2 id="-spotlight-"><code class="notranslate" translate="no">SpotLight（集中光線）</code></h2>
@@ -319,7 +307,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
 +const light = new THREE.SpotLight(color, intensity);
 scene.add(light);
 scene.add(light.target);
-
 -const helper = new THREE.DirectionalLightHelper(light);
 +const helper = new THREE.SpotLightHelper(light);
 scene.add(helper);
@@ -337,7 +324,6 @@ scene.add(helper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-spot-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-spot-w-helper.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>デフォルトの <code class="notranslate" translate="no">penumbra</code> が0の場合、集中光源は非常にシャープなエッジを持っていますが、1 に向けて <code class="notranslate" translate="no">penumbra</code> を調整するとエッジがぼやけます。</p>
 <p>集中光源の<em>円錐体</em>が見えにくいかもしれません。
@@ -348,7 +334,6 @@ scene.add(helper);
 これはまさにその名の通り、長い蛍光灯のような長方形のエリアのライトや天井にある曇り空のライトです。</p>
 <p><a href="/docs/#api/ja/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a> は <a href="/docs/#api/ja/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> と <a href="/docs/#api/ja/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a> でしか動作しないので、全てのマテリアルを <a href="/docs/#api/ja/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> に変更しましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
 -  const planeMat = new THREE.MeshPhongMaterial({
 +  const planeMat = new THREE.MeshStandardMaterial({
@@ -402,7 +387,6 @@ scene.add(helper);
 light.position.set(0, 10, 0);
 +light.rotation.x = THREE.MathUtils.degToRad(-90);
 scene.add(light);
-
 *const helper = new RectAreaLightHelper(light);
 *light.add(helper);
 </pre>
@@ -420,7 +404,6 @@ gui.add(light, 'height', 0, 20);
 gui.add(new DegRadHelper(light.rotation, 'x'), 'value', -180, 180).name('x rotation');
 gui.add(new DegRadHelper(light.rotation, 'y'), 'value', -180, 180).name('y rotation');
 gui.add(new DegRadHelper(light.rotation, 'z'), 'value', -180, 180).name('z rotation');
-
 makeXYZGUI(gui, light.position, 'position');
 </pre>
 <p>そして、これが結果です。</p>
@@ -428,22 +411,14 @@ makeXYZGUI(gui, light.position, 'position');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-rectarea.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-rectarea.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
-
 <p>シーンにライトを追加するたびに、Three.jsのレンダリング速度が遅くなる事に注意して下さい。</p>
 <p>次は<a href="cameras.html">カメラの扱い方</a>についてです。</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lights.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

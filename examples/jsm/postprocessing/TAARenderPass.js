@@ -3,7 +3,6 @@ import {
 	WebGLRenderTarget
 } from 'three';
 import { SSAARenderPass } from './SSAARenderPass.js';
-
 /**
  *
  * Temporal Anti-Aliasing Render Pass
@@ -15,145 +14,89 @@ import { SSAARenderPass } from './SSAARenderPass.js';
  * TODO: Add support for motion vector pas so that accumulation of samples across frames can occur on dynamics scenes.
  *
  */
-
 class TAARenderPass extends SSAARenderPass {
-
 	constructor( scene, camera, clearColor, clearAlpha ) {
-
 		super( scene, camera, clearColor, clearAlpha );
-
 		this.sampleLevel = 0;
 		this.accumulate = false;
 		this.accumulateIndex = - 1;
-
 	}
-
 	render( renderer, writeBuffer, readBuffer, deltaTime ) {
-
 		if ( this.accumulate === false ) {
-
 			super.render( renderer, writeBuffer, readBuffer, deltaTime );
-
 			this.accumulateIndex = - 1;
 			return;
-
 		}
-
 		const jitterOffsets = _JitterVectors[ 5 ];
-
 		if ( this.sampleRenderTarget === undefined ) {
-
 			this.sampleRenderTarget = new WebGLRenderTarget( readBuffer.width, readBuffer.height, { type: HalfFloatType } );
 			this.sampleRenderTarget.texture.name = 'TAARenderPass.sample';
-
 		}
-
 		if ( this.holdRenderTarget === undefined ) {
-
 			this.holdRenderTarget = new WebGLRenderTarget( readBuffer.width, readBuffer.height, { type: HalfFloatType } );
 			this.holdRenderTarget.texture.name = 'TAARenderPass.hold';
-
 		}
-
 		if ( this.accumulateIndex === - 1 ) {
-
 			super.render( renderer, this.holdRenderTarget, readBuffer, deltaTime );
-
 			this.accumulateIndex = 0;
-
 		}
-
 		const autoClear = renderer.autoClear;
 		renderer.autoClear = false;
-
 		renderer.getClearColor( this._oldClearColor );
 		const oldClearAlpha = renderer.getClearAlpha();
-
 		const sampleWeight = 1.0 / ( jitterOffsets.length );
-
 		if ( this.accumulateIndex >= 0 && this.accumulateIndex < jitterOffsets.length ) {
-
 			this.copyUniforms[ 'opacity' ].value = sampleWeight;
 			this.copyUniforms[ 'tDiffuse' ].value = writeBuffer.texture;
-
 			// render the scene multiple times, each slightly jitter offset from the last and accumulate the results.
 			const numSamplesPerFrame = Math.pow( 2, this.sampleLevel );
 			for ( let i = 0; i < numSamplesPerFrame; i ++ ) {
-
 				const j = this.accumulateIndex;
 				const jitterOffset = jitterOffsets[ j ];
-
 				if ( this.camera.setViewOffset ) {
-
 					this.camera.setViewOffset( readBuffer.width, readBuffer.height,
 						jitterOffset[ 0 ] * 0.0625, jitterOffset[ 1 ] * 0.0625, // 0.0625 = 1 / 16
 						readBuffer.width, readBuffer.height );
-
 				}
-
 				renderer.setRenderTarget( writeBuffer );
 				renderer.setClearColor( this.clearColor, this.clearAlpha );
 				renderer.clear();
 				renderer.render( this.scene, this.camera );
-
 				renderer.setRenderTarget( this.sampleRenderTarget );
 				if ( this.accumulateIndex === 0 ) {
-
 					renderer.setClearColor( 0x000000, 0.0 );
 					renderer.clear();
-
 				}
-
 				this.fsQuad.render( renderer );
-
 				this.accumulateIndex ++;
-
 				if ( this.accumulateIndex >= jitterOffsets.length ) break;
-
 			}
-
 			if ( this.camera.clearViewOffset ) this.camera.clearViewOffset();
-
 		}
-
 		renderer.setClearColor( this.clearColor, this.clearAlpha );
 		const accumulationWeight = this.accumulateIndex * sampleWeight;
-
 		if ( accumulationWeight > 0 ) {
-
 			this.copyUniforms[ 'opacity' ].value = 1.0;
 			this.copyUniforms[ 'tDiffuse' ].value = this.sampleRenderTarget.texture;
 			renderer.setRenderTarget( writeBuffer );
 			renderer.clear();
 			this.fsQuad.render( renderer );
-
 		}
-
 		if ( accumulationWeight < 1.0 ) {
-
 			this.copyUniforms[ 'opacity' ].value = 1.0 - accumulationWeight;
 			this.copyUniforms[ 'tDiffuse' ].value = this.holdRenderTarget.texture;
 			renderer.setRenderTarget( writeBuffer );
 			this.fsQuad.render( renderer );
-
 		}
-
 		renderer.autoClear = autoClear;
 		renderer.setClearColor( this._oldClearColor, oldClearAlpha );
-
 	}
-
 	dispose() {
-
 		super.dispose();
-
 		if ( this.sampleRenderTarget !== undefined ) this.sampleRenderTarget.dispose();
 		if ( this.holdRenderTarget !== undefined ) this.holdRenderTarget.dispose();
-
 	}
-
 }
-
 const _JitterVectors = [
 	[
 		[ 0, 0 ]
@@ -185,5 +128,4 @@ const _JitterVectors = [
 		[ 2, 5 ], [ 7, 5 ], [ 5, 6 ], [ 3, 7 ]
 	]
 ];
-
 export { TAARenderPass };

@@ -8,13 +8,11 @@
 	<meta property="og:image" content="https://threejs.org/files/share.png">
 	<link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
 	<link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
 	<link rel="stylesheet" href="../resources/lesson.css">
 	<link rel="stylesheet" href="../resources/lang.css">
 	<!-- Import maps polyfill -->
 	<!-- Remove this when import maps will be widely supported -->
 	<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 	<script type="importmap">
 {
   "imports": {
@@ -87,10 +85,8 @@ const boxHeight = 1;
 const boxDepth = 1;
 -const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 +const geometry = track(new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth));
-
 const cubes = [];  // an array we can use to rotate the cubes
 const loader = new THREE.TextureLoader();
-
 -const material = new THREE.MeshBasicMaterial({
 -  map: loader.load('resources/images/wall.jpg'),
 -});
@@ -157,18 +153,14 @@ resTracker.dispose();
 			<p>让我们来调整一下代码，这样我们可以重新添加立方体、纹理和材质。</p>
 			<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
 *const cubes = [];  // just an array we can use to rotate the cubes
-
 +function addStuffToScene() {
   const resTracker = new ResourceTracker();
   const track = resTracker.track.bind(resTracker);
-
   const boxWidth = 1;
   const boxHeight = 1;
   const boxDepth = 1;
   const geometry = track(new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth));
-
   const loader = new THREE.TextureLoader();
-
   const material = track(new THREE.MeshBasicMaterial({
     map: track(loader.load('resources/images/wall.jpg')),
   }));
@@ -182,7 +174,6 @@ resTracker.dispose();
 			<pre class="prettyprint showlinemods notranslate lang-js" translate="no">function waitSeconds(seconds = 0) {
   return new Promise(resolve =&gt; setTimeout(resolve, seconds * 1000));
 }
-
 async function process() {
   for (;;) {
     const resTracker = addStuffToScene();
@@ -199,7 +190,6 @@ process();
 			<div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cleanup-simple.html"></iframe></div>
 			<a class="threejs_center" href="/manual/examples/cleanup-simple.html" target="_blank">点击此处打开独立窗口</a>
 		</div>
-
 			<p></p>
 			<p>这好像能工作了。</p>
 			<p>对于加载文件来说，还需要一点额外的工作。大多数的加载器仅仅返回一个<a href="/docs/#api/en/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>
@@ -234,7 +224,6 @@ process();
 +    if (!resource) {
 +      return resource;
 +    }
-
     if (resource.dispose || resource instanceof THREE.Object3D) {
       this.resources.add(resource);
     }
@@ -259,13 +248,11 @@ process();
     if (!resource) {
       return resource;
     }
-
 +    // handle children and when material is an array of materials.
 +    if (Array.isArray(resource)) {
 +      resource.forEach(resource =&gt; this.track(resource));
 +      return resource;
 +    }
-
     if (resource.dispose || resource instanceof THREE.Object3D) {
       this.resources.add(resource);
     }
@@ -288,14 +275,12 @@ process();
     if (!resource) {
       return resource;
     }
-
 *    // handle children and when material is an array of materials or
 *    // uniform is array of textures
     if (Array.isArray(resource)) {
       resource.forEach(resource =&gt; this.track(resource));
       return resource;
     }
-
     if (resource.dispose || resource instanceof THREE.Object3D) {
       this.resources.add(resource);
     }
@@ -336,18 +321,15 @@ function loadGLTF(url) {
     gltfLoader.load(url, resolve, undefined, reject);
   });
 }
-
 function waitSeconds(seconds = 0) {
   return new Promise(resolve =&gt; setTimeout(resolve, seconds * 1000));
 }
-
 const fileURLs = [
   'resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf',
   'resources/models/3dbustchallange_submission/scene.gltf',
   'resources/models/mountain_landscape/scene.gltf',
   'resources/models/simple_house_scene/scene.gltf',
 ];
-
 async function loadFiles() {
   for (;;) {
     for (const url of fileURLs) {
@@ -356,24 +338,17 @@ async function loadFiles() {
       const gltf = await loadGLTF(url);
       const root = track(gltf.scene);
       scene.add(root);
-
       // compute the box that contains all the stuff
       // from root and below
       const box = new THREE.Box3().setFromObject(root);
-
       const boxSize = box.getSize(new THREE.Vector3()).length();
       const boxCenter = box.getCenter(new THREE.Vector3());
-
       // set the camera to frame the box
       frameArea(boxSize * 1.1, boxSize, boxCenter, camera);
-
       await waitSeconds(2);
       renderer.render(scene, camera);
-
       resMgr.dispose();
-
       await waitSeconds(1);
-
     }
   }
 }
@@ -384,7 +359,6 @@ loadFiles();
 			<div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cleanup-loaded-files.html"></iframe></div>
 			<a class="threejs_center" href="/manual/examples/cleanup-loaded-files.html" target="_blank">点击此处在独立窗口中打开</a>
 		</div>
-
 			<p></p>
 			<p>关于代码的一些注释。</p>
 			<p>如果我们想要加载2个或者更多的文件，并且想要随时地释放它们，我们将要每个文件使用一个<code class="notranslate" translate="no">ResourceTracker</code>。</p>
@@ -400,15 +374,9 @@ loadFiles();
 			<p>诚实地说，我对ResourceTracker并不是100%满意。在3D引擎中，做这样的事情并不是很常见。我们不应该去猜测什么资源被加载了，我们应该知道。
 				如果three.js能做出改变，所有的文件加载器返回能够引用所有加载资源的标准对象，就太好了。至少在这个时候，three.js在场景加载的时候并没有提供给我们其它的信息。因此，这个方法是有效的。</p>
 			<p>我希望这个例子能给你带来帮助或者至少成为在three.js中如何释放资源的一份好的参考</p>
-
 		</div>
 	</div>
 </div>
-
 <script src="../resources/prettify.js"></script>
 <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -42,7 +40,6 @@
 <p>其他的解决方案是使用假的阴影。举个例子，做一个飞机模型，将它的平面纹理做灰值处理，将其绘制再模型的下面的地面上。</p>
 <p>这个例子我们将使用假阴影</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p>我们使用 <a href="cameras.html">前一篇文章</a>的代码.</p>
 <p>首先让我们将场景的背景颜色设置为白色</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -50,10 +47,8 @@
 </pre>
 <p>然后我们将使用相同的棋盘格地面，因为这一次我们使用的是<a href="/docs/#api/zh/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>，所有我们不需要地面照明</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -61,7 +56,6 @@
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -107,7 +101,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   // so they move together.
   const base = new THREE.Object3D();
   scene.add(base);
-
   // add the shadow to the base
   // note: we make a new material for each sphere
   // so we can set that sphere's material transparency
@@ -123,7 +116,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // add the sphere to the base
   const u = i / numSpheres; // goes from 0 to 1 as we iterate the spheres.
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -131,7 +123,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // remember all 3 plus the y position
   sphereShadowBases.push({
     base,
@@ -166,22 +157,17 @@ for (let i = 0; i &lt; numSpheres; ++i) {
 对于每个球体，阴影以及 base，让它们在 XZ 平面上移动。使用<a href="/docs/#api/zh/math/Math.abs(Math.sin(time))"><code class="notranslate" translate="no">Math.abs(Math.sin(time))</code></a>将球体上下移动，这样会带来一个类似弹性的动画。并且我们还设置了阴影材质的不透明度，与球体的高度相关。高度越高，阴影越模糊。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert to seconds
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const {base, sphereMesh, shadowMesh, y} = sphereShadowBase;
-
     // u is a value that goes from 0 to 1 as we iterate the spheres
     const u = ndx / sphereShadowBases.length;
-
     // compute a position for the base. This will move
     // both the sphere and its shadow
     const speed = time * .2;
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff is a value that goes from 0 to 1
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // move the sphere up and down
@@ -189,7 +175,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
     // fade the shadow as the sphere goes up
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>这里有 15 种弹跳球</p>
@@ -197,7 +182,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>在某些应用程序中使用圆形或者椭圆的阴影也是很常见的。当然也可以使用不同形状的阴影纹理，也可以将阴影的边缘锐化。使用这种类型的阴影的例子是 <a href="https://www.google.com/search?tbm=isch&amp;q=animal+crossing+pocket+camp+screenshots">Animal Crossing Pocket Camp</a>，在其中你可以看到每个字符都有一个简单的原型阴影。这种方式很有效，也很方便。<a href="https://www.google.com/search?q=monument+valley+screenshots&amp;tbm=isch">Monument Valley 纪念碑谷</a>看起来似乎也使用这种阴影。</p>
 <p>因此，移动阴影贴图，有三种光可以投射阴影，分别为<code class="notranslate" translate="no">DirectionalLight 定向光</code>、 <code class="notranslate" translate="no">PointLight 点光源</code>、<code class="notranslate" translate="no">SpotLight 聚光灯</code>，</p>
@@ -219,9 +203,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -231,7 +213,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>发生了什么？为什么阴影的一部分不见了</p>
 <p>原因是阴影是通过光线的角度渲染场景之后生成的。在这种情况下，现在只有一个<code class="notranslate" translate="no">DirectionalLight 定向光</code>在照射这个球体，就像我们之前的文章<a href="cameras.html">关于相机</a>，光源的阴影相机决定了阴影投射的区域。在上面的例子中，该区域太小了。</p>
@@ -244,7 +225,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>我们来回调整相机的 x 坐标值。这样我们可以很清楚的看到：光源的阴影相机所包围的 box 才是能投射阴影的区域。</p>
 <p>我们可以通过调整光源的阴影相机来调整该盒子的大小。</p>
@@ -306,12 +286,10 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>将<code class="notranslate" translate="no">width</code> 和 <code class="notranslate" translate="no">height</code>的值设置在 30 附近，我们将看到阴影是正常渲染的，因为这个区域都在阴影相机的投影范围内。</p>
 <p>这也带来一个疑问。为什么我们不将<code class="notranslate" translate="no">width</code> 和 <code class="notranslate" translate="no">height</code>设置成一个非常大的值，这样不就可以投影一切了？我们将它设置成 100 来看看会发生什么。</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>我们将看到一些块状的阴影！</p>
 <p>这个问题是另一个需要注意的阴影相关设置。被投射产生的阴影也是有纹理的，这些阴影的纹理也是有单位大小的。如果阴影相机的属性设置的越大，就意味着它能投射的区域也变得很大，就意味着投射的阴影会越来越块状。</p>
 <p>你可以设置<code class="notranslate" translate="no">light.shadow.mapSize.width</code>和 <code class="notranslate" translate="no">light.shadow.mapSize.height</code>来设置阴影的纹理分辨率。他们默认为 512X512。如果设置的很大，他们在计算时将占用更多的内存，并且变得很慢。为了获得更真实的阴影，应该尽量将值设置的最小。请注意在渲染器中该属性<a href="/docs/#api/zh/renderers/WebGLRenderer#capabilities"><code class="notranslate" translate="no">renderer.capabilities.maxTextureSize</code></a>对于每个用户都有最大纹理的上限值。</p>
@@ -324,7 +302,6 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>最后，我们介绍 <code class="notranslate" translate="no">PointLight 聚光灯</code>的阴影投射。
 <code class="notranslate" translate="no">PointLight 聚光灯</code>是向四面八方发散的，所以唯一的设置只有<code class="notranslate" translate="no">near</code> 和 <code class="notranslate" translate="no">far</code>。实际上<code class="notranslate" translate="no">PointLight 聚光灯</code> 相当于 6 个面的<code class="notranslate" translate="no">SpotLight 点光源</code>组合而成。这意味着它的渲染速度要慢得多，相当于整个场景的阴影和渲染 6 次，每个方向(面)都需要渲染一次。</p>
@@ -345,9 +322,7 @@ updateCamera();
 <p>当然我们也需要把光源切换成<code class="notranslate" translate="no">PointLight 聚光灯</code></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // so we can easily see where the point light is
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -356,18 +331,11 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>使用 GUI 的<code class="notranslate" translate="no">position</code>来移动光源的位置，你就可以看到墙上阴影强度的改变。你还可以调整其他的设置，比如<code class="notranslate" translate="no">near</code> 和 <code class="notranslate" translate="no">far</code> ，<code class="notranslate" translate="no">near</code>代表最小的渲染阴影的距离，这只会渲染物体的距离大于其值的物体的阴影。 <code class="notranslate" translate="no">far</code> 这代表渲染比其值距离小的物体的阴影。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

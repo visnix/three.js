@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -40,16 +38,12 @@
 <a href="https://docs.microsoft.com/en-us/microsoft-edge/devtools-guide">Edge</a>.</p>
 <p>Chromeでは <code class="notranslate" translate="no">⋮</code> アイコンをクリックし、その他のツール -&gt; デベロッパーツールを選択すると開発者ツールが表示されます。そこにはキーボードのショートカットも表示されています。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome.jpg" style="width: 789px;"></div>
-
 <p>Firefoxでは <code class="notranslate" translate="no">☰</code> アイコンをクリックし、"ウェブ開発"から"開発者ツール"を選択します。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-firefox.jpg" style="width: 786px;"></div>
-
 <p>Safariでは詳細設定メニューから開発メニューを有効にする必要があります。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-enable-safari.jpg" style="width: 775px;"></div>
-
 <p>次に開発メニューで"Webインスペクタの表示/接続"を選択します。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-safari.jpg" style="width: 777px;"></div>
-
 <p><a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">Chromeを使ってAndroidやタブレットでChrome上で実行されているウェブページをデバッグする事もできます</a>。
 同様にSafariでは<a href="https://www.google.com/search?q=safari+remote+debugging+ios">iPhoneやiPadでSafari上で実行されているウェブページをPCでデバッグする事ができます</a>。</p>
 <p>私はChromeを一番よく知ってるのでChromeを例にしますが、ほとんどのブラウザは似たような機能を持っているため、全てのブラウザで簡単に同じ機能を適用できるはずです。</p>
@@ -59,19 +53,15 @@
 <p>ウェブ開発中の解決策の1つは、キャッシュをオフにする事です。これによりブラウザは常に最新バージョンのファイルを取得する事ができます。</p>
 <p>最初にデベロッパーツールのSettingsメニューを選択します。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-settings.jpg" style="width: 778px"></div>
-
 <p>次に "Disable Cache (while DevTools is open)" を選択します。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-disable-cache.jpg" style="width: 779px"></div>
-
 <h2 id="javascript-">JavaScriptコンソールを使用する</h2>
 <p>全てのdevtoolsの中には <em>console</em> があります。ここには警告やエラーメッセージが表示されます。</p>
 <p><strong>メッセージを読みましょう!!</strong></p>
 <p>一般的にはメッセージは1つか2つしかありません。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-no-errors.jpg" style="width: 779px"></div>
-
 <p>もし他のメッセージがあれば<strong>メッセージを読みましょう</strong>。例えば</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-errors.jpg" style="width: 779px"></div>
-
 <p>"three"を"threee"とスペルミスしました。</p>
 <p>以下のように <code class="notranslate" translate="no">console.log</code> であなた自身がconsoleに情報を表示する事もできます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">console.log(someObject.position.x, someObject.position.y, someObject.position.z);
@@ -86,7 +76,6 @@
 </pre>
 <p>そしてそのオブジェクトをJavaScriptコンソールで展開できます。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-console-object.gif"></div>
-
 <p>スタックトレースを含む赤色メッセージを表示する場合は <code class="notranslate" translate="no">console.error</code> を使う事ができます。</p>
 <h2 id="-">データを画面に表示させる</h2>
 <p>もう1つの分かりやすい方法は <code class="notranslate" translate="no">&lt;div&gt;</code> や <code class="notranslate" translate="no">&lt;pre&gt;</code> を追加しデータを入れる事です。</p>
@@ -116,7 +105,6 @@
 const xElem = document.querySelector('#x');
 const yElem = document.querySelector('#y');
 const zElem = document.querySelector('#z');
-
 // at render or update time
 xElem.textContent = someObject.position.x.toFixed(3);
 yElem.textContent = someObject.position.y.toFixed(3);
@@ -127,7 +115,6 @@ zElem.textContent = someObject.position.z.toFixed(3);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-html-elements.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-html-elements.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>または画面にデータを貼り付けるのにクリアロガーを作成する方法もあります。私はその言葉を作っただけですが、私が手がけたゲームの多くはこの解決法を使っています。
 このアイデアは1フレーム分だけメッセージを表示するバッファを持つ事です。
@@ -157,9 +144,7 @@ zElem.textContent = someObject.position.z.toFixed(3);
 <p>マウスをクリックするたびに新しい <a href="/docs/#api/ja/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a> を追加するコードは以下の通りです。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.SphereGeometry();
 const material = new THREE.MeshBasicMaterial({color: 'red'});
-
 const things = [];
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -167,7 +152,6 @@ function rand(min, max) {
   }
   return Math.random() * (max - min) + min;
 }
-
 function createThing() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
@@ -177,20 +161,16 @@ function createThing() {
     velocity: new THREE.Vector3(rand(-5, 5), rand(-5, 5), rand(-5, 5)),
   });
 }
-
 canvas.addEventListener('click', createThing);
 </pre>
 <p>このコードは作成したメッシュを移動させログに記録し、タイマーが切れたら削除します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const logger = new ClearingLogger(document.querySelector('#debug pre'));
-
 let then = 0;
 function render(now) {
   now *= 0.001;  // convert to seconds
   const deltaTime = now - then;
   then = now;
-
   ...
-
   logger.log('fps:', (1 / deltaTime).toFixed(1));
   logger.log('num things:', things.length);
   for (let i = 0; i &lt; things.length;) {
@@ -210,10 +190,8 @@ function render(now) {
       ++i;
     }
   }
-
   renderer.render(scene, camera);
   logger.render();
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -222,7 +200,6 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-clearing-logger.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-clearing-logger.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <h2 id="-">クエリパラメーター</h2>
 <p>もう1つ覚えておきたいのは、ウェブページにはクエリパラメーターやアンカーを介してデータを渡す事ができます。検索とハッシュと呼ばれる事があります。</p>
@@ -290,7 +267,6 @@ if (debug) {
 <p><code class="notranslate" translate="no">NaN</code> は Not A Numberの略です。これは数学的に意味のない事をした場合、JavaScript が値として代入するものです。</p>
 <p>簡単な例としては</p>
 <div class="threejs_center"><img class="border" src="../resources/images/nan-banana.png" style="width: 180px;"></div>
-
 <p>何か開発中に画面に何も表示されない事がよくあるので、私は <code class="notranslate" translate="no">NaN</code> が表示されたらその場所からすぐにいくつかの値を確認します。</p>
 <p>例として最初に<a href="load-gltf.html">gLTFファイルの読込</a>の記事でパスを作り始めた時に2次元曲線を作るSplineCurveクラスを使って曲線を作ってみました。</p>
 <p>そのカーブを利用してこのように車を動かしました。</p>
@@ -300,7 +276,6 @@ if (debug) {
 <p>その結果、<code class="notranslate" translate="no">car.position.set</code> はxにx、yにy、zに <code class="notranslate" translate="no">undefined</code> をセットします。</p>
 <p>デバッガで <code class="notranslate" translate="no">matrixWorld</code> を見てみると <code class="notranslate" translate="no">NaN</code> 値が表示されています。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/debugging-nan.gif" style="width: 476px;"></div>
-
 <p>行列を見ると <code class="notranslate" translate="no">NaN</code> が含まれており、<code class="notranslate" translate="no">position</code>、 <code class="notranslate" translate="no">rotation</code>、 <code class="notranslate" translate="no">scale</code> または他の関数に悪い影響を与えるデータがあるのが見えます。これらの悪いデータから逆算すると問題を追跡するのは簡単です。</p>
 <p><code class="notranslate" translate="no">NaN</code> の上には <code class="notranslate" translate="no">Infinity</code> もありますが、これはどこかに数学のバグがあるような気がします。</p>
 <h2 id="-">コードの中を見て！</h2>
@@ -311,9 +286,7 @@ if (debug) {
 <p>以下のパターンはよく見かけます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    requestAnimationFrame(render);
-
    // -- do stuff --
-
    renderer.render(scene, camera);
 }
 requestAnimationFrame(render);
@@ -321,9 +294,7 @@ requestAnimationFrame(render);
 <p>以下のように <code class="notranslate" translate="no">requestAnimationFrame</code> を一番下に置く事をお勧めします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    // -- do stuff --
-
    renderer.render(scene, camera);
-
    requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -359,7 +330,6 @@ IMOを無視するよりも、それらのエラーを見つける方が良い�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debugging-mcve.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debugging-mcve.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">OrbitController</code> を残してるのはカメラを動かして何が起こっているのかを把握するのに便利だからですが、問題によってはこれも削除できるかもしれません。</p>
 <p>MCVEを作る上で一番良い点は、自分自身で解決する事が多いという事です。不要なものを取り除いて可能な限り小さなサンプルコードを作って問題を再現する事で、バグにたどり着く事が多いからです。</p>
@@ -386,15 +356,9 @@ IMOを無視するよりも、それらのエラーを見つける方が良い�
 その後、少しずつ追加してテストを開始します。最終的にはバグを再現するか、途中で発見するかのどちらかになります。</p>
 <hr>
 <p>以上、JavaScriptのデバッグのヒントでした。<a href="debugging-glsl.html">GLSLをデバッグするためのいくつかのヒント</a>も見てみましょう。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

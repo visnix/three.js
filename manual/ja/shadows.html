@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -51,7 +49,6 @@ three.jsで利用できる解決策も含め様々な解決策がありますが
 平面を作り影に似たグレースケールのテクスチャを入れて、オブジェクト下の地面の上に描画します。</p>
 <p>例えばこのテクスチャをフェイクシャドウしてみましょう。</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p><a href="cameras.html">前回の記事</a>のコードの一部を使用します。</p>
 <p>背景色を白に設定してみましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -59,10 +56,8 @@ three.jsで利用できる解決策も含め様々な解決策がありますが
 </pre>
 <p>同じチェッカーボードの地面を使いますが、今回の地面には照明は必要ないので <a href="/docs/#api/ja/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> を使用します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -70,7 +65,6 @@ three.jsで利用できる解決策も含め様々な解決策がありますが
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -115,7 +109,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   // so they move together.
   const base = new THREE.Object3D();
   scene.add(base);
-
   // add the shadow to the base
   // note: we make a new material for each sphere
   // so we can set that sphere's material transparency
@@ -131,7 +124,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // add the sphere to the base
   const u = i / numSpheres;   // goes from 0 to 1 as we iterate the spheres.
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -139,7 +131,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // remember all 3 plus the y position
   sphereShadowBases.push({base, sphereMesh, shadowMesh, y: sphereMesh.position.y});
 }
@@ -171,22 +162,17 @@ baseをxz平面内で移動させて <a href="/docs/#api/ja/math/Math.abs(Math.s
 シャドウのマテリアルの不透明度を設定し、各球体が高くなるにつれてシャドウを薄くなるようにしています。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert to seconds
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const {base, sphereMesh, shadowMesh, y} = sphereShadowBase;
-
     // u is a value that goes from 0 to 1 as we iterate the spheres
     const u = ndx / sphereShadowBases.length;
-
     // compute a position for the base. This will move
     // both the sphere and its shadow
     const speed = time * .2;
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff is a value that goes from 0 to 1
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // move the sphere up and down
@@ -194,7 +180,6 @@ baseをxz平面内で移動させて <a href="/docs/#api/ja/math/Math.abs(Math.s
     // fade the shadow as the sphere goes up
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>そして、ここに15種類の跳ねるボールがあります。</p>
@@ -202,7 +187,6 @@ baseをxz平面内で移動させて <a href="/docs/#api/ja/math/Math.abs(Math.s
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>全てのオブジェクトに丸や楕円形のシャドウを使用するのが一般的です。
 異なる形状のシャドウのテクスチャを使用できます。
@@ -230,9 +214,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -242,7 +224,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>何が起こったのでしょうか？
 なぜ影の一部が欠けているのでしょうか？</p>
@@ -260,7 +241,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>ターゲットのX値を前後に調整すると、ライトのシャドウカメラボックスの中にあるものだけが影を描画する場所が明確になります。</p>
 <p>ライトのシャドウカメラを調整するとその箱の大きさを調整できます。</p>
@@ -324,14 +304,12 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">width</code> と <code class="notranslate" translate="no">height</code> を30ぐらいにすると、シャドウが正しく描画されこのシーンでシャドウにする設定が完全にカバーできました。</p>
 <p>しかし、ここで疑問が湧いてきます。
 なぜ <code class="notranslate" translate="no">width</code> と <code class="notranslate" translate="no">height</code> に巨大な数値を設定して全てをカバーしないのでしょうか？
 <code class="notranslate" translate="no">width</code> と <code class="notranslate" translate="no">height</code> を100にすると、以下のようなものが表示されます。</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>この低解像度のシャドウはどうなっているでしょうか！？</p>
 <p>この問題はシャドウに関連した設定を意識する必要があります。
 シャドウマップとはシャドウが描かれるテクスチャです。
@@ -361,24 +339,18 @@ Ok but what about `near` and `far` I hear you thinking. Can we set `near` to 0.0
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <!--
 You can notice, just like the last example if we set the angle high
 then the shadow map, the texture is spread over a very large area and
 the resolution of our shadows gets really low.
-
 div class="threejs_center"><img src="../resources/images/low-res-shadow-map-spotlight.png" style="width: 344px"></div>
-
 You can increase the size of the shadow map as mentioned above. You can
 also blur the result
-
 <div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-shadow-radius"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-shadow-radius" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
-
 -->
 <p>そして最後に <a href="/docs/#api/ja/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> でシャドウをつけます。
 <a href="/docs/#api/ja/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> は全方向に光を放つので関連する設定は <code class="notranslate" translate="no">near</code> と <code class="notranslate" translate="no">far</code> だけです。
@@ -405,9 +377,7 @@ also blur the result
 <p>そして、ライトを <a href="/docs/#api/ja/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> に切り替えます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // so we can easily see where the point light is
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -416,7 +386,6 @@ also blur the result
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>GUIの <code class="notranslate" translate="no">position</code> を使ってライトを移動させると、壁一面にシャドウが落ちます。
 また、<code class="notranslate" translate="no">near</code> と <code class="notranslate" translate="no">far</code> の設定を調整できます。
@@ -424,15 +393,9 @@ also blur the result
 <!--
 self shadow, shadow acne
 -->
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -62,7 +60,6 @@
 его и передать three.js.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 function main() {
   const canvas = document.querySelector('#c');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
@@ -145,7 +142,6 @@ const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Трудно сказать, что это 3D-куб, так как мы видим его непосредственно по оси 
 -Z, а сам куб выровнен по этой оси, поэтому мы видим только одну грань.</p>
@@ -155,12 +151,9 @@ const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 <p>Вот наш цикл</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;  // конвертировать время в секунды
-
   cube.rotation.x = time;
   cube.rotation.y = time;
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -183,7 +176,6 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-animation.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-animation.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Это немного лучше, но все еще трудно увидеть 3d. Что может помочь, так это 
 добавить немного освещения, поэтому давайте добавим источник света. 
@@ -209,7 +201,6 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-with-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-with-light.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Теперь должно быть довольно четко видно 3D.</p>
 <p>Просто для удовольствия добавим еще 2 кубика.</p>
@@ -220,12 +211,9 @@ requestAnimationFrame(render);
 устанавливает ей позицию X.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
 </pre><p>Затем мы будем вызывать его 3 раза с 3 разными цветами и позициями X, 
@@ -239,21 +227,18 @@ requestAnimationFrame(render);
 Мы рассчитываем немного разные коэффициенты вращения для каждого.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;  // конвертировать время в секунды
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   ...
 </pre><p>и вот оно.</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fundamentals-3-cubes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fundamentals-3-cubes.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Если вы сравните его с диаграммой сверху вниз, вы увидите, что она соответствует 
 нашим ожиданиям. С кубами в X = -2 и X = +2 они частично находятся вне нашей 
@@ -262,15 +247,9 @@ requestAnimationFrame(render);
 <p>Я надеюсь, что это короткое вступление поможет вам начать изучение. 
 <a href="responsive.html">Далее мы рассмотрим, как сделать отзывчивый дизайн, чтобы код можно было применять 
 к различным ситуациям</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

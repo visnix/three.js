@@ -8,7 +8,6 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
 		An exporter for `Collada`.
 		<br /><br />
@@ -16,40 +15,30 @@
 		file format for robust representation of scenes, materials, animations, and other 3D content in an xml format.
 		This exporter only supports exporting geometry, materials, textures, and scene hierarchy.
 		</p>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { ColladaExporter } from 'three/addons/exporters/ColladaExporter.js';
 		</code>
-
 		<h2>Code Example</h2>
-
 		<code>
 		// Instantiate an exporter
 		const exporter = new ColladaExporter();
-
 		// Parse the input and generate the collada ( .dae ) output
 		const data = exporter.parse( scene, null, options );
 		downloadFile( data );
 		</code>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]()</h3>
 		<p>
 		</p>
 		<p>
 		Creates a new [name].
 		</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:Object parse]( [param:Object3D input], [param:Function onCompleted], [param:Object options] )</h3>
 		<p>
 		[page:Object input] — Object3D to be exported<br />
@@ -70,15 +59,12 @@
 		{
 			// Collada file content
 			data: "",
-
 			// List of referenced textures
 			textures: [{
-
 				// File directory, name, and extension of the texture data
 				directory: "",
 				name: "",
 				ext: "",
-
 				// The texture data and original texture object
 				data: [],
 				original: &ltTHREE.Texture&gt
@@ -86,9 +72,7 @@
 		}
 		</code>
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/exporters/ColladaExporter.js examples/jsm/exporters/ColladaExporter.js]
 		</p>

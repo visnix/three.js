@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -39,7 +37,6 @@
 <p>여기서 어느 정도 <code class="notranslate" translate="no">EffectComposer</code>의 원리를 이해할 필요가 있습니다. <code class="notranslate" translate="no">EffectComposer</code>는 두 개의 <a href="rendertargets.html">렌더 타겟</a>을 사용합니다. 편의상 이 둘을 <strong>rtA</strong>, <strong>rtB</strong>라고 부르도록 하죠.</p>
 <p><code class="notranslate" translate="no">EffectComposer.addPass</code>를 각 pass를 적용할 순서대로 호출하고 <code class="notranslate" translate="no">EffectComposer.render</code>를 호출하면 pass*는 아래 그림과 같은 순서로 적용됩니다.</p>
 <div class="threejs_center"><img src="../resources/images/threejs-postprocessing.svg" style="width: 600px"></div>
-
 <p>먼저 <code class="notranslate" translate="no">RenderPass</code>에 넘긴 장면을 <strong>rtA</strong>에 렌더링합니다. 그리고 <strong>rtA</strong>를 다음 pass에 넘겨주면 해당 pass는 <strong>rtA</strong>에 pass를 적용한 결과를 <strong>rtB</strong>에 렌더링합니다. 그런 다음 <strong>rtB</strong>를 다음 pass로 넘겨 적용한 결과를 <strong>rtA</strong>에, <strong>rtA</strong>에 pass를 적용한 결과를 다시 <strong>rtB</strong>에, 이런 식으로 모든 pass가 끝날 때까지 계속 반복합니다.</p>
 <p><code class="notranslate" translate="no">Pass</code>에는 공통적으로 4가지 옵션이 있습니다.</p>
 <h2 id="-enabled-"><code class="notranslate" translate="no">enabled</code></h2>
@@ -91,14 +88,12 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
 +  now *= 0.001;  // 초 단위로 변환
 +  const deltaTime = now - then;
 +  then = now;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
 +    composer.setSize(canvas.width, canvas.height);
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
 -    const rot = time * speed;
@@ -106,10 +101,8 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
 -  renderer.render(scene, camera);
 +  composer.render(deltaTime);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -118,7 +111,6 @@ import {OutputPass} from 'three/addons/postprocessing/OutputPass.js';
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>런타임에 효과의 속성을 변경할 때는 보통 uniform의 value 값을 바꿉니다. GUI를 추가해 이 속성을 조정할 수 있게 만들어보죠. 어떤 속성을 어떻게 조작할 수 있는지는 해당 효과의 소스 코드를 열어봐야 알 수 있습니다.</p>
 <p><a href="https://github.com/mrdoob/three.js/blob/master/examples/jsm/postprocessing/BloomPass.js"><code class="notranslate" translate="no">BloomPass.js</code></a>에서
@@ -159,7 +151,6 @@ if ( scanlinesCount !== undefined ) this.uniforms.sCount.value = scanlinesCount;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-gui.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>여기까지 잘 따라왔다면 이제 효과를 직접 만들어볼 수 있습니다.</p>
 <p>후처리 효과는 쉐이더를 사용합니다. 쉐이더는 <a href="https://www.khronos.org/files/opengles_shading_language.pdf">GLSL (Graphics Library Shading Language)</a>이라는 언어를 사용하죠. 언어가 방대해 이 글에서 전부 다루기는 어렵습니다. 기초부터 알아보고 싶다면 <a href="https://webglfundamentals.org/webgl/lessons/ko/webgl-shaders-and-glsl.html">이 글</a>과 <a href="https://thebookofshaders.com/">쉐이더란 무엇인가(The Book of Shaders)</a>를 읽어보기 바랍니다.</p>
@@ -212,19 +203,12 @@ gui.add(colorPass.uniforms.color.value, 'b', 0, 4).name('blue');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-custom.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-custom.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>언급했듯 이 글에서 GLSL의 작성법과 사용자 지정 쉐이더를 만드는 법을 모두 다루기는 무리입니다. WebGL이 어떻게 동작하는지 알고 싶다면 <a href="https://webglfundamentals.org">이 시리즈</a>를 참고하세요. <a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/shaders">Three.js의 후처리 쉐이더 소스 코드</a>를 분석하는 것도 좋은 방법입니다. 상대적으로 복잡한 쉐이더도 있지만 작은 것부터 차근차근 살펴본다면 언젠가 전체를 이해할 수 있을 거예요.</p>
 <p>아쉽게도 Three.js의 후처리 효과 대부분은 공식 문서가 없어 <a href="https://github.com/mrdoob/three.js/tree/master/examples">예제를 참고하거나</a> <a href="https://github.com/mrdoob/three.js/tree/master/examples/jsm/postprocessing">후처리 효과의 소스 코드</a>를 직접 분석해야 합니다. 부디 이 글과 이 시리즈의 <a href="rendertargets.html">렌더 타겟에 관한 글</a>이 좋은 출발점을 마련해주었으면 좋겠네요.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

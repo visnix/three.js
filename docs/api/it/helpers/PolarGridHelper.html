@@ -8,31 +8,22 @@
 	</head>
 	<body>
 		[page:Object3D] &rarr; [page:Line] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">Il PolarGridHelper è un oggetto utilizzato per definire le griglie polari. Le griglie sono array bidimensionli di linee.</p>
-
 		<h2>Codice di Esempio</h2>
-
 		<code>
 		const radius = 10;
 		const sectors = 16;
 		const rings = 8;
 		const divisions = 64;
-
 		const helper = new THREE.PolarGridHelper( radius, sectors, rings, divisions );
 		scene.add( helper );
 		</code>
-
 		<h2>Esempi</h2>
-
 		<p>
 			[example:webgl_helpers WebGL / helpers]
 		</p>
-
 		<h2>Costruttore</h2>
-
 		<h3>[name]( [param:Number radius], [param:Number sectors], [param:Number rings], [param:Number divisions], [param:Color color1], [param:Color color2] )</h3>
 		<p>
 		radius -- Il raggio della griglia polare. Può essere qualsiasi numero positivo. Il valore predefinito è 10.<br />
@@ -46,9 +37,7 @@
       Crea un nuovo [name] di raggio 'radius' con 'sectors' numero di settori e 'rings' numero di anelli, in cui ogni cerchio 
       viene smussato in 'divisions' numero di segmenti di linea. I colori sono opzionali.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

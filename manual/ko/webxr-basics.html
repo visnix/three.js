@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -43,13 +41,11 @@ WebXR API. <a href="setup.html">the article on setting up</a>에 언급된 서�
 <a href="https://greggman.github.io/servez">Servez</a>에는 https를 사용할 수 있는 옵션이 있습니다.
 확인 후 서버를 시작합니다.</p>
 <div class="threejs_center"><img src="resources/images/servez-https.png" class="nobg" style="width: 912px;"></div>
-
 <p>URL을 기록해 두십시오. 컴퓨터의 로컬 IP 주소가 필요합니다. 일반적으로 <code class="notranslate" translate="no">192</code>, <code class="notranslate" translate="no">172</code> 또는 <code class="notranslate" translate="no">10</code>으로 시작합니다.  <code class="notranslate" translate="no">https://</code> 부분을 포함한 전체 주소를 입력하시면 됩니다.</p>
 <p>VR 기기의 브라우저로 이동합니다. NOTE: 작업 컴퓨터와 VR 장치는 동일한 로컬 네트워크에 있어야 합니다.
 또는 WiFi이고 아마도 홈 네트워크에 있어야 할것입니다. NOTE: 많은 카페에서 이러한 방법으로 기계 대 기계 연결을 합니다.</p>
 <p>아래와 같은 오류 메시지가 표시됩니다. "고급(advanced)"을 클릭한 다음 <em>진행(proceed)</em> 을 클릭합니다.</p>
 <div class="threejs_center"><img src="resources/images/https-warning.gif"></div>
-
 <p>이제 예제를 실행할 수 있습니다.</p>
 <p>실제로 WebVR 개발을 하려는 경우 배워야 할 또 다른 사항은 
 <a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">원격 디버깅(remote debugging)</a> 입니다.
@@ -71,25 +67,20 @@ WebXR API. <a href="setup.html">the article on setting up</a>에 언급된 서�
 <a href="/docs/#api/ko/renderers/WebGLRenderer.setAnimationLoop"><code class="notranslate" translate="no">WebGLRenderer.setAnimationLoop</code></a>를 호출 및  루프를 호출하는 함수를 전달하여 진행 가능하게 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 -requestAnimationFrame(render);
 +renderer.setAnimationLoop(render);
 </pre>
@@ -101,7 +92,6 @@ WebXR API. <a href="setup.html">the article on setting up</a>에 언급된 서�
 <p>큐브를 카메라 앞으로 이동합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
-
 cube.position.x = x;
 +cube.position.y = 1.6;
 +cube.position.z = -2;
@@ -117,7 +107,6 @@ cube.position.x = x;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-basic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-basic.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>카메라 주변에 방(참조할 수 있는 공간)과 같은 감싸는 것이 있으면 VR이 더 잘 작동합니다. 따라서  과거 <a href="backgrounds.html">the article on backgrounds</a>에서 진행한 것과 유사하게 간단한 그리드 큐브맵을 추가해 보겠습니다.</p>
 <p>우리는 같은 그리드를 사용할 것입니다.
@@ -141,7 +130,6 @@ cube.position.x = x;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-basic-w-background.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-basic-w-background.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>Note: VR을 실제로 보려면 WebXR 호환 장치가 필요합니다.
 대부분의 Android 휴대폰은 Chrome 또는 Firefox를 사용하여 WebXR을 지원 합니다.
@@ -269,14 +257,12 @@ VR 모드에서 벗어나 컨트롤을 켜고 끌 수 있습니다.</p>
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 -  renderer.xr.enabled = true;
 -  document.body.appendChild(VRButton.createButton(renderer));
-
   const fov = 75;
   const aspect = 2;  // the canvas default
   const near = 0.1;
   const far = 5;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 1.6, 0);
-
 +  const params = (new URL(document.location)).searchParams;
 +  const allowvr = params.get('allowvr') === 'true';
 +  if (allowvr) {
@@ -336,15 +322,9 @@ VR에서 손으로 물건을 가상으로 조작하여 지원 여부를 결정�
 실제로 VR을 고르고 세팅하는데는 많은 디자인을 고민 및 결정 해야합니다.</p>
 <p>이것은 three.js를 사용한 VR에 대한 아주 간단한 소개였습니다. 이제
 <a href="webxr-look-to-select.html">future articles</a>에서 일부 입력 방법을 다루겠습니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

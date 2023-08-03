@@ -8,9 +8,7 @@
 	</head>
 	<body>
 		<h1>动画系统（[name]）</h1>
-
 		<h2>概述</h2>
-
 		<p class="desc">
 			在three.js动画系统中，您可以为模型的各种属性设置动画：
 			[page:SkinnedMesh]（蒙皮和装配模型）的骨骼，morph targets（变形目标），
@@ -22,9 +20,7 @@
 			three.js的动画系统[link:https://github.com/mrdoob/three.js/issues/6881 在2015年彻底改变]（注意过时的信息！），
 			它现在有一个与Unity/虚幻4引擎类似的架构。此页面简要阐述了这个系统中的主要组件以及它们如何协同工作。
 		</p>
-
 		<h3>动画片段（Animation Clips）</h3>
-
 		<p class="desc">
 			如果您已成功导入3D动画对象（无论它是否有骨骼或变形目标或两者皆有都不要紧）——
 			例如使用[link:https://github.com/KhronosGroup/glTF-Blender-IO glTF Blender exporter]（glTF Blender导出器）</a>
@@ -36,9 +32,7 @@
 			举个例子，假如mesh是一个角色，可能有一个AnimationClip实现步行循环，
 			第二个AnimationClip实现跳跃，第三个AnimationClip实现闪避等等。
 		</p>
-
 		<h3>关键帧轨道（Keyframe Tracks）</h3>
-
 		<p class="desc">
 			在这样的*AnimationClip*里面，每个动画属性的数据都存储在一个单独的[page:KeyframeTrack]中。
 			假设一个角色对象有[page:Skeleton]（骨架），
@@ -50,16 +44,12 @@
 			例如一个变形目标显示一个笑脸，另一个显示愤怒的脸 ——
 			每个轨道都持有某个变形目标在AnimationClip运行期间产生的[page:Mesh.morphTargetInfluences]（变形目标影响）如何变化的信息。
 		</p>
-
 		<h3>动画混合器（Animation Mixer）</h3>
-
 		<p class="desc">
 			存储的数据仅构成动画的基础 —— 实际播放由[page:AnimationMixer]控制。
 			你可以想象这不仅仅是动画的播放器，而是作为硬件的模拟，如真正的调音台，可以同时控制和混合若干动画。
 		</p>
-
 		<h3>动画行为（Animation Actions）</h3>
-
 		<p class="desc">
 			*AnimationMixer*本身只有很少的（大体上）属性和方法，
 			因为它可以通过[page:AnimationAction AnimationActions]来控制。
@@ -67,21 +57,16 @@
 			这个*AnimationClip*是否需要重复播放以及重复的频率，
 			是否需要使用淡入淡出或时间缩放，以及一些其他内容（例如交叉渐变和同步）。
 		</p>
-
 		<h3>动画对象组（Animation Object Groups）</h3>
-
 		<p class="desc">
 			如果您希望一组对象接收共享的动画状态，则可以使用[page:AnimationObjectGroup]。
 		</p>
-
 		<h3>支持的格式和加载器（Supported Formats and Loaders）</h3>
-
 		<p class="desc">
 			请注意，并非所有模型格式都包含动画（尤其是OBJ，没有），
 			而且只有某些three.js加载器支持[page:AnimationClip AnimationClip]序列。
 			以下几个<i>确实</i>支持此动画类型：
 		</p>
-
 			<ul>
 				<li>[page:ObjectLoader THREE.ObjectLoader]</li>
 				<li>THREE.BVHLoader</li>
@@ -90,35 +75,27 @@
 				<li>[page:GLTFLoader THREE.GLTFLoader]</li>
 				<li>THREE.MMDLoader</li>
 			</ul>
-
 		<p class="desc">
 			请注意，3ds max和Maya当前无法直接导出多个动画（这意味着动画不是在同一时间线上）到一个文件中。
 		</p>
-
 		<h2>范例</h2>
-
 		<code>
 		let mesh;
-
 		// 新建一个AnimationMixer, 并取得AnimationClip实例列表
 		const mixer = new THREE.AnimationMixer( mesh );
 		const clips = mesh.animations;
-
 		// 在每一帧中更新mixer
 		function update () {
 			mixer.update( deltaSeconds );
 		}
-
 		// 播放一个特定的动画
 		const clip = THREE.AnimationClip.findByName( clips, 'dance' );
 		const action = mixer.clipAction( clip );
 		action.play();
-
 		// 播放所有动画
 		clips.forEach( function ( clip ) {
 			mixer.clipAction( clip ).play();
 		} );
 		</code>
-
 	</body>
 </html>

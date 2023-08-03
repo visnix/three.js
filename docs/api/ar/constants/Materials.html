@@ -8,25 +8,21 @@
 	</head>
 	<body class="rtl">
 		<h1>ثوابت المواد الخام (Material Constants)</h1>
-
 		<p class="desc">
 			تحدد هذه الثوابت الخصائص المشتركة بين جميع أنواع المواد الخام، باستثناء عمليات تجميع القوام الخاصة التي تنطبق فقط على
 			[page:MeshBasicMaterial.combine MeshBasicMaterial]،
 			[page:MeshLambertMaterial.combine MeshLambertMaterial] و
 			[page:MeshPhongMaterial.combine MeshPhongMaterial].<br />
 		</p>
-
 		<h2>الجانب (Side)</h2>
 		<code>
 		THREE.FrontSide 
 		THREE.BackSide 
 		THREE.DoubleSide
 		</code>
-		
 		<p>
 			تحدد الجانب الذي سيتم عرضه للوجوه، سواءً الوجه الأمامي، الوجه الخلفي، أو كلاهما. الإعداد الافتراضي هو الوجه الأمامي.
 		</p>
-
 		<h2>وضعية الدمج (Blending Mode)</h2>
 		<code>
 		THREE.NoBlending 
@@ -36,13 +32,11 @@
 		THREE.MultiplyBlending 
 		THREE.CustomBlending
 		</code>
-
 		<p>
 			تحكم هذه الثوابت في معادلات الدمج بين المصدر والوجهة للألوان والألفا التي يتم إرسالها من المواد إلى WebGLRenderer للاستخدام بواسطة WebGL.
 			[page:Constant NormalBlending] هي الإعداد الافتراضي. ويجب تعيين [page:Constant CustomBlending] لاستخدام [page:CustomBlendingEquation Custom Blending Equations].
 			راجع مثال [example:webgl_materials_blending materials / blending].
 		</p>
-
 		<h2>وضعية العمق (Depth Mode)</h2>
 		<code>
 		THREE.NeverDepth
@@ -65,14 +59,12 @@
 			[page:Materials GreaterDepth] سيتم رسم البكسل إذا كان عمق البكسل المدخل أكبر من عمق الذاكرة المؤقتة الحالي.<br />
 			[page:Materials NotEqualDepth] سيتم رسم البكسل إذا كان عمقالبكسل المدخل لا يساوي عمق الذاكرة المؤقتة الحالي.<br />
 		</p>
-
 		<h2>عمليات تجميع القوام الخاصة بالقوام (Texture Combine Operations)</h2>
 		<code>
 		THREE.MultiplyOperation 
 		THREE.MixOperation 
 		THREE.AddOperation
 		</code>
-		
 		<p>
 			تحدد هذه الثوابت كيفية دمج لون سطح الكائن مع خريطة البيئة (إذا كانت متاحة) في [page:MeshBasicMaterial.combine MeshBasicMaterial]،
 			[page:MeshLambertMaterial.combine MeshLambertMaterial]
@@ -81,7 +73,6 @@
 			[page:Constant MixOperation] تستخدم معامل الانعكاسية لدمج اللونين.<br />
 			[page:Constant AddOperation] تقوم بجمع اللونين.
 		</p>
-
 		<h2>دوال القالب (Stencil Functions)</h2>
 		<code>
 		THREE.NeverStencilFunc 
@@ -104,7 +95,6 @@
 			[page:Materials GreaterEqualStencilFunc] سيعود بقيمة صحيحة إذا كانت قيمة المرجع الختمية أكبر من أو تساوي القيمة الحالية للختم.<br />
 			[page:Materials AlwaysStencilFunc] سيعود بقيمة صحيحة دائمًا.<br />
 		</p>
-
 		<h2>عمليات القالب (Stencil Operations)</h2>
 		<code>
 		THREE.ZeroStencilOp 
@@ -127,25 +117,20 @@
 			[page:Materials DecrementWrapStencilOp] سينقص قيمة الختم الحالية بمقدار `1`. إذا انخفضت القيمة بعد ذلك أقل من `0`، فستضبط على `255`.<br />
 			[page:Materials InvertStencilOp] سيقوم بتنفيذ عملية انعكاس بتشكيلة الختم الحالية.<br />
 		</p>
-
 		<h2>نوع خريطة العرض الطبيعي (Normal map type)</h2>
 		<code>
 		THREE.TangentSpaceNormalMap 
 		THREE.ObjectSpaceNormalMap 
 		</code>
-		
 		<p>
 			تحدد نوع خريطة العرض الطبيعي. لـTangentSpaceNormalMap، المعلومات ذات الصلة بالسطح الأساسي. أما بالنسبة لـ ObjectSpaceNormalMap، المعلومات ذات الصلة باتجاه الكائن. الإعداد الافتراضي هو [page:Constant TangentSpaceNormalMap].
 		</p>
-
 		<h2>إصدار GLSL</h2>
 		<code>
 		THREE.GLSL1 
 		THREE.GLSL3 
 		</code>
-
 		<h2>المصدر (Source)</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

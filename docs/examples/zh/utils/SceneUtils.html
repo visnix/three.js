@@ -8,22 +8,16 @@
 	</head>
 	<body>
 		<h1>场景工具（[name]）</h1>
-
 		<p class="desc">一个用于操控场景的实用类。</p>
-
 		<h2>进口</h2>
-
 		<p>
 			[name] 是一个附加组件，必须显式导入。
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { SceneUtils } from 'three/addons/utils/SceneUtils.js';
 		</code>
-
 		<h2>方法</h2>
-
 		<h3>[method:Group createMeshesFromInstancedMesh]( [param:InstancedMesh instancedMesh] )</h3>
 		<p>
 			instancedMesh -- 实例化网格。
@@ -31,7 +25,6 @@
 		<p>
 			为给定的实例化网格的每个实例，创建一个包含新网格的新物体组（Object Group）。
 		</p>
-
 		<h3>[method:Group createMeshesFromMultiMaterialMesh]( [param:Mesh mesh] )</h3>
 		<p>
 		mesh -- A mesh with multiple materials.
@@ -39,7 +32,6 @@
 		<p>
 		Converts the given multi-material mesh into an instance of [page:Group] holding for each material a separate mesh.
 		</p>
-
 		<h3>[method:Group createMultiMaterialObject]( [param:BufferGeometry geometry], [param:Array materials] )</h3>
 		<p>
 			geometry -- 材料集的几何形状。 <br />
@@ -49,7 +41,6 @@
 			创建一个新组，囊括了在材质中定义的每种材质的新网格。请注意，这和为一个网格定义多种材质的材质数组不同。<br />
 			该方法对于同时需要材质和线框绘制的物体非常有用。
 		</p>
-
 		<h3>[method:undefined sortInstancedMesh]( [param:InstancedMesh mesh], [param:Function compareFn] )</h3>
 		<p>
 		mesh -- InstancedMesh in which instances will be sorted. <br />
@@ -68,9 +59,7 @@
 		helpful to improve display of alpha blended materials (back to front),
 		and to reduce overdraw in opaque materials (front to back).
 		</p>
-
 		<h2>源代码</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/utils/SceneUtils.js examples/jsm/utils/SceneUtils.js]
 		</p>

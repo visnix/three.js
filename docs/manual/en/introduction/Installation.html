@@ -8,13 +8,10 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<h2>Project structure</h2>
-
 		<p>
 			Every three.js project needs at least one HTML file to define the webpage, and a JavaScript file to run your three.js code. The structure and naming choices below aren't required, but will be used throughout this guide for consistency.
 		</p>
-
 		<ul>
 			<li>
 				<i>index.html</i>
@@ -38,7 +35,6 @@
 				<i>main.js</i>
 				<code>
 import * as THREE from 'three';
-
 ...
 				</code>
 			</li>
@@ -51,20 +47,14 @@ import * as THREE from 'three';
 				</ul>
 			</li>
 		</ul>
-
 		<p>
 			Now that we've set up the basic project structure, we need a way to run the project locally and access it through a web browser. Installation and local development can be accomplished with npm and a build tool, or by importing three.js from a CDN. Both options are explained in the sections below.
 		</p>
-
 		<h2>Option 1: Install with NPM and a build tool</h2>
-
 		<h3>Development</h3>
-
 		<p>
 			Installing from the [link:https://www.npmjs.com/ npm package registry] and using a [link:https://eloquentjavascript.net/10_modules.html#h_zWTXAU93DC build tool] is the recommended approach for most users — the more dependencies your project needs, the more likely you are to run into problems that the static hosting cannot easily resolve. With a build tool, importing local JavaScript files and npm packages should work out of the box, without import maps.
 		</p>
-
-
 		<ol>
 			<li>
 				Install [link:https://nodejs.org/ Node.js]. We'll need it to load manage dependencies and to run our build tool.
@@ -76,7 +66,6 @@ import * as THREE from 'three';
 				<code>
 # three.js
 npm install --save three
-
 # vite
 npm install --save-dev vite
 				</code>
@@ -110,15 +99,12 @@ npm install --save-dev vite
 				If everything went well, you'll see a URL like <i>http://localhost:5173</i> appear in your terminal, and can open that URL to see your web application.
 			</li>
 		</ol>
-
 		<p>
 			The page will be blank — you're ready to [link:#manual/introduction/Creating-a-scene create a scene].
 		</p>
-
 		<p>
 			If you want to learn more about these tools before you continue, see:
 		</p>
-
 		<ul>
 			<li>
 				[link:https://threejs-journey.com/lessons/local-server three.js journey: Local Server]
@@ -130,19 +116,13 @@ npm install --save-dev vite
 				[link:https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Understanding_client-side_tools/Package_management MDN: Package management basics]
 			</li>
 		</ul>
-
 		<h3>Production</h3>
-
 		<p>
 			Later, when you're ready to deploy your web application, you'll just need to tell Vite to run a production build — <i>npx vite build</i>. Everything used by the application will be compiled, optimized, and copied into the <i>dist/</i> folder. The contents of that folder are ready to be hosted on your website.
 		</p>
-
 		<h2>Option 2: Import from a CDN</h2>
-
 		<h3>Development</h3>
-
 		<p>Installing without build tools will require some changes to the project structure given above.</p>
-
 		<ol>
 			<li>
 				<p>
@@ -150,7 +130,6 @@ npm install --save-dev vite
 				</p>
 				<code>
 &lt;script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js">&lt;/script>
-
 &lt;script type="importmap">
   {
     "imports": {
@@ -179,22 +158,16 @@ npm install --save-dev vite
 				If everything went well, you'll see a URL like http://localhost:3000 appear in your terminal, and can open that URL to see your web application.
 			</li>
 		</ol>
-
 		<p>
 			The page will be blank — you're ready to [link:#manual/introduction/Creating-a-scene create a scene].
 		</p>
-
 		<p>
 			Many other local static servers are available — some use different languages instead of Node.js, and others are desktop applications. They all work basically the same way, and we've provided a few alternatives below.
 		</p>
-
 		<details>
 			<summary>More local servers</summary>
-
 			<h3>Command Line</h3>
-
 			<p>Command line local servers run from a terminal window. The associated programming language may need to be installed first.</p>
-
 			<ul>
 				<li><i>npx http-server</i> (Node.js)</li>
 				<li><i>npx five-server</i> (Node.js)</li>
@@ -202,67 +175,46 @@ npm install --save-dev vite
 				<li><i>python -m http.server</i> (Python 3.x)</li>
 				<li><i>php -S localhost:8000</i> (PHP 5.4+)</li>
 			</ul>
-
-
 			<h3>GUI</h3>
-
 			<p>GUI local servers run as an application window on your computer, and may have a user interface.</p>
-
 			<ul>
 				<li>[link:https://greggman.github.io/servez Servez]</li>
 			</ul>
-
 			<h3>Code Editor Plugins</h3>
-
 			<p>Some code editors have plugins that spawn a simple server on demand.</p>
-
 			<ul>
 				<li>[link:https://marketplace.visualstudio.com/items?itemName=yandeu.five-server Five Server] for Visual Studio Code</li>
 				<li>[link:https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer Live Server] for Visual Studio Code</li>
 				<li>[link:https://atom.io/packages/atom-live-server Live Server] for Atom</li>
 			</ul>
-
-
 		</details>
-
 		<h3>Production</h3>
-
 		<p>
 			When you're ready to deploy your web application, push the source files to your web hosting provider — no need to build or compile anything. The downside of that tradeoff is that you'll need to be careful to keep the import map updated with any dependencies (and dependencies of dependencies!) that your application requires. If the CDN hosting your dependencies goes down temporarily, your website will stop working too.
 		</p>
-
 		<p>
 			<i><b>IMPORTANT:</b> Import all dependencies from the same version of three.js, and from the same CDN. Mixing files from different sources may cause duplicate code to be included, or even break the application in unexpected ways.</i>
 		</p>
-
 		<h2>Addons</h2>
-
 		<p>
 			Out of the box, three.js includes the fundamentals of a 3D engine. Other three.js components — such as controls, loaders, and post-processing effects — are part of the [link:https://github.com/mrdoob/three.js/tree/dev/examples/jsm addons/] directory. Addons do not need to be <i>installed</i> separately, but do need to be <i>imported</i> separately.
 		</p>
-
 		<p>
 			The example below shows how to import three.js with the [page:OrbitControls] and [page:GLTFLoader] addons. Where necessary, this will also be mentioned in each addon's documentation or examples.
 		</p>
-
 		<code>
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-
 const controls = new OrbitControls( camera, renderer.domElement );
 const loader = new GLTFLoader();
 		</code>
-
 		<p>
 			Some excellent third-party projects are available for three.js, too. These need to be installed separately — see [link:#manual/introduction/Libraries-and-Plugins Libraries and Plugins].
 		</p>
-
 		<h2>Next Steps</h2>
-
 		<p>
 			You're now ready to [link:#manual/introduction/Creating-a-scene create a scene].
 		</p>
-
 	</body>
 </html>

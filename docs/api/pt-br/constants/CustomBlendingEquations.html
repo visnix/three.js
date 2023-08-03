@@ -8,13 +8,10 @@
 	</head>
 	<body>
 		<h1>Constantes de Equação de Mesclagem Personalizada (Custom Blending Equation)</h1>
-
 		<p>
 			Funcionam com todos os tipos de materiais. Primeiro defina o modo de mesclagem do material para THREE.CustomBlending, em seguida, defina a equação de mesclagem desejada, o fator de origem e o fator de destino.
 		</p>
-
 		<h2>Exemplo de Código</h2>
-
 		<code>
 		const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 		material.blending = THREE.CustomBlending;
@@ -22,10 +19,8 @@
 		material.blendSrc = THREE.SrcAlphaFactor; //default
 		material.blendDst = THREE.OneMinusSrcAlphaFactor; //default
 		</code>
-
 		<h2>Exemplos</h2>
 		<p>[example:webgl_materials_blending_custom materials / blending / custom ]</p>
-
 		<h2>Equações de Mesclagem</h2>
 		<code>
 		THREE.AddEquation
@@ -34,7 +29,6 @@
 		THREE.MinEquation
 		THREE.MaxEquation
 		</code>
-
 		<h2>Fatores de Origem</h2>
 		<code>
 		THREE.ZeroFactor
@@ -49,14 +43,11 @@
 		THREE.OneMinusDstColorFactor
 		THREE.SrcAlphaSaturateFactor
 		</code>
-
 		<h2>Fatores de Destino</h2>
 		<p>
 			Todos os Fatores de Origem são válidos como Fatores de Destino, exceto, <code>THREE.SrcAlphaSaturateFactor</code>
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

@@ -8,13 +8,10 @@
 	</head>
 	<body>
 		<h1>材质常量（Material Constants）</h1>
-
 		<p class="desc">
 			由这些常量定义的属性对所有的材质类型都生效，除了Texture Combine Operations只应用于
 			[page:MeshBasicMaterial.combine MeshBasicMaterial]，[page:MeshLambertMaterial.combine MeshLambertMaterial]和[page:MeshPhongMaterial.combine MeshPhongMaterial]。<br />
 		</p>
-
-
 		<h2>面</h2>
 		<code>
 		THREE.FrontSide
@@ -25,7 +22,6 @@
 			定义了哪一边的面将会被渲染 —— 正面，或是反面，还是两个面都渲染。
 			默认值是[page:Constant FrontSide]（只渲染正面）。
 		</p>
-
 		<h2>混合模式</h2>
 		<code>
 		THREE.NoBlending
@@ -35,15 +31,12 @@
 		THREE.MultiplyBlending
 		THREE.CustomBlending
 		</code>
-
-
 		<p>
 			这些值控制着源和目标材质中，被发送到WebGLRenderer，来给WebGL使用的包含有RGB和Alpha数据的混合方程。<br />
 			默认值是[page:Constant NormalBlending]。<br />
 			请注意，[page:Constant CustomBlending]必须被设置为自定义混合方程（[page:CustomBlendingEquation Custom Blending Equations]）常量中的值。<br />
 			请查看示例：[example:webgl_materials_blending materials / blending]。<br />
 		</p>
-
 		<h2>深度模式</h2>
 		<code>
 		THREE.NeverDepth
@@ -65,7 +58,6 @@
 		[page:Materials GreaterDepth] 当输入像素Z-depth大于当前缓冲器Z-depth时，返回true。<br />
 		[page:Materials NotEqualDepth] 当输入像素Z-depth不等于当前缓冲器Z-depth时，返回true。<br />
 		</p>
-
 		<h2>纹理结合操作</h2>
 		<code>
 		THREE.MultiplyOperation
@@ -78,7 +70,6 @@
 		[page:Constant MultiplyOperation] 是默认值，它将环境贴图和物体表面颜色进行相乘。<br />
 		[page:Constant MixOperation] 使用反射率来混和两种颜色。uses reflectivity to blend between the two colors.<br />
 		[page:Constant AddOperation] 用于对两种颜色进行相加。</p>
-
 		<h2>模板函数</h2>
 		<code>
 		THREE.NeverStencilFunc
@@ -101,7 +92,6 @@
 		[page:Materials GreaterEqualStencilFunc] 当模板基准值比当前模板值大的时候返回true.<br />
 		[page:Materials AlwaysStencilFunc] 一定会返回true.<br />
 		</p>
-
 		<h2>模板操作</h2>
 		<code>
 		THREE.ZeroStencilOp
@@ -124,15 +114,12 @@
 		[page:Materials DecrementWrapStencilOp] 将当前模板值减1，如果这个值低于0则会设置为255<br />
 		[page:Materials InvertStencilOp] 将当前模板值按位反转.<br />
 		</p>
-
 		<h2>GLSL Version</h2>
 		<code>
 		THREE.GLSL1
 		THREE.GLSL3
 		</code>
-
 		<h2>源代码</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

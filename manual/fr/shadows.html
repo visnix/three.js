@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -43,7 +41,6 @@ L'<a href="cameras.html">article précédent qui s'intéressait caméras</a> est
 <p>Une autre solution consiste à utiliser de fausses ombres. Créez un plan, placez une texture en niveaux de gris dans le plan qui se rapproche d'une ombre, dessinez-la au-dessus du sol sous votre objet.</p>
 <p>Par exemple, utilisons cette texture comme une fausse ombre.</p>
 <div class="threejs_center"><img src="../examples/resources/images/roundshadow.png"></div>
-
 <p>Utilisons une partie du code de <a href="cameras.html">l'article précédent</a>.</p>
 <p>Réglons la couleur de fond sur blanc.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
@@ -51,10 +48,8 @@ L'<a href="cameras.html">article précédent qui s'intéressait caméras</a> est
 </pre>
 <p>Ensuite, nous allons configurer le même sol en damier, mais cette fois, nous utilisons un <a href="https://threejs.org/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> car nous n'avons pas besoin d'éclairage pour le sol.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
-
 {
   const planeSize = 40;
-
 -  const loader = new THREE.TextureLoader();
   const texture = loader.load('resources/images/checker.png');
   texture.wrapS = THREE.RepeatWrapping;
@@ -62,7 +57,6 @@ L'<a href="cameras.html">article précédent qui s'intéressait caméras</a> est
   texture.magFilter = THREE.NearestFilter;
   const repeats = planeSize / 2;
   texture.repeat.set(repeats, repeats);
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
   const planeMat = new THREE.MeshBasicMaterial({
     map: texture,
@@ -99,7 +93,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
    // donc ils bougent ensemble.
   const base = new THREE.Object3D();
   scene.add(base);
-
    // ajoute l'ombre à la base
    // remarque : nous fabriquons un nouveau matériau pour chaque sphère
    // afin que nous puissions définir la transparence matérielle de cette sphère
@@ -115,7 +108,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const shadowSize = sphereRadius * 4;
   shadowMesh.scale.set(shadowSize, shadowSize, shadowSize);
   base.add(shadowMesh);
-
   // ajouter la sphère à la base
   const u = i / numSpheres;   // passe de 0 à 1 au fur et à mesure que nous itérons les sphères.
   const sphereMat = new THREE.MeshPhongMaterial();
@@ -123,7 +115,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
   sphereMesh.position.set(0, sphereRadius + 2, 0);
   base.add(sphereMesh);
-
   // rappelez-vous tous les 3 plus la position y
   sphereShadowBases.push({base, sphereMesh, shadowMesh, y: sphereMesh.position.y});
 }
@@ -151,22 +142,17 @@ for (let i = 0; i &lt; numSpheres; ++i) {
 <p>Il rendrait tel quel mais animons les sphères. Pour chaque sphère, ombre, jeu de base, nous déplaçons la base dans le plan xz, nous déplaçons la sphère de haut en bas en utilisant <a href="https://threejs.org/docs/#api/en/math/Math.abs(Math.sin(time"><code class="notranslate" translate="no">Math.abs(Math.sin(time))</code></a>)) qui nous donne une animation rebondissante. Et, nous avons également défini l'opacité du matériau d'ombre de sorte qu'à mesure que chaque sphère monte, son ombre s'estompe.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convertir en secondes
-
   ...
-
   sphereShadowBases.forEach((sphereShadowBase, ndx) =&gt; {
     const {base, sphereMesh, shadowMesh, y} = sphereShadowBase;
-
     // u est une valeur qui va de 0 à 1 au fur et à mesure que l'on itère les sphères
     const u = ndx / sphereShadowBases.length;
-
     // calculer une position pour la base. Cela va bouger
     // à la fois la sphère et son ombre
     const speed = time * .2;
     const angle = speed + u * Math.PI * 2 * (ndx % 1 ? 1 : -1);
     const radius = Math.sin(speed - ndx) * 10;
     base.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-
     // yOff est une valeur allant de 0 à 1
     const yOff = Math.abs(Math.sin(time * 2 + ndx));
     // déplace la sphère de haut en bas
@@ -174,7 +160,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
     // estompe l'ombre au fur et à mesure que la sphère monte
     shadowMesh.material.opacity = THREE.MathUtils.lerp(1, .25, yOff);
   });
-
   ...
 </pre>
 <p>Et voici 15 balles rebondissantes.</p>
@@ -182,7 +167,6 @@ for (let i = 0; i &lt; numSpheres; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-fake.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-fake.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Dans certaines applications, il est courant d'utiliser une ombre ronde ou ovale pour tout, mais bien sûr, vous pouvez également utiliser différentes textures d'ombre de forme. Vous pouvez également donner à l'ombre un bord plus dur. Un bon exemple d'utilisation de ce type d'ombre est <a href="https://www.google.com/search?tbm=isch&amp;q=animal+crossing+pocket+camp+screenshots">Animal Crossing Pocket Camp</a> où vous pouvez voir que chaque personnage a une simple ombre ronde. C'est efficace et pas cher. <a href="https://www.google.com/search?q=monument+valley+screenshots&amp;tbm=isch">Monument Valley</a> semble également utiliser ce type d'ombre pour le personnage principal.</p>
 <p>Donc, en passant aux cartes d'ombre, il y a 3 lumières qui peuvent projeter des ombres. Le <a href="/docs/#api/en/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a>, le <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> et le <a href="/docs/#api/en/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a>.</p>
@@ -204,9 +188,7 @@ mesh.receiveShadow = true;
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mesh = new THREE.Mesh(cubeGeo, cubeMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
-
 ...
-
 const mesh = new THREE.Mesh(sphereGeo, sphereMat);
 mesh.castShadow = true;
 mesh.receiveShadow = true;
@@ -216,7 +198,6 @@ mesh.receiveShadow = true;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Que s'est-il passé? Pourquoi des parties des ombres manquent-elles ?</p>
 <p>C'est parce que les shadow maps sont créées en rendant la scène du point de vue de la lumière. C'est comme si il y avait une caméra dans la <a href="https://threejs.org/docs/#api/en/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a> qui regardait sa cible. Tout comme <a href="cameras.html">la caméra de l'article précédent</a>, la 'caméra de la lumière' définit une zone à l'intérieur de laquelle les ombres sont projetées. Dans l'exemple ci-dessus, cette zone est trop petite.</p>
@@ -229,7 +210,6 @@ scene.add(cameraHelper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-helper.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Ajustez la valeur x cible dans les deux sens et il devrait être assez clair que seul ce qui se trouve à l'intérieur de la boîte de la caméra d'ombre de la lumière est l'endroit où les ombres sont dessinées.</p>
 <p>Nous pouvons ajuster la taille de cette boîte en ajustant la caméra d'ombre de la lumière.</p>
@@ -290,12 +270,10 @@ updateCamera();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-directional-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-directional-light-with-camera-gui.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Réglez <code class="notranslate" translate="no">width</code> et <code class="notranslate" translate="no">height</code> sur 30 et vous verrez que les ombres sont correctement projetées.</p>
 <p>Mais cela soulève la question, pourquoi ne pas simplement définir <code class="notranslate" translate="no">width</code> et <code class="notranslate" translate="no">height</code> avec des chiffres plus grands ? Réglez la largeur et la hauteur sur 100 et vous pourriez voir quelque chose comme ceci.</p>
 <div class="threejs_center"><img src="../resources/images/low-res-shadow-map.png" style="width: 369px"></div>
-
 <p>Que se passe-t-il avec ces ombres basse résolution ?!</p>
 <p>Ce problème est lié à un autre paramètres des ombres. Les textures d'ombre sont des textures dans lesquelles les ombres sont dessinées. Ces textures ont une taille. La zone de la caméra d'ombre que nous avons définie ci-dessus est étirée sur cette taille. Cela signifie que plus la zone que vous définissez est grande, plus vos ombres seront en blocs.</p>
 <p>Vous pouvez définir la résolution de la texture de l'ombre en définissant <code class="notranslate" translate="no">light.shadow.mapSize.width</code> et <code class="notranslate" translate="no">light.shadow.mapSize.height</code>. Ils sont par défaut à 512x512. Plus vous les agrandissez, plus ils prennent de mémoire et plus ils sont lents à s'afficher, vous voulez donc les définir aussi petits que possible tout en faisant fonctionner votre scène. La même chose est vraie avec la zone d'ombre. Plus petite signifie des ombres plus belles, alors réduisez la zone autant que possible tout en couvrant votre scène. Sachez que la machine de chaque utilisateur a une taille de texture maximale autorisée qui est disponible sur le renderer en tant que <a href="/docs/#api/en/renderers/WebGLRenderer#capabilities"><code class="notranslate" translate="no">renderer.capabilities.maxTextureSize</code></a>.</p>
@@ -312,24 +290,18 @@ L'<code class="notranslate" translate="no">aspect</code> est directement défini
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-camera-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-camera-gui.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <!--
 You can notice, just like the last example if we set the angle high
 then the shadow map, the texture is spread over a very large area and
 the resolution of our shadows gets really low.
-
 div class="threejs_center"><img src="../resources/images/low-res-shadow-map-spotlight.png" style="width: 344px"></div>
-
 You can increase the size of the shadow map as mentioned above. You can
 also blur the result
-
 <div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-spot-light-with-shadow-radius"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-spot-light-with-shadow-radius" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
-
 -->
 <p>Et enfin il y a les ombres avec un <a href="https://threejs.org/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>. Étant donné qu'un <a href="https://threejs.org/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> brille dans toutes les directions, les seuls paramètres pertinents sont <code class="notranslate" translate="no">near</code> et <code class="notranslate" translate="no">far</code>. Sinon, l'ombre PointLight est effectivement constituée de 6 ombres <a href="https://threejs.org/docs/#api/en/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a>, chacune pointant vers la face d'un cube autour de la lumière. Cela signifie que les ombres <a href="https://threejs.org/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a> sont beaucoup plus lentes car la scène entière doit être dessinée 6 fois, une pour chaque direction.</p>
 <p>Mettons un cadre autour de notre scène afin que nous puissions voir des ombres sur les murs et le plafond. Nous allons définir la propriété <code class="notranslate" translate="no">side</code> du matériau sur <code class="notranslate" translate="no">THREE.BackSide</code> afin de rendre l'intérieur de la boîte au lieu de l'extérieur. Comme le sol, nous ne le paramétrons pour recevoir des ombres. Nous allons également définir la position de la boîte de sorte que son fond soit légèrement en dessous du sol afin d'éviter un problème de z-fighting.</p>
@@ -349,9 +321,7 @@ also blur the result
 <p>Et bien sûr, il faut passer la lumière en <a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const light = new THREE.SpotLight(color, intensity);
 +const light = new THREE.PointLight(color, intensity);
-
 ....
-
 // afin que nous puissions facilement voir où se trouve la spotLight
 +const helper = new THREE.PointLightHelper(light);
 +scene.add(helper);
@@ -360,21 +330,14 @@ also blur the result
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/shadows-point-light.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/shadows-point-light.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Utilisez les paramètres position de lil-gui pour déplacer la lumière et vous verrez les ombres se projeter sur tous les murs. Vous pouvez également ajuster les paramètres near et far et voir comment les autres ombres se comportent.</p>
 <!--
 self shadow, shadow acne
 -->
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

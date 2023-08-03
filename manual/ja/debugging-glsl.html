@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -35,9 +33,7 @@
 <p>すでにGLSLを知っている場合はデバッグのヒントをいくつか紹介します。</p>
 <p>新しくGLSLシェーダーを作成し何も表示されない場合、一般的に最初にするのはフラグメントシェーダーでソリッドカラーに変更する事です。例えばシェーダーの一番下を以下のようにします。</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">void main() {
-
   ...
-
   gl_FragColor = vec4(1, 0, 0, 1);  // red
 }
 </pre>
@@ -51,14 +47,12 @@
 通常に見えない箇所があれば、どこを見て直せば良いかのヒントがあります。
 フラグメントシェーダーで法線を操作している場合、その操作の結果を描画するために同じテクニックが使えます。</p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-normals.jpg" style="width: 650px;"></div>
-
 <p>テクスチャを使用している場合も同様に、テクスチャ座標で以下のように描画できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-glsl" translate="no">gl_FragColor = vec4(fract(vUv), 0, 1);
 </pre>
 <p><code class="notranslate" translate="no">fract</code> は0から1の範囲外のテクスチャ座標を使用している場合に使用します。
 これは <code class="notranslate" translate="no">texture.repeat</code> が1よりも大きい値に設定されている場合によく見られます。</p>
 <div class="threejs_center"><img src="../resources/images/standard-primitive-uvs.jpg" style="width: 650px;"></div>
-
 <p>フラグメントシェーダーの全ての値に対して同様の事ができます。
 その範囲を把握し、0.0から1.0にスケーリングし <code class="notranslate" translate="no">gl_FragColor</code> に設定するコードを追加します。</p>
 <p>テクスチャを確認するには <a href="/docs/#api/ja/textures/CanvasTexture"><code class="notranslate" translate="no">CanvasTexture</code></a> や <a href="/docs/#api/ja/textures/DataTexture"><code class="notranslate" translate="no">DataTexture</code></a> が動作するもので試してみて下さい。</p>
@@ -69,7 +63,6 @@
 シーンを展開し <code class="notranslate" translate="no">children</code> を見てみるとワールド座標が妥当に見えるか（ <code class="notranslate" translate="no">NaN</code> がない）、各行列の最後の4つの値がシーンにとって妥当に見えるかを確認します。
 シーンが50 x 50 x 50 x 50の単位であるはずが、いくつかの行列が552352623.123の場合は明らかに何かが間違っている事がわかります。</p>
 <div class="threejs_center"><img src="../resources/images/inspect-matrices.gif"></div>
-
 <p>フラグメントシェーダーの時と同様に、頂点シェーダーの値をフラグメントシェーダーに渡すと頂点シェーダーから値を描画する事もできます。
 両方のシェーダーでvaryingを宣言し、正しい値なのかわからない値を渡します。
 実際にシェーダーが法線を使っている場合、値が0.0から1.0になるように <code class="notranslate" translate="no">vNormal</code> を値に設定し法線を表示するようにします。
@@ -84,15 +77,9 @@
 <p>それが動作する場合は一度に少しずつ変更を追加していきます。</p>
 <p>もう一つの方法は<a href="https://chrome.google.com/webstore/detail/shader-editor/ggeaidddejpbakgafapihjbgdlbbbpob?hl=en">Shader Editor extension for Chrome</a>を使うか、他のブラウザでは同様なものを使う事です。
 他のシェーダーがどのように動作してるか見る良い方法です。また、上記で記載してきたフラグメントシェーダーの変更を行うとライブで結果確認できるので良いです。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

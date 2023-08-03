@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,7 +42,6 @@ const rtNear = 0.1;
 const rtFar = 5;
 const rtCamera = new THREE.PerspectiveCamera(rtFov, rtAspect, rtNear, rtFar);
 rtCamera.position.z = 2;
-
 const rtScene = new THREE.Scene();
 rtScene.background = new THREE.Color('red');
 </pre>
@@ -57,23 +54,17 @@ rtScene.background = new THREE.Color('red');
   light.position.set(-1, 2, 4);
 *  rtScene.add(light);
 }
-
 const boxWidth = 1;
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function makeInstance(geometry, color, x) {
   const material = new THREE.MeshPhongMaterial({color});
-
   const cube = new THREE.Mesh(geometry, material);
 *  rtScene.add(cube);
-
   cube.position.x = x;
-
   return cube;
 }
-
 *const rtCubes = [
   makeInstance(geometry, 0x44aa88,  0),
   makeInstance(geometry, 0x8844aa, -2),
@@ -91,9 +82,7 @@ scene.add(cube);
 <p>このシーンをレンダーターゲットにレンダリングします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   ...
-
   // rotate all the cubes in the render target scene
   rtCubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
@@ -101,7 +90,6 @@ scene.add(cube);
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   // draw render target scene to render target
   renderer.setRenderTarget(renderTarget);
   renderer.render(rtScene, rtCamera);
@@ -111,7 +99,6 @@ scene.add(cube);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  // rotate the cube in the scene
   cube.rotation.x = time;
   cube.rotation.y = time * 1.1;
-
   // render the scene to the canvas
   renderer.render(scene, camera);
 </pre>
@@ -120,7 +107,6 @@ scene.add(cube);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/render-target.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/render-target.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>立方体が赤いのはレンダーターゲットのテクスチャとしてレンダリングした<code class="notranslate" translate="no">rtScene</code>の<code class="notranslate" translate="no">background</code>を赤でクリアーしたからです。</p>
 <p>レンダーターゲットは色々な使い方ができます。<a href="shadows.html">シャドウ</a>もレンダーターゲットを使います。<a href="picking.html">ピッキング</a>もレンダーターゲットを使います。<a href="post-processing.html">ポストプロセッシング効果</a>もレンダーターゲットを使います。車のミラーを再現するために車の背後をレンダリングしたテクスチャを利用できますし、３Dゲームに出てくる監視モニターにも使うことができます。</p>
@@ -138,27 +124,19 @@ scene.add(cube);
 <p>上の例では512 x 512のサイズのレンダーテクスチャを作りました。通常はポストプロセッシングにおいてキャンバスと同じサイズのレンダーターゲットが必要になります。つまりキャンバスのサイズを変えたら同時にレンダーターゲットとレンダーターゲットに使うカメラのサイズも一緒に変える必要があります。</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
-
 +    renderTarget.setSize(canvas.width, canvas.height);
 +    rtCamera.aspect = camera.aspect;
 +    rtCamera.updateProjectionMatrix();
 }
 </pre></li>
 </ul>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

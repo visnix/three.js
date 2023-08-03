@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -71,7 +69,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-no-resize.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-no-resize.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Вы можете видеть, что холст сейчас заполняет страницу, но есть 2 проблемы. </p>
 <ol>
@@ -92,18 +89,15 @@ html, body {
 <p>Мы обновим наш цикл отрисовки следующим образом</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;
-
 +  const canvas = renderer.domElement;
 +  camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +  camera.updateProjectionMatrix();
-
   ...
 </pre><p>Теперь кубики должны перестать быть искаженными.</p>
 <p></p><div translate="no" class="threejs_example_container notranslate">
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-update-camera.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-update-camera.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Откройте пример в отдельном окне и измените размер окна, и вы увидите, что кубы больше 
 не растянуты по высоте или ширине. Они остаются правильными, независимо от размера окна.</p>
@@ -150,13 +144,11 @@ html, body {
 новую функцию.</p>
 <pre class="prettyprint showlinemods notranslate notranslate" translate="no">function render(time) {
   time *= 0.001;
-
 +  if (resizeRendererToDisplaySize(renderer)) {
 +    const canvas = renderer.domElement;
 +    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +    camera.updateProjectionMatrix();
 +  }
-
   ...
 </pre><p>Поскольку apsect будет меняться только в случае изменения размера холста, мы 
 устанавливаем соотношение сторон камеры, только если <code class="notranslate" translate="no">resizeRendererToDisplaySize</code> 
@@ -165,7 +157,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Теперь он должен отображаться с разрешением, 
 соответствующим размеру изображения на холсте.</p>
@@ -177,7 +168,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-paragraph.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-paragraph.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>и вот наш тот же код, используемый в макете стиля редактора, 
 где область управления справа может менять размер.</p>
@@ -185,7 +175,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-editor.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-editor.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Важная часть, на которую следует обратить внимание - отсутствие изменений прежнего кода.
 Только HTML и CSS изменились.</p>
@@ -247,22 +236,15 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-hd-dpi.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-hd-dpi.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Может быть трудно увидеть разницу, но если у вас есть дисплей HD-DPI 
 и вы сравниваете этот образец с приведенными выше, 
 вы должны заметить, что края более четкие.</p>
 <p>Эта статья охватывает очень основную, но фундаментальную тему. Далее давайте быстро 
 <a href="primitives.html">пройдемся по основным примитивам, которые предоставляет three.js</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

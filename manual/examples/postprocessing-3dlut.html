@@ -22,7 +22,6 @@
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -31,7 +30,6 @@
   }
 }
 </script>
-
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -41,23 +39,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-
 function main() {
-
 	const canvas = document.querySelector( '#c' );
 	const renderer = new THREE.WebGLRenderer( { antialias: true, canvas } );
-
 	const fov = 45;
 	const aspect = 2; // the canvas default
 	const near = 0.1;
 	const far = 100;
 	const camera = new THREE.PerspectiveCamera( fov, aspect, near, far );
 	camera.position.set( 0, 10, 20 );
-
 	const controls = new OrbitControls( camera, canvas );
 	controls.target.set( 0, 5, 0 );
 	controls.update();
-
 	const lutTextures = [
 		{ name: 'identity', size: 2, filter: true, },
 		{ name: 'identity no filter', size: 2, filter: false, },
@@ -87,9 +80,7 @@ function main() {
 		{ name: 'goolgey', url: 'resources/images/lut/googley-s8.png' },
 		{ name: 'bgy', url: 'resources/images/lut/bgy-s8.png' },
 	];
-
 	const makeIdentityLutTexture = function () {
-
 		const identityLUT = new Uint8Array( [
 			0, 0, 0, 255, // black
 			255, 0, 0, 255, // red
@@ -100,62 +91,42 @@ function main() {
 			0, 255, 255, 255, // cyan
 			255, 255, 255, 255, // white
 		] );
-
 		return function ( filter ) {
-
 			const texture = new THREE.DataTexture( identityLUT, 4, 2 );
 			texture.minFilter = texture.magFilter = filter ? THREE.LinearFilter : THREE.NearestFilter;
 			texture.needsUpdate = true;
 			texture.flipY = false;
 			return texture;
-
 		};
-
 	}();
-
 	const makeLUTTexture = function () {
-
 		const imgLoader = new THREE.ImageLoader();
 		const ctx = document.createElement( 'canvas' ).getContext( '2d' );
-
 		return function ( info ) {
-
 			const lutSize = info.size;
 			const width = lutSize * lutSize;
 			const height = lutSize;
 			const texture = new THREE.DataTexture( new Uint8Array( width * height ), width, height );
 			texture.minFilter = texture.magFilter = info.filter ? THREE.LinearFilter : THREE.NearestFilter;
 			texture.flipY = false;
-
 			if ( info.url ) {
-
 				imgLoader.load( info.url, function ( image ) {
-
 					ctx.canvas.width = width;
 					ctx.canvas.height = height;
 					ctx.drawImage( image, 0, 0 );
 					const imageData = ctx.getImageData( 0, 0, width, height );
-
 					texture.image.data = new Uint8Array( imageData.data.buffer );
 					texture.image.width = width;
 					texture.image.height = height;
 					texture.needsUpdate = true;
-
 				} );
-
 			}
-
 			return texture;
-
 		};
-
 	}();
-
 	lutTextures.forEach( ( info ) => {
-
 		// if not size set get it from the filename
 		if ( ! info.size ) {
-
 			// assumes filename ends in '-s<num>[n]'
 			// where <num> is the size of the 3DLUT cube
 			// and [n] means 'no filtering' or 'nearest'
@@ -165,44 +136,29 @@ function main() {
 			//    'bar-s8n.png' = size:8, filter: false
 			const m = /-s(\d+)(n*)\.[^.]+$/.exec( info.url );
 			if ( m ) {
-
 				info.size = parseInt( m[ 1 ] );
 				info.filter = info.filter === undefined ? m[ 2 ] !== 'n' : info.filter;
-
 			}
-
 			info.texture = makeLUTTexture( info );
-
 		} else {
-
 			info.texture = makeIdentityLutTexture( info.filter );
-
 		}
-
 	} );
-
 	const lutNameIndexMap = {};
 	lutTextures.forEach( ( info, ndx ) => {
-
 		lutNameIndexMap[ info.name ] = ndx;
-
 	} );
-
 	const lutSettings = {
 		lut: lutNameIndexMap.custom,
 	};
 	const gui = new GUI( { width: 300 } );
 	gui.add( lutSettings, 'lut', lutNameIndexMap );
-
 	const scene = new THREE.Scene();
-
 	const sceneBG = new THREE.Scene();
 	const cameraBG = new THREE.OrthographicCamera( - 1, 1, 1, - 1, - 1, 1 );
-
 	let bgMesh;
 	let bgTexture;
 	{
-
 		const loader = new THREE.TextureLoader();
 		bgTexture = loader.load( 'resources/images/beach.jpg' );
 		bgTexture.colorSpace = THREE.SRGBColorSpace;
@@ -213,11 +169,8 @@ function main() {
 		} );
 		bgMesh = new THREE.Mesh( planeGeo, planeMat );
 		sceneBG.add( bgMesh );
-
 	}
-
 	function frameArea( sizeToFitOnScreen, boxSize, boxCenter, camera ) {
-
 		const halfSizeToFitOnScreen = sizeToFitOnScreen * 0.5;
 		const halfFovY = THREE.MathUtils.degToRad( camera.fov * .5 );
 		const distance = halfSizeToFitOnScreen / Math.tan( halfFovY );
@@ -227,60 +180,41 @@ function main() {
 			.subVectors( camera.position, boxCenter )
 			.multiply( new THREE.Vector3( 1, 0, 1 ) )
 			.normalize();
-
 		// move the camera to a position distance units way from the center
 		// in whatever direction the camera was from the center already
 		camera.position.copy( direction.multiplyScalar( distance ).add( boxCenter ) );
-
 		// pick some near and far values for the frustum that
 		// will contain the box.
 		camera.near = boxSize / 100;
 		camera.far = boxSize * 100;
-
 		camera.updateProjectionMatrix();
-
 		// point the camera to look at the center of the box
 		camera.lookAt( boxCenter.x, boxCenter.y, boxCenter.z );
-
 	}
-
 	{
-
 		const gltfLoader = new GLTFLoader();
 		gltfLoader.load( 'resources/models/3dbustchallange_submission/scene.gltf', ( gltf ) => {
-
 			const root = gltf.scene;
 			scene.add( root );
-
 			// fix materials from r114
 			root.traverse( ( { material } ) => {
-
 				if ( material ) {
-
 					material.depthWrite = true;
-
 				}
-
 			} );
-
 			root.updateMatrixWorld();
 			// compute the box that contains all the stuff
 			// from root and below
 			const box = new THREE.Box3().setFromObject( root );
-
 			const boxSize = box.getSize( new THREE.Vector3() ).length();
 			const boxCenter = box.getCenter( new THREE.Vector3() );
 			frameArea( boxSize * 0.4, boxSize, boxCenter, camera );
-
 			// update the Trackball controls to handle the new size
 			controls.maxDistance = boxSize * 10;
 			controls.target.copy( boxCenter );
 			controls.update();
-
 		} );
-
 	}
-
 	const lutShader = {
 		uniforms: {
 			tDiffuse: { value: null },
@@ -296,15 +230,11 @@ function main() {
     `,
 		fragmentShader: `
       #include <common>
-
       #define FILTER_LUT true
-
       uniform sampler2D tDiffuse;
       uniform sampler2D lutMap;
       uniform float lutMapSize;
-
       varying vec2 vUv;
-
       vec4 sampleAs3DTexture(sampler2D tex, vec3 texCoord, float size) {
         float sliceSize = 1.0 / size;                  // space of 1 slice
         float slicePixelSize = sliceSize / size;       // space of 1 pixel
@@ -315,83 +245,60 @@ function main() {
         float xOffset = slicePixelSize * 0.5 + texCoord.x * sliceInnerSize;
         float yRange = (texCoord.y * width + 0.5) / size;
         float s0 = xOffset + (zSlice0 * sliceSize);
-
         #ifdef FILTER_LUT
-
           float s1 = xOffset + (zSlice1 * sliceSize);
           vec4 slice0Color = texture2D(tex, vec2(s0, yRange));
           vec4 slice1Color = texture2D(tex, vec2(s1, yRange));
           float zOffset = mod(texCoord.z * width, 1.0);
           return mix(slice0Color, slice1Color, zOffset);
-
         #else
-
           return texture2D(tex, vec2( s0, yRange));
-
         #endif
       }
-
       void main() {
         vec4 originalColor = texture2D(tDiffuse, vUv);
         gl_FragColor = sampleAs3DTexture(lutMap, originalColor.xyz, lutMapSize);
       }
     `,
 	};
-
 	const lutNearestShader = {
 		uniforms: { ...lutShader.uniforms },
 		vertexShader: lutShader.vertexShader,
 		fragmentShader: lutShader.fragmentShader.replace( '#define FILTER_LUT', '//' ),
 	};
-
 	const effectLUT = new ShaderPass( lutShader );
 	const effectLUTNearest = new ShaderPass( lutNearestShader );
-
 	const renderModel = new RenderPass( scene, camera );
 	renderModel.clear = false; // so we don't clear out the background
 	const renderBG = new RenderPass( sceneBG, cameraBG );
 	const outputPass = new OutputPass();
-
 	const composer = new EffectComposer( renderer );
-
 	composer.addPass( renderBG );
 	composer.addPass( renderModel );
 	composer.addPass( effectLUT );
 	composer.addPass( effectLUTNearest );
 	composer.addPass( outputPass );
-
 	function resizeRendererToDisplaySize( renderer ) {
-
 		const canvas = renderer.domElement;
 		const width = canvas.clientWidth * window.devicePixelRatio | 0;
 		const height = canvas.clientHeight * window.devicePixelRatio | 0;
-
 		const needResize = canvas.width !== width || canvas.height !== height;
 		if ( needResize ) {
-
 			renderer.setSize( width, height, false );
-
 		}
-
 		return needResize;
-
 	}
-
 	let then = 0;
 	function render( now ) {
-
 		now *= 0.001; // convert to seconds
 		const delta = now - then;
 		then = now;
-
 		if ( resizeRendererToDisplaySize( renderer ) ) {
-
 			const canvas = renderer.domElement;
 			const canvasAspect = canvas.clientWidth / canvas.clientHeight;
 			camera.aspect = canvasAspect;
 			camera.updateProjectionMatrix();
 			composer.setSize( canvas.width, canvas.height );
-
 			// scale the background plane to keep the image's
 			// aspect correct.
 			// Note the image may not have loaded yet.
@@ -399,29 +306,19 @@ function main() {
 			const aspect = imageAspect / canvasAspect;
 			bgMesh.scale.x = aspect > 1 ? aspect : 1;
 			bgMesh.scale.y = aspect > 1 ? 1 : 1 / aspect;
-
 		}
-
 		const lutInfo = lutTextures[ lutSettings.lut ];
-
 		const effect = lutInfo.filter ? effectLUT : effectLUTNearest;
 		effectLUT.enabled = lutInfo.filter;
 		effectLUTNearest.enabled = ! lutInfo.filter;
-
 		const lutTexture = lutInfo.texture;
 		effect.uniforms.lutMap.value = lutTexture;
 		effect.uniforms.lutMapSize.value = lutInfo.size;
-
 		composer.render( delta );
-
 		requestAnimationFrame( render );
-
 	}
-
 	requestAnimationFrame( render );
-
 }
-
 main();
 </script>
 </html>

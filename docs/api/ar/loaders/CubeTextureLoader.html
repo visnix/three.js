@@ -8,9 +8,7 @@
 	</head>
 	<body class="rtl">
 		[page:Loader] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			يمكن استخدام [name] لتحميل خرائط المكعب. يُرجع محمل نسخة من [page:CubeTexture] ويتوقع تعريف خريطة المكعب
 			على أنها ستة صور منفصلة تمثل جوانب المكعب. لا يتم دعم تعاريف خريطة المكعب الأخرى مثل الصليب العمودي والأفقي والتصميم بالأعمدة والصفوف.
@@ -19,9 +17,7 @@
 			[page:CubeTexture] المحملة موجودة في مساحة الألوان sRGB. يعني ذلك أن [page:Texture.colorSpace colorSpace]
 			تم تعيين الخاصية إلى `THREE.SRGBColorSpace` افتراضيًا.
 		</p>
-		 
 		<h2>مثال للكود</h2>
-		 
 		<code>
 const scene = new THREE.Scene();
 scene.background = new THREE.CubeTextureLoader()
@@ -35,31 +31,23 @@ scene.background = new THREE.CubeTextureLoader()
 				'nz.png'
 			] );
 		</code>
-		 
 		<h2>أمثلة (Examples)</h2>
-		 
 		<p>
 		[example:webgl_materials_cubemap materials / cubemap]<br />
 		[example:webgl_materials_cubemap_dynamic materials / cubemap / dynamic]<br />
 		[example:webgl_materials_cubemap_refraction materials / cubemap / refraction]
 		</p>
-		 
 		<h2>المنشئ (Constructor)</h2>
-		 
 		<h3>[name]( [param:LoadingManager manager] )</h3>
 		<p>
 		[page:LoadingManager manager] — [page:LoadingManager loadingManager]
 		للمحمل الذي سيتم استخدامه. الافتراضي هو [page:LoadingManager THREE.DefaultLoadingManager].<br /><br />
-		 
 		ينشئ جديدًا [name].
 		</p>
-		 
 		<h2>الخصائص (Properties)</h2>
 		<p>انظر الفئة الأساسية [page:Loader] للخصائص المشتركة.</p>
-		 
 		<h2>الطرق (Methods)</h2>
 		<p>انظر الفئة الأساسية [page:Loader] للطرق المشتركة.</p>
-		 
 		<h3>
 		[method:CubeTexture load]( [param:String urls], [param:Function onLoad], [param:Function onProgress], [param:Function onError] )
 		</h3>
@@ -83,8 +71,6 @@ scene.background = new THREE.CubeTextureLoader()
 		onLoad. تعود الطريقة أيضًا كائن قوام جديد يمكن استخدامه مباشرةً لإنشاء مادة
 		.
 		</p>
-		 
-
 		<h2>المصدر (Source)</h2>
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -52,21 +50,18 @@ Three.jsにはたくさんのトピックがあり、互いに関係している
 <li><a href="#filtering-and-mips">フィルタリングとMIP</a></li>
 <li><a href="#uvmanipulation">テクスチャの繰り返し、オフセット、回転、ラッピング</a></li>
 </ul>
-
 <h2 id="-a-name-hello-a-"><a name="hello"></a> ハロー・テクスチャ</h2>
 <p>テクスチャは<em>一般的に</em>PhotoshopやGIMPのような3rdパーティーのプログラムで最もよく作られる画像です。
 例えば、この画像を立方体に乗せてみましょう。</p>
 <div class="threejs_center">
   <img src="../examples/resources/images/wall.jpg" style="width: 600px;" class="border">
 </div>
-
 <p>最初の例を修正してみましょう。<a href="/docs/#api/ja/loaders/TextureLoader"><code class="notranslate" translate="no">TextureLoader</code></a>を作ることで、必要なことはすべてできます。
 <a href="/docs/#api/ja/loaders/TextureLoader#load"><code class="notranslate" translate="no">load</code></a>を画像のURLを引数にして呼び、<code class="notranslate" translate="no">color</code>を設定する代わりに、
 マテリアルの<code class="notranslate" translate="no">map</code>属性にその結果を渡してください。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load( 'resources/images/wall.jpg' );
 +texture.colorSpace = THREE.SRGBColorSpace;
-
 const material = new THREE.MeshBasicMaterial({
 -  color: 0xFF8844,
 +  map: texture,
@@ -77,7 +72,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-six-a-6-"><a name="six"></a> 立方体の各面に異なる6つのテクスチャを貼り付ける</h2>
 <p>立方体の各面に貼り付ける、6つのテクスチャはどのようなものでしょうか。</p>
@@ -93,12 +87,10 @@ const material = new THREE.MeshBasicMaterial({
     <img src="../examples/resources/images/flower-6.jpg" style="width: 100px;" class="border">
   </div>
 </div>
-
 <p><a href="/docs/#api/ja/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a>を作るときに、単に6つのマテリアルを作り、配列として渡します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const loader = new THREE.TextureLoader();
 -const texture = loader.load( 'resources/images/wall.jpg' );
 -texture.colorSpace = THREE.SRGBColorSpace;
-
 -const material = new THREE.MeshBasicMaterial({
 -  map: texture,
 -});
@@ -112,7 +104,6 @@ const material = new THREE.MeshBasicMaterial({
 +];
 -const cube = new THREE.Mesh(geometry, material);
 +const cube = new THREE.Mesh(geometry, materials);
-
 +function loadColorTexture( path ) {
 +  const texture = loader.load( path );
 +  texture.colorSpace = THREE.SRGBColorSpace;
@@ -124,7 +115,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-6-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-6-textures.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>ただし、全ての種類のジオメトリが複数のマテリアルに対応しているわけではないことに注意してください。
 <a href="/docs/#api/ja/geometries/BoxGeometry"><code class="notranslate" translate="no">BoxGeometry</code></a>と<a href="/docs/#api/ja/geometries/BoxGeometry"><code class="notranslate" translate="no">BoxGeometry</code></a>は、それぞれの面に6つのマテリアルを使えます。
@@ -167,14 +157,12 @@ loader.load('resources/images/wall.jpg', (texture) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-texture.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-texture.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <h3 id="-a-name-waitmany-a-"><a name="waitmany"></a> 複数テクスチャの読み込みを待つ</h3>
 <p>全てのテクスチャが読み込まれたことを待つために、<a href="/docs/#api/ja/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>を使うことができます。
 <a href="/docs/#api/ja/loaders/TextureLoader"><code class="notranslate" translate="no">TextureLoader</code></a>を渡すと、<a href="/docs/#api/ja/loaders/managers/LoadingManager#onLoad"><code class="notranslate" translate="no">onLoad</code></a>属性がコールバックに設定されます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadManager = new THREE.LoadingManager();
 *const loader = new THREE.TextureLoader(loadManager);
-
 const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-1.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-2.jpg')}),
@@ -183,7 +171,6 @@ const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-5.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-6.jpg')}),
 ];
-
 +loadManager.onLoad = () =&gt; {
 +  const cube = new THREE.Mesh(geometry, materials);
 +  scene.add(cube);
@@ -228,14 +215,12 @@ const materials = [
 これは、最後のアイテムが読み込まれるURL、いま読み込まれているアイテムの数、アイテムの合計数を渡して呼ばれます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadingElem = document.querySelector('#loading');
 +const progressBarElem = loadingElem.querySelector('.progressbar');
-
 loadManager.onLoad = () =&gt; {
 +  loadingElem.style.display = 'none';
   const cube = new THREE.Mesh(geometry, materials);
   scene.add(cube);
   cubes.push(cube);  // add to our list of cubes to rotate
 };
-
 +loadManager.onProgress = (urlOfLastItemLoaded, itemsLoaded, itemsTotal) =&gt; {
 +  const progress = itemsLoaded / itemsTotal;
 +  progressBarElem.style.transform = `scaleX(${progress})`;
@@ -246,7 +231,6 @@ loadManager.onLoad = () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-all-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-all-textures.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-cors-a-"><a name="cors"></a> 異なるオリジンからのテクスチャの読み込み</h2>
 <p>異なるサーバーの画像を使うため、そのサーバーは正しいヘッダーを送る必要があります。
@@ -264,8 +248,6 @@ three.jsで使うことができるようなヘッダーを送っています。
 <p>圧縮については言及していないことに注意してください。.jpgイメージを作り、超高圧縮することもできます。
 例えば、家のシーンを作っているとしましょう。家の中には、テーブルがあり、上面に木目のテクスチャを置くことに決めました。</p>
 <div class="threejs_center"><img class="border" src="../resources/images/compressed-but-large-wood-texture.jpg" align="center" style="width: 300px"></div>
-
-
 <p>このイメージはたった157kなので、比較的速くダウンロードすることができます。しかし、
 <a href="resources/images/compressed-but-large-wood-texture.jpg">ピクセルだと3024 x 3761の大きさ</a>です。
 前述した式によると、</p>
@@ -286,16 +268,12 @@ three.jsでテクスチャを使うためには、テクスチャのデータを
 <h2 id="-a-name-filtering-and-mips-a-mip"><a name="filtering-and-mips"></a> フィルタリングとMIP</h2>
 <p>この16x16のテクスチャを</p>
 <div class="threejs_center"><img src="../resources/images/mip-low-res-enlarged.png" class="nobg" align="center"></div>
-
 <p>立方体に適用してみます。</p>
 <div class="spread"><div data-diagram="filterCube"></div></div>
-
 <p>この立方体をとても小さく描画してみましょう。</p>
 <div class="spread"><div data-diagram="filterCubeSmall"></div></div>
-
 <p>ふーむ、見えにくいです。小さな立方体を拡大してみましょう。</p>
 <div class="spread"><div data-diagram="filterCubeSmallLowRes"></div></div>
-
 <p>GPUは小さな立方体のどのピクセルにどの色を使うか、どうやって知るのでしょうか？
 立方体が小さすぎて1、2ピクセルしかないとしたらどうでしょうか？</p>
 <p>フィルタリングとはこういうものです。</p>
@@ -305,7 +283,6 @@ three.jsでテクスチャを使うためには、テクスチャのデータを
 MIPは1x1ピクセルのMIPが得られるまで作られます。
 全てのMIP上の画像はこのようになります。</p>
 <div class="threejs_center"><img src="../resources/images/mipmap-low-res-enlarged.png" class="nobg" align="center"></div>
-
 <p>さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPレベルか次に小さいMIPか選ぶことができます。</p>
 <p>three.jsでは、テクスチャが元の大きさより大きく描かれたときと、小さく描かれたときの両方で、処理の設定を選ぶことができます。</p>
 <p>テクスチャが元の大きさより大きく描かれたときのフィルタ設定として、<a href="/docs/#api/ja/textures/Texture#magFilter"><code class="notranslate" translate="no">texture.magFilter</code></a>属性に<code class="notranslate" translate="no">THREE.NearestFilter</code>か<code class="notranslate" translate="no">THREE.LinearFilter</code>を設定することができます。
@@ -323,7 +300,6 @@ MIPは1x1ピクセルのMIPが得られるまで作られます。
     <div class="code">Linear</div>
   </div>
 </div>
-
 <p>元の大きさよりもテクスチャが小さく描画された時のフィルタ設定では、
 <a href="/docs/#api/ja/textures/Texture#minFilter"><code class="notranslate" translate="no">texture.minFilter</code></a>属性を6つの値から一つ設定できます。</p>
 <ul>
@@ -377,7 +353,6 @@ MIPは1x1ピクセルのMIPが得られるまで作られます。
     <div class="filter-caption" style="right: 0.5em; text-align: right; bottom: 0.5em;">linear<br>mipmap<br>linear</div>
   </div>
 </div>
-
 <p>注意することは、左上と中央上は<code class="notranslate" translate="no">NearestFilter</code>を使っていて、<code class="notranslate" translate="no">LinearFilter</code>はMIPを使っていないことです。GPUが元のテクスチャからピクセルを選ぶので、遠くはちらついて見えます。
 左側はたった一つのピクセルが選ばれ、中央は4つのピクセルが選ばれて混ぜ合わされます。しかし、
 良い色の表現には至っていません。
@@ -386,7 +361,6 @@ MIPは1x1ピクセルのMIPが得られるまで作られます。
 <div class="threejs_center">
   <div data-texture-diagram="differentColoredMips"></div>
 </div>
-
 <p>これで、起きていることが分かりやすいでしょう。
 左上と中央上は、最初のMIPがずっと遠くまで使われているのが分かります。
 右上と中央下は、別のMIPが使われているのがよく分かります。</p>
@@ -487,11 +461,9 @@ lil-guiはenumに文字列のみを使うためです。</p>
   'RepeatWrapping': THREE.RepeatWrapping,
   'MirroredRepeatWrapping': THREE.MirroredRepeatWrapping,
 };
-
 function updateTexture() {
   texture.needsUpdate = true;
 }
-
 const gui = new GUI();
 gui.add(new StringToNumberHelper(texture, 'wrapS'), 'value', wrapModes)
   .name('texture.wrapS')
@@ -514,7 +486,6 @@ three.jsが設定の適用を知るために、<a href="/docs/#api/ja/textures/T
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-adjust.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-adjust.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これはテクスチャのトピックへの第一歩にすぎません。
 ある時点で、テクスチャの座標や、マテリアルが適用できる別の9種のテクスチャについても説明します。</p>
@@ -532,15 +503,9 @@ roughness
 -->
 <p><link rel="stylesheet" href="../resources/threejs-textures.css"></p>
 <script type="module" src="../resources/threejs-textures.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

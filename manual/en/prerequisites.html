@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -46,7 +44,6 @@ They assume you know what a closure is.</p>
 <p>es6 modules can be loaded via the <code class="notranslate" translate="no">import</code> keyword in a script
 or inline via a <code class="notranslate" translate="no">&lt;script type="module"&gt;</code> tag. Here's an example</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"&gt;&lt;/script&gt;
-
 &lt;script type="importmap"&gt;
 {
   "imports": {
@@ -55,13 +52,10 @@ or inline via a <code class="notranslate" translate="no">&lt;script type="module
   }
 }
 &lt;/script&gt;
-
 &lt;script type="module"&gt;
 import * as THREE from 'three';
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>See more details at the bottom of <a href="fundamentals.html">this article</a>.</p>
@@ -94,7 +88,6 @@ at the bottom of the page.</p>
      return foo;
   };
 }
-
 const f = a(123);
 const g = a(456);
 console.log(f());  // prints 123
@@ -158,13 +151,10 @@ const z = position[2];
 <p>Destructuring also works in function arguments</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const dims = {width: 300, height: 150};
 const vector = [3, 4];
-
 function lengthOfVector([x, y]) {
   return Math.sqrt(x * x + y * y);
 }
-
 const dist = lengthOfVector(vector);  // dist = 5
-
 function area({width, height}) {
   return width * height;
 }
@@ -294,14 +284,12 @@ bugs in your JavaScript.</p>
 <p>If you enable <a href="https://eslint.org/docs/rules/no-undef">the <code class="notranslate" translate="no">no-undef</code> rule</a> then
 VSCode via ESLint will warn you of many undefined variables. </p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-defined.png"></div>
-
 <p>Above you can see I mis-spelled <code class="notranslate" translate="no">doTheThing</code> as <code class="notranslate" translate="no">doThing</code>. There's a red squiggle
 under <code class="notranslate" translate="no">doThing</code> and hovering over it it tells me it's undefined. One error
 avoided.</p>
 <p>If you're using <code class="notranslate" translate="no">&lt;script&gt;</code> tags to include three.js you'll get warnings using <code class="notranslate" translate="no">THREE</code> so add <code class="notranslate" translate="no">/* global THREE */</code> at the top of your
 JavaScript files to tell eslint that <code class="notranslate" translate="no">THREE</code> exists. (or better, use <code class="notranslate" translate="no">import</code> 😉)</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-a-constructor.png"></div>
-
 <p>Above you can see eslint knows the rule that <code class="notranslate" translate="no">UpperCaseNames</code> are constructors
 and so you should be using <code class="notranslate" translate="no">new</code>. Another error caught and avoided. This is <a href="https://eslint.org/docs/rules/new-cap">the
 <code class="notranslate" translate="no">new-cap</code> rule</a>.</p>
@@ -310,10 +298,8 @@ customize</a>. For example above I mentioned you
 should use <code class="notranslate" translate="no">const</code> and <code class="notranslate" translate="no">let</code> over <code class="notranslate" translate="no">var</code>.</p>
 <p>Here I used <code class="notranslate" translate="no">var</code> and it warned me I should use <code class="notranslate" translate="no">let</code> or <code class="notranslate" translate="no">const</code></p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-var.png"></div>
-
 <p>Here I used <code class="notranslate" translate="no">let</code> but it saw I never change the value so it suggested I use <code class="notranslate" translate="no">const</code>.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-let.png"></div>
-
 <p>Of course if you'd prefer to keep using <code class="notranslate" translate="no">var</code> you can just turn off that rule.
 As I said above though I prefer to use <code class="notranslate" translate="no">const</code> and <code class="notranslate" translate="no">let</code> over <code class="notranslate" translate="no">var</code> as they just
 work better and prevent bugs.</p>
@@ -326,15 +312,9 @@ for a single line or a section of code.</p>
 be productive and avoid bugs. That said, if you're on a project that absolutely
 must support old browsers there are <a href="https://babeljs.io">tools that will take your ES5/ES6/ES7 code
 and transpile the code back to pre ES5 Javascript</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

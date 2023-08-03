@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -70,7 +68,6 @@ controls.update();
     width: 128px;
   ">
 </div>
-
 <p>Сначала мы загружаем текстуру, устанавливаем фильтрацию nearest 
 и устанавливаем число повторений. 
 Поскольку текстура представляет собой шахматную доску размером 2x2 пикселя, 
@@ -78,7 +75,6 @@ controls.update();
 плоскости каждая клетка на шахматной доске будет иметь размер 
 ровно 1 единицу;</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeSize = 40;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('../resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -162,7 +158,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-ambient.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-ambient.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Нажмите и перетащите сценy, чтобы вращать камеру.</p>
 <p>Обратите внимание, формы плоские. <a href="/docs/#api/en/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a> только умножил цвет материала 
@@ -199,7 +194,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-hemisphere.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-hemisphere.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Еще раз обратите внимание, что объема почти нет, все выглядит плоско. 
 <a href="/docs/#api/en/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a> используется в сочетании с другим светом и может 
@@ -232,7 +226,6 @@ gui.add(light.target.position, 'y', 0, 10);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Трудно понять, что происходит. Three.js имеет несколько вспомогательных 
 объектов, которые мы можем добавить к нашей сцене, чтобы помочь 
@@ -266,11 +259,9 @@ scene.add(helper);
 +  helper.update();
 +}
 +updateLight();
-
 const gui = new GUI();
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
-
 +makeXYZGUI(gui, light.position, 'position', updateLight);
 +makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -279,7 +270,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional-w-helper.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Вращайтесь по орбите камеры, и это станет легче видеть. Плоскость представляет собой 
 <a href="/docs/#api/en/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a> потому что <em>направленный свет</em> вычисляет свет 
@@ -322,7 +312,6 @@ scene.add(helper);
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
 +gui.add(light, 'distance', 0, 40).onChange(updateLight);
-
 makeXYZGUI(gui, light.position, 'position', updateLight);
 -makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -331,7 +320,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-point.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-point.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Обратите внимание, когда <code class="notranslate" translate="no">distance</code> &gt; 0, как свет гаснет.</p>
 <h2 id="-spotlight-"><a href="/docs/#api/en/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a></h2>
@@ -349,7 +337,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
 +const light = new THREE.SpotLight(color, intensity);
 scene.add(light);
 scene.add(light.target);
-
 -const helper = new THREE.DirectionalLightHelper(light);
 +const helper = new THREE.SpotLightHelper(light);
 scene.add(helper);
@@ -370,7 +357,6 @@ scene.add(helper);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-spot-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-spot-w-helper.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Обратите внимание, что при значении по умолчанию <code class="notranslate" translate="no">penumbra</code> = 0 и прожектор 
 имеет очень резкий край. По мере того, как вы наращиваете <code class="notranslate" translate="no">penumbra</code> к 1 
@@ -384,7 +370,6 @@ scene.add(helper);
 <p><a href="/docs/#api/en/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a> работает только с <code class="notranslate" translate="no">MeshStandardMaterai</code> и
 <a href="/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a> поэтому давайте изменим все наши материалы на <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
 -  const planeMat = new THREE.MeshPhongMaterial({
 +  const planeMat = new THREE.MeshStandardMaterial({
@@ -437,7 +422,6 @@ scene.add(helper);
 light.position.set(0, 10, 0);
 +light.rotation.x = THREE.MathUtils.degToRad(30);
 scene.add(light);
-
 *const helper = new RectAreaLightHelper(light);
 scene.add(helper);
 </pre>
@@ -453,7 +437,6 @@ gui.add(light, 'height', 0, 20);
 gui.add(new DegRadHelper(light.rotation, 'x'), 'value', -180, 180).name('x rotation');
 gui.add(new DegRadHelper(light.rotation, 'y'), 'value', -180, 180).name('y rotation');
 gui.add(new DegRadHelper(light.rotation, 'z'), 'value', -180, 180).name('z rotation');
-
 makeXYZGUI(gui, light.position, 'position');
 </pre>
 <p>И вот что.</p>
@@ -461,24 +444,16 @@ makeXYZGUI(gui, light.position, 'position');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-rectarea.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-rectarea.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
-
 <p>Важно отметить, что каждый источник света, который вы добавляете в сцену, 
 замедляет скорость рендеринга сцены в three.js, поэтому вы всегда должны 
 стараться использовать как можно меньше для достижения своих целей.</p>
 <p>Далее давайте перейдем к  <a href="cameras.html">работе с камерами</a>.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lights.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

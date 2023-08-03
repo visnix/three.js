@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -49,7 +47,6 @@ the WebXR API. The server mentioned in <a href="setup.html">the article on setti
 called <a href="https://greggman.github.io/servez">Servez</a> has an option to use https. 
 Check it and start the server. </p>
 <div class="threejs_center"><img src="../resources/images/servez-https.png" class="nobg" style="width: 912px;"></div>
-
 <p>The note the URLs. You need the one that is your computer's local ipaddress.
 It will usually start with <code class="notranslate" translate="no">192</code>, <code class="notranslate" translate="no">172</code> or <code class="notranslate" translate="no">10</code>. Type that full address, including the <code class="notranslate" translate="no">https://</code> part
 into your VR device's browser. Note: Your computer and your VR device need to be on the same local network
@@ -58,7 +55,6 @@ machine to machine connection.</p>
 <p>You'll be greeted with an error something like the one below. Click "advanced" and then click
 <em>proceed</em>.</p>
 <div class="threejs_center"><img src="../resources/images/https-warning.gif"></div>
-
 <p>Now you can run your examples.</p>
 <p>If you're really going to do WebXR development another thing you should learn about is
 <a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">remote debugging</a>
@@ -85,25 +81,20 @@ our render loop for us. We can do that by calling
 <a href="/docs/#api/en/renderers/WebGLRenderer.setAnimationLoop"><code class="notranslate" translate="no">WebGLRenderer.setAnimationLoop</code></a> and passing a function to call for the loop.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
     const rot = time * speed;
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 -requestAnimationFrame(render);
 +renderer.setAnimationLoop(render);
 </pre>
@@ -115,7 +106,6 @@ that's kind of average for a standing user.</p>
 <p>and move the cubes up to be in front of the camera</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
-
 cube.position.x = x;
 +cube.position.y = 1.6;
 +cube.position.z = -2;
@@ -134,7 +124,6 @@ of the camera with a button to enter VR.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-basic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-basic.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I find that VR works better if we have something surrounding the camera like
 room for reference so let's add a simple grid cubemap like we covered in
@@ -159,7 +148,6 @@ texture for each side of the cube which will give as a grid room.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/webxr-basic-w-background.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/webxr-basic-w-background.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Note: To actually see VR you will need a WebXR compatible device.
 I believe most Android Phones can support WebXR using Chrome or Firefox.
@@ -297,14 +285,12 @@ site OR pass in a flag in the URL, something like</p>
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
 -  renderer.xr.enabled = true;
 -  document.body.appendChild(VRButton.createButton(renderer));
-
   const fov = 75;
   const aspect = 2;  // the canvas default
   const near = 0.1;
   const far = 5;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 1.6, 0);
-
 +  const params = (new URL(document.location)).searchParams;
 +  const allowvr = params.get('allowvr') === 'true';
 +  if (allowvr) {
@@ -369,15 +355,9 @@ actually making something shippable in VR will require
 lots of decision making and design.</p>
 <p>This was a pretty brief intro into VR with three.js. We'll
 cover some of the input methods in <a href="webxr-look-to-select.html">future articles</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

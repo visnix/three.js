@@ -8,33 +8,24 @@
 	</head>
 	<body>
 		[page:BufferGeometry] &rarr; [page:ExtrudeGeometry] &rarr;
-
 		<h1>文本缓冲几何体（[name]）</h1>
-
 		<p class="desc">
 				一个用于将文本生成为单一的几何体的类。
 				它是由一串给定的文本，以及由加载的font（字体）和该几何体[page:ExtrudeGeometry]父类中的设置所组成的参数来构造的。
 				请参阅[page:FontLoader]页面来查看更多详细信息。
 			</p>
-
 		<h2>进口</h2>
-
 		<p>
 			[name] 是一个附加组件，必须显式导入。
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 		</code>
-
 		<h2>代码示例</h2>
-
 		<code>
 		const loader = new FontLoader();
-
 		loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
 			const geometry = new TextGeometry( 'Hello three.js!', {
 				font: font,
 				size: 80,
@@ -47,15 +38,11 @@
 			} );
 		} );
 		</code>
-
 		<h2>例子</h2>
-
 		<p>
 		[example:webgl_geometry_text geometry / text ]
 		</p>
-
 		<h2>构造器</h2>
-
 		<h3>[name]([param:String text], [param:Object parameters])</h3>
 		<p>
 		text — 将要显示的文本。<br />
@@ -71,9 +58,7 @@
 			<li>bevelSegments — Integer。斜角的分段数。默认值为3。</li>
 		</ul>
 		</p>
-
 		<h2>可用的字体</h2>
-
 		<p>
 				文本几何体使用 <a href='http://gero3.github.io/facetype.js/' target="_top">typeface.json</a>所生成的字体。
 				一些已有的字体可以在<b>/examples/fonts</b>中找到，且必须在页面中引入。
@@ -146,20 +131,15 @@
 				<td>/examples/fonts/droid/droid_serif_bold.typeface.json</td>
 			</tr>
 		</table>
-
 		<h2>属性</h2>
 		<p>共有属性请参见其基类[page:ExtrudeGeometry]。</p>
-
 		<h3>[property:Object parameters]</h3>
 		<p>
 				一个包含着构造函数中每个参数的对象。在对象实例化之后，对该属性的任何修改都不会改变这个几何体。
 		</p>
-
 		<h2>方法(Methods)</h2>
 		<p>共有方法请参见其基类[page:ExtrudeGeometry]。</p>
-
 		<h2>源代码</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/geometries/TextGeometry.js examples/jsm/geometries/TextGeometry.js]
 		</p>

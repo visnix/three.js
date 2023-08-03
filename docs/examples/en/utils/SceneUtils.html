@@ -8,24 +8,18 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
 			A class containing useful utility functions for scene manipulation.
 		</p>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { SceneUtils } from 'three/addons/utils/SceneUtils.js';
 		</code>
-
 		<h2>Methods</h2>
-
 		<h3>[method:Group createMeshesFromInstancedMesh]( [param:InstancedMesh instancedMesh] )</h3>
 		<p>
 		instancedMesh -- The instanced mesh.
@@ -33,7 +27,6 @@
 		<p>
 		Creates a new group object that contains a new mesh for each instance of the given instanced mesh.
 		</p>
-
 		<h3>[method:Group createMeshesFromMultiMaterialMesh]( [param:Mesh mesh] )</h3>
 		<p>
 		mesh -- A mesh with multiple materials.
@@ -41,7 +34,6 @@
 		<p>
 		Converts the given multi-material mesh into an instance of [page:Group] holding for each material a separate mesh.
 		</p>
-
 		<h3>[method:Group createMultiMaterialObject]( [param:BufferGeometry geometry], [param:Array materials] )</h3>
 		<p>
 		geometry -- The geometry for the set of materials. <br />
@@ -51,7 +43,6 @@
 		Creates a new Group that contains a new mesh for each material defined in materials. Beware that this is not the same as an array of materials which defines multiple materials for 1 mesh.<br />
 		This is mostly useful for objects that need both a material and a wireframe implementation.
 		</p>
-
     <h3>[method:T reduceVertices]( [param:Object3D object], [param:function func], [param:T initialValue] )</h3>
 		<p>
 		object -- The object to traverse (uses [page:Object3D.traverseVisible traverseVisible] internally). <br />
@@ -65,7 +56,6 @@
 		transform-reduce, returning a different type T than the Vector3 input. This
 		can be useful for e.g. fitting a viewing frustum to the scene.
 		</p>
-
 		<h3>[method:undefined sortInstancedMesh]( [param:InstancedMesh mesh], [param:Function compareFn] )</h3>
 		<p>
 		mesh -- InstancedMesh in which instances will be sorted. <br />
@@ -84,9 +74,7 @@
 		helpful to improve display of alpha blended materials (back to front),
 		and to reduce overdraw in opaque materials (front to back).
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/utils/SceneUtils.js examples/jsm/utils/SceneUtils.js]
 		</p>

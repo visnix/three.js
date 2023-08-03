@@ -8,9 +8,7 @@
 	</head>
 	<body>
 		[page:BufferGeometry] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			A polyhedron is a solid in three dimensions with flat faces. This class
 			will take an array of vertices, project them onto a sphere, and then
@@ -19,14 +17,12 @@
 			[page:OctahedronGeometry], and [page:TetrahedronGeometry] to generate
 			their respective geometries.
 		</p>
-
 		<h2>Code Example</h2>
 		<code>
 const verticesOfCube = [
     -1,-1,-1,    1,-1,-1,    1, 1,-1,    -1, 1,-1,
     -1,-1, 1,    1,-1, 1,    1, 1, 1,    -1, 1, 1,
 ];
-
 const indicesOfFaces = [
     2,1,0,    0,3,2,
     0,4,7,    7,3,0,
@@ -35,12 +31,9 @@ const indicesOfFaces = [
     2,3,7,    7,6,2,
     4,5,6,    6,7,4
 ];
-
 const geometry = new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6, 2 );
 </code>
-
 		<h2>Constructor</h2>
-
 		<h3>
 			[name]([param:Array vertices], [param:Array indices], [param:Float radius], [param:Integer detail])
 		</h3>
@@ -53,21 +46,16 @@ const geometry = new THREE.PolyhedronGeometry( verticesOfCube, indicesOfFaces, 6
 			detail — [page:Integer] - How many levels to subdivide the geometry. The
 			more detail, the smoother the shape.
 		</p>
-
 		<h2>Properties</h2>
 		<p>See the base [page:BufferGeometry] class for common properties.</p>
-
 		<h3>[property:Object parameters]</h3>
 		<p>
 			An object with a property for each of the constructor parameters. Any
 			modification after instantiation does not change the geometry.
 		</p>
-
 		<h2>Methods</h2>
 		<p>See the base [page:BufferGeometry] class for common methods.</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

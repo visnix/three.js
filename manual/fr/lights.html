@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -60,10 +58,8 @@ et appelons <code class="notranslate" translate="no">controls.update</code> afin
     width: 128px;
   ">
 </div>
-
 <p>Tout d'abord, chargeons la texture, définissons-la sur répétition, définissons le filtrage au plus proche et définissons le nombre de fois que nous voulons qu'elle se répète. Étant donné que la texture est un damier de 2x2 pixels, en répétant et en définissant la répétition à la moitié de la taille du plan, chaque case sur le damier aura exactement 1 unité de large ;</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const planeSize = 40;
-
 const loader = new THREE.TextureLoader();
 const texture = loader.load('resources/images/checker.png');
 texture.wrapS = THREE.RepeatWrapping;
@@ -138,7 +134,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-ambient.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-ambient.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Cliquez/glissez pour mettre la caméra en <em>orbite</em>.</p>
 <p>Remarquez qu'il n'y a pas de définition. Les formes sont plates. L'<a href="/docs/#api/en/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a> multiplie simplement la couleur du matériau par la couleur de la lumière multipliée par l'intensité.</p>
@@ -168,7 +163,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-hemisphere.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-hemisphere.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Remarquez encore une fois qu'il n'y a presque pas de définition, tout a l'air plutôt plat. L'<a href="/docs/#api/en/lights/HemisphereLight"><code class="notranslate" translate="no">HemisphereLight</code></a> utilisée en combinaison avec une autre lumière peut aider à donner une belle sorte d'influence de la couleur du ciel et du sol. Retenez qu'il est préférable de l'utiliser en combinaison avec une autre lumière ou à la place d'une <a href="/docs/#api/en/lights/AmbientLight"><code class="notranslate" translate="no">AmbientLight</code></a>.</p>
 <h2 id="-directionallight-"><a href="/docs/#api/en/lights/DirectionalLight"><code class="notranslate" translate="no">DirectionalLight</code></a></h2>
@@ -196,7 +190,6 @@ gui.add(light.target.position, 'y', 0, 10);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>C'est un peu difficile de voir ce qui se passe. Three.js a un tas de 'helper' que nous pouvons ajouter à la scène pour voir les objets invibles. Utilisons, dans ce cas, 
 <a href="/docs/#api/en/helpers/DirectionalLightHelper"><code class="notranslate" translate="no">DirectionalLightHelper</code></a> qui a représente la source de lumière en direction de sa cible. Il suffit de lui ajouter une lumière et de l'ajouter à la scène.</p>
@@ -219,11 +212,9 @@ scene.add(helper);
 +  helper.update();
 +}
 +updateLight();
-
 const gui = new GUI();
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
-
 +makeXYZGUI(gui, light.position, 'position', updateLight);
 +makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -232,7 +223,6 @@ gui.add(light, 'intensity', 0, 2, 0.01);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-directional-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-directional-w-helper.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Mettez la caméra en orbite et il devient plus facile de voir. Le plan représente une lumière directionnelle car une lumière directionnelle calcule la lumière venant dans une direction. Il n'y a aucun point d'où vient la lumière, c'est un plan de lumière infini qui projette des rayons de lumière parallèles.</p>
 <h2 id="-pointlight-"><a href="/docs/#api/en/lights/PointLight"><code class="notranslate" translate="no">PointLight</code></a></h2>
@@ -267,7 +257,6 @@ Si la <code class="notranslate" translate="no">distance</code> est de 0, le <a h
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
 gui.add(light, 'intensity', 0, 2, 0.01);
 +gui.add(light, 'distance', 0, 40).onChange(updateLight);
-
 makeXYZGUI(gui, light.position, 'position', updateLight);
 -makeXYZGUI(gui, light.target.position, 'target', updateLight);
 </pre>
@@ -276,7 +265,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-point.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-point.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Remarquez comment la lumière s'éteint lorsque la <code class="notranslate" translate="no">distance</code> est &gt; 0.</p>
 <h2 id="-spotlight-"><a href="/docs/#api/en/lights/SpotLight"><code class="notranslate" translate="no">SpotLight</code></a></h2>
@@ -290,7 +278,6 @@ makeXYZGUI(gui, light.position, 'position', updateLight);
 +const light = new THREE.SpotLight(color, intensity);
 scene.add(light);
 scene.add(light.target);
-
 -const helper = new THREE.DirectionalLightHelper(light);
 +const helper = new THREE.SpotLightHelper(light);
 scene.add(helper);
@@ -307,7 +294,6 @@ en radians. Utilisons notre <code class="notranslate" translate="no">DegRadHelpe
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-spot-w-helper.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-spot-w-helper.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Remarquez qu'avec la <code class="notranslate" translate="no">penumbra</code> par défaut à 0, le projecteur a un bord très net alors que lorsque vous l'ajustez à 1, le bord devient flou.</p>
 <p>Il peut être difficile de voir le <em>cône</em> des spotlight. C'est parce qu'il se trouve sous le sol. Raccourcissez la distance à environ 5 et vous verrez l'extrémité ouverte du cône.</p>
@@ -315,7 +301,6 @@ en radians. Utilisons notre <code class="notranslate" translate="no">DegRadHelpe
 <p>Il existe un autre type de lumière, la <a href="https://threejs.org/docs/#api/en/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a>, qui ressemble à une zone de lumière rectangulaire comme une longue lampe fluorescente ou peut-être une lucarne dépolie dans un plafond.</p>
 <p>Le <a href="https://threejs.org/docs/#api/en/lights/RectAreaLight"><code class="notranslate" translate="no">RectAreaLight</code></a> ne fonctionne qu'avec les <a href="https://threejs.org/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> et <a href="https://threejs.org/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a> donc changeons tous nos matériaux en <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  ...
-
   const planeGeo = new THREE.PlaneGeometry(planeSize, planeSize);
 -  const planeMat = new THREE.MeshPhongMaterial({
 +  const planeMat = new THREE.MeshStandardMaterial({
@@ -368,7 +353,6 @@ en radians. Utilisons notre <code class="notranslate" translate="no">DegRadHelpe
 light.position.set(0, 10, 0);
 +light.rotation.x = THREE.MathUtils.degToRad(-90);
 scene.add(light);
-
 *const helper = new RectAreaLightHelper(light);
 *light.add(helper);
 </pre>
@@ -382,7 +366,6 @@ gui.add(light, 'height', 0, 20);
 gui.add(new DegRadHelper(light.rotation, 'x'), 'value', -180, 180).name('x rotation');
 gui.add(new DegRadHelper(light.rotation, 'y'), 'value', -180, 180).name('y rotation');
 gui.add(new DegRadHelper(light.rotation, 'z'), 'value', -180, 180).name('z rotation');
-
 makeXYZGUI(gui, light.position, 'position');
 </pre>
 <p>Et voici ce que ça donne.</p>
@@ -390,22 +373,14 @@ makeXYZGUI(gui, light.position, 'position');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lights-rectarea.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lights-rectarea.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
-
 <p>Il est important de noter que chaque lumière que vous ajoutez à la scène ralentit la vitesse à laquelle Three.js rend la scène, vous devez donc toujours essayer d'en utiliser le moins possible pour atteindre vos objectifs.</p>
 <p>Passons maintenant à <a href="cameras.html">la gestion des caméras</a>.</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-lights.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

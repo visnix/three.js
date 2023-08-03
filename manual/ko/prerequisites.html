@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -45,9 +43,7 @@
 태그로 불러올 수 있습니다. 두 가지 예시를 동시에 써보죠.</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>모듈의 경로는 반드시 상대 경로나 절대 경로여야 합니다. <code class="notranslate" translate="no">&lt;img&gt;</code>, <code class="notranslate" translate="no">&lt;a&gt;</code> 태그, CSS 경로와
@@ -82,7 +78,6 @@ CSS 셀렉터와 일치하는 모든 요소를 반환하죠.</p>
      return foo;
   };
 }
-
 const f = a(123);
 const g = a(456);
 console.log(f());  // 123 출력
@@ -150,13 +145,10 @@ const y = position[1];
 <p>또한 매개변수에도 구조분해할당을 적용할 수 있습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const dims = { width: 300, height: 150 };
 const position = [1, 2, 3, 4];
-
 function distFromOrig([x, y]) {
   return Math.sqrt(x * x + y * y);
 }
-
 const dist = distFromOrig(position);  // dist = 2.236...
-
 function area({ width, height }) {
   return width * height;
 }
@@ -283,14 +275,12 @@ const v = Vector();     // 모든 함수가 소문자로 시작할 경우 에러
 <p>예를 들어 <a href="https://eslint.org/docs/rules/no-undef"><code class="notranslate" translate="no">no-undef</code> 규칙</a>을 활성화하면
 VSCode는 ESLint를 통해 변수의 값이 지정되지 않은 경우 경고를 출력할 겁니다.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-defined.png"></div>
-
 <p>위 예시에서 작성자는 <code class="notranslate" translate="no">doTheThing</code> 함수를 <code class="notranslate" translate="no">doThing</code>로 잘못 적었습니다. 그러자 <code class="notranslate" translate="no">doThing</code>
 아래에 밑줄이 생겼죠. 그리고 그 위에 커서를 올리면 해당 함수를 선언하지 않았다고
 알려줍니다. 미리 에러를 하나 줄인 셈이죠.</p>
 <p><code class="notranslate" translate="no">THREE</code>를 쓸 때도 경고가 나타날 것이므로 코드 상단에 <code class="notranslate" translate="no">/* global THREE */</code>를 선언해
 <code class="notranslate" translate="no">THREE</code>가 미리 선언되었음을 알려줄 수 있습니다.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-a-constructor.png"></div>
-
 <p>위 이미지에서 ESLint는 <code class="notranslate" translate="no">대문자로 시작하는 이름</code>은 생성자이니 <code class="notranslate" translate="no">new</code> 키워드를 사용하라고
 알려줍니다. <a href="https://eslint.org/docs/rules/new-cap"><code class="notranslate" translate="no">new-cap</code> 규칙</a> 덕에 에러를 하나
 더 줄였네요.</p>
@@ -298,10 +288,8 @@ VSCode는 ESLint를 통해 변수의 값이 지정되지 않은 경우 경고를
 있습니다. 아까 <code class="notranslate" translate="no">var</code> 대신 <code class="notranslate" translate="no">const</code>와 <code class="notranslate" translate="no">let</code>을 쓰라고 했었죠.</p>
 <p>아래 이미지에서 작성자는 <code class="notranslate" translate="no">var</code>를 썼는데, <code class="notranslate" translate="no">let</code>이나 <code class="notranslate" translate="no">const</code>를 쓰라는 경고를 받았습니다.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-var.png"></div>
-
 <p>또 <code class="notranslate" translate="no">let</code>을 쓰고 재할당을 하지 않자 <code class="notranslate" translate="no">const</code>를 쓰라고 제안합니다.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-let.png"></div>
-
 <p>물론 <code class="notranslate" translate="no">var</code>가 더 좋다고 생각하면 이 규칙을 꺼버리면 됩니다. 이 규칙을 쓰는 건 제가 성능과
 버그 예방 면에서 <code class="notranslate" translate="no">var</code>보다 <code class="notranslate" translate="no">let</code>과 <code class="notranslate" translate="no">const</code>를 쓰는 걸 더 좋아하기 때문이죠.</p>
 <p>일부 파일이나 코드의 일부분에서 규칙을 덮어 씌워야 할 경우, <a href="https://eslint.org/docs/user-guide/configuring#disabling-rules-with-inline-comments">주석을 추가해 규칙을 끌 수
@@ -311,15 +299,9 @@ VSCode는 ESLint를 통해 변수의 값이 지정되지 않은 경우 경고를
 버그 예방 두 마리의 토끼를 동시에 잡을 수 있습니다. 만약 꼭 구형 브라우저를 지원해야
 한다면 <a href="https://babeljs.io">ES5/ES2015 등의 최신 문법을 구형 문법으로 변환시켜주는 트랜스파일러</a>를
 사용하길 권장합니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

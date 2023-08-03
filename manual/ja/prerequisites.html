@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,9 +42,7 @@ ES5、ES6、およびES7を把握してる事を前提とします。
 以下に両方の使用​​例があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>パスは絶対パス、または相対パスでなければなりません。相対パスは常に <code class="notranslate" translate="no">./</code> または <code class="notranslate" translate="no">../</code> で始まり <code class="notranslate" translate="no">&lt;img&gt;</code> や <code class="notranslate" translate="no">&lt;a&gt;</code> などの他のタグやcss参照とは異なります。</p>
@@ -78,7 +74,6 @@ import * as THREE from 'three';
      return foo;
   };
 }
-
 const f = a(123);
 const g = a(456);
 console.log(f());  // prints 123
@@ -233,23 +228,19 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
 <p>いくつかの例</p>
 <p><a href="https://eslint.org/docs/rules/no-undef"><code class="notranslate" translate="no">no-undef</code> ルール</a> を有効にすると、VSCodeのEsLintで多くの未定義の変数について警告します。</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-defined.png"></div>
-
 <p>上記は <code class="notranslate" translate="no">doTheThing</code> のスペルを  <code class="notranslate" translate="no">doThing</code> と間違えている事がわかります。
 <code class="notranslate" translate="no">doThing</code> の下に赤い波線があり、その上をホバリングすると定義されていない事がわかります。
 1つのエラーが回避されました。
 <code class="notranslate" translate="no">THREE</code> を使用して警告が表示された場合、eslintに <code class="notranslate" translate="no">THREE</code> が存在する事を伝えるため、JavaScriptファイルの先頭に <code class="notranslate" translate="no">/* global THREE */</code> を追加します。</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-a-constructor.png"></div>
-
 <p>上記では、eslintは <code class="notranslate" translate="no">アッパーキャメルケース</code> がコンストラクターであるというルールを知っているため、 <code class="notranslate" translate="no">new</code> を使用する必要があります。
 他のエラーをキャッチして避けます。これは<a href="https://eslint.org/docs/rules/new-cap"><code class="notranslate" translate="no">new-cap</code> ルール</a> です。</p>
 <p><a href="https://eslint.org/docs/rules/">数百のEslintルールをオン・オフにカスタム</a> できます。
 上記の例では <code class="notranslate" translate="no">var</code> でなく <code class="notranslate" translate="no">const</code> と <code class="notranslate" translate="no">let</code> を使用するルールを適用しました。
 コードでは <code class="notranslate" translate="no">var</code> を使用しましたが、<code class="notranslate" translate="no">let</code> または <code class="notranslate" translate="no">const</code> を使用する必要があると警告されました。</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-var.png"></div>
-
 <p>ここでは <code class="notranslate" translate="no">let</code> を使用しましたが、値を変更しない事がわかったため、 <code class="notranslate" translate="no">const</code> を使用することが提案されました。</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-let.png"></div>
-
 <p>もちろん、 <code class="notranslate" translate="no">var</code> を使い続けたい場合は、そのルールをオフにすることができます。
 上記で記述したように <code class="notranslate" translate="no">var</code> よりも <code class="notranslate" translate="no">const</code> と <code class="notranslate" translate="no">let</code> を使用することを好みます。
 それらはうまく機能し、バグを防ぎます。</p>
@@ -257,15 +248,9 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
 <h1 id="-">レガシーブラウザをサポートする必要がある場合は、トランスパイラーを使用して下さい</h1>
 <p>ほとんどのモダンなブラウザは自動更新されるため、これらすべての機能を使用すると便利です。生産性を高め、バグを回避できます。
 あなたのプロジェクトで古いブラウザをサポートする必要があれば、<a href="https://babeljs.io">ES5/ES6/ES7コードをES5のJavascriptにトランスパイラーするツール</a> を使用して下さい。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

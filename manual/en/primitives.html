@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -72,7 +70,6 @@ for <a href="/docs/#api/en/geometries/TextGeometry"><code class="notranslate" tr
 <div id="Diagram-TubeGeometry" data-primitive="TubeGeometry">A circle traced down a path</div>
 <div id="Diagram-EdgesGeometry" data-primitive="EdgesGeometry">A helper object that takes another geometry as input and generates edges only if the angle between faces is greater than some threshold. For example if you look at the box at the top it shows a line going through each face showing every triangle that makes the box. Using an <a href="/docs/#api/en/geometries/EdgesGeometry"><code class="notranslate" translate="no">EdgesGeometry</code></a> instead the middle lines are removed. Adjust the thresholdAngle below and you'll see the edges below that threshold disappear.</div>
 <div id="Diagram-WireframeGeometry" data-primitive="WireframeGeometry">Generates geometry that contains one line segment (2 points) per edge in the given geometry. Without this you'd often be missing edges or get extra edges since WebGL generally requires 2 points per line segment. For example if all you had was a single triangle there would only be 3 points. If you tried to draw it using a material with <code class="notranslate" translate="no">wireframe: true</code> you would only get a single line. Passing that triangle geometry to a <a href="/docs/#api/en/geometries/WireframeGeometry"><code class="notranslate" translate="no">WireframeGeometry</code></a> will generate a new geometry that has 3 lines segments using 6 points..</div>
-
 <p>We'll go over creating custom geometry in <a href="custom-buffergeometry.html">another article</a>. For now
 let's make an example creating each type of primitive. We'll start
 with the <a href="responsive.html">examples from the previous article</a>.</p>
@@ -97,11 +94,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 the object to the scene.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const objects = [];
 const spread = 15;
-
 function addObject(x, y, obj) {
   obj.position.x = x * spread;
   obj.position.y = y * spread;
-
   scene.add(obj);
   objects.push(obj);
 }
@@ -122,12 +117,10 @@ the color will go from <code class="notranslate" translate="no">hue</code> to wh
   const material = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
   });
-
   const hue = Math.random();
   const saturation = 1;
   const luminance = .5;
   material.color.setHSL(hue, saturation, luminance);
-
   return material;
 }
 </pre>
@@ -170,7 +163,6 @@ For example creating a box</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>There are a couple of notable exceptions to the pattern above.
 The biggest is probably the <a href="/docs/#api/en/geometries/TextGeometry"><code class="notranslate" translate="no">TextGeometry</code></a>. It needs to load
@@ -190,7 +182,6 @@ And finally create the geometry and call <code class="notranslate" translate="no
       loader.load(url, resolve, undefined, reject);
     });
   }
-
   async function doit() {
     const font = await loadFont('resources/threejs/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
     const geometry = new TextGeometry('three.js', {
@@ -206,10 +197,8 @@ And finally create the geometry and call <code class="notranslate" translate="no
     const mesh = new THREE.Mesh(geometry, createMaterial());
     geometry.computeBoundingBox();
     geometry.boundingBox.getCenter(mesh.position).multiplyScalar(-1);
-
     const parent = new THREE.Object3D();
     parent.add(mesh);
-
     addObject(-1, -1, parent);
   }
   doit();
@@ -240,7 +229,6 @@ keep the center offset we set earlier.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives-text.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives-text.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Notice the one on the left is not spinning around its center
 whereas the one on the right is.</p>
@@ -279,7 +267,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="Points"></div>
 </div>
-
 <p>You can turn off <a href="/docs/#api/en/materials/PointsMaterial#sizeAttenuation"><code class="notranslate" translate="no">sizeAttenuation</code></a> by setting it to false if you want the points to
 be the same size regardless of their distance from the camera.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const material = new THREE.PointsMaterial({
@@ -293,7 +280,6 @@ be the same size regardless of their distance from the camera.</p>
 <div class="spread">
 <div data-diagram="PointsUniformSize"></div>
 </div>
-
 <p>One other thing that's important to cover is that almost all shapes
 have various settings for how much to subdivide them. A good example
 might be the sphere geometries. Spheres take parameters for
@@ -303,7 +289,6 @@ how many divisions to make around and how many top to bottom. For example</p>
 <div data-diagram="SphereGeometryMedium"></div>
 <div data-diagram="SphereGeometryHigh"></div>
 </div>
-
 <p>The first sphere has 5 segments around and 3 high which is 15 segments
 or 30 triangles. The second sphere has 24 segments by 10. That's 240 segments
 or 480 triangles. The last one has 50 by 50 which is 2500 segments or 5000 triangles.</p>
@@ -315,7 +300,6 @@ and the flat shading and we get this</p>
 <div data-diagram="SphereGeometryMediumSmooth"></div>
 <div data-diagram="SphereGeometryHighSmooth"></div>
 </div>
-
 <p>It's now not so clear that the one on the right with 5000 triangles
 is entirely better than the one in the middle with only 480.
 If you're only drawing a few spheres, like say a single globe for
@@ -331,7 +315,6 @@ to subdivide a plane.</p>
 <div data-diagram="PlaneGeometryLow"></div>
 <div data-diagram="PlaneGeometryHigh"></div>
 </div>
-
 <p>The plane on the left is 2 triangles. The plane on the right
 is 200 triangles. Unlike the sphere there is really no trade off in quality for most
 use cases of a plane. You'd most likely only subdivide a plane
@@ -349,16 +332,9 @@ You can also create your own <a href="custom-buffergeometry.html">custom BufferG
 to use it</a>.</p>
 <p><link rel="stylesheet" href="../resources/threejs-primitives.css"></p>
 <script type="module" src="../resources/threejs-primitives.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script defer src="../resources/prettify.js"></script>
   <script defer src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

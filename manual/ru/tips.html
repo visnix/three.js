@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -49,7 +47,6 @@ elem.addEventListener('click', () =&gt; {
     saveBlob(blob, `screencapture-${canvas.width}x${canvas.height}.png`);
   });
 });
-
 const saveBlob = (function() {
   const a = document.createElement('a');
   document.body.appendChild(a);
@@ -68,11 +65,9 @@ const saveBlob = (function() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-screenshot-bad.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-screenshot-bad.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Когда я попробовал это, я получил этот скриншот </p>
 <div class="threejs_center"><img src="../resources/images/screencapture-413x313.png"></div>
-
 <p>Да, это просто черное изображение. </p>
 <p>Возможно, это сработало для вас в зависимости от вашего браузера / ОС, но в целом это вряд ли сработает. </p>
 <p>Проблема заключается в том, что по соображениям производительности и совместимости
@@ -82,7 +77,6 @@ const saveBlob = (function() {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const state = {
 +  time: 0,
 +};
-
 -function render(time) {
 -  time *= 0.001;
 +function render() {
@@ -91,7 +85,6 @@ const saveBlob = (function() {
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   cubes.forEach((cube, ndx) =&gt; {
     const speed = 1 + ndx * .1;
 -    const rot = time * speed;
@@ -99,12 +92,9 @@ const saveBlob = (function() {
     cube.rotation.x = rot;
     cube.rotation.y = rot;
   });
-
   renderer.render(scene, camera);
-
 -  requestAnimationFrame(render);
 }
-
 +function animate(time) {
 +  state.time = time * 0.001;
 +
@@ -128,7 +118,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-screenshot-good.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-screenshot-good.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Для другого решения см. Следующий пункт. </p>
 <hr>
@@ -150,7 +139,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-preservedrawingbuffer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-preservedrawingbuffer.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Обратите внимание, что если вы серьезно относитесь к созданию программы для рисования, 
 это не будет решением, так как браузер будет очищать холст каждый раз, когда мы меняем его разрешение. 
@@ -187,7 +175,6 @@ elem.addEventListener('click', () =&gt; {
 <p>Давайте прикрепим к ним всех слушателей событий </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">document.querySelectorAll('canvas').forEach((canvas) =&gt; {
   const ctx = canvas.getContext('2d');
-
   function draw(str) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.textAlign = 'center';
@@ -195,15 +182,12 @@ elem.addEventListener('click', () =&gt; {
     ctx.fillText(str, canvas.width / 2, canvas.height / 2);
   }
   draw(canvas.id);
-
   canvas.addEventListener('focus', () =&gt; {
     draw('has focus press a key');
   });
-
   canvas.addEventListener('blur', () =&gt; {
     draw('lost focus');
   });
-
   canvas.addEventListener('keydown', (e) =&gt; {
     draw(`keyCode: ${e.keyCode}`);
   });
@@ -216,7 +200,6 @@ elem.addEventListener('click', () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-tabindex.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-tabindex.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <hr>
 <p><a id="transparent-canvas" data-toc="Делаем холст прозрачным "></a></p>
@@ -252,7 +235,6 @@ const renderer = new THREE.WebGLRenderer({
 +    color,
 +    opacity: 0.5,
 +  });
-
 ...
 </pre>
 <p>И давайте добавим немного HTML-контента </p>
@@ -296,7 +278,6 @@ const renderer = new THREE.WebGLRenderer({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-transparent-canvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-transparent-canvas.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <hr>
 <p><a id="html-background" data-toc="Создание анимированного фона в three.js "></a></p>
@@ -346,17 +327,10 @@ three.js не конфликтует с JavaScript, выполняющим др�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/tips-html-background.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/tips-html-background.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,12 +8,10 @@
 	</head>
 	<body>
 		<h1>Constantes de Material</h1>
-
 		<p class="desc">
 		Essas constantes definem propriedades comuns a todos os tipos de materiais,
 		com exceção das Operações de Combinação de Texturas que se aplicam apenas a [page:MeshBasicMaterial.combine MeshBasicMaterial], [page:MeshLambertMaterial.combine MeshLambertMaterial] e [page:MeshPhongMaterial.combine MeshPhongMaterial].<br />
 		</p>
-
 		<h2>Lado (Side)</h2>
 		<code>
 		THREE.FrontSide
@@ -24,7 +22,6 @@
 		Define qual lado das faces será renderizado - frente, verso ou ambos.
 		O padrão é [page:Constant FrontSide].
 		</p>
-
 		<h2>Modo de Mesclagem (Blending Mode)</h2>
 		<code>
 		THREE.NoBlending
@@ -34,15 +31,12 @@
 		THREE.MultiplyBlending
 		THREE.CustomBlending
 		</code>
-
-
 		<p>
 		Eles controlam as equações de mesclagem de origem e destino para RGB e Alpha do material enviadas ao WebGLRenderer para uso pelo WebGL.<br />
 		[page:Constant NormalBlending] é o padrão.<br />
 		Note que [page:Constant CustomBlending] deve ser definido para usar Equações de [page:CustomBlendingEquation Mesclagem Personalizadas].<br />
 		Veja os exemplos [example:webgl_materials_blending materials / blending].<br />
 		</p>
-
 		<h2>Modo de Profundidade (Depth Mode)</h2>
 		<code>
 		THREE.NeverDepth
@@ -65,7 +59,6 @@
 		[page:Materials GreaterDepth] retornará true se a profundidade Z do pixel de entrada for maior que a profundidade Z do buffer atual.<br />
 		[page:Materials NotEqualDepth] retornará true se a profundidade Z do pixel de entrada não for igual à profundidade Z do buffer atual.<br />
 		</p>
-
 		<h2>Operações de Combinação de Texturas</h2>
 		<code>
 		THREE.MultiplyOperation
@@ -78,7 +71,6 @@
 		[page:Constant MixOperation] usa refletividade para misturar as duas cores.<br />
 		[page:Constant AddOperation] adiciona as duas cores.
 		</p>
-
 		<h2>Funções de Estêncil (Stencil Functions)</h2>
 		<code>
 		THREE.NeverStencilFunc
@@ -101,7 +93,6 @@
 		[page:Materials GreaterEqualStencilFunc] retornará true se o valor de referência do estêncil for maior ou igual ao valor do estêncil atual.<br />
 		[page:Materials AlwaysStencilFunc] sempre retornará true.<br />
 		</p>
-
 		<h2>Operações de Estêncil (Stencil Operations)</h2>
 		<code>
 		THREE.ZeroStencilOp
@@ -124,7 +115,6 @@
 		[page:Materials DecrementWrapStencilOp] irá incrementar o valor atual do estêncil em `1`. Se o valor diminuir abaixo de `0`, será definido como `255`.<br />
 		[page:Materials InvertStencilOp] executará uma inversão bit a bit do valor de estêncil atual.<br />
 		</p>
-
 		<h2>Tipo de mapa normal</h2>
 		<code>
 		THREE.TangentSpaceNormalMap
@@ -136,15 +126,12 @@
 		Para ObjectSpaceNormalMap, as informações são relativas à orientação do objeto.
 		O padrão é [page:Constant TangentSpaceNormalMap].
 		</p>
-
 		<h2>Versão GLSL</h2>
 		<code>
 		THREE.GLSL1
 		THREE.GLSL3
 		</code>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

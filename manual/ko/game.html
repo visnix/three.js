@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -40,10 +38,8 @@
 <p>먼저 Three.js 부분부터 시작해봅시다. 게임에 쓸 모델들부터 찾아보죠.</p>
 <p><a href="https://opengameart.org">opengameart.org</a> 사이트에서 <a href="https://opengameart.org/users/quaternius">quaternius</a> 작가의 <a href="https://opengameart.org/content/lowpoly-animated-knight">움직이는 기사 모델</a>을 찾았습니다.</p>
 <div class="threejs_center"><img src="../resources/images/knight.jpg" style="width: 375px;"></div>
-
 <p><a href="https://opengameart.org/users/quaternius">같은 작가</a>가 만든 작품 중에 <a href="https://opengameart.org/content/lowpoly-animated-farm-animal-pack">움직이는 동물들</a>도 있더군요.</p>
 <div class="threejs_center"><img src="../resources/images/animals.jpg" style="width: 606px;"></div>
-
 <p>이 모델들로 꽤 괜찮은 게임을 만들 수 있을 것 같습니다. 모델들을 불러와보죠.</p>
 <p><a href="load-gltf.html">glTF 파일 불러오기</a>에 대해서는 이전에 다뤘었습니다. 동일한 방법을 사용하지만 이번에는 모델이 여러 개이기도 하고, 모델을 전부 불러오기 전에 게임을 시작해선 안 됩니다.</p>
 <p>이런 경우를 대비해 Three.js는 <a href="/docs/#api/ko/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>를 제공합니다. <a href="/docs/#api/ko/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>의 인스턴스를 생성해 다른 로더(loader)에 넘겨주기면 되죠. <a href="/docs/#api/ko/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>의 <a href="/docs/#api/ko/loaders/managers/LoadingManager#onProgress"><code class="notranslate" translate="no">onProgress</code></a>와 <a href="/docs/#api/ko/loaders/managers/LoadingManager#onLoad"><code class="notranslate" translate="no">onLoad</code></a> 속성에 콜백 함수를 지정하면 되는데, <a href="/docs/#api/ko/loaders/managers/LoadingManager#onLoad"><code class="notranslate" translate="no">onLoad</code></a>는 모든 파일을 불러온 뒤 호출하고, <a href="/docs/#api/ko/loaders/managers/LoadingManager#onProgress"><code class="notranslate" translate="no">onProgress</code></a>는 각 파일을 불러왔을 때 호출합니다. <a href="/docs/#api/ko/loaders/managers/LoadingManager#onProgress"><code class="notranslate" translate="no">onProgress</code></a>를 이용하면 프로그래스 바를 보여줄 수 있죠.</p>
@@ -68,7 +64,6 @@ const models = {
     });
   }
 }
-
 function init() {
   // 나중에 작성할 예정
 }
@@ -90,7 +85,6 @@ function init() {
 <p><code class="notranslate" translate="no">#progressbar</code>를 참조한 뒤 <code class="notranslate" translate="no">width</code>를 퍼센트(%) 단위로 표시해 현재 진행율을 보여줄 겁니다. 콜백에서 이 스타일만 처리해주면 되겠네요.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const manager = new THREE.LoadingManager();
 manager.onLoad = init;
-
 +const progressbarElem = document.querySelector('#progressbar');
 +manager.onProgress = (url, itemsLoaded, itemsTotal) =&gt; {
 +  progressbarElem.style.width = `${ itemsLoaded / itemsTotal * 100 | 0 }%`;
@@ -142,7 +136,6 @@ manager.onLoad = init;
   background-size: 50px 50px;
   animation: progressanim 2s linear infinite;
 }
-
 @keyframes progressanim {
   0% {
     background-position: 50px 50px;
@@ -162,12 +155,10 @@ manager.onLoad = init;
 +    model.animations = animsByName;
 +  });
 +}
-
 function init() {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
 +  prepModelsAndAnimations();
 }
 </pre>
@@ -183,9 +174,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  Object.values(models).forEach((model, ndx) =&gt; {
 +    const clonedScene = SkeletonUtils.clone(model.gltf.scene);
 +    const root = new THREE.Object3D();
@@ -198,21 +187,17 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 <p>위 코드에서는 불러온 각 모델의 <code class="notranslate" translate="no">gltf.scene</code>을 복사해 새로운 <a href="/docs/#api/ko/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>의 자식으로 추가했습니다. 부모를 따로 만든 건 모델의 애니메이션이 모델의 각 요소의 위치값에 영향을 미치기에 코드로 직접 위치값을 수정하기도 어렵고, 제대로 반영도 안 될 것이기 때문입니다.</p>
 <p>각 모델의 애니메이션을 재생하려면 <a href="/docs/#api/ko/animation/AnimationMixer"><code class="notranslate" translate="no">AnimationMixer</code></a>를 써야 합니다. <a href="/docs/#api/ko/animation/AnimationMixer"><code class="notranslate" translate="no">AnimationMixer</code></a>는 하나 이상의 <a href="/docs/#api/ko/animation/AnimationAction"><code class="notranslate" translate="no">AnimationAction</code></a>으로 이루어지고, 각 <a href="/docs/#api/ko/animation/AnimationAction"><code class="notranslate" translate="no">AnimationAction</code></a>에는 하나의 <a href="/docs/#api/ko/animation/AnimationClip"><code class="notranslate" translate="no">AnimationClip</code></a>이 있습니다. <a href="/docs/#api/ko/animation/AnimationAction"><code class="notranslate" translate="no">AnimationAction</code></a>에는 여러 액션(action)을 이어서 재생하거나, 다른 애니메이션으로 부드럽게 전환하기 등 다양한 설정이 있죠. 당장은 첫 번째 <a href="/docs/#api/ko/animation/AnimationClip"><code class="notranslate" translate="no">AnimationClip</code></a>으로 액션을 만들어봅시다. 설정을 바꾸지 않는다면 해당 애니메이션 클립(clip)을 반복해 재생할 겁니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const mixers = [];
-
 function init() {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
   Object.values(models).forEach((model, ndx) =&gt; {
     const clonedScene = SkeletonUtils.clone(model.gltf.scene);
     const root = new THREE.Object3D();
     root.add(clonedScene);
     scene.add(root);
     root.position.x = (ndx - 3) * 3;
-
 +    const mixer = new THREE.AnimationMixer(clonedScene);
 +    const firstClip = Object.values(model.animations)[0];
 +    const action = mixer.clipAction(firstClip);
@@ -227,19 +212,15 @@ function render(now) {
 +  now *= 0.001;  // 초 단위로 변환
 +  const deltaTime = now - then;
 +  then = now;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 +  for (const mixer of mixers) {
 +    mixer.update(deltaTime);
 +  }
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -248,26 +229,21 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-load-models.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-load-models.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>모든 애니메이션을 확인할 수 있도록 예제를 수정해봅시다. 애니메이션 클립을 전부 액션으로 만들어 재생할 수 있도록 만들겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const mixers = [];
 +const mixerInfos = [];
-
 function init() {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
   Object.values(models).forEach((model, ndx) =&gt; {
     const clonedScene = SkeletonUtils.clone(model.gltf.scene);
     const root = new THREE.Object3D();
     root.add(clonedScene);
     scene.add(root);
     root.position.x = (ndx - 3) * 3;
-
     const mixer = new THREE.AnimationMixer(clonedScene);
 -    const firstClip = Object.values(model.animations)[0];
 -    const action = mixer.clipAction(firstClip);
@@ -285,7 +261,6 @@ function init() {
 +    playNextAction(mixerInfo);
   });
 }
-
 +function playNextAction(mixerInfo) {
 +  const { actions, actionNdx } = mixerInfo;
 +  const nextActionNdx = (actionNdx + 1) % actions.length;
@@ -320,7 +295,6 @@ function init() {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-check-animations.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-check-animations.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>Three.js 관련 내용은 여기까지입니다. 여태까지 다수의 파일을 불러오는 법, 텍스처가 씌워진 모델을 복사하는 법, 해당 모델의 애니메이션을 재생하는 법을 알아봤죠. 실제 게임에서는 <a href="/docs/#api/ko/animation/AnimationAction"><code class="notranslate" translate="no">AnimationAction</code></a> 객체로 다양한 동작을 직접 처리해줘야 합니다.</p>
 <p>자, 이제 게임의 기본 틀을 만들어봅시다.</p>
@@ -332,7 +306,6 @@ function init() {
     array.splice(ndx, 1);
   }
 }
-
 class GameObject {
   constructor(parent, name) {
     this.name = name;
@@ -578,14 +551,11 @@ function render(now) {
   deltaTime: 0,
 };
 +const gameObjectManager = new GameObjectManager();
-
 function init() {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  {
 +    const gameObject = gameObjectManager.createGameObject(scene, 'player');
 +    gameObject.addComponent(Player);
@@ -600,20 +570,16 @@ function render(now) {
   // 시간값이 너무 크지 않도록 제한합니다.
   globals.deltaTime = Math.min(globals.time - then, 1 / 20);
   then = globals.time;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
 -  for (const { mixer } of mixerInfos) {
 -    mixer.update(deltaTime);
 -  }
 +  gameObjectManager.update();
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -622,7 +588,6 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-just-player.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-just-player.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>단순히 Entity Component System을 구현하는 데만 너무 많은 코드를 쓴 게 아닌가 싶지만, 이 정도가 대부분의 게임이 갖춰야할 기본입니다.</p>
 <p>이제 사용자 입력 시스템을 추가해봅시다. 단순히 키보드 이벤트에 직접 코드를 작성하기보다 클래스를 만들어 코드의 다른 부분에서도 <code class="notranslate" translate="no">왼쪽</code>, <code class="notranslate" translate="no">오른쪽</code>을 확인할 수 있도록 하겠습니다. 이러면 <code class="notranslate" translate="no">왼쪽</code>, <code class="notranslate" translate="no">오른쪽</code> 등 다양한 키를 다양한 방법으로 지정할 수 있겠죠. 먼저 키보드 이벤트부터 지정합시다.</p>
@@ -645,18 +610,15 @@ class InputManager {
   constructor() {
     this.keys = {};
     const keyMap = new Map();
-
     const setKey = (keyName, pressed) =&gt; {
       const keyState = this.keys[keyName];
       keyState.justPressed = pressed &amp;&amp; !keyState.down;
       keyState.down = pressed;
     };
-
     const addKey = (keyCode, name) =&gt; {
       this.keys[name] = { down: false, justPressed: false };
       keyMap.set(keyCode, name);
     };
-
     const setKeyFromKeyCode = (keyCode, pressed) =&gt; {
       const keyName = keyMap.get(keyCode);
       if (!keyName) {
@@ -664,14 +626,12 @@ class InputManager {
       }
       setKey(keyName, pressed);
     };
-
     addKey(37, 'left');
     addKey(39, 'right');
     addKey(38, 'up');
     addKey(40, 'down');
     addKey(90, 'a');
     addKey(88, 'b');
-
     window.addEventListener('keydown', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, true);
     });
@@ -699,12 +659,9 @@ const gameObjectManager = new GameObjectManager();
 </pre>
 <p>그리고 렌더링 루프에서 <code class="notranslate" translate="no">update</code> 메서드를 호출하도록 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(now) {
-
   ...
-
   gameObjectManager.update();
 +  inputManager.update();
-
   ...
 }
 </pre>
@@ -716,7 +673,6 @@ const globals = {
   deltaTime: 0,
 +  moveSpeed: 16,
 };
-
 class Player extends Component {
   constructor(gameObject) {
     super(gameObject);
@@ -759,14 +715,11 @@ class Player extends Component {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
-
 +  {
 +    const gameObject = gameObjectManager.createGameObject(camera, 'camera');
 +    globals.cameraInfo = gameObject.addComponent(CameraInfo);
 +  }
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
     gameObject.addComponent(Player);
@@ -792,7 +745,6 @@ class Player extends Component {
                   (inputManager.keys.right.down ? -1 : 0);
     transform.rotation.y += this.turnSpeed * delta * deltaTime;
     transform.translateOnAxis(kForward, moveSpeed * deltaTime);
-
 +    const { frustum } = cameraInfo;
 +    if (frustum.containsPoint(transform.position)) {
 +      this.offscreenTimer = 0;
@@ -858,18 +810,15 @@ class Player extends Component {
   constructor() {
     this.keys = {};
     const keyMap = new Map();
-
     const setKey = (keyName, pressed) =&gt; {
       const keyState = this.keys[keyName];
       keyState.justPressed = pressed &amp;&amp; !keyState.down;
       keyState.down = pressed;
     };
-
     const addKey = (keyCode, name) =&gt; {
       this.keys[name] = { down: false, justPressed: false };
       keyMap.set(keyCode, name);
     };
-
     const setKeyFromKeyCode = (keyCode, pressed) =&gt; {
       const keyName = keyMap.get(keyCode);
       if (!keyName) {
@@ -877,21 +826,18 @@ class Player extends Component {
       }
       setKey(keyName, pressed);
     };
-
     addKey(37, 'left');
     addKey(39, 'right');
     addKey(38, 'up');
     addKey(40, 'down');
     addKey(90, 'a');
     addKey(88, 'b');
-
     window.addEventListener('keydown', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, true);
     });
     window.addEventListener('keyup', (e) =&gt; {
       setKeyFromKeyCode(e.keyCode, false);
     });
-
 +    const sides = [
 +      { elem: document.querySelector('#left'),  key: 'left'  },
 +      { elem: document.querySelector('#right'), key: 'right' },
@@ -954,7 +900,6 @@ class Player extends Component {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-player-input.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-player-input.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>물론 플레이어가 화면 밖으로 나갔을 때 카메라를 움직이거나, "화면 밖 = 죽음"이라는 설정을 넣을 수도 있습니다. 하지만 이것까지 다룬다면 안 그래도 긴 글이 더 길어질 테니 이 방법으로 만족하겠습니다.</p>
 <p>이제 동물을 추가해봅시다. <code class="notranslate" translate="no">Player</code>와 비슷한 방법으로 <code class="notranslate" translate="no">Animal</code> 컴포넌트를 만듭니다.</p>
@@ -973,19 +918,16 @@ class Player extends Component {
   // 프로그래스 바를 숨깁니다.
   const loadingElem = document.querySelector('#loading');
   loadingElem.style.display = 'none';
-
   prepModelsAndAnimations();
   {
     const gameObject = gameObjectManager.createGameObject(camera, 'camera');
     globals.cameraInfo = gameObject.addComponent(CameraInfo);
   }
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
     globals.player = gameObject.addComponent(Player);
     globals.congaLine = [gameObject];
   }
-
 +  const animalModelNames = [
 +    'pig',
 +    'cow',
@@ -1055,17 +997,14 @@ function isClose(obj1, obj1Radius, obj2, obj2Radius) {
   const dist = obj1.position.distanceTo(obj2.position);
   return dist &lt; minDist;
 }
-
 // v 의 값이 -min과 +min 사이가 되도록 합니다.
 function minMagnitude(v, min) {
   return Math.abs(v) &gt; min
       ? min * Math.sign(v)
       : v;
 }
-
 const aimTowardAndGetDistance = function() {
   const delta = new THREE.Vector3();
-
   return function aimTowardAndGetDistance(source, targetPos, maxTurn) {
     delta.subVectors(targetPos, source.position);
     // 바라볼 방향을 계산합니다.
@@ -1081,7 +1020,6 @@ const aimTowardAndGetDistance = function() {
     return delta.length();
   };
 }();
-
 class Animal extends Component {
   constructor(gameObject, model) {
     super(gameObject);
@@ -1171,15 +1109,12 @@ class Animal extends Component {
 <p>한 번에 너무 많은 코드를 보여준 듯하지만 위 코드는 방금 언급한 역할을 합니다. 각 상태에 대한 코드를 보고 어떤 식으로 작동하는지 분석해보기 바랍니다.</p>
 <p>여기에 몇 가지 요소를 추가해야 합니다. 플레이어가 자기 자신을 전역 객체(globals)에 추가해 다른 동물이 자신의 위치를 추적하도록 해야 하고, 또 기차의 머리를 플레이어의 <code class="notranslate" translate="no">GameObject</code>로 지정해야 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function init() {
-
   ...
-
   {
     const gameObject = gameObjectManager.createGameObject(scene, 'player');
 +    globals.player = gameObject.addComponent(Player);
 +    globals.congaLine = [gameObject];
   }
-
 }
 </pre>
 <p>각 모델의 크기도 계산해야 합니다.</p>
@@ -1260,14 +1195,12 @@ class Animal extends Component {
 </pre>
 <p>아래는 <code class="notranslate" translate="no">StateDisplayHelper</code> 컴포넌트입니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const labelContainerElem = document.querySelector('#labels');
-
 class StateDisplayHelper extends Component {
   constructor(gameObject, size) {
     super(gameObject);
     this.elem = document.createElement('div');
     labelContainerElem.appendChild(this.elem);
     this.pos = new THREE.Vector3();
-
     this.helper = new THREE.PolarGridHelper(size / 2, 1, 1, 16);
     gameObject.transform.add(this.helper);
   }
@@ -1283,17 +1216,14 @@ class StateDisplayHelper extends Component {
     const { transform } = this.gameObject;
     const { canvas } = globals;
     pos.copy(transform.position);
-
     /**
      * 해당 위치값을 정규화하면 x와 y 값은 -1에서 +1 사이의 값이 됩니다.
      * x = -1 이면 왼쪽, y = -1 이면 오른쪽이죠.
      **/
     pos.project(globals.camera);
-
     // 정규화한 위치값을 CSS 위치값으로 변환합니다.
     const x = (pos.x *  .5 + .5) * canvas.clientWidth;
     const y = (pos.y * -.5 + .5) * canvas.clientHeight;
-
     // HTML 요소를 해당 위치로 옮깁니다.
     this.elem.style.transform = `translate(-50%, -50%) translate(${ x }px, ${ y }px)`;
   }
@@ -1304,9 +1234,7 @@ class StateDisplayHelper extends Component {
   constructor(gameObject, model) {
     super(gameObject);
 +    this.helper = gameObject.addComponent(StateDisplayHelper, model.size);
-
      ...
-
   }
   update() {
     this.fsm.update();
@@ -1325,23 +1253,18 @@ import { SkeletonUtils } from 'three/addons/utils/SkeletonUtils.js';
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const gui = new GUI();
 +gui.add(globals, 'debug').onChange(showHideDebugInfo);
 +showHideDebugInfo();
-
 const labelContainerElem = document.querySelector('#labels');
 +function showHideDebugInfo() {
 +  labelContainerElem.style.display = globals.debug ? '' : 'none';
 +}
 +showHideDebugInfo();
-
 class StateDisplayHelper extends Component {
-
   ...
-
   update() {
 +    this.helper.visible = globals.debug;
 +    if (!globals.debug) {
 +      return;
 +    }
-
     ...
   }
 }
@@ -1351,15 +1274,12 @@ class StateDisplayHelper extends Component {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-conga-line.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-conga-line.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>원래 처음에는 <a href="https://www.google.com/search?q=snake+game">지렁이 게임</a>을 만들려고 했습니다. 동물이 기차에 붙어 기차가 길어질수록 장애물을 피하기 어려워지는 게임이죠. 예제에 몇 가지 장애물 놓거나 화면 둘레에 벽을 세우기도 했습니다.</p>
 <p>하지만 예제에서 사용한 동물은 이에 적합하지 않습니다. 예제의 동물들은 대부분 위에서 봤을 때 길고 폭이 얇거든요. 아래는 얼룩말을 위에서 본 것입니다.</p>
 <div class="threejs_center"><img src="../resources/images/zebra.png" style="width: 113px;"></div>
-
 <p>예제는 원 모양의 경계로 요소끼리의 충돌을 감지하기에 아래와 같이 울타리에 닿는 경우도 충돌로 감지할 겁니다.</p>
 <div class="threejs_center"><img src="../resources/images/zebra-collisions.svg" style="width: 400px;"></div>
-
 <p>동물과 동물이 부딪히는 경우에도 마찬가지입니다. 특히 게임에서는 이래서 좋을 게 없죠.</p>
 <p>2D 사각형을 만들어 충돌을 감지하는 것도 생각했으나, 바로 너무 많은 코드를 써야 한다는 걸 깨달았습니다. 예제의 각 모델에 다른 크기의 사각형을 추가하는 데는 그다지 많은 코드가 들어가지 않습니다. 하지만 이렇게 몇 가지 모델에 사각형을 추가해보면 곧 충돌을 감지하는 코드를 손봐야 할 필요가 생길 겁니다. 먼저 각 모델이 서로 충돌하는지 확인해야 하니 각 모델의 경계 정육면체나 경계 구체, 또는 모델과 같은 방향으로 정렬된 경계 육면체를 검사해야 합니다. 각 모델의 경계가 충돌했다는 건 두 모델이 <em>어쩌면</em> 서로 충돌했을 수도 있다는 이야기이기에, 각 모델이 <em>실제로</em> 충돌했는지 검사하기 위해 해당 모델들을 다시 검사해야 합니다. 대체로 경계 구체를 검사하는 것만 해도 꽤 많은 작업이 필요합니다. 가능하다면 각 요소가 근접했는지의 여부만 검사하는 등 더 특수한 방법을 사용하는 게 더 경제적이죠.</p>
 <p>또한 충돌 여부를 검사하기만 하는 것으로 끝나는 것이 아니라 충돌 시스템도 구축해야 합니다. 그때 그때 각 모델에게 "너 다른 애랑 충돌했니?" 이렇게 물어보는 것보다 시스템이 직접 충돌 여부를 이벤트 등으로 알려주는 게 더 편할 테니까요. 충돌 시스템은 충돌과 관련한 이벤트나 콜백을 사용합니다. 이 방법의 장점은 모든 충돌을 한 번만 검사하기에 각 모델이 "내가 다른 애랑 충돌했나?" 이렇게 검사를 따로 할 필요가 없다는 거죠. 연산량을 훨씬 줄일 수 있습니다.</p>
@@ -1378,7 +1298,6 @@ class StateDisplayHelper extends Component {
     yield;
   }
 }
-
 class CoroutineRunner {
   constructor() {
     this.generatorStacks = [];
@@ -1459,17 +1378,13 @@ while(runner.isBusy()) {
 <p>코루틴은 동작이 끝났을 때 자동으로 제거됩니다. 코루틴이 끝나기 전에 제거하려면 제너레이터를 미리 참조한 뒤 <code class="notranslate" translate="no">remove</code> 메서드를 호출해야 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const gen = count0To9();
 runner.add(gen);
-
 // 얼마 후
-
 runner.remove(gen);
 </pre>
 <p>이제 플레이어가 0.5에서 1초 사이마다 한 번씩 음표를 뱉도록 해봅시다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">class Player extends Component {
   constructor(gameObject) {
-
     ...
-
 +    this.runner = new CoroutineRunner();
 +
 +    function* emitNotes() {
@@ -1486,12 +1401,9 @@ runner.remove(gen);
   }
   update() {
 +    this.runner.update();
-
   ...
-
   }
 }
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -1532,7 +1444,6 @@ const noteTexture = makeTextTexture('♪');
     transform.add(note);
     this.runner = new CoroutineRunner();
     const direction = new THREE.Vector3(rand(-0.2, 0.2), 1, rand(-0.2, 0.2));
-
     function* moveAndRemove() {
       for (let i = 0; i &lt; 60; ++i) {
         transform.translateOnAxis(direction, globals.deltaTime * 10);
@@ -1542,7 +1453,6 @@ const noteTexture = makeTextTexture('♪');
       transform.parent.remove(transform);
       gameObjectManager.removeGameObject(gameObject);
     }
-
     this.runner.add(moveAndRemove());
   }
   update() {
@@ -1553,9 +1463,7 @@ const noteTexture = makeTextTexture('♪');
 <p>이 컴포넌트는 <a href="/docs/#api/ko/objects/Sprite"><code class="notranslate" translate="no">Sprite</code></a>를 만들고 무작위로 속도를 정해 60프레임 동안 그 속도로 이동하게 합니다. 동시에 재질의 <a href="/docs/#api/ko/materials/Material#opacity"><code class="notranslate" translate="no">opacity</code></a> 속성을 바꿔 페이드-아웃 효과도 주죠. 반복문이 끝나면 이 컴포넌트는 위치값과 음표를 해당 GameObject에서 제거합니다.</p>
 <p>정말 마지막으로, 동물의 수를 좀 늘려보겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function init() {
-
    ...
-
   const animalModelNames = [
     'pig',
     'cow',
@@ -1591,7 +1499,6 @@ const noteTexture = makeTextTexture('♪');
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/game-conga-line-w-notes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/game-conga-line-w-notes.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>누군가 <code class="notranslate" translate="no">setTimeout</code>을 쓰면 안 되냐고 물을지도 모르겠습니다. <code class="notranslate" translate="no">setTimeout</code>을 쓰지 않은 건 <code class="notranslate" translate="no">setTimeout</code>은 게임의 프레임 주기와 무관하기 때문입니다. 예를 들어 예제에서는 프레임 간 시간값을 최대 1/20초로 제한했죠. 방금 구축한 코루틴 시스템도 이 제한을 따를 테지만, <code class="notranslate" translate="no">setTimeout</code>을 쓰면 그렇지 않을 겁니다.</p>
 <p>물론 좀 더 간단한 타이머를 만들 수도 있습니다.</p>
@@ -1648,11 +1555,6 @@ function* animalCoroutine() {
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

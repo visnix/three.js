@@ -8,29 +8,22 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
 			Represents an oriented bounding box (OBB) in 3D space.
 		</p>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { OBB } from 'three/addons/math/OBB.js';
 		</code>
-
 		<h2>Examples</h2>
 		<p>
 			[example:webgl_math_obb]
 		</p>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]( [param:Vector3 center], [param:Vector3 halfSize], [param:Matrix3 rotation] )</h3>
 		<p>
 			[page:Vector3 center] — The center of the [name]. (optional)<br />
@@ -40,26 +33,20 @@
 		<p>
 			Creates a new [name].
 		</p>
-
 		<h2>Properties</h2>
-
 		<h3>[property:Vector3 center]</h3>
 		<p>
 			The center of the [name]. Default is *( 0, 0, 0 )*.
 		</p>
-
 		<h3>[property:Vector3 halfSize]</h3>
 		<p>
 			Positive halfwidth extents of the [name] along each axis. Default is *( 0, 0, 0 )*.
 		</p>
-
 		<h3>[property:Matrix3 rotation]</h3>
 		<p>
 			The rotation of the [name]. Default is the identity matrix.
 		</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:this applyMatrix4]( [param:Matrix4 matrix] )</h3>
 		<p>
 			[page:Matrix4 matrix] — A 4x4 transformation matrix.
@@ -68,7 +55,6 @@
 			Applies the given transformation matrix to this [name]. This method can be used to transform the
 			bounding volume with the world matrix of a 3D object in order to keep both entities in sync.
 		</p>
-
 		<h3>[method:Vector3 clampPoint]( [param:Vector3 point], [param:Vector3 clampedPoint] )</h3>
 		<p>
 			[page:Vector3 point] — The point that should be clamped within the bounds of this [name].<br />
@@ -77,12 +63,10 @@
 		<p>
 			Clamps the given point within the bounds of this [name].
 		</p>
-
 		<h3>[method:OBB clone]()</h3>
 		<p>
 			Creates a cloned [name] for this instance.
 		</p>
-
 		<h3>[method:Boolean containsPoint]( [param:Vector3 point] )</h3>
 		<p>
 			[page:Vector3 point] — The point to test.
@@ -90,7 +74,6 @@
 		<p>
 			Whether the given point lies within this [name] or not.
 		</p>
-
 		<h3>[method:this copy]( [param:OBB obb] )</h3>
 		<p>
 			[page:OBB obb] — The [name] to copy.
@@ -98,7 +81,6 @@
 		<p>
 			Copies the properties of the given [name] to this [name].
 		</p>
-
 		<h3>[method:Boolean equals]( [param:OBB obb] )</h3>
 		<p>
 			[page:OBB obb] — The [name] to test.
@@ -106,7 +88,6 @@
 		<p>
 			Whether the given [name] is equal to this [name] or not.
 		</p>
-
 		<h3>[method:this fromBox3]( [param:Box3 box3] )</h3>
 		<p>
 			[page:Box3 box3] — An AABB.
@@ -114,7 +95,6 @@
 		<p>
 			Defines an [name] based on the given AABB.
 		</p>
-
 		<h3>[method:Vector3 getSize]( [param:Vector3 size] )</h3>
 		<p>
 			[page:Vector3 size] — The result will be copied into this vector.
@@ -122,7 +102,6 @@
 		<p>
 			Returns the size of this [name] into the given vector.
 		</p>
-
 		<h3>[method:Boolean intersectsBox3]( [param:Box3 box3] )</h3>
 		<p>
 			[page:Box3 box3] — The AABB to test.
@@ -130,7 +109,6 @@
 		<p>
 			Whether the given AABB intersects this [name] or not.
 		</p>
-
 		<h3>[method:Boolean intersectsSphere]( [param:Sphere sphere] )</h3>
 		<p>
 			[page:Sphere sphere] — The bounding sphere to test.
@@ -138,7 +116,6 @@
 		<p>
 			Whether the given bounding sphere intersects this [name] or not.
 		</p>
-
 		<h3>[method:Boolean intersectsOBB]( [param:OBB obb], [param:Number epsilon] )</h3>
 		<p>
 			[page:OBB obb] — The OBB to test.<br />
@@ -147,7 +124,6 @@
 		<p>
 			Whether the given [name] intersects this [name] or not.
 		</p>
-
 		<h3>[method:Boolean intersectsRay]( [param:Ray ray] )</h3>
 		<p>
 			[page:Ray ray] — The ray to test.
@@ -155,7 +131,6 @@
 		<p>
 			Whether the given ray intersects this [name] or not.
 		</p>
-
 		<h3>[method:Vector3 intersectRay]( [param:Ray ray], [param:Vector3 intersectionPoint] )</h3>
 		<p>
 			[page:Ray ray] — The ray to test.<br />
@@ -165,7 +140,6 @@
 			Performs a Ray/OBB intersection test and stores the intersection point to the given 3D vector.
 			If no intersection is detected, `null` is returned.
 		</p>
-
 		<h3>[method:this set]( [param:Vector3 center], [param:Vector3 halfSize], [param:Matrix3 rotation] )</h3>
 		<p>
 			[page:Vector3 center] — The center of the [name].<br />
@@ -175,9 +149,7 @@
 		<p>
 			Defines the [name] for the given values.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 		[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/math/OBB.js examples/jsm/math/OBB.js]
 		</p>

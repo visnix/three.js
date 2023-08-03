@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -51,7 +49,6 @@ VR 기기 없이는 동작하지 않으며 그 이유를 <a href="webxr.html">�
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
     // cast a ray through the frustum
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // get the list of objects the ray intersected
@@ -70,13 +67,10 @@ VR 기기 없이는 동작하지 않으며 그 이유를 <a href="webxr.html">�
 <p>해당 코드에 대한 설명은 <a href="picking.html">피킹에 대한 글</a>을 참조하십시오.</p>
 <p>이 기능을 사용하려면 인스턴스를 만들고 render loop에서 호출하기만 하면 됩니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const pickHelper = new PickHelper();
-
 ...
 function render(time) {
   time *= 0.001;
-
   ...
-
 +  // 0, 0 is the center of the view in normalized coordinates.
 +  pickHelper.pick({x: 0, y: 0}, scene, camera, time);
 </pre>
@@ -87,7 +81,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-webvr-look-to-select.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-webvr-look-to-select.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>일반적으로 우리는 즉각적인 선택을 원하지 않습니다.</p>
 <p>대신 우리는 실수로 어떤 것을 선택하지 않도록 하기 위해 몇 분 동안 카메라를 사용자가 선택하고자 하는 것에 고정시키도록 합니다.</p>
@@ -106,7 +99,6 @@ const camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far)
 <p>그리고 캔버스의 크기가 변경되면 업데이트하는 것을 잊지 마십시오.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     const aspect = canvas.clientWidth / canvas.clientHeight;
@@ -125,7 +117,6 @@ const camera = new THREE.OrthographicCamera(left, right, top, bottom, near, far)
   texture.needsUpdate = true;
   return texture;
 }
-
 const cursorColors = new Uint8Array([
   64, 64, 64, 64,       // dark gray
   255, 255, 255, 255,   // white
@@ -139,7 +130,6 @@ const tubeSegments = 4;
 const ringSegments = 64;
 const cursorGeometry = new THREE.TorusGeometry(
     ringRadius, tubeRadius, tubeSegments, ringSegments);
-
 const cursorMaterial = new THREE.MeshBasicMaterial({
   color: 'white',
   map: cursorTexture,
@@ -154,7 +144,6 @@ scene.add(cursor);
 <p>그 다음 <code class="notranslate" translate="no">render</code>에서 텍스처의 오프셋을 조정하도록 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     const aspect = canvas.clientWidth / canvas.clientHeight;
@@ -162,7 +151,6 @@ scene.add(cursor);
     camera.right = aspect;
     camera.updateProjectionMatrix();
   }
-
 +  const fromStart = 0;
 +  const fromEnd = 2;
 +  const toStart = -0.5;
@@ -171,7 +159,6 @@ scene.add(cursor);
 +      time % 2,
 +      fromStart, fromEnd,
 +      toStart, toEnd);
-
   renderer.render(scene, camera);
 }
 </pre>
@@ -194,7 +181,6 @@ scene.add(cursor);
 +backgroundTexture.wrapS = THREE.RepeatWrapping;
 +backgroundTexture.wrapT = THREE.RepeatWrapping;
 +backgroundTexture.repeat.set(4, 4);
-
 const scene = new THREE.Scene();
 +scene.background = backgroundTexture;
 </pre>
@@ -203,7 +189,6 @@ const scene = new THREE.Scene();
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-webvr-look-to-select-selector.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-webvr-look-to-select-selector.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>몇 가지 주목하고 <strong>시도해야 할 것들</strong>이 있습니다.</p>
 <ul>
@@ -232,7 +217,6 @@ const scene = new THREE.Scene();
     this.raycaster = new THREE.Raycaster();
     this.pickedObject = null;
 -    this.pickedObjectSavedColor = 0;
-
 +    const cursorColors = new Uint8Array([
 +      64, 64, 64, 64,       // dark gray
 +      255, 255, 255, 255,   // white
@@ -270,16 +254,13 @@ const scene = new THREE.Scene();
   pick(normalizedPosition, scene, camera, time) {
 +    const elapsedTime = time - this.lastTime;
 +    this.lastTime = time;
-
 -    // restore the color if there is a picked object
 -    if (this.pickedObject) {
 -      this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
 -      this.pickedObject = undefined;
 -    }
-
 +    const lastPickedObject = this.pickedObject;
 +    this.pickedObject = undefined;
-
     // cast a ray through the frustum
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // get the list of objects the ray intersected
@@ -292,7 +273,6 @@ const scene = new THREE.Scene();
 -      // set its emissive color to flashing red/yellow
 -      this.pickedObject.material.emissive.setHex((time * 8) % 2 &gt; 1 ? 0xFFFF00 : 0xFF0000);
     }
-
 +    // show the cursor only if it's hitting something
 +    this.cursor.visible = this.pickedObject ? true : false;
 +
@@ -396,20 +376,13 @@ const boxDepth = 1;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/threejs-webvr-look-to-select-w-cursor.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/threejs-webvr-look-to-select-w-cursor.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이 예제가 구글 카드 보드 레벨 UX의 "look to select"를 구현하는 방법에 대한 아이디어를 주었기를 바랍니다.
 텍스쳐 좌표 오프셋을 사용한 슬라이딩 텍스쳐도 일반적으로 유용한 기법입니다.</p>
 <p>다음으로는 <a href="webxr-point-to-select.html">VR 컨트롤러가 있는 사용자가 사물을 가리키고 이동할 수 있는 방법을 알아보겠습니다.</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -7,11 +7,8 @@
  * amount: shift distance (1 is width of input)
  * angle: shift angle in radians
  */
-
 const DigitalGlitch = {
-
 	uniforms: {
-
 		'tDiffuse': { value: null }, //diffuse texture
 		'tDisp': { value: null }, //displacement texture for digital glitch squares
 		'byp': { value: 0 }, //apply the glitch ?
@@ -24,22 +21,16 @@ const DigitalGlitch = {
 		'distortion_y': { value: 0.6 },
 		'col_s': { value: 0.05 }
 	},
-
 	vertexShader: /* glsl */`
-
 		varying vec2 vUv;
 		void main() {
 			vUv = uv;
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 		}`,
-
 	fragmentShader: /* glsl */`
-
 		uniform int byp; //should we apply the glitch ?
-
 		uniform sampler2D tDiffuse;
 		uniform sampler2D tDisp;
-
 		uniform float amount;
 		uniform float angle;
 		uniform float seed;
@@ -48,14 +39,10 @@ const DigitalGlitch = {
 		uniform float distortion_x;
 		uniform float distortion_y;
 		uniform float col_s;
-
 		varying vec2 vUv;
-
-
 		float rand(vec2 co){
 			return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
 		}
-
 		void main() {
 			if(byp<1) {
 				vec2 p = vUv;
@@ -95,7 +82,5 @@ const DigitalGlitch = {
 				gl_FragColor=texture2D (tDiffuse, vUv);
 			}
 		}`
-
 };
-
 export { DigitalGlitch };

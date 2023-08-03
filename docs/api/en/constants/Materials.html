@@ -8,7 +8,6 @@
 	</head>
 	<body>
 		<h1>Material Constants</h1>
-
 		<p class="desc">
 			These constants define properties common to all material types, with the
 			exception of Texture Combine Operations which only apply to
@@ -16,19 +15,16 @@
 			[page:MeshLambertMaterial.combine MeshLambertMaterial] and
 			[page:MeshPhongMaterial.combine MeshPhongMaterial].<br />
 		</p>
-
 		<h2>Side</h2>
 		<code>
 		THREE.FrontSide 
 		THREE.BackSide 
 		THREE.DoubleSide
 		</code>
-		
 		<p>
 			Defines which side of faces will be rendered - front, back or both.
 			Default is [page:Constant FrontSide].
 		</p>
-
 		<h2>Blending Mode</h2>
 		<code>
 		THREE.NoBlending 
@@ -38,7 +34,6 @@
 		THREE.MultiplyBlending 
 		THREE.CustomBlending
 		</code>
-
 		<p>
 			These control the source and destination blending equations for the
 			material's RGB and Alpha sent to the WebGLRenderer for use by WebGL.<br />
@@ -48,7 +43,6 @@
 			See the [example:webgl_materials_blending materials / blending]
 			example.<br />
 		</p>
-
 		<h2>Depth Mode</h2>
 		<code>
 		THREE.NeverDepth
@@ -80,14 +74,12 @@
 			[page:Materials NotEqualDepth] will return true if the incoming pixel
 			Z-depth is not equal to the current buffer Z-depth.<br />
 		</p>
-
 		<h2>Texture Combine Operations</h2>
 		<code>
 		THREE.MultiplyOperation 
 		THREE.MixOperation 
 		THREE.AddOperation
 		</code>
-		
 		<p>
 			These define how the result of the surface's color is combined with the
 			environment map (if present), for [page:MeshBasicMaterial.combine MeshBasicMaterial],
@@ -99,7 +91,6 @@
 			colors.<br />
 			[page:Constant AddOperation] adds the two colors.
 		</p>
-
 		<h2>Stencil Functions</h2>
 		<code>
 		THREE.NeverStencilFunc 
@@ -129,7 +120,6 @@
 			reference value is greater than or equal to the current stencil value.<br />
 			[page:Materials AlwaysStencilFunc] will always return true.<br />
 		</p>
-
 		<h2>Stencil Operations</h2>
 		<code>
 		THREE.ZeroStencilOp 
@@ -161,28 +151,23 @@
 			[page:Materials InvertStencilOp] will perform a bitwise inversion of the
 			current stencil value.<br />
 		</p>
-
 		<h2>Normal map type</h2>
 		<code>
 		THREE.TangentSpaceNormalMap 
 		THREE.ObjectSpaceNormalMap 
 		</code>
-		
 		<p>
 			Defines the type of the normal map. For TangentSpaceNormalMap, the
 			information is relative to the underlying surface. For
 			ObjectSpaceNormalMap, the information is relative to the object
 			orientation. Default is [page:Constant TangentSpaceNormalMap].
 		</p>
-
 		<h2>GLSL Version</h2>
 		<code>
 		THREE.GLSL1 
 		THREE.GLSL3 
 		</code>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

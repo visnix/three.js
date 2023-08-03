@@ -8,9 +8,7 @@
 	</head>
 	<body class="rtl">
 		[page:Mesh] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 		نسخة خاصة من [page:Mesh] مع دعم التصيير المثيل. استخدم
 		[name] إذا كان عليك تقديم عدد كبير من الكائنات بنفس
@@ -18,7 +16,6 @@
 		من [name] سيساعدك على تقليل عدد مكالمات الرسم وبالتالي
 		تحسين أداء التصيير العام في تطبيقك.
 		</p>
-		 
 		<h2>أمثلة (Examples)</h2>
 		<p>
 		[example:webgl_instancing_dynamic WebGL / instancing / dynamic]<br />
@@ -26,7 +23,6 @@
 		[example:webgl_instancing_scatter WebGL / instancing / scatter]<br />
 		[example:webgl_instancing_raycast WebGL / instancing / raycast]
 		</p>
-		 
 		<h2>المنشئ (Constructor)</h2>
 		<h3>
 		[name]( [param:BufferGeometry geometry], [param:Material material],
@@ -38,22 +34,18 @@
 		جديد [page:MeshBasicMaterial].<br />
 		[page:Integer count] - عدد العينات.<br />
 		</p>
-		 
 		<h2>الخصائص (Properties)</h2>
 		<p>راجع الفئة الأساسية [page:Mesh] للحصول على الخصائص المشتركة.</p>
-		 
 		<h3>[property:Box3 boundingBox]</h3>
 		<p>
 		يحيط هذا المربع التجزئة بجميع عينات [name]. يمكن حسابه
 		مع [page:.computeBoundingBox](). الافتراضية هي `null`.
 		</p>
-		 
 		<h3>[property:Sphere boundingSphere]</h3>
 		<p>
 		يحيط هذا المجال المحدد بجميع عينات [name]. يمكن
 		حسابه مع [page:.computeBoundingSphere](). الافتراضية هي `null`.
 		</p>
-		 
 		<h3>[property:Integer count]</h3>
 		<p>
 		عدد العينات. قيمة `count` الممررة إلى الباني
@@ -64,34 +56,28 @@
 		إذا كنت بحاجة إلى عدد أكبر من العينات من قيمة العدد الأصلية ، فلديك
 		إنشاء جديد [name].
 		</p>
-	 
 		<h3>[property:InstancedBufferAttribute instanceColor]</h3>
 		<p>
 		يمثل ألوان جميع العينات. `null` بشكل افتراضي. يجب عليك ضبط
 		علامة [page:BufferAttribute.needsUpdate needsUpdate] الخاصة بها على صحيح إذا كان لديك
 		تعديل بيانات مثيل عبر [page:.setColorAt]().
 		</p>
-	 
 		<h3>[property:InstancedBufferAttribute instanceMatrix]</h3>
 		<p>
 		يمثل التحول المحلي لجميع العينات. يجب عليك ضبطه
 		[page:BufferAttribute.needsUpdate needsUpdate] علامة صحيحة إذا قمت بتعديل
 		بيانات مثيل عبر [page:.setMatrixAt]().
 		</p>
-	 
 		<h3>[property:Boolean isInstancedMesh]</h3>
 		<p>علامة للقراءة فقط للتحقق مما إذا كان كائنًا معطىً من نوع [name].</p>
-	 
 		<h2>الطرق (Methods)</h2>
 		<p>راجع الفئة الأساسية [page:Mesh] للحصول على الطرق المشتركة.</p>
-	 
 		<h3>[method:undefined computeBoundingBox]()</h3>
 		<p>
 		يحسب مربع التجزئة ، وتحديث [page:.boundingBox] سمة.<br />
 		لا يتم حساب مربعات التجزئة افتراضيًا. يجب حسابها بشكل صريح
 		حسابها ، وإلا كانت `null`.
 		</p>
-	 
 		<h3>[method:undefined computeBoundingSphere]()</h3>
 		<p>
 		يحسب المجال المحدد ، وتحديث [page:.boundingSphere]
@@ -99,13 +85,11 @@
 		لا يتم حساب المجالات المحددة افتراضيًا. يجب حسابها بشكل صريح
 		حسابها ، وإلا كانت `null`.
 		</p>
-	 
 		<h3>[method:undefined dispose]()</h3>
 		<p>
 		يطلق الموارد المتعلقة بوحدة معالجة الرسومات التي تم تخصيصها من قبل هذه العينة. استدعاء هذه
 		الطريقة كلما لم تستخدم هذه العينة في تطبيقك.
 		</p>
-
 		<h3>
 		[method:undefined getColorAt]( [param:Integer index], [param:Color color] )
 		</h3>
@@ -118,7 +102,6 @@
 		العينة المحددة.
 		</p>
 		<p>احصل على لون العينة المحددة.</p>
-		 
 		<h3>
 		[method:undefined getMatrixAt]( [param:Integer index], [param:Matrix4 matrix] )
 		</h3>
@@ -131,7 +114,6 @@
 		مصفوفة التحول للعينة المحددة.
 		</p>
 		<p>احصل على مصفوفة التحول المحلية للعينة المحددة.</p>
-		 
 		<h3>
 		[method:undefined setColorAt]( [param:Integer index], [param:Color color] )
 		</h3>
@@ -145,7 +127,6 @@
 		[page:.instanceColor][page:BufferAttribute.needsUpdate .needsUpdate] إلى
 		صحيح بعد تحديث جميع الألوان.
 		</p>
-		 
 		<h3>
 		[method:undefined setMatrixAt]( [param:Integer index], [param:Matrix4 matrix] )
 		</h3>
@@ -162,9 +143,7 @@
 		تأكد من ضبط [page:.instanceMatrix][page:BufferAttribute.needsUpdate .needsUpdate]
 		صحيح بعد تحديث جميع المصفوفات.
 		</p>
-
 		<h2>المصدر (Source)</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

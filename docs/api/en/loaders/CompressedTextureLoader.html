@@ -8,39 +8,29 @@
 	</head>
 	<body>
 		[page:Loader] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			Abstract base class for block based textures loader (dds, pvr, ...). This
 			uses the [page:FileLoader] internally for loading files.
 		</p>
-
 		<h2>Examples</h2>
-
 		<p>
 			See the
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/DDSLoader.js DDSLoader] 
 			and [link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/loaders/PVRLoader.js PVRLoader] 
 			for examples of derived classes.
 		</p>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]( [param:LoadingManager manager] )</h3>
 		<p>
 			[page:LoadingManager manager] — The [page:LoadingManager loadingManager]
 			for the loader to use. Default is [page:LoadingManager THREE.DefaultLoadingManager].<br /><br />
-
 			Creates a new [name].
 		</p>
-
 		<h2>Properties</h2>
 		<p>See the base [page:Loader] class for common properties.</p>
-
 		<h2>Methods</h2>
 		<p>See the base [page:Loader] class for common methods.</p>
-
 		<h3>
 			[method:CompressedTexture load]( [param:String url], [param:Function onLoad], [param:Function onProgress], [param:Function onError] )
 		</h3>
@@ -61,9 +51,7 @@
 			also returns a new texture object which can directly be used for material
 			creation.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

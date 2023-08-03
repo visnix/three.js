@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -46,18 +44,14 @@ THREE.js, а скорее об отладке JavaScript в целом.
 <p>В Chrome вы можете кликнуть значок <code class="notranslate" translate="no">⋮</code> , выбрать More Tools-&gt;Developer Tools
 чтобы перейти к инструментам разработчика. Сочетание клавиш также показано там. </p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome.jpg" style="width: 789px;"></div>
-
 <p>В Firefox вы кликаете значок <code class="notranslate" translate="no">☰</code> , выбираете "Web Developer", затем выбираете
 "Toggle Tools"</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-firefox.jpg" style="width: 786px;"></div>
-
 <p>В Safari сначала необходимо включить меню «Разработка» в разделе 
 «Дополнительные настройки Safari».</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-enable-safari.jpg" style="width: 775px;"></div>
-
 <p>Затем в меню «Разработка» вы можете выбрать «Показать / подключить веб-инспектора». </p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-safari.jpg" style="width: 777px;"></div>
-
 <p>С Chrome вы также можете 
 <a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">использовать Chrome на своем компьютере для отладки веб-страниц, работающих на Chrome, на вашем телефоне или планшете Android</a>.
 Точно так же с Safari вы можете
@@ -72,19 +66,15 @@ THREE.js, а скорее об отладке JavaScript в целом.
 и не видите изменений, потому что браузер использует версию, полученную в прошлый раз. </p>
 <p>Сначала выберите настройки из углового меню </p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-settings.jpg" style="width: 778px"></div>
-
 <p>Затем выберите "Отключить кэш (пока открыт DevTools)".</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-disable-cache.jpg" style="width: 779px"></div>
-
 <h2 id="-javascript">Используйте консоль JavaScript</h2>
 <p>Внутри всех devtools есть <em>консоль</em>. Показывает предупреждения и сообщения об ошибках. </p>
 <p><strong> ЧИТАЙТЕ СООБЩЕНИЯ!! </strong></p>
 <p>Обычно должно быть только 1 или 2 сообщения. </p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-no-errors.jpg" style="width: 779px"></div>
-
 <p>Если вы видите какие-либо другие <strong>ПРОЧИТАЙТЕ ИХ</strong>. Например:</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-errors.jpg" style="width: 779px"></div>
-
 <p>Я неправильно написал «three» как «threee» </p>
 <p>Вы также можете распечатать свою собственную информацию на консоли с помощью <code class="notranslate" translate="no">console.log</code>, как в</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">console.log(someObject.position.x, someObject.position.y, someObject.position.z);
@@ -99,7 +89,6 @@ THREE.js, а скорее об отладке JavaScript в целом.
 </pre>
 <p>Затем мы можем развернуть этот объект в консоли JavaScript </p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-console-object.gif"></div>
-
 <p>Вы также можете использовать <code class="notranslate" translate="no">console.error</code>, который сообщает, что сообщение красным цветом включает в себя трассировку стека.</p>
 <h2 id="-">Поместить данные на экран</h2>
 <p>Другой очевидный, но часто упускаемый из виду способ - добавить теги <code class="notranslate" translate="no">&lt;div&gt;</code> или <code class="notranslate" translate="no">&lt;pre&gt;</code> и поместить в них данные. </p>
@@ -129,7 +118,6 @@ THREE.js, а скорее об отладке JavaScript в целом.
 const xElem = document.querySelector('#x');
 const yElem = document.querySelector('#y');
 const zElem = document.querySelector('#z');
-
 // at render or update time
 xElem.textContent = someObject.position.x.toFixed(3);
 yElem.textContent = someObject.position.y.toFixed(3);
@@ -140,7 +128,6 @@ zElem.textContent = someObject.position.z.toFixed(3);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-html-elements.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-html-elements.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Еще один способ вывести данные на экран - это очистить регистратор.
 Я только что придумал этот термин, но многие игры, над которыми я работал,
@@ -175,9 +162,7 @@ zElem.textContent = someObject.position.z.toFixed(3);
 <p>Вот код, который добавляет новую сетку каждый раз, когда мы щелкаем мышью</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.SphereGeometry();
 const material = new THREE.MeshBasicMaterial({color: 'red'});
-
 const things = [];
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -185,7 +170,6 @@ function rand(min, max) {
   }
   return Math.random() * (max - min) + min;
 }
-
 function createThing() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
@@ -195,20 +179,16 @@ function createThing() {
     velocity: new THREE.Vector3(rand(-5, 5), rand(-5, 5), rand(-5, 5)),
   });
 }
-
 canvas.addEventListener('click', createThing);
 </pre>
 <p>А вот код, который перемещает созданные нами meshes, регистрирует их и удаляет их, когда у них заканчивается таймер </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const logger = new ClearingLogger(document.querySelector('#debug pre'));
-
 let then = 0;
 function render(now) {
   now *= 0.001;  // convert to seconds
   const deltaTime = now - then;
   then = now;
-
   ...
-
   logger.log('fps:', (1 / deltaTime).toFixed(1));
   logger.log('num things:', things.length);
   for (let i = 0; i &lt; things.length;) {
@@ -228,10 +208,8 @@ function render(now) {
       ++i;
     }
   }
-
   renderer.render(scene, camera);
   logger.render();
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -240,7 +218,6 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-clearing-logger.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-clearing-logger.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <h2 id="-">Параметры запроса</h2>
 <p>Следует также помнить, что на веб-страницах могут передаваться данные либо через параметры запроса, либо через привязку, иногда называемую поиском и хэшем.</p>
@@ -310,8 +287,6 @@ if (debug) {
 Это то, что JavaScript будет назначать в качестве значения, когда вы делаете что-то, что не имеет смысла математически. </p>
 <p>В качестве простого примера</p>
 <div class="threejs_center"><img class="border" src="../resources/images/nan-banana.png" style="width: 180px;"></div>
-
-
 <p>Часто, когда я что-то делаю и на экране ничего не появляется,
 я проверяю некоторые значения, и если я вижу <code class="notranslate" translate="no">NaN</code>, имеет место быть, чтобы начать поиск. </p>
 <p>В качестве примера, когда я впервые начал создавать путь для
@@ -326,7 +301,6 @@ if (debug) {
 <p>Беглый взгляд в отладчике <code class="notranslate" translate="no">matrixWorld</code> автомобиля
 показал множество значений <code class="notranslate" translate="no">NaN</code>. </p>
 <div class="threejs_center"><img class="border" src="../resources/images/debugging-nan.gif" style="width: 476px;"></div>
-
 <p>Видя, что в матрице присутствуют <code class="notranslate" translate="no">NaN</code> можно предположить что-то вроде <code class="notranslate" translate="no">position</code>,
 <code class="notranslate" translate="no">rotation</code>, <code class="notranslate" translate="no">scale</code> или какой-либо другой функции, которая влияет на то, что в матрице содержались неверные данные.
 Работая в обратном направлении, было легко отследить проблему. </p>
@@ -341,9 +315,7 @@ if (debug) {
 <p>Я часто вижу эту закономерность</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    requestAnimationFrame(render);
-
    // -- do stuff --
-
    renderer.render(scene, camera);
 }
 requestAnimationFrame(render);
@@ -351,9 +323,7 @@ requestAnimationFrame(render);
 <p>Я бы предложил поместить вызов <code class="notranslate" translate="no">requestAnimationFrame</code> внизу, как в</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    // -- do stuff --
-
    renderer.render(scene, camera);
-
    requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -400,7 +370,6 @@ requestAnimationFrame(render);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debugging-mcve.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debugging-mcve.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Я сохранил <code class="notranslate" translate="no">OrbitController</code> только потому, что полезно перемещать камеру и выяснять, что происходит, но в зависимости от вашей проблемы вы также можете удалить это.</p>
 <p>Лучшее в создании MCVE - это то, что мы часто решаем нашу собственную проблему. Процесс удаления всего, что не нужно, и делая наименьший пример, мы решаем проблему, чем наоборот. </p>
@@ -436,15 +405,9 @@ requestAnimationFrame(render);
 В конце концов вы либо найдёте вашу ошибку, или вы найдете пути её решения. </p>
 <hr>
 <p>Это были несколько советов для отладки JavaScript. Давайте перейдём к <a href="debugging-glsl.html">некоторым советам для отладки на GLSL</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -96,7 +94,6 @@ also supports specular highlights.</p>
   </div>
 </div>
 <div class="threejs_center code">low-poly models with same materials</div>
-
 <p>The <code class="notranslate" translate="no">shininess</code> setting of the <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> determines the <em>shininess</em> of the specular highlight. It defaults to 30.</p>
 <div class="spread">
   <div>
@@ -112,7 +109,6 @@ also supports specular highlights.</p>
     <div class="code">shininess: 150</div>
   </div>
 </div>
-
 <p>Note that setting the <code class="notranslate" translate="no">emissive</code> property to a color on either a
 <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a> or a <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> and setting the <code class="notranslate" translate="no">color</code> to black
 (and <code class="notranslate" translate="no">shininess</code> to 0 for phong) ends up looking just like the <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>.</p>
@@ -142,7 +138,6 @@ also supports specular highlights.</p>
     </div>
   </div>
 </div>
-
 <p>Why have all 3 when <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> can do the same things as <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a>
 and <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a>? The reason is the more sophisticated material
 takes more GPU power to draw. On a slower GPU like say a mobile phone
@@ -158,7 +153,6 @@ own gradient map. This ends up giving a 2 tone look that looks like a cartoon.</
 <div class="spread">
   <div data-diagram="MeshToonMaterial"></div>
 </div>
-
 <p>Next up there are 2 <em>physically based rendering</em> materials. Physically Based
 Rendering is often abbreviated PBR.</p>
 <p>The materials above use simple math to make materials that look 3D but they
@@ -178,7 +172,6 @@ for non-metal and 1 for metal.</p>
 <p>Here's a quick sample of <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> with <code class="notranslate" translate="no">roughness</code> from 0 to 1
 across and <code class="notranslate" translate="no">metalness</code> from 0 to 1 down.</p>
 <div data-diagram="MeshStandardMaterial" style="min-height: 400px"></div>
-
 <p>The <a href="/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a> is same as the <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> but it
 adds a <code class="notranslate" translate="no">clearcoat</code> parameter that goes from 0 to 1 for how much to
 apply a clearcoat gloss layer and a <code class="notranslate" translate="no">clearCoatRoughness</code> parameter
@@ -186,7 +179,6 @@ that specifies how rough the gloss layer is.</p>
 <p>Here's the same grid of <code class="notranslate" translate="no">roughness</code> by <code class="notranslate" translate="no">metalness</code> as above but with
 <code class="notranslate" translate="no">clearcoat</code> and <code class="notranslate" translate="no">clearCoatRoughness</code> settings.</p>
 <div data-diagram="MeshPhysicalMaterial" style="min-height: 400px"></div>
-
 <p>The various standard materials progress from fastest to slowest
 <a href="/docs/#api/en/materials/MeshBasicMaterial"><code class="notranslate" translate="no">MeshBasicMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshLambertMaterial"><code class="notranslate" translate="no">MeshLambertMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshPhongMaterial"><code class="notranslate" translate="no">MeshPhongMaterial</code></a> ➡
 <a href="/docs/#api/en/materials/MeshStandardMaterial"><code class="notranslate" translate="no">MeshStandardMaterial</code></a> ➡ <a href="/docs/#api/en/materials/MeshPhysicalMaterial"><code class="notranslate" translate="no">MeshPhysicalMaterial</code></a>. The slower materials
@@ -204,7 +196,6 @@ get into at another time.</p>
     <div data-diagram="MeshDepthMaterial"></div>
   </div>
 </div>
-
 <p>The <a href="/docs/#api/en/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a> will show you the <em>normals</em> of geometry.
 <em>Normals</em> are the direction a particular triangle or pixel faces.
 <a href="/docs/#api/en/materials/MeshNormalMaterial"><code class="notranslate" translate="no">MeshNormalMaterial</code></a> draws the view space normals (the normals relative to the camera).
@@ -221,7 +212,6 @@ and toward the screen will be <span style="background: #7F7FFF;" class="color">l
     <div data-diagram="MeshNormalMaterial"></div>
   </div>
 </div>
-
 <p><a href="/docs/#api/en/materials/ShaderMaterial"><code class="notranslate" translate="no">ShaderMaterial</code></a> is for making custom materials using the three.js shader
 system. <a href="/docs/#api/en/materials/RawShaderMaterial"><code class="notranslate" translate="no">RawShaderMaterial</code></a> is for making entirely custom shaders with
 no help from three.js. Both of these topics are large and will be
@@ -242,7 +232,6 @@ whether or not the object looks faceted or smooth. default = <code class="notran
     <div class="code">flatShading: true</div>
   </div>
 </div>
-
 <p><a href="/docs/#api/en/materials/Material#side"><code class="notranslate" translate="no">side</code></a>: which sides of triangles to show. The default is <code class="notranslate" translate="no">THREE.FrontSide</code>.
 Other options are <code class="notranslate" translate="no">THREE.BackSide</code> and <code class="notranslate" translate="no">THREE.DoubleSide</code> (both sides).
 Most 3D objects drawn in three are probably opaque solids so the back sides
@@ -260,7 +249,6 @@ common to see the back sides of triangles.</p>
     <div class="code">side: THREE.DoubleSide</div>
   </div>
 </div>
-
 <p>There's really a lot to consider with materials and we actually still
 have a bunch more to go. In particular we've mostly ignored textures
 which open up a whole slew of options. Before we cover textures though
@@ -296,19 +284,11 @@ either use textures or a solid color for a given material, they rarely
 switch from using one to using the other.
 </p>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-materials.js"></script>
-
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

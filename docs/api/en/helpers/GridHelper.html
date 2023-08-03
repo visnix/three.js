@@ -8,30 +8,21 @@
 	</head>
 	<body>
 		[page:Object3D] &rarr; [page:Line] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
 			The GridHelper is an object to define grids. Grids are two-dimensional
 			arrays of lines.
 		</p>
-
 		<h2>Code Example</h2>
-
 		<code>
 		const size = 10;
 		const divisions = 10;
-
 		const gridHelper = new THREE.GridHelper( size, divisions );
 		scene.add( gridHelper );
 		</code>
-
 		<h2>Examples</h2>
-
 		<p>[example:webgl_helpers WebGL / helpers]</p>
-
 		<h2>Constructor</h2>
-
 		<h3>
 			[name]( [param:number size], [param:Number divisions], [param:Color colorCenterLine], [param:Color colorGrid] )
 		</h3>
@@ -50,18 +41,14 @@
 			Creates a new [name] of size 'size' and divided into 'divisions' segments
 			per side. Colors are optional.
 		</p>
-
 		<h2>Methods</h2>
 		<p>See the base [page:LineSegments] class for common methods.</p>
-
 		<h3>[method:undefined dispose]()</h3>
 		<p>
 			Frees the GPU-related resources allocated by this instance. Call this
 			method whenever this instance is no longer used in your app.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

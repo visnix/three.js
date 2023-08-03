@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="utf-8">
   <title>使用纹理索引来拾取和着色</title>
@@ -11,13 +10,11 @@
   <meta property="og:image" content="https://threejs.org/files/share.png">
   <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
   <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
   <link rel="stylesheet" href="../resources/lesson.css">
   <link rel="stylesheet" href="../resources/lang.css">
   <!-- Import maps polyfill -->
   <!-- Remove this when import maps will be widely supported -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
   <script type="importmap">
 {
   "imports": {
@@ -27,7 +24,6 @@
 </script>
   <link rel="stylesheet" href="/manual/zh/lang.css">
 </head>
-
 <body>
   <div class="container">
     <div class="lesson-title">
@@ -55,7 +51,6 @@
           生成这样的一个纹理，在这里： </p>
         <div class="threejs_center"><img src="../examples/resources/data/world/country-index-texture.png"
             style="width: 700px;"></div>
-
         <p>注意：生成这份纹理的数据来源于 <a href="http://thematicmapping.org/downloads/world_borders.php">这个网站</a>
           ，使用的协议是 <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>。</p>
         <p>它只有217k，比国家网格对象的15m要好得多，事实上我们可以使用更低的分辨率，但现在217k似乎已经足够了。</p>
@@ -68,14 +63,12 @@ pickingScene.background = new THREE.Color(0);
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
 +  const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
 +  indexTexture.minFilter = THREE.NearestFilter;
 +  indexTexture.magFilter = THREE.NearestFilter;
 +
 +  const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
 +  pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
   scene.add(new THREE.Mesh(geometry, material));
@@ -92,7 +85,6 @@ pickingScene.background = new THREE.Color(0);
   }
   pick(cssPosition, scene, camera) {
     const {pickingTexture, pixelBuffer} = this;
-
     // 将视图偏移设置为仅表示鼠标下单个元素
     const pixelRatio = renderer.getPixelRatio();
     camera.setViewOffset(
@@ -117,7 +109,6 @@ pickingScene.background = new THREE.Color(0);
         1,   // width
         1,   // height
         pixelBuffer);
-
 +    const id =
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
@@ -142,7 +133,6 @@ pickingScene.background = new THREE.Color(0);
 </pre>
         <p>现在我们可以用它来选择国家了。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickHelper = new GPUPickHelper();
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -150,13 +140,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // 如果我们还没有加载好数据，退出
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -175,14 +163,12 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
     countryInfo.selected = false;
   });
 }
-
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
         <p>上面的代码，设置/重置了国家数组元素的 <code class="notranslate" translate="no">selected</code> 属性。如果 <code class="notranslate"
@@ -195,7 +181,6 @@ canvas.addEventListener('pointerup', pickCountry);
   if (!countryInfos) {
     return;
   }
-
   const large = settings.minArea * settings.minArea;
   // 获取表示相机正对方向的矩阵
   normalMatrix.getNormalMatrix(camera.matrixWorldInverse);
@@ -212,7 +197,6 @@ canvas.addEventListener('pointerup', pickCountry);
       elem.style.display = 'none';
       continue;
     }
-
     ...
 </pre>
         <p>通过上面的代码，我们就有能力拾取对应的国家了。</p>
@@ -223,7 +207,6 @@ canvas.addEventListener('pointerup', pickCountry);
           </div>
           <a class="threejs_center" href="/manual/examples/indexed-textures-picking.html" target="_blank">点击在新窗口打开</a>
         </div>
-
         <p></p>
         <p>代码仍然会根据地区显示对应的国家。不过如果你点击一个，只会显示对应的标签。</p>
         <p>所以这似乎是选择国家的有效解决方案，但是如何突出显示选定的国家？</p>
@@ -243,7 +226,6 @@ canvas.addEventListener('pointerup', pickCountry);
   1, 0, 0, 0, 0, 0, 1,
   0, 1, 1, 1, 1, 1, 1,
 ];
-
 const palette = [
   [255, 255, 255],  // 白
   [  0,   0,   0],  // 黑
@@ -253,7 +235,6 @@ const palette = [
 </pre>
         <p>图像数据中每个像素都是调色板的索引，如果你分析上面调色板的数据你会得到这个图像：</p>
         <div class="threejs_center"><img src="../resources/images/7x7-indexed-face.png"></div>
-
         <p>
           在我们的例子中，上面已经有一个用不同id代表不同国家的纹理了，所以我们可以通过调色板使用相同的纹理赋予每个国家各自的颜色。通过更改调色板颜色我们可以为单独的国家着色。比如通过设置整个调色板纹理为黑色，给某个国家使用不同的颜色，就可以凸显那个国家了。
         </p>
@@ -314,14 +295,11 @@ void main() {
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
   const geometry = new THREE.SphereGeometry(1, 64, 32);
-
   const indexTexture = loader.load('resources/data/world/country-index-texture.png', render);
   indexTexture.minFilter = THREE.NearestFilter;
   indexTexture.magFilter = THREE.NearestFilter;
-
   const pickingMaterial = new THREE.MeshBasicMaterial({map: indexTexture});
   pickingScene.add(new THREE.Mesh(geometry, pickingMaterial));
-
 +  const fragmentShaderReplacements = [
 +    {
 +      from: '#include &lt;common&gt;',
@@ -347,7 +325,6 @@ void main() {
 +      `,
 +    },
 +  ];
-
   const texture = loader.load('resources/data/world/country-outlines-4k.png', render);
   const material = new THREE.MeshBasicMaterial({map: texture});
 +  material.onBeforeCompile = function(shader) {
@@ -415,7 +392,6 @@ scene.add(new THREE.Mesh(geometry, material));
           <a class="threejs_center" href="/manual/examples/indexed-textures-random-colors.html" target="_blank">click
             here to open in a separate window</a>
         </div>
-
         <p></p>
         <p>现在我们可以看到索引和调色板纹理生效了，让我们控制调色板进行高亮显示</p>
         <p>首先让我们创建一个函数，我们传入一个THREE.js颜色，并格式化为可以放入调色板纹理的值。</p>
@@ -434,17 +410,14 @@ function get255BasedColor(color) {
 const unselectedColor = get255BasedColor('#444');
 const oceanColor = get255BasedColor('rgb(100,200,255)');
 resetPalette();
-
 function setPaletteColor(index, color) {
   palette.set(color, index * 4);
 }
-
 function resetPalette() {
   // 让所有的颜色都是未选择状态的颜色
   for (let i = 1; i &lt; maxNumCountries; ++i) {
     setPaletteColor(i, unselectedColor);
   }
-
   // 设置海洋颜色 (索引 #0)
   setPaletteColor(0, oceanColor);
   paletteTexture.needsUpdate = true;
@@ -458,13 +431,11 @@ function resetPalette() {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // 如果我们还没有加载好数据，退出
   if (!countryInfos) {
     return;
   }
-
   const position = getCanvasRelativePosition(event);
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -482,7 +453,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -500,7 +470,6 @@ function unselectAllCountries() {
           <a class="threejs_center" href="/manual/examples/indexed-textures-picking-and-highlighting.html"
             target="_blank">点击在新窗口打开</a>
         </div>
-
         <p></p>
         <p>这看起来有效！</p>
         <p>一件小事是我们不能不改变选中状态就渲染地球。如果我们选择一个国家然后想要旋转地球，选中状态将改变。</p>
@@ -516,7 +485,6 @@ function unselectAllCountries() {
 +  startPosition.x = pos.x;
 +  startPosition.y = pos.y;
 +}
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -524,13 +492,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function pickCountry(event) {
   // exit if we have not loaded the data yet
   if (!countryInfos) {
     return;
   }
-
 +  // 如果用户触发后已经过了一段时间了
 +  // 就认为这是一个拖动行为
 +  const clickTimeMs = performance.now() - startTimeMs;
@@ -545,7 +511,6 @@ function pickCountry(event) {
 +  if (moveDeltaSq &gt; maxMoveDeltaSq) {
 +    return;
 +  }
-
 -  const position = {x: event.clientX, y: event.clientY};
   const id = pickHelper.pick(position, pickingScene, camera);
   if (id &gt; 0) {
@@ -563,7 +528,6 @@ function pickCountry(event) {
   }
   requestRenderIfNotRequested();
 }
-
 function unselectAllCountries() {
   numCountriesSelected = 0;
   countryInfos.forEach((countryInfo) =&gt; {
@@ -571,7 +535,6 @@ function unselectAllCountries() {
   });
   resetPalette();
 }
-
 +canvas.addEventListener('pointerdown', recordStartTimeAndPosition);
 canvas.addEventListener('pointerup', pickCountry);
 </pre>
@@ -584,23 +547,15 @@ canvas.addEventListener('pointerup', pickCountry);
           <a class="threejs_center" href="/manual/examples/indexed-textures-picking-debounced.html"
             target="_blank">点击在新窗口打开</a>
         </div>
-
         <p></p>
         <p>我不是用户交互的专家，所以我很想知道是否有更好的解决方案。</p>
         <p>我希望这能让你了解图形索引的用处，以及如何修改Three.js的着色器以添加简单的功能。对于如何使用GLSL，编写着色器语言对于本文来说太多了，这个链接有一些少量的信息，参考
           <a href="post-processing.html">关于后处理的这篇文章</a>。
         </p>
-
       </div>
     </div>
   </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

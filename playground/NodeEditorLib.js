@@ -19,7 +19,6 @@ import { JoinEditor } from './editors/JoinEditor.js';
 import { StringEditor } from './editors/StringEditor.js';
 import { FileEditor } from './editors/FileEditor.js';
 import { CustomNodeEditor } from './editors/CustomNodeEditor.js';
-
 export const ClassLib = {
 	BasicMaterialEditor,
 	StandardMaterialEditor,
@@ -42,136 +41,71 @@ export const ClassLib = {
 	PreviewEditor,
 	NodePrototypeEditor
 };
-
 let nodeList = null;
 let nodeListLoading = false;
-
 export const getNodeList = async () => {
-
 	if ( nodeList === null ) {
-
 		if ( nodeListLoading === false ) {
-
 			nodeListLoading = true;
-
 			const response = await fetch( './Nodes.json' );
 			nodeList = await response.json();
-
 		} else {
-
 			await new Promise( res => {
-
 				const verifyNodeList = () => {
-
 					if ( nodeList !== null ) {
-
 						res();
-
 					} else {
-
 						window.requestAnimationFrame( verifyNodeList );
-
 					}
-
 				};
-
 				verifyNodeList();
-
 			} );
-
 		}
-
 	}
-
 	return nodeList;
-
 };
-
 export const init = async () => {
-
 	const nodeList = await getNodeList();
-
 	const traverseNodeEditors = ( list ) => {
-
 		for ( const node of list ) {
-
 			getNodeEditorClass( node );
-
 			if ( Array.isArray( node.children ) ) {
-
 				traverseNodeEditors( node.children );
-
 			}
-
 		}
-
 	};
-
 	traverseNodeEditors( nodeList.nodes );
-
 };
-
 export const getNodeEditorClass = async ( nodeData ) => {
-
 	const editorClass = nodeData.editorClass || nodeData.name.replace( / /g, '' );
-
 	//
-
 	let nodeClass = nodeData.nodeClass || ClassLib[ editorClass ];
-
 	if ( nodeClass !== undefined ) {
-
 		if ( nodeData.editorClass !== undefined ) {
-
 			nodeClass.prototype.icon = nodeData.icon;
-
 		}
-
 		return nodeClass;
-
 	}
-
 	//
-
 	if ( nodeData.editorURL ) {
-
 		const moduleEditor = await import( nodeData.editorURL );
 		const moduleName = nodeData.editorClass || Object.keys( moduleEditor )[ 0 ];
-
 		nodeClass = moduleEditor[ moduleName ];
-
 	} else if ( nodeData.shaderNode ) {
-
 		const createNodeEditorClass = ( nodeData ) => {
-
 			return class extends CustomNodeEditor {
-
 				constructor() {
-
 					super( nodeData );
-
 				}
-
 				get className() {
-
 					return editorClass;
-
 				}
-
 			};
-
 		};
-
 		nodeClass = createNodeEditorClass( nodeData );
-
 	}
-
 	if ( nodeClass !== null ) {
-
 		ClassLib[ editorClass ] = nodeClass;
-
 	}
-
 	return nodeClass;
-
 };

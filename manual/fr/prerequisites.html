@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -51,9 +49,7 @@ que ce soit via le mot clef import ou via les balises <code class="notranslate" 
 ou en ligne via une balise <code class="notranslate" translate="no">&lt;script type="module"&gt;</code>. Voici un exemple des deux</p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>Les chemins doivent être absolus ou relatifs. Ces derniers débutent toujours par <code class="notranslate" translate="no">./</code> ou <code class="notranslate" translate="no">../</code>,
@@ -88,7 +84,6 @@ premier élément qui correspond à un sélecteur CSS.
      return foo;
   };
 }
-
 const f = a(123);
 const g = a(456);
 console.log(f());  // affiche 123
@@ -265,14 +260,12 @@ trouver les bogues de votre JavaScript.</p>
 <p>Si vous activez <a href="https://eslint.org/docs/rules/no-undef">la règle <code class="notranslate" translate="no">no-undef</code></a>
 alors VSCode via ESLint vous avertira de l'utilisation de nombreuses variables non définies.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-defined.png"></div>
-
 <p>Ci-dessous vous pouvez voir que nous avons écrit <code class="notranslate" translate="no">doTheThing</code> à la place <code class="notranslate" translate="no">doThing</code>.
 <code class="notranslate" translate="no">doThing</code> se retrouve souligné en rouge et un passage au dessus me dira que
 c'est non défini. Une erreur est donc évitée.</p>
 <p>Vous aurez des avertissements (<em>warnings</em>) en utilisant <code class="notranslate" translate="no">THREE</code> donc ajoutez <code class="notranslate" translate="no">/* global THREE */</code>
 en haut de vos fichiers JavaScript pour notifier à eslint que <code class="notranslate" translate="no">THREE</code> existe.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-a-constructor.png"></div>
-
 <p>Ci-dessus, vous pouvez voir que eslint connaît la règle que les noms commençant par
 une majuscule <code class="notranslate" translate="no">UpperCaseNames</code> sont des constructeurs et vous devez donc utiliser <code class="notranslate" translate="no">new</code>.
 Une autre erreur évitée. C'est <a href="https://eslint.org/docs/rules/new-cap">la règle <code class="notranslate" translate="no">new-cap</code> rule</a>.</p>
@@ -280,11 +273,9 @@ Une autre erreur évitée. C'est <a href="https://eslint.org/docs/rules/new-cap"
 Par exemple, précédemment nous avons indiquer que nous devions utiliser <code class="notranslate" translate="no">const</code> et <code class="notranslate" translate="no">let</code> à la place de <code class="notranslate" translate="no">var</code>.</p>
 <p>Ici nous avons utilisé <code class="notranslate" translate="no">var</code> et nous avons été avertis que nous devions utiliser <code class="notranslate" translate="no">let</code> ou <code class="notranslate" translate="no">const</code></p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-var.png"></div>
-
 <p>Ici nous avons utilisé <code class="notranslate" translate="no">let</code> mais comme la valeur de la variable ne change jamais, nous
 nous voyons suggérer l'utilisation de <code class="notranslate" translate="no">const</code>.</p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-let.png"></div>
-
 <p>Bien sûr, si vous préférez conserver <code class="notranslate" translate="no">var</code>, vous pouvez désactiver cette règle.
 Comme écrit plus haut, nous préférons privilégier <code class="notranslate" translate="no">const</code> et <code class="notranslate" translate="no">let</code> à la place de <code class="notranslate" translate="no">var</code>
 puisqu'ils sont plus efficaces et évitent les bogues.</p>
@@ -297,15 +288,9 @@ vues plus haut vous aiderons à être productif et éviter les bogues.
 Ceci étant dit, si vous êtes dans un projet qui doit absolument supporter des
 vieux navigateurs, il y a des <a href="https://babeljs.io">outils qui interpréterons votre code ES5/ES6/ES7
 et le transpilent en code JavaScript pre-ES5</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

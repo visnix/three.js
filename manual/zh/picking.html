@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -45,10 +43,8 @@ const near = 0.1;
 *const far = 200;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 *camera.position.z = 30;
-
 const scene = new THREE.Scene();
 +scene.background = new THREE.Color('white');
-
 +// 把摄像机放到自拍杆上 (把它添加为一个对象的子元素)
 +// 如此，我们就能通过旋转自拍杆，来移动摄像机
 +const cameraPole = new THREE.Object3D();
@@ -67,7 +63,6 @@ const scene = new THREE.Scene();
 const boxHeight = 1;
 const boxDepth = 1;
 const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -75,20 +70,16 @@ function rand(min, max) {
   }
   return min + (max - min) * Math.random();
 }
-
 function randomColor() {
   return `hsl(${rand(360) | 0}, ${rand(50, 100) | 0}%, 50%)`;
 }
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
     color: randomColor(),
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
@@ -108,7 +99,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
     // 发出射线
     this.raycaster.setFromCamera(normalizedPosition, camera);
     // 获取与射线相交的对象
@@ -128,9 +118,7 @@ for (let i = 0; i &lt; numObjects; ++i) {
 <p>当然，也可以在用户点击鼠标时，调用这个方法，这恐怕是最常见的应用场景。但是，在本范例中，不管在鼠标下方是什么，在每一帧中都会进行拾取操作,为此，需要跟踪鼠标的位置。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const pickPosition = {x: 0, y: 0};
 clearPickPosition();
-
 ...
-
 function getCanvasRelativePosition(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -138,13 +126,11 @@ function getCanvasRelativePosition(event) {
     y: (event.clientY - rect.top ) * canvas.height / rect.height,
   };
 }
-
 function setPickPosition(event) {
   const pos = getCanvasRelativePosition(event);
   pickPosition.x = (pos.x / canvas.width ) *  2 - 1;
   pickPosition.y = (pos.y / canvas.height) * -2 + 1;  // note we flip Y
 }
-
 function clearPickPosition() { 
   // 对于触屏，不像鼠标总是能有一个位置坐标，
   // 如果用户不在触摸屏幕，我们希望停止拾取操作。
@@ -152,7 +138,6 @@ function clearPickPosition() {
   pickPosition.x = -100000;
   pickPosition.y = -100000;
 }
-
 window.addEventListener('mousemove', setPickPosition);
 window.addEventListener('mouseout', clearPickPosition);
 window.addEventListener('mouseleave', clearPickPosition);
@@ -164,25 +149,18 @@ window.addEventListener('mouseleave', clearPickPosition);
   event.preventDefault();
   setPickPosition(event.touches[0]);
 }, {passive: false});
-
 window.addEventListener('touchmove', (event) =&gt; {
   setPickPosition(event.touches[0]);
 });
-
 window.addEventListener('touchend', clearPickPosition);
 </pre>
 <p>最终，在 <code class="notranslate" translate="no">render</code> 方法中，我们调用了 <code class="notranslate" translate="no">PickHelper</code> 的 <code class="notranslate" translate="no">pick</code> 方法</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const pickHelper = new PickHelper();
-
 function render(time) {
   time *= 0.001;  //将毫秒单位转换为秒单位;
-
   ...
-
 +  pickHelper.pick(pickPosition, scene, camera, time);
-
   renderer.render(scene, camera);
-
   ...
 </pre>
 <p>这是最终结果
@@ -190,7 +168,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>这种方式看起来效果不错，而且能处理很多用户场景，但是也存在几个问题：</p>
 <ol>
@@ -200,13 +177,11 @@ Javascript遍历每一个对象，检查其包围盒或包围球是否与射线�
 如果，你有一个变形或者拟态几何形状的着色器，Javascript无法理解这个变形，它会给出错误的答案。举例：据我所知，你不能对有皮肤的对象使用这种方式。</li>
 <li>无法处理透明的孔洞
 举个例子，为立方体应用这个纹理<div class="threejs_center"><img class="checkerboard" src="../examples/resources/images/frame.png"></div>
-
 </li>
 </ol>
 <p>改动代码如下：</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load('resources/images/frame.png');
-
 const numObjects = 100;
 for (let i = 0; i &lt; numObjects; ++i) {
   const material = new THREE.MeshPhongMaterial({
@@ -216,10 +191,8 @@ for (let i = 0; i &lt; numObjects; ++i) {
     +side: THREE.DoubleSide,
     +alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-
   ...
 </pre>
 <p>运行后，你就能看到问题所在。
@@ -227,11 +200,9 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-raycaster-transparency.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-raycaster-transparency.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>试着透过盒子拾取一些物体，但是你无法做到</p>
 <div class="threejs_center"><img src="../resources/images/picking-transparent-issue.jpg" style="width: 635px;"></div>
-
 <p>这是因为 JavaScript 无法通过简单的查看纹理和材质，就推测出你的对象是否存在一部分是透明的或者不透明。</p>
 <p>对于这些问题的解决方案，就是使用基于GPU的拾取方法。可惜，该方法概念上简单，但是相比于射线追踪法，用起来就复杂了。</p>
 <p>为了完成GPU拾取，对每一个对象使用唯一的颜色进行离屏渲染。然后，检查鼠标位置关联的像素的颜色。这个颜色就能告诉我们哪个对象被选中。</p>
@@ -256,15 +227,12 @@ for (let i = 0; i &lt; numObjects; ++i) {
     side: THREE.DoubleSide,
     alphaTest: 0.1,
   });
-
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
 +  idToObject[id] = cube;
-
   cube.position.set(rand(-20, 20), rand(-20, 20), rand(-20, 20));
   cube.rotation.set(rand(Math.PI), rand(Math.PI), 0);
   cube.scale.set(rand(3, 6), rand(3, 6), rand(3, 6));
-
 +  const pickingMaterial = new THREE.MeshPhongMaterial({
 +    emissive: new THREE.Color(id),
 +    color: new THREE.Color(0, 0, 0),
@@ -306,13 +274,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   }
   pick(cssPosition, scene, camera, time) {
 +    const {pickingTexture, pixelBuffer} = this;
-
     // 如果已经存在拾取的对象，将其颜色恢复
     if (this.pickedObject) {
       this.pickedObject.material.emissive.setHex(this.pickedObjectSavedColor);
       this.pickedObject = undefined;
     }
-
 +    // 设置视野偏移来表现鼠标下的1px
 +    const pixelRatio = renderer.getPixelRatio();
 +    camera.setViewOffset(
@@ -343,7 +309,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 +        (pixelBuffer[0] &lt;&lt; 16) |
 +        (pixelBuffer[1] &lt;&lt;  8) |
 +        (pixelBuffer[2]      );
-
 -    // 射线穿越视锥体
 -    this.raycaster.setFromCamera(normalizedPosition, camera);
 -    // 获取与射线相交的对象
@@ -351,7 +316,6 @@ for (let i = 0; i &lt; numObjects; ++i) {
 -    if (intersectedObjects.length) {
 -      // 获取第一个对象，他是离鼠标最近的一个
 -      this.pickedObject = intersectedObjects[0].object;
-
 +    const intersectedObject = idToObject[id];
 +    if (intersectedObject) {
 +      //获取第一个对象，他是离鼠标最近的一个
@@ -377,18 +341,11 @@ for (let i = 0; i &lt; numObjects; ++i) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/picking-gpu.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/picking-gpu.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>至此，对于如何实现拾取，希望此文能给你一些灵感。在后续的文章中，也许，我们可以看看如何使用鼠标操作对象。</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

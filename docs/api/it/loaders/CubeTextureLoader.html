@@ -8,21 +8,16 @@
 	</head>
 	<body>
 		[page:Loader] &rarr;
-
 		<h1>[name]</h1>
-
 		<p class="desc">
       Classe per il caricamento di una [page:CubeTexture CubeTexture].
       Utilizza internamente l'[page:ImageLoader] per caricare i file.
 		</p>
-
 		<p>
 			The loaded [page:CubeTexture] is in sRGB color space. Meaning the [page:Texture.colorSpace colorSpace] 
 			property is set to `THREE.SRGBColorSpace` by default.
 		</p>
-
 		<h2>Codice di Esempio</h2>
-
 		<code>
 const scene = new THREE.Scene();
 scene.background = new THREE.CubeTextureLoader()
@@ -36,29 +31,22 @@ scene.background = new THREE.CubeTextureLoader()
 				'nz.png'
 			] );
 		</code>
-
 		<h2>Esempi</h2>
-
 		<p>
 			[example:webgl_materials_cubemap materials / cubemap]<br />
 			[example:webgl_materials_cubemap_dynamic materials / cubemap / dynamic]<br />
 			[example:webgl_materials_cubemap_refraction materials / cubemap / refraction]
 		</p>
-
 		<h2>Costruttore</h2>
-
 		<h3>[name]( [param:LoadingManager manager] )</h3>
 		<p>
 		[page:LoadingManager manager] — Il [page:LoadingManager loadingManager] del loader da utilizzare. Il valore predefinito è [page:LoadingManager THREE.DefaultLoadingManager].<br /><br />
 		Crea un nuovo [name].
 		</p>
-
 		<h2>Proprietà</h2>
 		<p>Vedi la classe base [page:Loader] per le proprietà comuni.</p>
-
 		<h2>Metodi</h2>
 		<p>Vedi la classe base [page:Loader] per i metodi comuni.</p>
-
 		<h3>[method:CubeTexture load]( [param:String urls], [param:Function onLoad], [param:Function onProgress], [param:Function onError] )</h3>
 		<p>
 		[page:String urls] — array di 6 url di immagini, una per ogni lato della CubeTexture.
@@ -75,9 +63,7 @@ scene.background = new THREE.CubeTextureLoader()
       Inizia il caricamento dall'url e passa la [page:CubeTexture texture] caricata a onLoad. 
       Il metodo inoltre restituisce un nuovo oggetto texture che può essere direttamente utilizzato per la creazione di materiale.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

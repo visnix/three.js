@@ -1,7 +1,6 @@
 import MagicString from 'magic-string';
 import fs from 'fs';
 import { EOL } from 'os';
-
 function removeEmptyLines() {
 	return {
 		name: 'remove-empty-lines',
@@ -17,7 +16,6 @@ function removeEmptyLines() {
 		}
 	};
 }
-
 function addons() {
 	return {
 		transform(code, id) {

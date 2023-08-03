@@ -8,30 +8,22 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc"> A solver for IK with <a href="https://sites.google.com/site/auraliusproject/ccd-algorithm">`CCD Algorithm`</a>. <br /><br />
 		[name] solves Inverse Kinematics Problem with CCD Algorithm.
 		[name] is designed to work with [page:SkinnedMesh] but also can be used with [page:MMDLoader] or [page:GLTFLoader] skeleton.
 		</p>
-
 		<iframe id="scene" src="scenes/ccdiksolver-browser.html"></iframe>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { CCDIKSolver } from 'three/addons/animation/CCDIKSolver.js';
 		</code>
-
 		<h2>Code Example</h2>
-
 		<code>
 		let ikSolver;
-
 		//
 		// Bones hierarchy:
 		//
@@ -54,50 +46,39 @@
 		//   |         |
 		//   +----oo---+ <- root, bone0 (y = -12)
 		//
-
 		let bones = []
-
 		// "root"
 		let rootBone = new Bone();
 		rootBone.position.y = -12;
 		bones.push( rootBone );
-
 		// "bone0"
 		let prevBone = new Bone();
 		prevBone.position.y = 0;
 		rootBone.add( prevBone );
 		bones.push( prevBone );
-
 		// "bone1", "bone2", "bone3"
 		for ( let i = 1; i <= 3; i ++ ) {
 			const bone = new Bone();
 			bone.position.y = 8;
 			bones.push( bone );
-			
 			prevBone.add( bone );
 			prevBone = bone;
 		}
-
 		// "target"
 		const targetBone = new Bone();
 		targetBone.position.y = 24 + 8
 		rootBone.add( targetBone );
 		bones.push( targetBone );
-
 		//
 		// skinned mesh
 		//
-
 		const mesh = new SkinnedMesh( geometry,	material );
 		const skeleton = new Skeleton( bones );
-
 		mesh.add( bones[ 0 ] ); // "root" bone
 		mesh.bind( skeleton );
-
 		//
 		// ikSolver
 		//
-
 		const iks = [
 			{
 				target: 5, // "target"
@@ -106,24 +87,19 @@
 			}
 		];
 		ikSolver = new CCDIKSolver( mesh, iks );
-
 		function render() {
 			ikSolver?.update();
 			renderer.render( scene, camera );
 		}
 		</code>
-
 		<h2>Examples</h2>
-
 		<p>
 			[example:webgl_animation_skinning_ik]<br />
 			[example:webgl_loader_mmd]<br />
 			[example:webgl_loader_mmd_pose]<br />
 			[example:webgl_loader_mmd_audio]
 		</p>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]( [param:SkinnedMesh mesh], [param:Array iks] )</h3>
 		<p>
 		[page:SkinnedMesh mesh] — [page:SkinnedMesh] for which [name] solves IK problem.<br />
@@ -149,34 +125,25 @@
 		<p>
 		Creates a new [name].
 		</p>
-
 		<h2>Properties</h2>
-
 		<h3>[property:Array iks]</h3>
 		<p>An array of IK parameter passed to the constructor.</p>
-
 		<h3>[property:SkinnedMesh mesh]</h3>
 		<p>[page:SkinnedMesh] passed to the constructor.</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:CCDIKHelper createHelper]()</h3>
 		<p>
 		Return [page:CCDIKHelper]. You can visualize IK bones by adding the helper to scene.
 		</p>
-
 		<h3>[method:this update]()</h3>
 		<p>
 		Update IK bones quaternion by solving CCD algorithm.
 		</p>
-
 		<h3>[method:this updateOne]( [param:Object ikParam] )</h3>
 		<p>
 		Update an IK bone quaternion by solving CCD algorithm.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/animation/CCDIKSolver.js examples/jsm/animation/CCDIKSolver.js]
 		</p>

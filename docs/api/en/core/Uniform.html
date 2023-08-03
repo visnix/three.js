@@ -8,11 +8,9 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
 			Uniforms are global GLSL variables. They are passed to shader programs.
 		</p>
-
 		<h2>Code Example</h2>
 		<p>
 			When declaring a uniform of a [page:ShaderMaterial], it is declared by
@@ -24,7 +22,6 @@
 			resolution: new Uniform( new Vector2() )
 		};
 		</code>
-
 		<h2>Uniform types</h2>
 		<p>
 			Each uniform must have a `value` property. The type of the value must
@@ -38,7 +35,6 @@
 			of five vectors, must be an array of arrays, of either five [page:Vector2]
 			objects or ten `number`s.
 		</p>
-
 		<table>
 			<caption>
 				<a id="uniform-types">Uniform types</a>
@@ -180,14 +176,11 @@
 				</tr>
 			</tbody>
 		</table>
-
 		<p>
 			(*) Same for an (innermost) array (dimension) of the same GLSL type,
 			containing the components of all vectors or matrices in the array.
 		</p>
-
 		<h2>Structured Uniforms</h2>
-
 		<p>
 			Sometimes you want to organize uniforms as `structs` in your shader code.
 			The following style must be used so `three.js` is able to process
@@ -211,9 +204,7 @@
 		};
 		uniform Data data;
 		</code>
-
 		<h2>Structured Uniforms with Arrays</h2>
-
 		<p>
 			It's also possible to manage `structs` in arrays. The syntax for this use
 			case looks like so:
@@ -227,7 +218,6 @@
 			position: new Vector3( 1, 1, 1 ),
 			direction: new Vector3( 0, 1, 0 )
 		};
-
 		uniforms = {
 			data: {
 				value: [ entry1, entry2 ]
@@ -242,22 +232,16 @@
 		};
 		uniform Data data[ 2 ];
 		</code>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]( [param:Object value] )</h3>
 		<p>
 			value -- An object containing the value to set up the uniform. It's type
 			must be one of the Uniform Types described above.
 		</p>
-
 		<h2>Properties</h2>
-
 		<h3>[property:Object value]</h3>
 		<p>Current value of the uniform.</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:Uniform clone]()</h3>
 		<p>
 			Returns a clone of this uniform.<br />
@@ -265,9 +249,7 @@
 			this is used, otherwise the value is copied by assignment. Array values
 			are shared between cloned [page:Uniform]s.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

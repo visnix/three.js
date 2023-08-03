@@ -8,7 +8,6 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
       Questa classe di attributi del buffer non costruisce un VBO. Invece,
       utilizza qualsiasi VBO che gli viene passato nel costruttore e può essere
@@ -19,7 +18,6 @@
       Il caso d'uso più comune per questa classe è quando un qualche tipo di
       calcolo GPGPU interferisce o addirittura produce i VBO in questione.
 		</p>
-
 		<h2>Costruttore</h2>
 		<h3>[name]( [param:WebGLBuffer buffer], [param:GLenum type], [param:Integer itemSize], [param:Integer elementSize], [param:Integer count] )</h3>
 		<p>
@@ -42,29 +40,23 @@
 		</ul>
 		`count` — Il numero previsto di vertici in VBO.
 		</p>
-
 		<h2>Proprietà</h2>
-
 		<h3>[property:WebGLBuffer buffer]</h3>
 		<p>
 			L'istanza corrente di [link:https://developer.mozilla.org/en-US/docs/Web/API/WebGLBuffer WebGLBuffer].
 		</p>
-
 		<h3>[property:Integer count]</h3>
 		<p>
       Il numero previsto di vertici in VBO.
 		</p>
-
 		<h3>[property:Boolean isGLBufferAttribute]</h3>
 		<p>
       Solo lettura. Sempre `true`.
 		</p>
-
 		<h3>[property:Integer itemSize]</h3>
 		<p>
       Quanti valori compongono ogni elemento (vertice).
 		</p>
-
 		<h3>[property:Integer elementSize]</h3>
 		<p>
       Memorizza la dimensione corrispondente in byte per il valore della proprietà del `type` corrente.
@@ -72,12 +64,10 @@
 		<p>
       Vedi sopra (costruttore) per un elenco di dimensioni di type conosciute.
 		</p>
-
 		<h3>[property:String name]</h3>
 		<p>
       Un nome opzionale per questa istanza dell'attributo. Il valore predefinito è una stringa vuota.
 		</p>
-
 		<h3>[property:GLenum type]</h3>
 		<p>
       Un [link:https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants#Data_types WebGL Data Type]
@@ -87,31 +77,23 @@
       Imposta questa proprietà insieme a `elementSize`. Il modo consigliato è
       di usare il metodo `setType`.
 		</p>
-
 		<h2>Metodi</h2>
-
 		<h3>[method:this setBuffer]( buffer ) </h3>
 		<p>Imposta la proprietà `buffer`.</p>
-
 		<h3>[method:this setType]( type, elementSize ) </h3>
 		<p>Imposta entrambe le proprietà `type` e `elementSize`.</p>
-
 		<h3>[method:this setItemSize]( itemSize ) </h3>
 		<p>Imposta la proprietà `itemSize`.</p>
-
 		<h3>[method:this setCount]( count ) </h3>
 		<p>Imposta la proprietà `count`.</p>
-
 		<h3>[property:Integer version]</h3>
 		<p>
       Un numero di versione, incrementato ogni volta che la proprietà needsUpdate è impostata a true.
 		</p>
-
 		<h3>[property:Boolean needsUpdate]</h3>
 		<p>
       Il valore predefinito è `false`. Impostando questo metodo a true incrementa la [page:GLBufferAttribute.version versione].
 		</p>
-
 		<h2>Source</h2>
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]

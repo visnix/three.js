@@ -7,36 +7,22 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
-
 		<div id="container"></div>
 		<div id="info"><a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - shader demo. featuring <a href="http://www.pouet.net/prod.php?which=52761" target="_blank" rel="noopener">Monjori by Mic</a></div>
-
 		<script id="vertexShader" type="x-shader/x-vertex">
-
 			varying vec2 vUv;
-
 			void main()	{
-
 				vUv = uv;
-
 				gl_Position = vec4( position, 1.0 );
-
 			}
-
 		</script>
-
 		<script id="fragmentShader" type="x-shader/x-fragment">
-
 			varying vec2 vUv;
-
 			uniform float time;
-
 			void main()	{
-
 				vec2 p = - 1.0 + 2.0 * vUv;
 				float a = time * 40.0;
 				float d, e, f, g = 1.0 / 40.0 ,h ,i ,r ,q;
-
 				e = 400.0 * ( p.x * 0.5 + 0.5 );
 				f = 400.0 * ( p.y * 0.5 + 0.5 );
 				i = 200.0 + sin( e * g + a / 150.0 ) * 20.0;
@@ -58,15 +44,11 @@
 				d += sin( d * d * 8.0 ) * 0.52;
 				f = ( sin( a * g ) + 1.0 ) / 2.0;
 				gl_FragColor = vec4( vec3( f * i / 1.6, i / 2.0 + d / 13.0, i ) * d * p.x + vec3( i / 1.3 + d / 8.0, i / 2.0 + d / 18.0, i ) * d * ( 1.0 - p.x ), 1.0 );
-
 			}
-
 		</script>
-
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
 		<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 		<script type="importmap">
 			{
 				"imports": {
@@ -75,71 +57,42 @@
 				}
 			}
 		</script>
-
 		<script type="module">
-
 			import * as THREE from 'three';
-
 			let camera, scene, renderer;
-
 			let uniforms;
-
 			init();
 			animate();
-
 			function init() {
-
 				const container = document.getElementById( 'container' );
-
 				camera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-
 				scene = new THREE.Scene();
-
 				const geometry = new THREE.PlaneGeometry( 2, 2 );
-
 				uniforms = {
 					time: { value: 1.0 }
 				};
-
 				const material = new THREE.ShaderMaterial( {
-
 					uniforms: uniforms,
 					vertexShader: document.getElementById( 'vertexShader' ).textContent,
 					fragmentShader: document.getElementById( 'fragmentShader' ).textContent
-
 				} );
-
 				const mesh = new THREE.Mesh( geometry, material );
 				scene.add( mesh );
-
 				renderer = new THREE.WebGLRenderer();
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
-
 				window.addEventListener( 'resize', onWindowResize );
-
 			}
-
 			function onWindowResize() {
-
 				renderer.setSize( window.innerWidth, window.innerHeight );
-
 			}
-
 			//
-
 			function animate() {
-
 				requestAnimationFrame( animate );
-
 				uniforms[ 'time' ].value = performance.now() / 1000;
-
 				renderer.render( scene, camera );
-
 			}
-
 		</script>
-
 	</body>
 </html>

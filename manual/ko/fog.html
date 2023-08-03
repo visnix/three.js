@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -73,7 +71,6 @@
     <div class="code">THREE.FogExp2</div>
   </div>
 </div>
-
 <p>한 가지 알아둬야 하는 건 안개는 <em>렌더링되는 물체</em>라는 점입니다.
 안개는 물체의 픽셀을 렌더링할 때 같이 렌더링되는데, 이 말은 장면에
 특정 색상의 안개 효과를 주려면 안개와 배경색 <strong>둘 다</strong> 같은 색으로
@@ -91,11 +88,9 @@
     <div class="code">파란 안개, 파란 배경</div>
   </div>
 </div>
-
 <p>아래는 이전에 사용했던 예제에 안개를 추가한 것입니다. 장면을 생성한 뒤
 안개를 추가하고, 장면의 배경색을 바꾸기만 했죠.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const scene = new THREE.Scene();
-
 +{
 +  const near = 1;
 +  const far = 2;
@@ -112,7 +107,6 @@
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>인터페이스를 추가해 안개를 조정할 수 있도록 하겠습니다. 이번에도 <a href="https://github.com/georgealways/lil-gui">lil-gui</a>를
 사용할 거예요. lil-gui는 객체와 객체의 속성 키값을 받아 자동으로 인터페이스를
@@ -214,7 +208,6 @@ class FogGUIHelper {
   const color = 'lightblue';
   scene.fog = new THREE.Fog(color, near, far);
   scene.background = new THREE.Color(color);
-
 *  const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
   gui.add(fogGUIHelper, 'near', near, far).listen();
   gui.add(fogGUIHelper, 'far', near, far).listen();
@@ -225,7 +218,6 @@ class FogGUIHelper {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/fog-gui.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/fog-gui.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">near</code>를 1.9 정도, <code class="notranslate" translate="no">far</code>를 2.0 정도로 설정하면 안개의 경계가 굉장히
 선명해질 겁니다. 정육면체들이 카메라에서 2칸 떨어져 있으므로 <code class="notranslate" translate="no">near</code>를
@@ -247,7 +239,6 @@ class FogGUIHelper {
     <div class="code">모든 재질의 fog: true</div>
   </div>
 </div>
-
 <p>방 끝 쪽 천장과 벽에 안개가 낀 것이 보일 겁니다. 집 내부 재질의 fog 옵션을 끄면
 안개를 없앨 수 있죠.</p>
 <div class="spread">
@@ -256,18 +247,11 @@ class FogGUIHelper {
     <div class="code">집 밖 물체의 재질만 fog: true</div>
   </div>
 </div>
-
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-fog.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

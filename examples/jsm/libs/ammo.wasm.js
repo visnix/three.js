@@ -1,14 +1,10 @@
-
 // This is ammo.js, a port of Bullet Physics to JavaScript. zlib licensed.
-
 var Ammo = (function() {
   var _scriptDir = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : undefined;
   if (typeof __filename !== 'undefined') _scriptDir = _scriptDir || __filename;
   return (
 function(Ammo) {
   Ammo = Ammo || {};
-
-
 var b;b||(b=typeof Ammo !== 'undefined' ? Ammo : {});var ba;b.ready=new Promise(function(a){ba=a});var ca={},da;for(da in b)b.hasOwnProperty(da)&&(ca[da]=b[da]);var ea=!1,fa=!1,ha=!1,ia=!1;ea="object"===typeof window;fa="function"===typeof importScripts;ha="object"===typeof process&&"object"===typeof process.versions&&"string"===typeof process.versions.node;ia=!ea&&!ha&&!fa;var ja="",ka,la,ma,na;
 if(ha)ja=fa?require("path").dirname(ja)+"/":__dirname+"/",ka=function(a,c){ma||(ma=require("fs"));na||(na=require("path"));a=na.normalize(a);return ma.readFileSync(a,c?null:"utf8")},la=function(a){a=ka(a,!0);a.buffer||(a=new Uint8Array(a));assert(a.buffer);return a},1<process.argv.length&&process.argv[1].replace(/\\/g,"/"),process.argv.slice(2),process.on("uncaughtException",function(a){throw a;}),process.on("unhandledRejection",oa),b.inspect=function(){return"[Emscripten Module object]"};else if(ia)"undefined"!=
 typeof read&&(ka=function(a){return read(a)}),la=function(a){if("function"===typeof readbuffer)return new Uint8Array(readbuffer(a));a=read(a,"binary");assert("object"===typeof a);return a},"undefined"!==typeof print&&("undefined"===typeof console&&(console={}),console.log=print,console.warn=console.error="undefined"!==typeof printErr?printErr:print);else if(ea||fa)fa?ja=self.location.href:document.currentScript&&(ja=document.currentScript.src),_scriptDir&&(ja=_scriptDir),ja=0!==ja.indexOf("blob:")?
@@ -807,8 +803,6 @@ Z.prototype.set_m_hitCollisionObject=Z.prototype.PC=function(a){var c=this.hy;a&
 Z.prototype.get_m_hitNormalLocal=Z.prototype.mA=function(){return k(jA(this.hy),p)};Z.prototype.set_m_hitNormalLocal=Z.prototype.TC=function(a){var c=this.hy;a&&"object"===typeof a&&(a=a.hy);kA(c,a)};Object.defineProperty(Z.prototype,"m_hitNormalLocal",{get:Z.prototype.mA,set:Z.prototype.TC});Z.prototype.get_m_hitPointLocal=Z.prototype.oA=function(){return k(lA(this.hy),p)};Z.prototype.set_m_hitPointLocal=Z.prototype.VC=function(a){var c=this.hy;a&&"object"===typeof a&&(a=a.hy);mA(c,a)};
 Object.defineProperty(Z.prototype,"m_hitPointLocal",{get:Z.prototype.oA,set:Z.prototype.VC});Z.prototype.get_m_hitFraction=Z.prototype.jA=function(){return nA(this.hy)};Z.prototype.set_m_hitFraction=Z.prototype.QC=function(a){var c=this.hy;a&&"object"===typeof a&&(a=a.hy);oA(c,a)};Object.defineProperty(Z.prototype,"m_hitFraction",{get:Z.prototype.jA,set:Z.prototype.QC});Z.prototype.__destroy__=function(){pA(this.hy)};
 (function(){function a(){b.BT_CONSTRAINT_ERP=qA();b.BT_CONSTRAINT_STOP_ERP=rA();b.BT_CONSTRAINT_CFM=sA();b.BT_CONSTRAINT_STOP_CFM=tA();b.PHY_FLOAT=uA();b.PHY_DOUBLE=vA();b.PHY_INTEGER=wA();b.PHY_SHORT=xA();b.PHY_FIXEDPOINT88=yA();b.PHY_UCHAR=zA()}Ka?a():Ia.unshift(a)})();this.Ammo=b;
-
-
   return Ammo.ready
 }
 );
@@ -819,4 +813,3 @@ if (typeof exports === 'object' && typeof module === 'object')
       define([], function() { return Ammo; });
     else if (typeof exports === 'object')
       exports["Ammo"] = Ammo;
-    

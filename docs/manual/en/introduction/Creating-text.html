@@ -14,7 +14,6 @@
 				a couple of ways that you can do so.
 			</p>
 		</div>
-
 		<h2>1. DOM + CSS</h2>
 		<div>
 			<p>
@@ -23,12 +22,10 @@
 			</p>
 			<p>You can add content to a</p>
 			<code>&lt;div id="info"&gt;Description&lt;/div&gt;</code>
-
 			<p>
 				and use CSS markup to position absolutely at a position above all others with a
 				z-index especially if you are running three.js full screen.
 			</p>
-
 			<code>
 #info {
 	position: absolute;
@@ -39,10 +36,7 @@
 	display:block;
 }
 			</code>
-
 		</div>
-
-		
 		<h2>2. Use [page:CSS2DRenderer] or [page:CSS3DRenderer]</h2>
 		<div>
 			<p>
@@ -50,20 +44,14 @@
 				This is similar to 1. except that with these renderers elements can be integrated more tightly and dynamically into the scene.
 			</p>
 		</div>
-		
-
 		<h2>3. Draw text to canvas and use as a [page:Texture]</h2>
 		<div>
 			<p>Use this method if you wish to draw text easily on a plane in your three.js scene.</p>
 		</div>
-
-
 		<h2>4. Create a model in your favourite 3D application and export to three.js</h2>
 		<div>
 			<p>Use this method if you prefer working with your 3d applications and importing the models to three.js.</p>
 		</div>
-
-
 		<h2>5. Procedural Text Geometry</h2>
 		<div>
 			<p>
@@ -76,27 +64,20 @@
 			<p>
 				In order for this to work, however, your TextGeometry will need an instance of THREE.Font
 				to be set on its "font" parameter.
-
 				See the [page:TextGeometry] page for more info on how this can be done, descriptions of each
 				accepted parameter, and a list of the JSON fonts that come with the THREE.js distribution itself.
 			</p>
-
 			<h3>Examples</h3>
-
 			<p>
 				[example:webgl_geometry_text WebGL / geometry / text]<br />
 				[example:webgl_shadowmap WebGL / shadowmap]
 			</p>
-
 			<p>
 				If Typeface is down, or you want to use a font that is not there, there's a tutorial
 				with a python script for blender that allows you to export text to Three.js's JSON format:
 				[link:http://www.jaanga.com/2012/03/blender-to-threejs-create-3d-text-with.html]
 			</p>
-
 		</div>
-
-
 		<h2>6. Bitmap Fonts</h2>
 		<div>
 			<p>
@@ -119,8 +100,6 @@
 				<li>[link:https://github.com/libgdx/libgdx/wiki/Hiero hiero] <i>(desktop app)</i></li>
 			</ul>
 		</div>
-
-
 		<h2>7. Troika Text</h2>
 		<div>
 			<p>
@@ -136,7 +115,5 @@
 				<li>Optimization for large amounts of dynamic text, performing most work off the main thread in a web worker</li>
 			</ul>
 		</div>
-
-
 	</body>
 </html>

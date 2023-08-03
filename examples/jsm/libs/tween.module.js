@@ -184,7 +184,6 @@ var Easing = {
 		},
 	},
 };
-
 var now;
 // Include a performance.now polyfill.
 // In node.js, use process.hrtime.
@@ -216,7 +215,6 @@ else {
 	};
 }
 var now$1 = now;
-
 /**
  * Controlling groups of tweens
  *
@@ -272,7 +270,6 @@ var Group = /** @class */ (function () {
 	};
 	return Group;
 }());
-
 /**
  *
  */
@@ -352,7 +349,6 @@ var Interpolation = {
 		},
 	},
 };
-
 /**
  * Utils
  */
@@ -365,9 +361,7 @@ var Sequence = /** @class */ (function () {
 	Sequence._nextId = 0;
 	return Sequence;
 }());
-
 var mainGroup = new Group();
-
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/tweenjs/tween.js
@@ -755,9 +749,7 @@ var Tween = /** @class */ (function () {
 	};
 	return Tween;
 }());
-
 var VERSION = '18.6.4';
-
 /**
  * Tween.js - Licensed under the MIT license
  * https://github.com/tweenjs/tween.js
@@ -798,6 +790,5 @@ var exports = {
 	remove: remove,
 	update: update,
 };
-
 export default exports;
 export { Easing, Group, Interpolation, Sequence, Tween, VERSION, add, getAll, nextId, now$1 as now, remove, removeAll, update };

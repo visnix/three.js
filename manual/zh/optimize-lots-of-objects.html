@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -127,11 +125,9 @@
     });
   });
 }
-
 function px(v) {
   return `${v | 0}px`;
 }
-
 function hsl(h, s, l) {
   return `hsl(${h * 360 | 0},${s * 100 | 0}%,${l * 100 | 0}%)`;
 }
@@ -146,13 +142,11 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/gpw-data-viewer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/gpw-data-viewer.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>嗯... 看起来没什么问题</p>
 <p>试试3D效果. 从<a href="rendering-on-demand.html">按需渲染</a>出发, 我们让每一个数据都画成一个box</p>
 <p>首先先画一个地球, 这是sphere表面的贴图</p>
 <div class="threejs_center"><img src="../examples/resources/images/world.jpg" style="width: 600px"></div>
-
 <p>用这些代码生成地球</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const loader = new THREE.TextureLoader();
@@ -168,7 +162,6 @@ function hsl(h, s, l) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
   // 新建一个box geometry
   const boxWidth = 1;
   const boxHeight = 1;
@@ -176,7 +169,6 @@ function hsl(h, s, l) {
   const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
   // 沿着z轴缩放
   geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // 位置辅助器可以方便地在球面上定位
   // 经度辅助器可以在XZ平面的法向旋转
   const lonHelper = new THREE.Object3D();
@@ -188,7 +180,6 @@ function hsl(h, s, l) {
   const positionHelper = new THREE.Object3D();
   positionHelper.position.z = 1;
   latHelper.add(positionHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
   data.forEach((row, latNdx) =&gt; {
@@ -204,15 +195,12 @@ function hsl(h, s, l) {
       material.color.setHSL(hue, saturation, lightness);
       const mesh = new THREE.Mesh(geometry, material);
       scene.add(mesh);
-
       // 调整辅助器使其指向经纬度
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
       // 使用world matrix来操作辅助器
       positionHelper.updateWorldMatrix(true, false);
       mesh.applyMatrix4(positionHelper.matrixWorld);
-
       mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     });
   });
@@ -230,13 +218,11 @@ function hsl(h, s, l) {
     <div class="code">adjusted</div>
   </div>
 </div>
-
 <p>当然, 我们可以像<a href="scenegraph.html">场景图</a>一章中讲得, 通过添加到一个父对象来解决上面的问题. 但是要考虑到我们体系几何体非常得多, 所以会大大拖累运行的速度. </p>
 <p>上面的位置辅助器<code class="notranslate" translate="no">positionHelper</code>是由<code class="notranslate" translate="no">lonHelper</code>, <code class="notranslate" translate="no">latHelper</code>逐级组合而来. 这个小东西可以帮助我们计算球面上的经纬度来放置几何体. </p>
 <div class="spread">
   <div data-diagram="lonLatPos" style="width: 600px; height: 400px;"></div>
 </div>
-
 <p>上面的<span style="color: green;">绿条条</span>代表<code class="notranslate" translate="no">lonHelper</code>, 在赤道上以经度的变化旋转. The <span style="color: blue;">
 蓝条条</span>代表 <code class="notranslate" translate="no">latHelper</code>, 在赤道上下以纬度的变化旋转. <span style="color: red;">红球球</span> 就是位置辅助器实际指向的位置. </p>
 <p>我们倒是可以计算所有的球面位置, 但是需要涉及到很多数学和库的调用, 所以就...可以但没必要.</p>
@@ -255,21 +241,17 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-slow.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-slow.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>拖拽一下这个球你就会发现很卡</p>
 <p>我们在<a href="debugging-javascript.html">开启调试工具</a>中提到过怎么打开帧率监视器</p>
 <div class="threejs_center"><img src="../resources/images/bring-up-fps-meter.gif"></div>
-
 <p>在我机器上大概是20帧每秒</p>
 <div class="threejs_center"><img src="../resources/images/fps-meter.gif"></div>
-
 <p>这不太行, 我寻思很多人机器上会更慢. 我们得想办法优化它一下子.</p>
 <p>此时此景, 我们可以通过合并所有的盒子到一个geometry来实现, 一下子就可以省下18999个操作</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function addBoxes(file) {
   const {min, max, data} = file;
   const range = max - min;
-
 -  // 新建一个几何体
 -  const boxWidth = 1;
 -  const boxHeight = 1;
@@ -277,7 +259,6 @@ function hsl(h, s, l) {
 -  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 -  // 沿着Z轴缩放
 -  geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, 0.5));
-
   // 位置辅助器可以方便地在球面上定位
   // 经度辅助器可以在XZ平面的法向旋转
   const lonHelper = new THREE.Object3D();
@@ -293,7 +274,6 @@ function hsl(h, s, l) {
 +  const originHelper = new THREE.Object3D();
 +  originHelper.position.z = 0.5;
 +  positionHelper.add(originHelper);
-
   const lonFudge = Math.PI * .5;
   const latFudge = Math.PI * -0.135;
 +  const geometries = [];
@@ -303,7 +283,6 @@ function hsl(h, s, l) {
         return;
       }
       const amount = (value - min) / range;
-
 -      const material = new THREE.MeshBasicMaterial();
 -      const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 -      const saturation = 1;
@@ -311,21 +290,17 @@ function hsl(h, s, l) {
 -      material.color.setHSL(hue, saturation, lightness);
 -      const mesh = new THREE.Mesh(geometry, material);
 -      scene.add(mesh);
-
 +      const boxWidth = 1;
 +      const boxHeight = 1;
 +      const boxDepth = 1;
 +      const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
       // 调整位置辅助器的指向
       lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
       latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
       // 使用world matrix来操作辅助器
       positionHelper.updateWorldMatrix(true, false);
       mesh.applyMatrix4(positionHelper.matrixWorld);
       mesh.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
-
 +      // 使用位置辅助器和world matrix 来定位
 +      positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
 +      originHelper.updateWorldMatrix(true, false);
@@ -334,13 +309,11 @@ function hsl(h, s, l) {
 +      geometries.push(geometry);
     });
   });
-
 +  const mergedGeometry = BufferGeometryUtils.mergeGeometries(
 +      geometries, false);
 +  const material = new THREE.MeshBasicMaterial({color:'red'});
 +  const mesh = new THREE.Mesh(mergedGeometry, material);
 +  scene.add(mesh);
-
 }
 </pre>
 <p>我们移除了之前用来改变盒子几何中心的代码, 取而代之的是<code class="notranslate" translate="no">originHelper</code>. 这次我们要为每个长方体创建新的几何体, 因为我们要使用“applyMatrix”来移动每个长方体几何体的顶点, 所以我们最好只移动一次, 而不是两次.</p>
@@ -353,12 +326,10 @@ function hsl(h, s, l) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>虽然可以了, 但是我们这是一整个mesh, 所以我们只能应用一个材质, 意味着我们只能有一种颜色的盒子. 我们之前可是能有不同颜色的盒子. 我们可以通过使用顶点着色法来解决. </p>
 <p>顶点着色向每个顶点添加一种颜色. 通过设定每个盒子的每个顶点的所有颜色来指定每个盒子的颜色. </p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const color = new THREE.Color();
-
 const lonFudge = Math.PI * .5;
 const latFudge = Math.PI * -0.135;
 const geometries = [];
@@ -368,19 +339,15 @@ data.forEach((row, latNdx) =&gt; {
       return;
     }
     const amount = (value - min) / range;
-
     const boxWidth = 1;
     const boxHeight = 1;
     const boxDepth = 1;
     const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
-
     lonHelper.rotation.y = THREE.MathUtils.degToRad(lonNdx + file.xllcorner) + lonFudge;
     latHelper.rotation.x = THREE.MathUtils.degToRad(latNdx + file.yllcorner) + latFudge;
-
     positionHelper.scale.set(0.005, 0.005, THREE.MathUtils.lerp(0.01, 0.5, amount));
     originHelper.updateWorldMatrix(true, false);
     geometry.applyMatrix4(originHelper.matrixWorld);
-
 +    // 计算颜色
 +    const hue = THREE.MathUtils.lerp(0.7, 0.3, amount);
 +    const saturation = 1;
@@ -402,7 +369,6 @@ data.forEach((row, latNdx) =&gt; {
 +    const normalized = true;
 +    const colorAttrib = new THREE.BufferAttribute(colors, itemSize, normalized);
 +    geometry.setAttribute('color', colorAttrib);
-
     geometries.push(geometry);
   });
 });
@@ -423,7 +389,6 @@ scene.add(mesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/lots-of-objects-merged-vertexcolors.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/lots-of-objects-merged-vertexcolors.html" target="_blank">点击此处在新标签页中打开</a>
 </div>
-
 <p></p>
 <p>合并几何体是一个常见的优化手段. 比如, 可以将一百多棵树合并成一个几何体, 一堆石头合并成一块石头, 零零碎碎的栅栏合并成一个栅栏的mesh. 另一个例子是Minecraft并不是一个一个方块去绘制, 而是创建一组合并了的方块, 当然之前选择性地移除那些看不见的. </p>
 <p>这么做带来的问题是, 合并起来简单, 分离难. 接下来我们再引入一种优化方案
@@ -433,11 +398,6 @@ scene.add(mesh);
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

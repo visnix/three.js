@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8">
 	<title>加载 .gltf 文件</title>
@@ -11,13 +10,11 @@
 	<meta property="og:image" content="https://threejs.org/files/share.png">
 	<link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
 	<link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
 	<link rel="stylesheet" href="../resources/lesson.css">
 	<link rel="stylesheet" href="../resources/lang.css">
 	<!-- Import maps polyfill -->
 	<!-- Remove this when import maps will be widely supported -->
 	<script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 	<script type="importmap">
 {
 "imports": {
@@ -26,7 +23,6 @@
 }
 </script>
 </head>
-
 <body>
 	<div class="container">
 		<div class="lesson-title">
@@ -75,7 +71,6 @@
 				<p>在网上搜索我发现 <a href="https://sketchfab.com/models/edd1c604e1e045a0a2a552ddd9a293e6">这个低模城市</a>
 					作者： <a href="https://sketchfab.com/antonmoek">antonmoek</a> 这意味着我们可以做一个好的案例。</p>
 				<div class="threejs_center"><img src="../resources/images/cartoon_lowpoly_small_city_free_pack.jpg"></div>
-
 				<p><a href="load-obj.html">an example from the .OBJ article</a>从这里开始，我删除了加载.OBJ的代码 ，替换为加载.gLTF的</p>
 				<p>旧.OBJ代码</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const mtlLoader = new MTLLoader();
@@ -116,7 +111,6 @@ gltfLoader.load(url, (gltf) =&gt; {
 							src="/manual/examples/resources/editor.html?url=/manual/examples/load-gltf.html"></iframe></div>
 					<a class="threejs_center" href="/manual/examples/load-gltf.html" target="_blank">点击这里在其他窗口打开</a>
 				</div>
-
 				<p></p>
 				<p>神奇吧！它工作了，纹理和其他都工作了。</p>
 				<p>然后，我想看看我能否给汽车添加绕圈动画（animate），我得检查场景有没有这些汽车的分离的实体，还得检查场景有没有一条路可以用。</p>
@@ -205,21 +199,17 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 						translate="no">cars</code>Cars每个子节点旋转。</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function render(time) {
 +  time *= 0.001;  // convert to seconds
-
 if (resizeRendererToDisplaySize(renderer)) {
 	const canvas = renderer.domElement;
 	camera.aspect = canvas.clientWidth / canvas.clientHeight;
 	camera.updateProjectionMatrix();
 }
-
 +  if (cars) {
 +    for (const car of cars.children) {
 +      car.rotation.y = time;
 +    }
 +  }
-
 renderer.render(scene, camera);
-
 requestAnimationFrame(render);
 }
 </pre>
@@ -232,7 +222,6 @@ requestAnimationFrame(render);
 					<a class="threejs_center" href="/manual/examples/load-gltf-rotate-cars.html" target="_blank">click here to
 						open in a separate window</a>
 				</div>
-
 				<p></p>
 				<p>呃~，看起来很不幸，这场景没有设计汽车动画，因为他们当初不是用于此目的的。这卡车在错误的方向旋转。</p>
 				<p>这引出一个很重要的点，当你把东西做成3D时，你需要预先计划并设计你的资源（assets），让它们拥有能正确使用的初始功能。所以它们应该有正确的比例...</p>
@@ -258,7 +247,6 @@ const gltfLoader = new GLTFLoader();
 gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) =&gt; {
 	const root = gltf.scene;
 	scene.add(root);
-
 -    cars = root.getObjectByName('Cars');
 +    const loadedCars = root.getObjectByName('Cars');
 +    const fixes = [
@@ -289,17 +277,14 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 					<a class="threejs_center" href="/manual/examples/load-gltf-rotate-cars-fixed.html" target="_blank">click here
 						to open in a separate window</a>
 				</div>
-
 				<p></p>
 				<p>现在让我们驾驶着它们绕圈</p>
 				<p>制作一个简单的驾驶系统对这篇文章来说太多了，但作为代替我们可以做一个基于所有道路做一个弯曲路径，然后放置车到路上。下面的图是blender创建的路径。</p>
 				<div class="threejs_center"><img src="../resources/images/making-path-for-cars.jpg" style="width: 1094px"></div>
-
 				<p>我需要一种方式在Blender之外花去路径数据的方法
 					幸运的是，我能选择我的路径并通过"write nurbs"导出.OBJ</p>
 				<div class="threejs_center"><img src="../resources/images/blender-export-obj-write-nurbs.jpg"
 						style="width: 498px"></div>
-
 				<p>打开.OBJ文件我能够获取点列表,我格式化后</p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">const controlPoints = [
 [1.118281, 5.115846, -3.681386],
@@ -329,7 +314,6 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 							translate="no">CatmullRomCurve3</code></a> 那种曲线的事情是尝试通过这些点进行平滑的曲线</p>
 				<p>事实上直接提供这些点会生成这样的曲线</p>
 				<div class="threejs_center"><img src="../resources/images/car-curves-before.png" style="width: 400px"></div>
-
 				<p>但是，我想要更尖锐的转角。如果我们计算了一些额外的点，我们可以得到我们想要的东西。
 					每两对点之间,我们需要在两点之间的10%处和90%处计算额外的两个点，并将它们传递给
 					<a href="/docs/#api/en/extras/curves/CatmullRomCurve3"><code class="notranslate"
@@ -337,7 +321,6 @@ gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.glt
 				</p>
 				<p>这会得到这样的曲线</p>
 				<div class="threejs_center"><img src="../resources/images/car-curves-after.png" style="width: 400px"></div>
-
 				<p>曲线代码 </p>
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">let curve;
 let curveObject;
@@ -400,10 +383,8 @@ curve = new THREE.CatmullRomCurve3(
 </pre>
 				<p>我发现路线实在太小了</p>
 				<div class="threejs_center"><img src="../resources/images/car-curves-too-small.png" style="width: 498px"></div>
-
 				<p>检查Blender中的层次结构我发现艺术家缩放了节点所有汽车。</p>
 				<div class="threejs_center"><img src="../resources/images/cars-scale-0.01.png" style="width: 342px;"></div>
-
 				<p>缩放对于实时3D应用程序是十分糟糕的。这会到这各种各样的问题，并且会以无休止的沮丧结束。
 					艺术家经常不知道这些，因为在3D编辑程序中缩放整个场景是非常容易的。
 					但是，如果你决定要做实时3D应用程序，我建议要求你的艺术家/设计人员不要缩放任何东西。
@@ -419,7 +400,6 @@ curve = new THREE.CatmullRomCurve3(
 				<pre class="prettyprint showlinemods notranslate lang-js" translate="no">+function dumpVec3(v3, precision = 3) {
 +  return `${v3.x.toFixed(precision)}, ${v3.y.toFixed(precision)}, ${v3.z.toFixed(precision)}`;
 +}
-
 function dumpObject(obj, lines, isLast = true, prefix = '') {
 const localPrefix = isLast ? '└─' : '├─';
 lines.push(`${prefix}${prefix ? localPrefix : ''}${obj.name || '*no-name*'} [${obj.type}]`);
@@ -524,14 +504,11 @@ scene.add(curveObject);
 // 创建两个向量用于路径计算 
 const carPosition = new THREE.Vector3();
 const carTarget = new THREE.Vector3();
-
 function render(time) {
 ...
-
 -  for (const car of cars) {
 -    car.rotation.y = time;
 -  }
-
 +  {
 +    const pathTime = time * .01;
 +    const targetOffset = 0.01;
@@ -568,7 +545,6 @@ const fixes = [
 +  { prefix: 'CAR_03', y: 33, rot: [0, Math.PI, 0], },
 +  { prefix: 'Car_04', y: 40, rot: [0, Math.PI, 0], },
 ];
-
 root.updateMatrixWorld();
 for (const car of loadedCars.children.slice()) {
 const fix = fixes.find(fix =&gt; car.name.startsWith(fix.prefix));
@@ -591,7 +567,6 @@ cars.push(obj);
 					<a class="threejs_center" href="/manual/examples/load-gltf-animated-cars.html" target="_blank">click here to
 						open in a separate window</a>
 				</div>
-
 				<p></p>
 				<p>几分钟运行的还不错</p>
 				<p>最后我想做的是开启阴影</p>
@@ -606,7 +581,6 @@ const gltfLoader = new GLTFLoader();
 gltfLoader.load('resources/models/cartoon_lowpoly_small_city_free_pack/scene.gltf', (gltf) =&gt; {
 	const root = gltf.scene;
 	scene.add(root);
-
 +    root.traverse((obj) =&gt; {
 +      if (obj.castShadow !== undefined) {
 +        obj.castShadow = true;
@@ -627,11 +601,9 @@ const light = new THREE.DirectionalLight(color, intensity);
 +  light.castShadow = true;
 *  light.position.set(-250, 800, -850);
 *  light.target.position.set(-550, 40, -450);
-
 +  light.shadow.bias = -0.004;
 +  light.shadow.mapSize.width = 2048;
 +  light.shadow.mapSize.height = 2048;
-
 scene.add(light);
 scene.add(light.target);
 +  const cam = light.shadow.camera;
@@ -656,7 +628,6 @@ scene.add(light.target);
 					<a class="threejs_center" href="/manual/examples/load-gltf-shadows.html" target="_blank">click here to open in
 						a separate window</a>
 				</div>
-
 				<p></p>
 				<p>我希望详细讲完这个工程是有用的，并且能作为 在使用场景图（scenegraph）加载文件时 解决一些问题（issues）很好的案例。
 				</p>
@@ -673,17 +644,10 @@ scene.add(light.target);
 					理想的情况是，这些信息可以成为GLTF文件。但是这么做。我们需要自己写导出器，以及一些如何标记节点以了解我们希望它们如何导出或使用命名方案或类似的东西来从我们使用的任何工具获取数据 用于将数据创建到我们的应用程序中。
 				</p>
 				<p>所有这些练习都留给了读者了。</p>
-
 			</div>
 		</div>
 	</div>
-
 	<script src="../resources/prettify.js"></script>
 	<script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

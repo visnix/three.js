@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -52,7 +50,6 @@
 <li><a href="#filtering-and-mips">Фильтрация и Mips</a></li>
 <li><a href="#uvmanipulation">Повторение, сдвиг, вращение, наложение</a></li>
 </ul>
-
 <h2 id="-a-name-hello-a-hello-texture"><a name="hello"></a> Hello Texture</h2>
 <p>Текстуры, <em>как правило</em> представляют собой изображения, которые чаще всего создаются в 
 какой-либо сторонней программе, такой как Photoshop или GIMP. Например, 
@@ -60,14 +57,12 @@
 <div class="threejs_center">
   <img src="../examples/resources/images/wall.jpg" style="width: 600px;" class="border">
 </div>
-
 <p>Мы изменим один из наших первых примеров. Все, что нам нужно сделать, это создать <a href="/docs/#api/en/loaders/TextureLoader"><code class="notranslate" translate="no">TextureLoader</code></a>. Вызовите 
 <a href="/docs/#api/en/loaders/TextureLoader#load"><code class="notranslate" translate="no">load</code></a> метод с URL-адресом изображения и установите для
 изображения и установите его возвращаемое значение для <code class="notranslate" translate="no">map</code> свойства материала, вместо установки <code class="notranslate" translate="no">color</code>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load( 'resources/images/wall.jpg' );
 +texture.colorSpace = THREE.SRGBColorSpace;
-
 const material = new THREE.MeshBasicMaterial({
 -  color: 0xFF8844,
 +  map: texture,
@@ -78,7 +73,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-six-a-6-"><a name="six"></a> 6 текстур, разные для каждой грани куба</h2>
 <p>Как насчет 6 текстур, по одной на каждой грани куба?</p>
@@ -94,12 +88,10 @@ const material = new THREE.MeshBasicMaterial({
     <img src="../examples/resources/images/flower-6.jpg" style="width: 100px;" class="border">
   </div>
 </div>
-
 <p>Мы просто создадим 6 материалов и передаем их в виде массива при создании <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const loader = new THREE.TextureLoader();
 -const texture = loader.load( 'resources/images/wall.jpg' );
 -texture.colorSpace = THREE.SRGBColorSpace;
-
 -const material = new THREE.MeshBasicMaterial({
 -  map: texture,
 -});
@@ -113,7 +105,6 @@ const material = new THREE.MeshBasicMaterial({
 +];
 -const cube = new THREE.Mesh(geometry, material);
 +const cube = new THREE.Mesh(geometry, materials);
-
 +function loadColorTexture( path ) {
 +  const texture = loader.load( path );
 +  texture.colorSpace = THREE.SRGBColorSpace;
@@ -125,7 +116,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-6-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-6-textures.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Однако следует отметить, что по умолчанию единственной геометрией, которая поддерживает 
 несколько материалов, является <a href="/docs/#api/en/geometries/BoxGeometry"><code class="notranslate" translate="no">BoxGeometry</code></a> и <a href="/docs/#api/en/geometries/ConeGeometry"><code class="notranslate" translate="no">ConeGeometry</code></a>. В других случаях вам 
@@ -172,7 +162,6 @@ loader.load('../resources/images/wall.jpg', (texture) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-texture.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-texture.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <h3 id="-a-name-waitmany-a-"><a name="waitmany"></a> Ожидание загрузки нескольких текстур</h3>
 <p>Чтобы дождаться загрузки всех текстур, вы можете использовать <a href="/docs/#api/en/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>. 
@@ -180,7 +169,6 @@ loader.load('../resources/images/wall.jpg', (texture) =&gt; {
 свойство для обратного вызова.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadManager = new THREE.LoadingManager();
 *const loader = new THREE.TextureLoader(loadManager);
-
 const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('../resources/images/flower-1.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('../resources/images/flower-2.jpg')}),
@@ -189,7 +177,6 @@ const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('../resources/images/flower-5.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('../resources/images/flower-6.jpg')}),
 ];
-
 +loadManager.onLoad = () =&gt; {
 +  const cube = new THREE.Mesh(geometry, materials);
 +  scene.add(cube);
@@ -235,14 +222,12 @@ const materials = [
 элементов и общего количества загруженных элементов.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadingElem = document.querySelector('#loading');
 +const progressBarElem = loadingElem.querySelector('.progressbar');
-
 loadManager.onLoad = () =&gt; {
 +  loadingElem.style.display = 'none';
   const cube = new THREE.Mesh(geometry, materials);
   scene.add(cube);
   cubes.push(cube);  // добавляем в наш список кубиков для вращения 
 };
-
 +loadManager.onProgress = (urlOfLastItemLoaded, itemsLoaded, itemsTotal) =&gt; {
 +  const progress = itemsLoaded / itemsTotal;
 +  progressBarElem.style.transform = `scaleX(${progress})`;
@@ -253,7 +238,6 @@ loadManager.onLoad = () =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-all-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-all-textures.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-cors-a-cros"><a name="cors"></a> Загрузка текстур из других источников. CROS</h2>
 <p>Чтобы использовать изображения с других серверов, эти сервера должны отправлять правильные заголовки. 
@@ -272,7 +256,6 @@ loadManager.onLoad = () =&gt; {
 .jpg и установить его компрессию очень высокой. Например, допустим, я делал сцену из дома. 
 Внутри дома есть стол, и я решил положить эту текстуру дерева на верхнюю поверхность стола.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/compressed-but-large-wood-texture.jpg" align="center" style="width: 300px"></div>
-
 <p>Это изображение всего 157 Кб, поэтому оно будет загружаться относительно быстро, но на 
 <a href="resources/images/compressed-but-large-wood-texture.jpg">самом деле оно имеет размер 3024 x 3761 пикселей</a>. 
 Следуя приведенному выше уравнению, это</p>
@@ -297,16 +280,12 @@ PNG-файлы имеют сжатие без потерь, поэтому PNG-�
 <h2 id="-a-name-filtering-and-mips-a-mips"><a name="filtering-and-mips"></a> Фильтрация и Mips</h2>
 <p>Давайте применим эту текстуру 16x16</p>
 <div class="threejs_center"><img src="../resources/images/mip-low-res-enlarged.png" class="border" align="center"></div>
-
 <p>Это куб</p>
 <div class="spread"><div data-diagram="filterCube"></div></div>
-
 <p>Давайте нарисуем этот кубик действительно маленьким</p>
 <div class="spread"><div data-diagram="filterCubeSmall"></div></div>
-
 <p>Хммм, я думаю, это трудно увидеть. Давайте увеличим этот крошечный куб</p>
 <div class="spread"><div data-diagram="filterCubeSmallLowRes"></div></div>
-
 <p>Как GPU узнает, какие цвета нужно сделать для каждого пикселя, который он рисует для крошечного куба? 
 Что если куб был настолько мал, что его размер составлял всего 1 или 2 пикселя?</p>
 <p>Вот что такое фильтрация.</p>
@@ -319,7 +298,6 @@ PNG-файлы имеют сжатие без потерь, поэтому PNG-�
 Мипы создаются до тех пор, пока мы не доберемся до 1 х 1 пикселя. 
 Поскольку изображение выше всех мипов в конечном итоге будет что-то вроде этого</p>
 <div class="threejs_center"><img src="../resources/images/mipmap-low-res-enlarged.png" class="nobg" align="center"></div>
-
 <p>Теперь, когда куб нарисован настолько маленьким, что его размер составляет всего 1 или 2 пикселя, 
 графический процессор может использовать только наименьший или почти минимальный уровень мипа, 
 чтобы решить, какой цвет создать крошечный куб.</p>
@@ -342,7 +320,6 @@ PNG-файлы имеют сжатие без потерь, поэтому PNG-�
     <div class="code">Linear</div>
   </div>
 </div>
-
 <p>Для настройки фильтра, когда текстура нарисована меньше исходного размера, 
 вы устанавливаете для свойства <a href="/docs/#api/en/textures/Texture#minFilter"><code class="notranslate" translate="no">texture.minFilter</code></a> одно из 6 значений.</p>
 <ul>
@@ -396,7 +373,6 @@ PNG-файлы имеют сжатие без потерь, поэтому PNG-�
     <div class="filter-caption" style="right: 0.5em; text-align: right; bottom: 0.5em;">linear<br>mipmap<br>linear</div>
   </div>
 </div>
-
 <p>Одна вещь, на которую нужно обратить внимание - это использование левого верхнего и верхнего среднего 
 <code class="notranslate" translate="no">NearestFilter</code> и <code class="notranslate" translate="no">LinearFilter</code>
 не использует mips. Из-за этого они мерцают на расстоянии, потому что графический процессор выбирает 
@@ -408,7 +384,6 @@ PNG-файлы имеют сжатие без потерь, поэтому PNG-�
 <div class="threejs_center">
   <div data-texture-diagram="differentColoredMips"></div>
 </div>
-
 <p>Это делает более понятным, что происходит. 
 Вы можете видеть в верхнем левом и верхнем середине первый мип, используемый на всем пути. 
 Справа вверху и внизу посередине видно, где используется другой мип.</p>
@@ -511,11 +486,9 @@ const material = new THREE.MeshBasicMaterial({
   'RepeatWrapping': THREE.RepeatWrapping,
   'MirroredRepeatWrapping': THREE.MirroredRepeatWrapping,
 };
-
 function updateTexture() {
   texture.needsUpdate = true;
 }
-
 const gui = new GUI();
 gui.add(new StringToNumberHelper(texture, 'wrapS'), 'value', wrapModes)
   .name('texture.wrapS')
@@ -539,7 +512,6 @@ gui.add(new DegRadHelper(texture, 'rotation'), 'value', -360, 360)
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-adjust.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-adjust.html" target="_blank">нажмите здесь, чтобы открыть в отдельном окне</a>
 </div>
-
 <p></p>
 <p>Это только один шаг в тему текстур. В какой-то момент мы рассмотрим текстурные координаты, 
 а также 9 других типов текстур, которые можно применить к материалам.</p>
@@ -557,15 +529,9 @@ roughness
 -->
 <p><script type="module" src="../resources/threejs-textures.js"></script></p>
 <link rel="stylesheet" href="../resources/threejs-textures.css">
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -49,18 +47,14 @@ enormously in your learning.</p>
 <p>In Chrome you can click the the <code class="notranslate" translate="no">⋮</code> icon, pick More Tools-&gt;Developer Tools
 to get to the developer tools. A keyboard shortcut is also shown there.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome.jpg" style="width: 789px;"></div>
-
 <p>In Firefox you click the <code class="notranslate" translate="no">☰</code> icon, pick "Web Developer", then pick
 "Toggle Tools"</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-firefox.jpg" style="width: 786px;"></div>
-
 <p>In Safari you first have to enable the Develop menu from the 
 Advanced Safari Preferences.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-enable-safari.jpg" style="width: 775px;"></div>
-
 <p>Then in the Develop menu you can pick "Show/Connect Web Inspector".</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-safari.jpg" style="width: 777px;"></div>
-
 <p>With Chrome you can also <a href="https://developers.google.com/web/tools/chrome-devtools/remote-debugging/">use Chrome on your computer to debug webpages running on Chrome on your Android phone or tablet</a>.
 Similarly with Safari you can 
 <a href="https://www.google.com/search?q=safari+remote+debugging+ios">use your computer to debug webpages running on Safari on iPhones and iPads</a>.</p>
@@ -78,19 +72,15 @@ because the browser uses the version it got last time.</p>
 way the browser will always get the newest versions of your files.</p>
 <p>First pick settings from the corner menu</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-settings.jpg" style="width: 778px"></div>
-
 <p>Then pick "Disable Cache (while DevTools is open)".</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-chrome-disable-cache.jpg" style="width: 779px"></div>
-
 <h2 id="use-the-javascript-console">Use the JavaScript console</h2>
 <p>Inside all devtools is a <em>console</em>. It shows warnings and error messages.</p>
 <p><strong> READ THE MESSAGES!! </strong></p>
 <p>Typically there should be only 1 or 2 messages.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-no-errors.jpg" style="width: 779px"></div>
-
 <p>If you see any others <strong>READ THEM</strong>. For example:</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-errors.jpg" style="width: 779px"></div>
-
 <p>I mis-spelled "three" as "threee"</p>
 <p>You can also print your own info to the console with with <code class="notranslate" translate="no">console.log</code> as in</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">console.log(someObject.position.x, someObject.position.y, someObject.position.z);
@@ -106,7 +96,6 @@ the root scene object from <a href="load-gltf.html">the gLTF article</a></p>
 </pre>
 <p>Then we can expand that object in the JavaScript console</p>
 <div class="threejs_center"><img class="border" src="../resources/images/devtools-console-object.gif"></div>
-
 <p>You can also use <code class="notranslate" translate="no">console.error</code> which reports the message in red
 in includes a stack trace.</p>
 <h2 id="put-data-on-screen">Put data on screen</h2>
@@ -139,7 +128,6 @@ fills the page)</p>
 const xElem = document.querySelector('#x');
 const yElem = document.querySelector('#y');
 const zElem = document.querySelector('#z');
-
 // at render or update time
 xElem.textContent = someObject.position.x.toFixed(3);
 yElem.textContent = someObject.position.y.toFixed(3);
@@ -150,7 +138,6 @@ zElem.textContent = someObject.position.z.toFixed(3);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-html-elements.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-html-elements.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>Another way to put data on the screen is to make a clearing logger.
 I just made that term up but lots of games I've worked on have used this solution. The idea
@@ -185,9 +172,7 @@ examples from the article on <a href="responsive.html">making things responsive<
 <p>Here's the code that adds a new <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a> every time we click the mouse</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const geometry = new THREE.SphereGeometry();
 const material = new THREE.MeshBasicMaterial({color: 'red'});
-
 const things = [];
-
 function rand(min, max) {
   if (max === undefined) {
     max = min;
@@ -195,7 +180,6 @@ function rand(min, max) {
   }
   return Math.random() * (max - min) + min;
 }
-
 function createThing() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
@@ -205,21 +189,17 @@ function createThing() {
     velocity: new THREE.Vector3(rand(-5, 5), rand(-5, 5), rand(-5, 5)),
   });
 }
-
 canvas.addEventListener('click', createThing);
 </pre>
 <p>And here's the code that moves the meshes we created, logs them,
 and removes them when their timer has run out</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const logger = new ClearingLogger(document.querySelector('#debug pre'));
-
 let then = 0;
 function render(now) {
   now *= 0.001;  // convert to seconds
   const deltaTime = now - then;
   then = now;
-
   ...
-
   logger.log('fps:', (1 / deltaTime).toFixed(1));
   logger.log('num things:', things.length);
   for (let i = 0; i &lt; things.length;) {
@@ -239,10 +219,8 @@ function render(now) {
       ++i;
     }
   }
-
   renderer.render(scene, camera);
   logger.render();
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -251,7 +229,6 @@ function render(now) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debug-js-clearing-logger.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debug-js-clearing-logger.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <h2 id="query-parameters">Query Parameters</h2>
 <p>Another thing to remember is that webpages can have data passed
@@ -326,7 +303,6 @@ article but here's a few links</p>
 as a value when you do something that doesn't make sense mathwise.</p>
 <p>As a simple example</p>
 <div class="threejs_center"><img class="border" src="../resources/images/nan-banana.png" style="width: 180px;"></div>
-
 <p>Often when I'm making something and nothing appears on the screen
 I'll check some values and if I see <code class="notranslate" translate="no">NaN</code> I will instantly have a 
 place to start looking.</p>
@@ -345,7 +321,6 @@ and so it calls <code class="notranslate" translate="no">car.position.set</code>
 <p>A quick glance in the debugger looking at the car's <code class="notranslate" translate="no">matrixWorld</code>
 showed a bunch of <code class="notranslate" translate="no">NaN</code> values.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/debugging-nan.gif" style="width: 476px;"></div>
-
 <p>Seeing the matrix had <code class="notranslate" translate="no">NaN</code>s in it suggested something like <code class="notranslate" translate="no">position</code>,
 <code class="notranslate" translate="no">rotation</code>, <code class="notranslate" translate="no">scale</code> or some other function that affects that matrix had bad
 data. Working backward from their it was easy to track down the issue.</p>
@@ -359,9 +334,7 @@ You can also look inside by stepping into functions in the debugger.</p>
 <p>I see this pattern often</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    requestAnimationFrame(render);
-
    // -- do stuff --
-
    renderer.render(scene, camera);
 }
 requestAnimationFrame(render);
@@ -370,9 +343,7 @@ requestAnimationFrame(render);
 the bottom as in</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
    // -- do stuff --
-
    renderer.render(scene, camera);
-
    requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
@@ -432,7 +403,6 @@ work just as well as our path with 21 points.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/debugging-mcve.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/debugging-mcve.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>I kept the <code class="notranslate" translate="no">OrbitController</code> just because it's useful for others
 to move the camera and figure out what's going on but depending
@@ -491,15 +461,9 @@ you'll either reproduce your bug or you'll find it on the way.</p>
 <hr>
 <p>These were a few tips for debugging JavaScript. Let's also go
 over <a href="debugging-glsl.html">some tips for debugging GLSL</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

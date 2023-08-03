@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -44,26 +42,20 @@ LUTはルックアップテーブル（参照対応表）の略です。した�
 </pre><p>もちろん、256 x 256 x 256の配列はかなり大きいですが、<a href="textures.html">テクスチャの記事</a>で指摘したようにテクスチャの寸法に関係なく0.0～1.0の値を参照します。</p>
 <p>8 × 8 × 8のキューブを想像してみましょう。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-rgb.svg" class="noinvertdark" style="width: 500px"></div>
-
 <p>最初に0, 0, 0の位置の角は黒にし、反対の1, 1, 1の角は白にします。
 1, 0, 0は<span style="color:red;">赤</span>です。
 0, 1, 0は<span style="color:green;">緑</span>で0, 0, 1は<span style="color:blue;">青</span>にします。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-axis.svg" class="noinvertdark" style="width: 500px"></div>
-
 <p>各軸線にカラーを追加していきます。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-edges.svg" class="noinvertdark" style="width: 500px"></div>
-
 <p>2チャンネル以上を使用するエッジのカラーです。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-standard.svg" class="noinvertdark" style="width: 500px"></div>
-
 <p>最後に中間にあるカラーも全て埋めます。
 これは"同一性"の3DLUTです。入力と全く同じ出力を生成します。
 もし色を入力して調べれば、入力と同じカラーが出力されます。</p>
 <div class="threejs_center"><object type="image/svg+xml" data="resources/images/3dlut-standard-lookup.svg" class="noinvertdark" data-diagram="lookup" style="width: 600px"></object></div>
-
 <p>キューブをシェーダーで琥珀色に変更し3Dルックアップテーブルの同じ場所を調べると、異なる出力が得られます。</p>
 <div class="threejs_center"><object type="image/svg+xml" data="resources/images/3dlut-amber-lookup.svg" class="noinvertdark" data-diagram="lookup" style="width: 600px"></object></div>
-
 <p>別のルックアップテーブルを提供してこの技術を使用すると、全種類の効果を適用できます。
 基本的には単一のカラー入力のみを計算できる効果です。
 これらの効果には色相、コントラスト、彩度、カラーキャスト、色合い、明るさ、露出、レベル、カーブ、ポスタライズ、シャドウ、ハイライト、その他多くの調整が含まれます。
@@ -78,13 +70,11 @@ LUTはルックアップテーブル（参照対応表）の略です。した�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-3dlut-prep.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-3dlut-prep.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>シーンがあるので3DLUTが必要です。
 最も単純な3DLUTは2 x 2 x 2の同一性LUTです。<em>同一性</em>とは何も起こらない事を意味します。
 1を掛けるようなもので、LUTでカラーを調べているにも関わらず、入力カラーと同じ出力カラーがマップされてます。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-standard-2x2.svg" class="noinvertdark" style="width: 200px"></div>
-
 <p>WebGL1は3Dテクスチャは非サポートのため、4 x 2の2Dテクスチャを使用しカスタムシェーダーの中で3Dテクスチャとして扱います。
 カスタムシェーダーではキューブの各切片がテクスチャ全体に水平に広がっています。</p>
 <p>以下はidentityLUTに必要なカラーで4 x 2の2Dテクスチャを作るコードです。</p>
@@ -99,7 +89,6 @@ LUTはルックアップテーブル（参照対応表）の略です。した�
       0, 255, 255, 255,  // cyan
     255, 255, 255, 255,  // white
   ]);
-
   return function(filter) {
     const texture = new THREE.DataTexture(identityLUT, 4, 2, THREE.RGBAFormat);
     texture.minFilter = filter;
@@ -132,15 +121,11 @@ LUTはルックアップテーブル（参照対応表）の略です。した�
   `,
   fragmentShader: `
     #include &lt;common&gt;
-
     #define FILTER_LUT true
-
     uniform sampler2D tDiffuse;
     uniform sampler2D lutMap;
     uniform float lutMapSize;
-
     varying vec2 vUv;
-
     vec4 sampleAs3DTexture(sampler2D tex, vec3 texCoord, float size) {
       float sliceSize = 1.0 / size;                  // space of 1 slice
       float slicePixelSize = sliceSize / size;       // space of 1 pixel
@@ -151,29 +136,22 @@ LUTはルックアップテーブル（参照対応表）の略です。した�
       float xOffset = slicePixelSize * 0.5 + texCoord.x * sliceInnerSize;
       float yRange = (texCoord.y * width + 0.5) / size;
       float s0 = xOffset + (zSlice0 * sliceSize);
-
       #ifdef FILTER_LUT
-
         float s1 = xOffset + (zSlice1 * sliceSize);
         vec4 slice0Color = texture2D(tex, vec2(s0, yRange));
         vec4 slice1Color = texture2D(tex, vec2(s1, yRange));
         float zOffset = mod(texCoord.z * width, 1.0);
         return mix(slice0Color, slice1Color, zOffset);
-
       #else
-
         return texture2D(tex, vec2( s0, yRange));
-
       #endif
     }
-
     void main() {
       vec4 originalColor = texture2D(tDiffuse, vUv);
       gl_FragColor = sampleAs3DTexture(lutMap, originalColor.xyz, lutMapSize);
     }
   `,
 };
-
 const lutNearestShader = {
   uniforms: {...lutShader.uniforms},
   vertexShader: lutShader.vertexShader,
@@ -195,7 +173,6 @@ const renderBG = new THREE.RenderPass(sceneBG, cameraBG);
 </pre>
 <p>全てのパスを使用するように <code class="notranslate" translate="no">EffectComposer</code> を設定できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const composer = new THREE.EffectComposer(renderer);
-
 composer.addPass(renderBG);
 composer.addPass(renderModel);
 composer.addPass(effectLUT);
@@ -207,7 +184,6 @@ composer.addPass(gammaPass);
 lutTextures.forEach((info, ndx) =&gt; {
   lutNameIndexMap[info.name] = ndx;
 });
-
 const lutSettings = {
   lut: lutNameIndexMap.identity,
 };
@@ -216,15 +192,12 @@ gui.add(lutSettings, 'lut', lutNameIndexMap);
 </pre>
 <p>最後にfilterするかに応じてeffectをオンにし、選択したテクスチャを使用するようにeffectを設定して、<code class="notranslate" translate="no">EffectComposer</code> を通してレンダリングします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const lutInfo = lutTextures[lutSettings.lut];
-
 const effect = lutInfo.filter ? effectLUT : effectLUTNearest;
 effectLUT.enabled = lutInfo.filter;
 effectLUTNearest.enabled = !lutInfo.filter;
-
 const lutTexture = lutInfo.texture;
 effect.uniforms.lutMap.value = lutTexture;
 effect.uniforms.lutMapSize.value = lutInfo.size;
-
 composer.render(delta);
 </pre>
 <p>同一性の3DLUTである事を考えると何も変わりません。</p>
@@ -232,23 +205,19 @@ composer.render(delta);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-3dlut-identity.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-3dlut-identity.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>しかし、GUIでidentity not filteredを選択すると興味深い結果になります。</p>
 <div class="threejs_center"><img src="../resources/images/unfiltered-3dlut.jpg" style="width: 500px"></div>
-
 <p>なぜこのようなことが起こるのでしょうか？
 filterをオンにするとGPUはカラーの中間を線形補間します。
 filterをオフにすると補間は行わなわれず、3DLUT内のカラーを探しても3DLUT内の正確なカラーの1つしか得られません。</p>
 <p>もっと面白い3DLUTを作るにはどうすれば良いでしょうか？</p>
 <p>まず必要なテーブルの解像度を決定し、簡単なスクリプトを使用しルックアップキューブの切片を生成します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const ctx = document.querySelector('canvas').getContext('2d');
-
 function drawColorCubeImage(ctx, size) {
   const canvas = ctx.canvas;
   canvas.width = size * size;
   canvas.height = size;
-
   for (let zz = 0; zz &lt; size; ++zz) {
     for (let yy = 0; yy &lt; size; ++yy) {
       for (let xx = 0; xx &lt; size; ++xx) {
@@ -263,7 +232,6 @@ function drawColorCubeImage(ctx, size) {
   document.querySelector('#width').textContent = canvas.width;
   document.querySelector('#height').textContent = canvas.height;
 }
-
 drawColorCubeImage(ctx, 8);
 </pre>
 <p>キャンバスが必要です。</p>
@@ -274,19 +242,16 @@ drawColorCubeImage(ctx, 8);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/3dlut-base-cube-maker.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/3dlut-base-cube-maker.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>解像度が大きいほど微調整が可能ですが、キューブのデータであるため必要なサイズはすぐに大きくなります。
 サイズ8のキューブでは2KBしか必要ありませんが、サイズ64のキューブでは1MB必要です。
 したがって、望む効果を再現する最小のものを使用して下さい。</p>
 <p>サイズを16に設定しSaveをクリックすると以下のようなファイルができます。</p>
 <div class="threejs_center"><img src="../resources/images/identity-lut-s16.png"></div>
-
 <p>また、LUTを適用したい部分の画像キャプチャをする必要があります。
 通常は上記のシーンを右クリックして "名前を付けて保存... "を選択できますが、<a href="/docs/#examples/controls/OrbitControls"><code class="notranslate" translate="no">OrbitControls</code></a> がOSによっては右クリック防止してるかもしれない事に注意して下さい。
 私の場合は、スクリーンショットを取得するためにOSのスクリーンキャプチャ機能を使用しました。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-screen-capture.jpg" style="width: 600px"></div>
-
 <p>次に画像エディタ（私の場合はPhotoshop）で上記の画像を読み込み、左上に3DLUTの画像を貼り付けます。</p>
 <blockquote>
 <p>備考: 最初にPhotoshop上でLUTファイルをドラッグ＆ドロップしてみましたが、上手くいきませんでした。
@@ -295,11 +260,9 @@ DPIか何かに合わせようとしているのかもしれません。
 LUTファイルを個別に読み込み、コピーして画面キャプチャに貼り付けると上手くいきました。</p>
 </blockquote>
 <div class="threejs_center"><img src="../resources/images/3dlut-photoshop-before.jpg" style="width: 600px"></div>
-
 <p>カラーベースのフルイメージ調整を使い画像調整します。
 Photoshopの場合、使用できる調整のほとんどは画像 → 調整メニューにあります。</p>
 <div class="threejs_center"><img src="../resources/images/3dlut-photoshop-after.jpg" style="width: 600px"></div>
-
 <p>好みに合わせて画像を調整して、左上に配置した3DLUTスライスにも同じ調整が適用されているのが分かります。</p>
 <p>分かりましたがどうやって使うのでしょうか？</p>
 <p>最初にpngを<code class="notranslate" translate="no">3dlut-red-only-s16.png</code>で保存しました。
@@ -313,7 +276,6 @@ Photoshopの場合、使用できる調整のほとんどは画像 → 調整メ
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const makeLUTTexture = function() {
   const imgLoader = new THREE.ImageLoader();
   const ctx = document.createElement('canvas').getContext('2d');
-
   return function(info) {
     const lutSize = info.size;
     const width = lutSize * lutSize;
@@ -321,22 +283,18 @@ Photoshopの場合、使用できる調整のほとんどは画像 → 調整メ
     const texture = new THREE.DataTexture(new Uint8Array(width * height), width, height);
     texture.minFilter = texture.magFilter = info.filter ? THREE.LinearFilter : THREE.NearestFilter;
     texture.flipY = false;
-
     if (info.url) {
-
       imgLoader.load(info.url, function(image) {
         ctx.canvas.width = width;
         ctx.canvas.height = height;
         ctx.drawImage(image, 0, 0);
         const imageData = ctx.getImageData(0, 0, width, height);
-
         texture.image.data = new Uint8Array(imageData.data.buffer);
         texture.image.width = width;
         texture.image.height = height;
         texture.needsUpdate = true;
       });
     }
-
     return texture;
   };
 }();
@@ -347,7 +305,6 @@ Photoshopの場合、使用できる調整のほとんどは画像 → 調整メ
   { name: 'identity no filter', size: 2, filter: false, },
 +  { name: 'custom',          url: 'resources/images/lut/3dlut-red-only-s16.png' },
 ];
-
 +lutTextures.forEach((info) =&gt; {
 +  // if not size set get it from the filename
 +  if (!info.size) {
@@ -406,7 +363,6 @@ Photoshopの場合、使用できる調整のほとんどは画像 → 調整メ
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-3dlut.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-3dlut.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>最後にもう1つ、ただのお遊びですがAdobeが定義した標準LUTフォーマットがあります。
 <a href="https://www.google.com/search?q=lut+files">ネットで検索するとたくさんのLUTファイル</a>が見つかります。</p>
@@ -421,12 +377,10 @@ import * as dragAndDrop from './resources/drag-and-drop.js';
 <p>そして次のように利用できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">dragAndDrop.setup({msg: 'Drop LUT File here'});
 dragAndDrop.onDropFile(readLUTFile);
-
 function ext(s) {
   const period = s.lastIndexOf('.');
   return s.slice(period + 1);
 }
-
 function readLUTFile(file) {
   const reader = new FileReader();
   reader.onload = (e) =&gt; {
@@ -449,7 +403,6 @@ function readLUTFile(file) {
     lutSettings.lut = lutTextures.length - 1;
     updateGUI();
   };
-
   reader.readAsText(file);
 }
 </pre>
@@ -458,7 +411,6 @@ function readLUTFile(file) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-3dlut-w-loader.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-3dlut-w-loader.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>Adobe LUTはWeb上のオンライン利用を想定して設計されていません。
 これらは大きなファイルです。
@@ -472,21 +424,14 @@ function readLUTFile(file) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/postprocessing-adobe-lut-to-png-converter.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/postprocessing-adobe-lut-to-png-converter.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>1つ解説を完全に飛ばしてるのは、シェーダー自体がどのように動作するかです。
 将来的にはもう少しGLSLをカバーできると良いと思います。
 今の所は興味があれば<a href="post-processing.html">ポストプロセスの記事</a>のリンクを見たり<a href="https://www.youtube.com/watch?v=rfQ8rKGTVlg#t=24m30s">この動画を見て下さい</a>。</p>
 <script type="module" src="../resources/threejs-post-processing-3dlut.js"></script>
-
         </div>
       </div>
     </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

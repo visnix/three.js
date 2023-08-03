@@ -8,11 +8,9 @@
 	</head>
 	<body class="rtl">
 		<h1>[name]</h1>
-
 		<p class="desc">
 			الموحدات هي متغيرات GLSL عالمية. يتم تمريرها إلى برامج الشادر.
 		</p>
-			
 		<h2>مثال الكود</h2>
 		<p>
 			عند إعلان موحد من [page:ShaderMaterial]، يتم إعلانه بواسطة
@@ -24,7 +22,6 @@
 		resolution: new Uniform( new Vector2() )
 		};
 		</code>
-			
 		<h2>أنواع الموحدات (Uniform types)</h2>
 		<p>
 			يجب أن يكون لكل موحد خاصية `value`. يجب أن يتوافق نوع القيمة
@@ -38,7 +35,6 @@
 			خمسة متجهات، يجب أن تكون مصفوفة من المصفوفات، من خمسة [page:Vector2]
 			كائنات أو عشرة `number`s.
 		</p>
-
 		<table>
 			<caption>
 				<a id="uniform-types">Uniform types</a>
@@ -180,14 +176,11 @@
 				</tr>
 			</tbody>
 		</table>
-
 		<p>
 			(*) نفس الشيء بالنسبة لمصفوفة (الأبعاد الداخلية) من نفس نوع GLSL،
 			تحتوي على مكونات جميع المتجهات أو المصفوفات في المصفوفة.
 		</p>
-		 
 		<h2>الزي المنظم (Structured Uniforms)</h2>
-		 
 		<p>
 			في بعض الأحيان ترغب في تنظيم الزي كـ `structs` في كود الشيدر الخاص بك.
 			يجب استخدام النمط التالي حتى يتمكن `three.js` من معالجة
@@ -211,9 +204,7 @@
 		};
 		uniform Data data;
 		</code>
-		 
 		<h2>الزي المنظم مع المصفوفات (Structured Uniforms with Arrays)</h2>
-		 
 		<p>
 			من الممكن أيضًا إدارة `structs` في المصفوفات. تبدو صياغة هذه الحالة
 			الاستخدام كما يلي:
@@ -227,7 +218,6 @@
 		position: new Vector3( 1, 1, 1 ),
 		direction: new Vector3( 0, 1, 0 )
 		};
-		 
 		uniforms = {
 		data: {
 		value: [ entry1, entry2 ]
@@ -242,31 +232,23 @@
 		};
 		uniform Data data[ 2 ];
 		</code>
-		 
 		<h2>المنشئ (Constructor)</h2>
-		 
 		<h3>[name]( [param:Object value] )</h3>
 		<p>
 			value -- كائن يحتوي على القيمة لإعداد الزى. يجب أن يكون نوعه
 			واحدًا من أنواع الزى المذكورة أعلاه.
 		</p>
-		 
 		<h2>الخصائص (Properties)</h2>
-		 
 		<h3>[property:Object value]</h3>
 		<p>القيمة الحالية للزى.</p>
-		 
 		<h2>الوظائف (Methods)</h2>
-		 
 		<h3>[method:Uniform clone]()</h3>
 		<p>
 			يعود بنسخة من هذا الزى. <br />
 			إذا كانت خاصية قيمة الزى هى [page:Object] مع طريقة clone()،
 			يتم استخدام هذا، وإلا يتم نسخ القيمة عن طريق التعيين. تتشارك قيم المصفوفات بين [page:Uniform]s المنسوخة.
 		</p>
-			
 		<h2>المصدر (Source)</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/[path].js src/[path].js]
 		</p>

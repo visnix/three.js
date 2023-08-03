@@ -39,11 +39,8 @@ p {
 <script src="canvas-wrapper.js"></script>
 <script>
 'use strict';  // eslint-disable-line
-
 /* global wrapCanvasRenderingContext2D, threejsUtils */
-
 function main() {
-
   const root = {
     name: 'sun',
     translation: [0, 0],
@@ -72,11 +69,9 @@ function main() {
       },
     ],
   };
-
   const canvas = document.getElementById('c');
   const ctx = wrapCanvasRenderingContext2D(canvas.getContext('2d'));
   const orbitCtx = document.getElementById('orbit').getContext('2d');
-
   const spread = 16;
   function updateTranslation(node) {
     node.translation[0] *= spread;
@@ -85,18 +80,15 @@ function main() {
     node.children.forEach(updateTranslation);
   }
   updateTranslation(root);
-
   let clock = 0;
   const maxHistory = 400;
   let curHistory = 0;
   const history = [];
-
   function drawTrail(ctx, pos, radius) {
     ctx.beginPath();
     ctx.arc(pos[0], pos[1], radius, 0, Math.PI * 2, false);
     ctx.fill();
   }
-
   function drawNode(node) {
     ctx.save();
     ctx.rotate(node.speed * clock);
@@ -126,7 +118,6 @@ function main() {
     node.children.forEach(drawNode);
     ctx.restore();
   }
-
   function drawScene() {
     threejsUtils.resizeCanvasToDisplaySize(ctx.canvas);
     threejsUtils.resizeCanvasToDisplaySize(orbitCtx.canvas);
@@ -136,18 +127,13 @@ function main() {
     drawNode(root);
     ctx.restore();
   }
-
   function render() {
     clock += 1 / 60 * 0.25;
-
     drawScene();
-
     requestAnimationFrame(render, canvas);
   }
   requestAnimationFrame(render, canvas);
 }
-
 main();
 </script>
 </html>
-

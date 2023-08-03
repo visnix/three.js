@@ -176,64 +176,40 @@ const materials = [
 		],
 	},
 ];
-
 const allProperties = {};
 materials.forEach( ( material ) => {
-
 	material.properties.forEach( ( property ) => {
-
 		allProperties[ property ] = true;
-
 	} );
-
 } );
-
 function addElem( type, parent, content ) {
-
 	const elem = document.createElement( type );
 	if ( content ) {
-
 		elem.textContent = content;
-
 	}
-
 	if ( parent ) {
-
 		parent.appendChild( elem );
-
 	}
-
 	return elem;
-
 }
-
 const table = document.createElement( 'table' );
 const thead = addElem( 'thead', table );
 {
-
 	addElem( 'td', thead );
 	materials.forEach( ( material ) => {
-
 		const td = addElem( 'td', thead );
 		const a = addElem( 'a', td, material.shortName );
 		a.href = `https://threejs.org/docs/#api/materials/${material.name}`;
-
 	} );
-
 }
-
 Object.keys( allProperties ).sort().forEach( ( property ) => {
-
 	const tr = addElem( 'tr', table );
 	addElem( 'td', tr, property );
 	materials.forEach( ( material ) => {
-
 		const hasProperty = material.properties.indexOf( property ) >= 0;
 		const td = addElem( 'td', tr );
 		const a = addElem( 'a', td, hasProperty ? '•' : '' );
 		a.href = `https://threejs.org/docs/#api/materials/${material.name}.${property}`;
-
 	} );
-
 } );
 document.querySelector( '#material-table' ).appendChild( table );

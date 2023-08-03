@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -53,7 +51,6 @@ them all at once. Here's quick table of contents for this article.</p>
 <li><a href="#filtering-and-mips">Filtering and mips</a></li>
 <li><a href="#uvmanipulation">Repeating, offseting, rotating, wrapping</a></li>
 </ul>
-
 <h2 id="-a-name-hello-a-hello-texture"><a name="hello"></a> Hello Texture</h2>
 <p>Textures are <em>generally</em> images that are most often created
 in some 3rd party program like Photoshop or GIMP. For example let's
@@ -61,14 +58,12 @@ put this image on cube.</p>
 <div class="threejs_center">
   <img src="../examples/resources/images/wall.jpg" style="width: 600px;" class="border">
 </div>
-
 <p>We'll modify one of our first samples. All we need to do is create a <a href="/docs/#api/en/loaders/TextureLoader"><code class="notranslate" translate="no">TextureLoader</code></a>. Call its
 <a href="/docs/#api/en/loaders/TextureLoader#load"><code class="notranslate" translate="no">load</code></a> method with the URL of an
 image and set the material's <code class="notranslate" translate="no">map</code> property to the result instead of setting its <code class="notranslate" translate="no">color</code>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loader = new THREE.TextureLoader();
 +const texture = loader.load( 'resources/images/wall.jpg' );
 +texture.colorSpace = THREE.SRGBColorSpace;
-
 const material = new THREE.MeshBasicMaterial({
 -  color: 0xFF8844,
 +  map: texture,
@@ -79,7 +74,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-six-a-6-textures-a-different-one-on-each-face-of-a-cube"><a name="six"></a> 6 Textures, a different one on each face of a cube</h2>
 <p>How about 6 textures, one on each face of a cube?</p>
@@ -95,12 +89,10 @@ const material = new THREE.MeshBasicMaterial({
     <img src="../examples/resources/images/flower-6.jpg" style="width: 100px;" class="border">
   </div>
 </div>
-
 <p>We just make 6 materials and pass them as an array when we create the <a href="/docs/#api/en/objects/Mesh"><code class="notranslate" translate="no">Mesh</code></a></p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const loader = new THREE.TextureLoader();
 -const texture = loader.load( 'resources/images/wall.jpg' );
 -texture.colorSpace = THREE.SRGBColorSpace;
-
 -const material = new THREE.MeshBasicMaterial({
 -  map: texture,
 -});
@@ -114,7 +106,6 @@ const material = new THREE.MeshBasicMaterial({
 +];
 -const cube = new THREE.Mesh(geometry, material);
 +const cube = new THREE.Mesh(geometry, materials);
-
 +function loadColorTexture( path ) {
 +  const texture = loader.load( path );
 +  texture.colorSpace = THREE.SRGBColorSpace;
@@ -126,7 +117,6 @@ const material = new THREE.MeshBasicMaterial({
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-6-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-6-textures.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>It should be noted though that not all geometry types supports multiple
 materials. <a href="/docs/#api/en/geometries/BoxGeometry"><code class="notranslate" translate="no">BoxGeometry</code></a> can use 6 materials one for each face.
@@ -177,7 +167,6 @@ to see the any difference but rest assured it is waiting for the texture to load
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-texture.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-texture.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <h3 id="-a-name-waitmany-a-waiting-for-multiple-textures-to-load"><a name="waitmany"></a> Waiting for multiple textures to load</h3>
 <p>To wait until all textures have loaded you can use a <a href="/docs/#api/en/loaders/managers/LoadingManager"><code class="notranslate" translate="no">LoadingManager</code></a>. Create one
@@ -185,7 +174,6 @@ and pass it to the <a href="/docs/#api/en/loaders/TextureLoader"><code class="no
 property to a callback.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadManager = new THREE.LoadingManager();
 *const loader = new THREE.TextureLoader(loadManager);
-
 const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-1.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-2.jpg')}),
@@ -194,7 +182,6 @@ const materials = [
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-5.jpg')}),
   new THREE.MeshBasicMaterial({map: loader.load('resources/images/flower-6.jpg')}),
 ];
-
 +loadManager.onLoad = () =&gt; {
 +  const cube = new THREE.Mesh(geometry, materials);
 +  scene.add(cube);
@@ -240,14 +227,12 @@ called with the URL of the last item loaded, the number of items loaded so far, 
 number of items loaded.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const loadingElem = document.querySelector('#loading');
 +const progressBarElem = loadingElem.querySelector('.progressbar');
-
 loadManager.onLoad = () =&gt; {
 +  loadingElem.style.display = 'none';
   const cube = new THREE.Mesh(geometry, materials);
   scene.add(cube);
   cubes.push(cube);  // add to our list of cubes to rotate
 };
-
 +loadManager.onProgress = (urlOfLastItemLoaded, itemsLoaded, itemsTotal) =&gt; {
 +  const progress = itemsLoaded / itemsTotal;
 +  progressBarElem.style.transform = `scaleX(${progress})`;
@@ -259,7 +244,6 @@ the loading bar.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-wait-for-all-textures.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-wait-for-all-textures.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <h2 id="-a-name-cors-a-loading-textures-from-other-origins"><a name="cors"></a> Loading textures from other origins</h2>
 <p>To use images from other servers those servers need to send the correct headers.
@@ -278,7 +262,6 @@ that <em>in general</em>, textures take <code class="notranslate" translate="no"
 high. For example let's say I was making a scene of a house. Inside the house there is a table
 and I decide to put this wood texture on the top surface of the table</p>
 <div class="threejs_center"><img class="border" src="../resources/images/compressed-but-large-wood-texture.jpg" align="center" style="width: 300px"></div>
-
 <p>That image is only 157k so it will download relatively quickly but <a href="resources/images/compressed-but-large-wood-texture.jpg">it is actually
 3024 x 3761 pixels in size</a>.
 Following the equation above that's</p>
@@ -302,16 +285,12 @@ less memory than a PNG in WebGL. See above.</p>
 <h2 id="-a-name-filtering-and-mips-a-filtering-and-mips"><a name="filtering-and-mips"></a> Filtering and Mips</h2>
 <p>Let's apply this 16x16 texture</p>
 <div class="threejs_center"><img src="../resources/images/mip-low-res-enlarged.png" class="nobg" align="center"></div>
-
 <p>To a cube</p>
 <div class="spread"><div data-diagram="filterCube"></div></div>
-
 <p>Let's draw that cube really small</p>
 <div class="spread"><div data-diagram="filterCubeSmall"></div></div>
-
 <p>Hmmm, I guess that's hard to see. Let's magnify that tiny cube</p>
 <div class="spread"><div data-diagram="filterCubeSmallLowRes"></div></div>
-
 <p>How does the GPU know which colors to make each pixel it's drawing for the tiny cube?
 What if the cube was so small that it's just 1 or 2 pixels?</p>
 <p>This is what filtering is about.</p>
@@ -323,7 +302,6 @@ mip where the pixels have been blended to make the next smaller mip. Mips are cr
 until we get all the way to a 1x1 pixel mip. For the image above all of the mips would
 end up being something like this</p>
 <div class="threejs_center"><img src="../resources/images/mipmap-low-res-enlarged.png" class="nobg" align="center"></div>
-
 <p>Now, when the cube is drawn so small that it's only 1 or 2 pixels large the GPU can choose
 to use just the smallest or next to smallest mip level to decide what color to make the
 tiny cube.</p>
@@ -349,7 +327,6 @@ each of the 4 pixels.</p>
     <div class="code">Linear</div>
   </div>
 </div>
-
 <p>For setting the filter when the texture is drawn smaller than its original size
 you set the <a href="/docs/#api/en/textures/Texture#minFilter"><code class="notranslate" translate="no">texture.minFilter</code></a> property to one of 6 values.</p>
 <ul>
@@ -403,7 +380,6 @@ you set the <a href="/docs/#api/en/textures/Texture#minFilter"><code class="notr
     <div class="filter-caption" style="right: 0.5em; text-align: right; bottom: 0.5em;">linear<br>mipmap<br>linear</div>
   </div>
 </div>
-
 <p>One thing to notice is the top left and top middle using <code class="notranslate" translate="no">NearestFilter</code> and <code class="notranslate" translate="no">LinearFilter</code>
 don't use the mips. Because of that they flicker in the distance because the GPU is
 picking pixels from the original texture. On the left just one pixel is chosen and
@@ -415,7 +391,6 @@ and a texture where every mip level is a different color.</p>
 <div class="threejs_center">
   <div data-texture-diagram="differentColoredMips"></div>
 </div>
-
 <p>This makes it more clear
 what is happening. You can see in the top left and top middle the first mip is used all the way
 into the distance. The top right and bottom middle you can clearly see where a different mip
@@ -519,11 +494,9 @@ like <code class="notranslate" translate="no">wrapS</code> and <code class="notr
   'RepeatWrapping': THREE.RepeatWrapping,
   'MirroredRepeatWrapping': THREE.MirroredRepeatWrapping,
 };
-
 function updateTexture() {
   texture.needsUpdate = true;
 }
-
 const gui = new GUI();
 gui.add(new StringToNumberHelper(texture, 'wrapS'), 'value', wrapModes)
   .name('texture.wrapS')
@@ -547,7 +520,6 @@ so three.js knows to apply those settings. The other settings are automatically 
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/textured-cube-adjust.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/textured-cube-adjust.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>This is only one step into the topic of textures. At some point we'll go over
 texture coordinates as well as 9 other types of textures that can be applied
@@ -566,15 +538,9 @@ roughness
 -->
 <p><link rel="stylesheet" href="../resources/threejs-textures.css"></p>
 <script type="module" src="../resources/threejs-textures.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="utf-8">
   <title>背景与天空盒</title>
@@ -11,13 +10,11 @@
   <meta property="og:image" content="https://threejs.org/files/share.png">
   <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
   <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
   <link rel="stylesheet" href="../resources/lesson.css">
   <link rel="stylesheet" href="../resources/lang.css">
   <!-- Import maps polyfill -->
   <!-- Remove this when import maps will be widely supported -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
   <script type="importmap">
 {
   "imports": {
@@ -27,7 +24,6 @@
 </script>
   <link rel="stylesheet" href="/manual/zh/lang.css">
 </head>
-
 <body>
   <div class="container">
     <div class="lesson-title">
@@ -91,9 +87,7 @@ scene.background = bgTexture;</pre>
         <p>我们可以解决这个问题，通过设置纹理属性 <code class="notranslate" translate="no">repeat</code> 和 <code class="notranslate"
             translate="no">offset</code> 来显示图像的一部分。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
-
   ...
-
 +  // 设置背景贴图的repeat和offset属性
 +  // 来保证图片的比例是正确的
 +  // 注意图片有可能还没加载完成
@@ -106,11 +100,8 @@ scene.background = bgTexture;</pre>
 +
 +  bgTexture.offset.y = aspect &gt; 1 ? 0 : (1 - aspect) / 2;
 +  bgTexture.repeat.y = aspect &gt; 1 ? 1 : aspect;
-
   ...
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }</pre>
         <p>现在由 THREE.js 绘制背景。这个上面CSS的版本没有明显的区别，不过如果我们应用<a href="post-processing.html">后处理效果</a>，背景也会被影响。</p>
@@ -166,9 +157,7 @@ scene.background = bgTexture;</pre>
 }</pre>
           <p>在渲染时，我们不需要像上面那样调整纹理：</p>
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
-
   ...
-
 -  // 设置背景贴图的repeat和offset属性
 -  // 来保证图片的比例是正确的
 -  // 注意图片有可能还没加载完成
@@ -181,11 +170,8 @@ scene.background = bgTexture;</pre>
 -
 -  bgTexture.offset.y = aspect &gt; 1 ? 0 : (1 - aspect) / 2;
 -  bgTexture.repeat.y = aspect &gt; 1 ? 1 : aspect;
-
   ...
-
   renderer.render(scene, camera);
-
   requestAnimationFrame(render);
 }</pre>
           <p>让我们添加一些控件，以便我们可以旋转相机。</p>
@@ -199,7 +185,6 @@ const near = 0.1;
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 -camera.position.z = 2;
 +camera.position.z = 3;
-
 +const controls = new OrbitControls(camera, canvas);
 +controls.target.set(0, 0, 0);
 +controls.update();</pre>
@@ -263,13 +248,7 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
       </div>
     </div>
   </div>
-
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

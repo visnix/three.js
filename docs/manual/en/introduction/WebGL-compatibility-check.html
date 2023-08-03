@@ -13,20 +13,14 @@
 			The following method allows you to check if it is supported and display a message to the user if it is not.
 			Import the WebGL support detection module, and run the following before attempting to render anything.
 		</p>
-
 		<code>
 		import WebGL from 'three/addons/capabilities/WebGL.js';
-
 		if ( WebGL.isWebGLAvailable() ) {
-
 			// Initiate function or other initializations here
 			animate();
-
 		} else {
-
 			const warning = WebGL.getWebGLErrorMessage();
 			document.getElementById( 'container' ).appendChild( warning );
-
 		}
 		</code>
 	</body>

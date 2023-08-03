@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -45,9 +43,7 @@
 <p>Модули es6 можно загружать с помощью ключевого слова <code class="notranslate" translate="no">import</code> в сценарии или встроенного тега <code class="notranslate" translate="no">&lt;script type="module"&gt;</code>. Вот пример обоих </p>
 <pre class="prettyprint showlinemods notranslate lang-html" translate="no">&lt;script type="module"&gt;
 import * as THREE from 'three';
-
 ...
-
 &lt;/script&gt;
 </pre>
 <p>Пути должны быть абсолютными или относительными. 
@@ -80,7 +76,6 @@ import * as THREE from 'three';
      return foo;
   };
 }
-
 const f = a(123);
 const g = a(456);
 console.log(f());  // prints 123
@@ -230,12 +225,10 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
 <p>Несколько примеров </p>
 <p>Если вы включите <a href="https://eslint.org/docs/rules/no-undef">правило no-undef</a> то VSCode через ESLint предупредит вас о многих неопределенных переменных. </p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-defined.png"></div>
-
 <p>Вы можете видеть, что я неправильно написал <code class="notranslate" translate="no">doTheThing</code> как <code class="notranslate" translate="no">doThing</code>.
 Под <code class="notranslate" translate="no">doThing</code> есть красная "закорючка", и подсказка над ним говорит мне, что оно не определено. Одной ошибки удалось избежать. </p>
 <p>Вы получите предупреждения, используя THREE, поэтому добавьте <code class="notranslate" translate="no">/* global THREE */</code> вверху ваших файлов JavaScript, чтобы сообщить eslint, что THREE существует. </p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-not-a-constructor.png"></div>
-
 <p>Вы можете видеть, что eslint знает правило, что <code class="notranslate" translate="no">UpperCaseNames</code> являются конструкторами, и поэтому вы должны использовать <code class="notranslate" translate="no">new</code>. 
 Еще одну ошибку поймали и избежали. Это <a href="https://eslint.org/docs/rules/new-cap">правило
 <code class="notranslate" translate="no">new-cap</code></a>.</p>
@@ -243,10 +236,8 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
 Например, выше я упомянул, что вы должны использовать <code class="notranslate" translate="no">const</code> и пропустить <code class="notranslate" translate="no">var</code>.</p>
 <p>Здесь я использовал <code class="notranslate" translate="no">var</code>, и он предупредил меня, что я должен использовать <code class="notranslate" translate="no">let</code> или <code class="notranslate" translate="no">const</code></p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-var.png"></div>
-
 <p>Здесь я использовал <code class="notranslate" translate="no">let</code>, но он увидел, что я никогда не меняю значение, поэтому предложил использовать <code class="notranslate" translate="no">const</code>. </p>
 <div class="threejs_center"><img style="width: 615px;" src="../resources/images/vscode-eslint-let.png"></div>
-
 <p>Конечно, если вы предпочитаете продолжать использовать <code class="notranslate" translate="no">var</code>, вы можете просто отключить это правило. 
 Как я уже говорил выше, я предпочитаю использовать <code class="notranslate" translate="no">const</code> и <code class="notranslate" translate="no">let</code> вместо <code class="notranslate" translate="no">var</code>, так как они работают лучше и предотвращают ошибки. </p>
 <p>В тех случаях, когда вам действительно необходимо переопределить правило <a href="https://eslint.org/docs/user-guide/configuring#disabling-rules-with-inline-comments">вы можете добавить комментарии, чтобы отключить их</a>
@@ -255,15 +246,9 @@ const v = Vector();     // clearly an error if all functions start with a lowerc
 <p>Большинство современных браузеров обновляются автоматически, поэтому использование всех этих функций поможет вам повысить производительность и избежать ошибок.
 Тем не менее, если вы находитесь в проекте, который обязательно должен поддерживать старые браузеры, есть 
 <a href="https://babeljs.io">инструменты, которые возьмут ваш код ES5 / ES6 / ES7 и перенесут код обратно в предварительно ES5 Javascript.</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

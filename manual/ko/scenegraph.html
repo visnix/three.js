@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -49,7 +47,6 @@
 <p></p><div class="threejs_diagram_container">
   <iframe class="threejs_diagram " style="width: 400px; height: 300px;" src="/manual/foo/../resources/moon-orbit.html"></iframe>
 </div>
-
 <p></p>
 <p>좀 더 가까운 예를 들어보죠. 우리는 지구에서 살지만 지구의 자전이나
 자전축, 태양을 공전하는 일은 크게 신경쓰지 않습니다. 이건 지구의
@@ -68,14 +65,12 @@
 하지만, 목적이 씬 그래프이니 씬 그래프로 실제 운행을 모방할 것입니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 회전값을 업데이트할 객체들
 const objects = [];
-
 // 하나의 geometry로 모든 태양, 지구, 달을 생성
 const radius = 1;
 const widthSegments = 6;
 const heightSegments = 6;
 const sphereGeometry = new THREE.SphereGeometry(
     radius, widthSegments, heightSegments);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);  // 태양의 크기를 키움
@@ -120,7 +115,6 @@ camera.lookAt(0, 0, 0);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>다음으로 지구를 추가하겠습니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
@@ -139,7 +133,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>하지만 지구가 태양의 주위를 돌진 않습니다. 지구를 바로 씬에 추가하는
 대신, 태양의 자식으로 추가하면...</p>
@@ -151,7 +144,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>뭔가 이상합니다. 왜 지구의 크기와 태양의 크기가 같고 또 왜 저렇게
 멀리 떨어졌을까요? 기존 카메라로는 지구가 보이지 않아 카메라의 위치도
@@ -168,14 +160,12 @@ objects.push(earthMesh);
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">+const solarSystem = new THREE.Object3D();
 +scene.add(solarSystem);
 +objects.push(solarSystem);
-
 const sunMaterial = new THREE.MeshPhongMaterial({emissive: 0xFFFF00});
 const sunMesh = new THREE.Mesh(sphereGeometry, sunMaterial);
 sunMesh.scale.set(5, 5, 5);
 -scene.add(sunMesh);
 +solarSystem.add(sunMesh);
 objects.push(sunMesh);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 earthMesh.position.x = 10;
@@ -195,7 +185,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-orbit-fixed.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-orbit-fixed.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>훨씬 낫네요. 지구는 태양보다 작고 태양을 공전하는 동시에 자전까지 합니다.</p>
 <p>같은 패턴으로 달도 추가해봅시다.</p>
@@ -203,17 +192,14 @@ objects.push(earthMesh);
 +earthOrbit.position.x = 10;
 +solarSystem.add(earthOrbit);
 +objects.push(earthOrbit);
-
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
 const earthMesh = new THREE.Mesh(sphereGeometry, earthMaterial);
 -solarSystem.add(earthMesh);
 +earthOrbit.add(earthMesh);
 objects.push(earthMesh);
-
 +const moonOrbit = new THREE.Object3D();
 +moonOrbit.position.x = 2;
 +earthOrbit.add(moonOrbit);
-
 +const moonMaterial = new THREE.MeshPhongMaterial({color: 0x888888, emissive: 0x222222});
 +const moonMesh = new THREE.Mesh(sphereGeometry, moonMaterial);
 +moonMesh.scale.set(.5, .5, .5);
@@ -228,7 +214,6 @@ objects.push(earthMesh);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>처음에 봤던 예제처럼 달이 스피로그래프를 그리며 돌지만, 복잡한 수학적
 연산이 하나도 들어가지 않았습니다. 우리가 한 건 씬 그래프에게 그 연산을
@@ -258,7 +243,6 @@ objects.forEach((node) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><span style="color:red">x축(빨강)</span> 그리고
 <span style="color:blue">z축(파랑)</span> 축이 보이나요? 카메라가 바로 위에서
@@ -282,7 +266,6 @@ objects.forEach((node) =&gt; {
 -  axes.renderOrder = 1;
 -  node.add(axes);
 -});
-
 +function makeAxisGrid(node, label, units) {
 +  const helper = new AxisGridHelper(node, units);
 +  gui.add(helper, 'visible').name(label);
@@ -314,12 +297,10 @@ class AxisGridHelper {
     axes.material.depthTest = false;
     axes.renderOrder = 2;  // 격자 다음에 렌더링
     node.add(axes);
-
     const grid = new THREE.GridHelper(units, units);
     grid.material.depthTest = false;
     grid.renderOrder = 1;
     node.add(grid);
-
     this.grid = grid;
     this.axes = axes;
     this.visible = false;
@@ -341,7 +322,6 @@ class AxisGridHelper {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-sun-earth-moon-axes-grids.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-sun-earth-moon-axes-grids.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p><code class="notranslate" translate="no">solarSystem</code>을 체크하면 위에서 설정했듯 지구가 정확히 중앙으로부터
 10칸 떨어진 것을 확인할 수 있습니다. 지구가 <code class="notranslate" translate="no">solarSystem</code> "지역 공간"
@@ -365,7 +345,6 @@ class AxisGridHelper {
 <a href="/docs/#api/ko/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>는 청색, 광원은 갈색, 카메라는 보라색으로 칠했습니다. 하나의
 카메라는 씬 그래프에 포함하지 않았습니다.</p>
 <div class="threejs_center"><img src="../resources/images/scenegraph-tank.svg" style="width: 800px;"></div>
-
 <p>모든 요소를 어떻게 설정했는지 코드를 하나씩 살펴보죠.</p>
 <p>탱크가 조준할 목표를 만들기 위해 먼저 위 예제의 <code class="notranslate" translate="no">earthOrbit</code>과 유사한
 <code class="notranslate" translate="no">targetOrbit</code>(<a href="/docs/#api/ko/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>)을 만듭니다. 그리고 <code class="notranslate" translate="no">targetOrbit</code>의 상대 좌표를 넘겨줄
@@ -390,9 +369,7 @@ targetMaterial.color.setHSL(time * 10 % 1, 1, .25);
 메서드에 넘겨주어 탱크가 그 방향을 바라보도록 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const tankPosition = new THREE.Vector2();
 const tankTarget = new THREE.Vector2();
-
 ...
-
 // move tank
 const tankTime = time * .05;
 curve.getPointAt(tankTime % 1, tankPosition);
@@ -404,9 +381,7 @@ tank.lookAt(tankTarget.x, 0, tankTarget.y);
 그리고 목표물의 전역 위치값(global position)을 구한 뒤 <a href="/docs/#api/ko/core/Object3D.lookAt"><code class="notranslate" translate="no">Object3D.lookAt</code></a>
 메서드를 이용, 포탑이 목표물을 조준하게 합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const targetPosition = new THREE.Vector3();
-
 ...
-
 // 목표를 조준하도록
 targetMesh.getWorldPosition(targetPosition);
 turretPivot.lookAt(targetPosition);
@@ -436,7 +411,6 @@ targetCameraPivot.lookAt(targetPosition);
   { cam: targetCamera, desc: 'near target looking at tank', },
   { cam: tankCamera, desc: 'above back of tank', },
 ];
-
 const infoElem = document.querySelector('#info');
 </pre>
 <p>시간에 따라 카메라를 변경하도록 합니다.</p>
@@ -447,7 +421,6 @@ infoElem.textContent = camera.desc;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/scenegraph-tank.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/scenegraph-tank.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>자, 이번 장은 여기까지입니다. 이 글이 씬 그래프가 어떻게 작동하는지,
 어떻게 사용해야할지 감을 잡는 데 도움이 되었으면 좋겠네요. <a href="/docs/#api/ko/core/Object3D"><code class="notranslate" translate="no">Object3D</code></a>
@@ -457,15 +430,9 @@ infoElem.textContent = camera.desc;
 계산하거나 자동차 바퀴의 위치를 계산하는 건 굉장히 복잡할 겁니다. 씬
 그래프를 적절히 활용하면 이런 복잡한 동작을 더 쉽게 구현할 수 있죠.</p>
 <p><a href="materials.html">다음 장에서는 <code class="notranslate" translate="no">재질(material)</code>에 대해 알아보겠습니다</a>.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

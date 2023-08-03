@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -84,7 +82,6 @@ n'y aurait que 3 points. Si vous essayez de le dessiner en utilisant un matéria
 <code class="notranslate" translate="no">wireframe: true</code> vous n'obtiendrez qu'une seule ligne. Si vous passez cette géométrie
 triangulaire à un <a href="/docs/#api/en/geometries/WireframeGeometry"><code class="notranslate" translate="no">WireframeGeometry</code></a> vous obtenez une nouvelle géométrie qui comporte
 3 segments de lignes utilisant 6 points.</div>
-
 <p>Nous reviendrons sur la création de géométrie personnalisée dans
 <a href="custom-buffergeometry.html">un autre article</a>. Pour l'instant,
 faisons un exemple en créant chaque type de primitive. Nous
@@ -109,11 +106,9 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 et ajoute l'objet à la scène.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const objects = [];
 const spread = 15;
-
 function addObject (x, y, obj) {
   obj.position.x = x * spread;
   obj.position.y = y * spread;
-
   scene.add(obj);
   objects.push(obj);
 }
@@ -132,12 +127,10 @@ De 0,5 à 1,0 la couleur passe de la <code class="notranslate" translate="no">hu
   const material = new THREE.MeshPhongMaterial({
     side: THREE.DoubleSide,
   });
-
   const hue = Math.random(); // teinte
   const saturation = 1;
   const luminance = .5; // luminosité
   material.color.setHSL(hue, saturation, luminance);
-
   return material;
 }
 </pre>
@@ -179,7 +172,6 @@ Par exemple, la création d'une boîte :</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Il y a quelques exceptions notables au modèle ci-dessus.
 La plus grande est probablement le <a href="/docs/#api/en/geometries/TextGeometry"><code class="notranslate" translate="no">TextGeometry</code></a>. Il doit charger
@@ -199,7 +191,6 @@ Et enfin, nous créons la géométrie et appelons <code class="notranslate" tran
       loader.load(url, resolve, undefined, reject);
     });
   }
-
   async function doit() {
     const font = await loadFont('../resources/threejs/fonts/helvetiker_regular.typeface.json');  /* threejs.org: url */
     const geometry = new TextGeometry('three.js', {
@@ -215,10 +206,8 @@ Et enfin, nous créons la géométrie et appelons <code class="notranslate" tran
     const mesh = new THREE.Mesh(geometry, createMaterial());
     geometry.computeBoundingBox();
     geometry.boundingBox.getCenter(mesh.position).multiplyScalar(-1);
-
     const parent = new THREE.Object3D();
     parent.add(mesh);
-
     addObject(-1, -1, parent);
   }
   doit();
@@ -251,7 +240,6 @@ fixé précédemment.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/primitives-text.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/primitives-text.html" target="_blank">Cliquer ici pour ouvrir dans une fenêtre séparée</a>
 </div>
-
 <p></p>
 <p>Notons que celui de gauche ne tourne pas autour de son centre
 alors que celui de droite le fait.</p>
@@ -292,7 +280,6 @@ scene.add(points);
 <div class="spread">
 <div data-diagram="Points"></div>
 </div>
-
 <p>Vous pouvez désactiver l'option <a href="/docs/#api/en/materials/PointsMaterial#sizeAttenuation"><code class="notranslate" translate="no">sizeAttenuation</code></a> en la réglant
 sur "false" si vous souhaitez que les points soient de la même taille quelle que soit leur
 distance par rapport à la caméra.</p>
@@ -307,7 +294,6 @@ distance par rapport à la caméra.</p>
 <div class="spread">
 <div data-diagram="PointsUniformSize"></div>
 </div>
-
 <p>Une autre chose qu'il est important de souligner : c'est que presque toutes les formes ont des
 réglages différents concernant leur subdivisions. Un bon exemple pourrait être les
 géométries des sphères prennant en paramètres le nombre de divisions à faire autour et de
@@ -317,7 +303,6 @@ haut en bas. Par exemple :</p>
 <div data-diagram="SphereGeometryMedium"></div>
 <div data-diagram="SphereGeometryHigh"></div>
 </div>
-
 <p>La première sphère a un tour de 5 segments et 3 de haut, soit 15 segments ou 30 triangles.
 La deuxième sphère a 24 segments sur 10. cela fait 240 segments ou 480 triangles. Le dernier a
 50 par 50, soir 2500 segments ou 5000 triangles.</p>
@@ -329,7 +314,6 @@ nous obtenons ceci :</p>
 <div data-diagram="SphereGeometryMediumSmooth"></div>
 <div data-diagram="SphereGeometryHighSmooth"></div>
 </div>
-
 <p>Il est moins perceptible que celle de droite avec 5000 triangles est meilleure que celle avec
 seulement 480 triangles. Si vous ne dessinez que quelques sphères, comme par exemple, un seul
 globe pour une carte de la terre, alors une sphère de 10 000 triangles n'est pas un mauvais choix.
@@ -343,7 +327,6 @@ de subdiviser un plan.</p>
 <div data-diagram="PlaneGeometryLow"></div>
 <div data-diagram="PlaneGeometryHigh"></div>
 </div>
-
 <p>Le plan à gauche est composé de 2 triangles. Le plan de droite est composé de 200 triangles.
 Contrairement à la sphère, il n'y a pas vraiment de compromis sur la qualité pour la plupart des
 cas d'utilisation d'un plan. Vous ne subdiviserez probablement un plan que si vous vous attendez
@@ -358,15 +341,9 @@ Vous pouvez également créer votre <a href="custom-buffergeometry.html">BufferG
 <p>Voyons maintenant l'article traitant sur <a href="scenegraph.html">comment fonctionne un graphe de scène three.js et comment l'utiliser</a>.</p>
 <p><link rel="stylesheet" href="../resources/threejs-primitives.css"></p>
 <script type="module" src="../resources/threejs-primitives.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script defer src="../resources/prettify.js"></script>
   <script defer src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -47,7 +45,6 @@
   <div><div data-diagram="shapeCylinder"></div><div>cylinder</div></div>
   <div><div data-diagram="shapeFrustum"></div><div>frustum</div></div>
 </div>
-
 <p>私はこの事を何年も知らなかったです。
 どこかの本やページで <em>錐台</em> について書かれていると目が点になります。
 錐台が固体名と理解すると、それらの記述を急に理解できるようになりました 😅</p>
@@ -90,7 +87,6 @@ GUIで値を調整すると2つのプロパティに設定されます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function updateCamera() {
   camera.updateProjectionMatrix();
 }
-
 const gui = new GUI();
 gui.add(camera, 'fov', 1, 180).onChange(updateCamera);
 const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
@@ -103,7 +99,6 @@ gui.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far').onChange(updateCamera)
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-perspective.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-perspective.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>値を調整すると動作が確認できます。
 <code class="notranslate" translate="no">aspect</code> を調整したい場合は、新しいウィンドウでサンプルを開いてからウィンドウサイズを変更して下さい。</p>
@@ -138,9 +133,7 @@ gui.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far').onChange(updateCamera)
 <p>次に <a href="/docs/#api/ja/helpers/CameraHelper"><code class="notranslate" translate="no">CameraHelper</code></a> を追加します。
 <a href="/docs/#api/ja/helpers/CameraHelper"><code class="notranslate" translate="no">CameraHelper</code></a> は <a href="/docs/#api/ja/cameras/Camera"><code class="notranslate" translate="no">Camera</code></a> の錐台を描画します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const cameraHelper = new THREE.CameraHelper(camera);
-
 ...
-
 scene.add(cameraHelper);
 </pre>
 <p>view1とview2のDOM要素をquerySelectorしましょう。</p>
@@ -161,7 +154,6 @@ const view2Elem = document.querySelector('#view2');
 );
 camera2.position.set(40, 10, 30);
 camera2.lookAt(0, 5, 0);
-
 const controls2 = new OrbitControls(camera2, view2Elem);
 controls2.target.set(0, 5, 0);
 controls2.update();
@@ -172,34 +164,28 @@ controls2.update();
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function setScissorForElement(elem) {
   const canvasRect = canvas.getBoundingClientRect();
   const elemRect = elem.getBoundingClientRect();
-
   // compute a canvas relative rectangle
   const right = Math.min(elemRect.right, canvasRect.right) - canvasRect.left;
   const left = Math.max(0, elemRect.left - canvasRect.left);
   const bottom = Math.min(elemRect.bottom, canvasRect.bottom) - canvasRect.top;
   const top = Math.max(0, elemRect.top - canvasRect.top);
-
   const width = Math.min(canvasRect.width, right - left);
   const height = Math.min(canvasRect.height, bottom - top);
-
   // setup the scissor to only render to that part of the canvas
   const positiveYUpBottom = canvasRect.height - bottom;
   renderer.setScissor(left, positiveYUpBottom, width, height);
   renderer.setViewport(left, positiveYUpBottom, width, height);
-
   // return the aspect
   return width / height;
 }
 </pre>
 <p>この関数を使って <code class="notranslate" translate="no">render</code> 関数でシーンを2回描画できます。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">  function render() {
-
 -    if (resizeRendererToDisplaySize(renderer)) {
 -      const canvas = renderer.domElement;
 -      camera.aspect = canvas.clientWidth / canvas.clientHeight;
 -      camera.updateProjectionMatrix();
 -    }
-
 +    resizeRendererToDisplaySize(renderer);
 +
 +    // turn on the scissor
@@ -238,12 +224,9 @@ controls2.update();
 +
 +      renderer.render(scene, camera2);
 +    }
-
 -    renderer.render(scene, camera);
-
     requestAnimationFrame(render);
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -252,7 +235,6 @@ controls2.update();
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function updateCamera() {
 -  camera.updateProjectionMatrix();
 -}
-
 const gui = new GUI();
 -gui.add(camera, 'fov', 1, 180).onChange(updateCamera);
 +gui.add(camera, 'fov', 1, 180);
@@ -267,7 +249,6 @@ const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-perspective-2-scenes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-perspective-2-scenes.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>左側はオリジナルのビュー、右側はカメラの錐台を表示するビューがあります。
 マウスで <code class="notranslate" translate="no">near</code>、<code class="notranslate" translate="no">far</code>、<code class="notranslate" translate="no">fov</code> を調整してカメラを動かすと、右側に表示されている錐台の内側だけが左側のシーンに表示されています。</p>
@@ -312,12 +293,10 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-z-fighting.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-z-fighting.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これはGPUがどのピクセルが前後にあるか判断する精度が不足してる時に <em>Zファイティング</em> が発生する例です。</p>
 <p>あなたのマシンでは問題が表示されない可能性がありますが、私のマシンでは以下のように表示されます。</p>
 <div class="threejs_center"><img src="../resources/images/z-fighting.png" style="width: 570px;"></div>
-
 <p>1つ目の解決策はどのピクセルが前後にあるかを計算するために、three.jsの別メソッドを使用します。
 これは <a href="/docs/#api/ja/renderers/WebGLRenderer"><code class="notranslate" translate="no">WebGLRenderer</code></a> の作成時に <code class="notranslate" translate="no">logarithmicDepthBuffer</code> を有効にします。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-const renderer = new THREE.WebGLRenderer({antialias: true, canvas});
@@ -332,7 +311,6 @@ const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-logarithmic-depth-buffer.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-logarithmic-depth-buffer.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>これで問題が解決しない場合、この解決策が使えない理由の1つに遭遇した事になります。
 その理由は、特定のGPUのみをサポートしているためです。
@@ -373,17 +351,14 @@ camera.zoom = 0.2;
 <p>最後に左側をレンダリングする部分を変更して <a href="/docs/#api/ja/cameras/OrthographicCamera"><code class="notranslate" translate="no">OrthographicCamera</code></a> を更新します。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">{
   const aspect = setScissorForElement(view1Elem);
-
   // update the camera for this aspect
 -  camera.aspect = aspect;
 +  camera.left   = -aspect;
 +  camera.right  =  aspect;
   camera.updateProjectionMatrix();
   cameraHelper.update();
-
   // don't draw the camera helper in the original view
   cameraHelper.visible = false;
-
   scene.background.set(0x000000);
   renderer.render(scene, camera);
 }
@@ -393,7 +368,6 @@ camera.zoom = 0.2;
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-orthographic-2-scenes.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-orthographic-2-scenes.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p>three.jsで2次元のものを描画する場合には、<a href="/docs/#api/ja/cameras/OrthographicCamera"><code class="notranslate" translate="no">OrthographicCamera</code></a> が最もよく使われます。
 カメラの表示台数を決める必要があります。
@@ -457,46 +431,36 @@ const planes = textures.map((texture) =&gt; {
 </pre>
 <p>キャンバスサイズの変更時、カメラを更新する必要があります。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
-
   if (resizeRendererToDisplaySize(renderer)) {
     camera.right = canvas.width;
     camera.bottom = canvas.height;
     camera.updateProjectionMatrix();
   }
-
   ...
 </pre>
 <p><code class="notranslate" translate="no">planes</code> は <a href="/docs/#api/ja/objects/Mesh"><code class="notranslate" translate="no">THREE.Mesh</code></a> の配列であり、各平面に1つずつあります。
 これらを時間に応じて移動させてみましょう。</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;  // convert to seconds;
-
   ...
-
   const distAcross = Math.max(20, canvas.width - planeSize);
   const distDown = Math.max(20, canvas.height - planeSize);
-
   // total distance to move across and back
   const xRange = distAcross * 2;
   const yRange = distDown * 2;
   const speed = 180;
-
   planes.forEach((plane, ndx) =&gt; {
     // compute a unique time for each plane
     const t = time * speed + ndx * 300;
-
     // get a value between 0 and range
     const xt = t % xRange;
     const yt = t % yRange;
-
     // set our position going forward if 0 to half of range
     // and backward if half of range to range
     const x = xt &lt; distAcross ? xt : xRange - xt;
     const y = yt &lt; distDown   ? yt : yRange - yt;
-
     plane.position.set(x, y, 0);
   });
-
   renderer.render(scene, camera);
 </pre>
 <p>2Dキャンバスのようにピクセル計算を使い、画像がキャンバスの縁からピクセルのように跳ね返っているのが分かります。</p>
@@ -504,26 +468,18 @@ const planes = textures.map((texture) =&gt; {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/cameras-orthographic-canvas-top-left-origin.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/cameras-orthographic-canvas-top-left-origin.html" target="_blank">ここをクリックして別のウィンドウで開きます</a>
 </div>
-
 <p></p>
 <p><a href="/docs/#api/ja/cameras/OrthographicCamera"><code class="notranslate" translate="no">OrthographicCamera</code></a> のもう1つの一般的な用途は3Dモデリングツールやゲームエンジンで、上、下、左、右、正面、背面のビューを描画する場合です。</p>
 <div class="threejs_center"><img src="../resources/images/quad-viewport.png" style="width: 574px;"></div>
-
 <p>上記のスクリーンショットでは右上のビューが透視投影図、左上のビューが平行投影図です。</p>
 <p>それがカメラの基本です。
 カメラを動かすための一般的な方法は別の記事で紹介します。
 とりあえず<a href="shadows.html">影</a>についてのページに移りましょう。</p>
 <p><canvas id="c"></canvas></p>
 <script type="module" src="../resources/threejs-cameras.js"></script>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

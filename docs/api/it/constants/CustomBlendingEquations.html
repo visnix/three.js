@@ -8,15 +8,12 @@
 	</head>
 	<body>
 		<h1>Costanti di equazioni di blending personalizzate</h1>
-
 		<p>
       Funzionano con tutti i tipi di materiale. Impostare prima la modalità blending del materiale
       su THREE.CustomBlending, poi impostare l'equazione di blending desiderata, il fattore sorgente 
       (Source Factor) e quello di destinazione (Destination Factor).
 		</p>
-
 		<h2>Codice di Esempio</h2>
-
 		<code>
 		const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
 		material.blending = THREE.CustomBlending;
@@ -24,10 +21,8 @@
 		material.blendSrc = THREE.SrcAlphaFactor; //default
 		material.blendDst = THREE.OneMinusSrcAlphaFactor; //default
 		</code>
-
 		<h2>Esempi</h2>
 		<p>[example:webgl_materials_blending_custom materials / blending / custom ]</p>
-
 		<h2>Equazioni di Blending</h2>
 		<code>
 		THREE.AddEquation
@@ -36,7 +31,6 @@
 		THREE.MinEquation
 		THREE.MaxEquation
 		</code>
-
 		<h2>Fattori di Origine (Source Factors)</h2>
 		<code>
 		THREE.ZeroFactor
@@ -51,14 +45,11 @@
 		THREE.OneMinusDstColorFactor
 		THREE.SrcAlphaSaturateFactor
 		</code>
-
 		<h2>Fattori di Destinazione (Destination Factors)</h2>
 		<p>
       Tutti questi fattori di origine sono validi come fattori di destinazione ad eccezione di <code>THREE.SrcAlphaSaturateFactor</code>
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/src/constants.js src/constants.js]
 		</p>

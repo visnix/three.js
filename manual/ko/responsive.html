@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -71,7 +69,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-no-resize.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-no-resize.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>canvas가 창 전체를 채우긴 했지만 문제가 좀 있네요. 정육면체가 창 크기에
 따라 늘어나 정육면체라기보다 너무 길거나 넓은 육면체처럼 보입니다. 예제를
@@ -87,11 +84,9 @@ html, body {
 <p>그리고 렌더링 함수를 다음처럼 수정합니다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  const canvas = renderer.domElement;
 +  camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +  camera.updateProjectionMatrix();
-
   ...
 </pre>
 <p>이제 정육면체는 더이상 늘어나거나 찌그러들지 않을 겁니다.</p>
@@ -99,7 +94,6 @@ html, body {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-update-camera.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-update-camera.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>예제를 새 창에서 열어 창 크기를 조절해보면, 정육면체의 비율이
 창 크기와 상관없이 그대로 유지되는 것을 확인할 수 있을 겁니다.</p>
@@ -146,13 +140,11 @@ CSS를 제어하는 것 보다 다른 요소들처럼 CSS로 제어하는 것이
 새로 만든 함수를 이용해 <code class="notranslate" translate="no">render</code> 함수를 수정합시다.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 +  if (resizeRendererToDisplaySize(renderer)) {
 +    const canvas = renderer.domElement;
 +    camera.aspect = canvas.clientWidth / canvas.clientHeight;
 +    camera.updateProjectionMatrix();
 +  }
-
   ...
 </pre>
 <p>canvas의 비율이 변하려면 canvas의 사이즈가 변해야 하므로,
@@ -162,7 +154,6 @@ CSS를 제어하는 것 보다 다른 요소들처럼 CSS로 제어하는 것이
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>이제 디스플레이 크기에 맞는 해상도로 렌더링될 겁니다.</p>
 <p>CSS가 디스플레이 크기를 제어하도록 해야 한다는 주장을 보충해보겠습니다.
@@ -174,7 +165,6 @@ CSS를 제어하는 것 보다 다른 요소들처럼 CSS로 제어하는 것이
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-paragraph.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-paragraph.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>다음은 우측 컨트롤 패널 크기를 조정할 수 있는 에디터 형태의
 레이아웃에서 활용한 예시입니다.</p>
@@ -182,7 +172,6 @@ CSS를 제어하는 것 보다 다른 요소들처럼 CSS로 제어하는 것이
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-editor.html&amp;startPane=html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-editor.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>HTML, CSS만 바뀌고 자바스크립트 코드는 한 줄도 바뀌지 않았습니다.</p>
 <h2 id="hd-dpi-">HD-DPI 디스플레이 다루기</h2>
@@ -245,22 +234,15 @@ canvas에 뭔가를 그린다던가 하는 경우가 있죠. 실제 크기 대�
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/responsive-hd-dpi.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/responsive-hd-dpi.html" target="_blank">새 탭에서 보기</a>
 </div>
-
 <p></p>
 <p>결과물로는 차이를 구별하기 어렵지만, HD-DPI 기기에서 예시를 비교해
 보면 이전 예시의 모서리가 좀 더 깨진 것이 보일 겁니다.</p>
 <p>이 장에서는 아주 기초적인 예시만을 다루었습니다. 다음 장에서는
 <a href="primitives.html">Three.js의 원시 모델</a>에 대해서 빠르게
 훑어보겠습니다.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

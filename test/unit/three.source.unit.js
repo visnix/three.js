@@ -1,11 +1,8 @@
 import './utils/console-wrapper.js';
 import './utils/qunit-utils.js';
-
 //src
 import './src/constants.tests.js';
 import './src/utils.tests.js';
-
-
 //src/animation
 import './src/animation/AnimationAction.tests.js';
 import './src/animation/AnimationClip.tests.js';
@@ -15,7 +12,6 @@ import './src/animation/AnimationUtils.tests.js';
 import './src/animation/KeyframeTrack.tests.js';
 import './src/animation/PropertyBinding.tests.js';
 import './src/animation/PropertyMixer.tests.js';
-
 //src/animation/tracks
 import './src/animation/tracks/BooleanKeyframeTrack.tests.js';
 import './src/animation/tracks/ColorKeyframeTrack.tests.js';
@@ -23,16 +19,12 @@ import './src/animation/tracks/NumberKeyframeTrack.tests.js';
 import './src/animation/tracks/QuaternionKeyframeTrack.tests.js';
 import './src/animation/tracks/StringKeyframeTrack.tests.js';
 import './src/animation/tracks/VectorKeyframeTrack.tests.js';
-
-
 //src/audio
 import './src/audio/Audio.tests.js';
 import './src/audio/AudioAnalyser.tests.js';
 import './src/audio/AudioContext.tests.js';
 import './src/audio/AudioListener.tests.js';
 import './src/audio/PositionalAudio.tests.js';
-
-
 //src/cameras
 import './src/cameras/ArrayCamera.tests.js';
 import './src/cameras/Camera.tests.js';
@@ -40,8 +32,6 @@ import './src/cameras/CubeCamera.tests.js';
 import './src/cameras/OrthographicCamera.tests.js';
 import './src/cameras/PerspectiveCamera.tests.js';
 import './src/cameras/StereoCamera.tests.js';
-
-
 //src/core
 import './src/core/BufferAttribute.tests.js';
 import './src/core/BufferGeometry.tests.js';
@@ -58,15 +48,12 @@ import './src/core/Object3D.tests.js';
 import './src/core/Raycaster.tests.js';
 import './src/core/Uniform.tests.js';
 import './src/core/UniformsGroup.tests.js';
-
-
 //src/extras
 import './src/extras/DataUtils.tests.js';
 import './src/extras/Earcut.tests.js';
 import './src/extras/ImageUtils.tests.js';
 import './src/extras/PMREMGenerator.tests.js';
 import './src/extras/ShapeUtils.tests.js';
-
 //src/extras/core
 import './src/extras/core/Curve.tests.js';
 import './src/extras/core/CurvePath.tests.js';
@@ -74,7 +61,6 @@ import './src/extras/core/Interpolations.tests.js';
 import './src/extras/core/Path.tests.js';
 import './src/extras/core/Shape.tests.js';
 import './src/extras/core/ShapePath.tests.js';
-
 //src/extras/curves
 import './src/extras/curves/ArcCurve.tests.js';
 import './src/extras/curves/CatmullRomCurve3.tests.js';
@@ -86,7 +72,6 @@ import './src/extras/curves/LineCurve3.tests.js';
 import './src/extras/curves/QuadraticBezierCurve.tests.js';
 import './src/extras/curves/QuadraticBezierCurve3.tests.js';
 import './src/extras/curves/SplineCurve.tests.js';
-
 //src/geometries
 import './src/geometries/BoxGeometry.tests.js';
 import './src/geometries/CapsuleGeometry.tests.js';
@@ -109,8 +94,6 @@ import './src/geometries/TorusGeometry.tests.js';
 import './src/geometries/TorusKnotGeometry.tests.js';
 import './src/geometries/TubeGeometry.tests.js';
 import './src/geometries/WireframeGeometry.tests.js';
-
-
 //src/helpers
 import './src/helpers/ArrowHelper.tests.js';
 import './src/helpers/AxesHelper.tests.js';
@@ -125,8 +108,6 @@ import './src/helpers/PointLightHelper.tests.js';
 import './src/helpers/PolarGridHelper.tests.js';
 import './src/helpers/SkeletonHelper.tests.js';
 import './src/helpers/SpotLightHelper.tests.js';
-
-
 //src/lights
 import './src/lights/AmbientLight.tests.js';
 import './src/lights/AmbientLightProbe.tests.js';
@@ -142,8 +123,6 @@ import './src/lights/PointLightShadow.tests.js';
 import './src/lights/RectAreaLight.tests.js';
 import './src/lights/SpotLight.tests.js';
 import './src/lights/SpotLightShadow.tests.js';
-
-
 //src/loaders
 import './src/loaders/AnimationLoader.tests.js';
 import './src/loaders/AudioLoader.tests.js';
@@ -161,8 +140,6 @@ import './src/loaders/LoadingManager.tests.js';
 import './src/loaders/MaterialLoader.tests.js';
 import './src/loaders/ObjectLoader.tests.js';
 import './src/loaders/TextureLoader.tests.js';
-
-
 //src/materials
 import './src/materials/LineBasicMaterial.tests.js';
 import './src/materials/LineDashedMaterial.tests.js';
@@ -182,8 +159,6 @@ import './src/materials/RawShaderMaterial.tests.js';
 import './src/materials/ShaderMaterial.tests.js';
 import './src/materials/ShadowMaterial.tests.js';
 import './src/materials/SpriteMaterial.tests.js';
-
-
 //src/math
 import './src/math/Box2.tests.js';
 import './src/math/Box3.tests.js';
@@ -207,14 +182,11 @@ import './src/math/Triangle.tests.js';
 import './src/math/Vector2.tests.js';
 import './src/math/Vector3.tests.js';
 import './src/math/Vector4.tests.js';
-
 //src/math/interpolants
 import './src/math/interpolants/CubicInterpolant.tests.js';
 import './src/math/interpolants/DiscreteInterpolant.tests.js';
 import './src/math/interpolants/LinearInterpolant.tests.js';
 import './src/math/interpolants/QuaternionLinearInterpolant.tests.js';
-
-
 //src/objects
 import './src/objects/Bone.tests.js';
 import './src/objects/Group.tests.js';
@@ -228,8 +200,6 @@ import './src/objects/Points.tests.js';
 import './src/objects/Skeleton.tests.js';
 import './src/objects/SkinnedMesh.tests.js';
 import './src/objects/Sprite.tests.js';
-
-
 //src/renderers
 import './src/renderers/WebGL1Renderer.tests.js';
 import './src/renderers/WebGL3DRenderTarget.tests.js';
@@ -238,13 +208,11 @@ import './src/renderers/WebGLCubeRenderTarget.tests.js';
 import './src/renderers/WebGLMultipleRenderTargets.tests.js';
 import './src/renderers/WebGLRenderer.tests.js';
 import './src/renderers/WebGLRenderTarget.tests.js';
-
 //src/renderers/shaders
 import './src/renderers/shaders/ShaderChunk.tests.js';
 import './src/renderers/shaders/ShaderLib.tests.js';
 import './src/renderers/shaders/UniformsLib.tests.js';
 import './src/renderers/shaders/UniformsUtils.tests.js';
-
 //src/renderers/webgl
 import './src/renderers/webgl/WebGLAttributes.tests.js';
 import './src/renderers/webgl/WebGLBackground.tests.js';
@@ -267,14 +235,10 @@ import './src/renderers/webgl/WebGLState.tests.js';
 import './src/renderers/webgl/WebGLTextures.tests.js';
 import './src/renderers/webgl/WebGLUniforms.tests.js';
 import './src/renderers/webgl/WebGLUtils.tests.js';
-
-
 //src/scenes
 import './src/scenes/Fog.tests.js';
 import './src/scenes/FogExp2.tests.js';
 import './src/scenes/Scene.tests.js';
-
-
 //src/textures
 import './src/textures/CanvasTexture.tests.js';
 import './src/textures/CompressedArrayTexture.tests.js';

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="utf-8">
   <title>对齐HTML元素到3D对象</title>
@@ -11,13 +10,11 @@
   <meta property="og:image" content="https://threejs.org/files/share.png">
   <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
   <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
   <link rel="stylesheet" href="../resources/lesson.css">
   <link rel="stylesheet" href="../resources/lang.css">
   <!-- Import maps polyfill -->
   <!-- Remove this when import maps will be widely supported -->
   <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
   <script type="importmap">
 {
   "imports": {
@@ -27,7 +24,6 @@
 </script>
   <link rel="stylesheet" href="/manual/zh/lang.css">
 </head>
-
 <body>
   <div class="container">
     <div class="lesson-title">
@@ -123,20 +119,15 @@ controls.update();</pre>
             translate="no">makeInstance</code>，可以用来生成立方体。我们现在让它同时添加一个Label元素。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">
 +const labelContainerElem = document.querySelector('#labels');
-
 -function makeInstance(geometry, color, x) {
 +function makeInstance(geometry, color, x, name) {
 	const material = new THREE.MeshPhongMaterial({color});
-
 	const cube = new THREE.Mesh(geometry, material);
 	scene.add(cube);
-
 	cube.position.x = x;
-
 +  const elem = document.createElement('div');
 +  elem.textContent = name;
 +  labelContainerElem.appendChild(elem);
-
 -  return cube;
 +  return {cube, elem};
 }</pre>
@@ -156,7 +147,6 @@ const cubes = [
         <p>剩下的就是在渲染时定位Label元素。</p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const tempV = new THREE.Vector3();
 ...
-
 -cubes.forEach((cube, ndx) =&gt; {
 +cubes.forEach((cubeInfo, ndx) =&gt; {
 +  const {cube, elem} = cubeInfo;
@@ -164,7 +154,6 @@ const cubes = [
    const rot = time * speed;
    cube.rotation.x = rot;
    cube.rotation.y = rot;
-
 +  // 获取立方体中心的位置
 +  cube.updateWorldMatrix(true, false);
 +  cube.getWorldPosition(tempV);
@@ -199,25 +188,20 @@ const cubes = [
         </p>
         <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const tempV = new THREE.Vector3();
 +const raycaster = new THREE.Raycaster();
-
 ...
-
 cubes.forEach((cubeInfo, ndx) =&gt; {
   const {cube, elem} = cubeInfo;
   const speed = 1 + ndx * .1;
   const rot = time * speed;
   cube.rotation.x = rot;
   cube.rotation.y = rot;
-
   // 获取立方体中心的位置
   cube.updateWorldMatrix(true, false);
   cube.getWorldPosition(tempV);
-
   // 获取标准化屏幕坐标，x和y都会在-1和1区间
   // x = -1 表示在最左侧
   // y = -1 表示在最底部
   tempV.project(camera);
-
 +  // 调用Raycast获取所有相交的物体
 +  // 以相机为起点，物体为终点
 +  raycaster.setFromCamera(tempV, camera);
@@ -231,11 +215,9 @@ cubes.forEach((cubeInfo, ndx) =&gt; {
 +  } else {
 +    // 显示Label
 +    elem.style.display = '';
-
     // 将标准屏幕坐标转化为CSS坐标
     const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
     const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
-
     // 将元素移动到此位置
     elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
 +  }
@@ -261,20 +243,15 @@ cubes.forEach((cubeInfo, ndx) =&gt; {
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 初始化
 const frustum = new THREE.Frustum();
 const viewProjection = new THREE.Matrix4();
-
 ...
-
 // 在检查前
 camera.updateMatrix();
 camera.updateMatrixWorld();
 camera.matrixWorldInverse.copy(camera.matrixWorld).invert();
-
 ...
-
 // 然后，对每一个Mesh
 someMesh.updateMatrix();
 someMesh.updateMatrixWorld();
-
 viewProjection.multiplyMatrices(
     camera.projectionMatrix, camera.matrixWorldInverse);
 frustum.setFromProjectionMatrix(viewProjection);
@@ -301,14 +278,11 @@ const inFrustum = frustum.contains(someMesh));</pre>
             -1表示最前面，1表示最后面。 <code class="notranslate" translate="no">zIndex</code> 却是一个整型，并且含义相反，
             <code class="notranslate" translate="no">zIndex</code>越大表示越靠前，所以下面的代码可能有用。
           </p>
-
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">// 将标准屏幕坐标转化为CSS坐标
 const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
 const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
-
 // 将元素移动到此位置
 elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
-
 +// 设置排序用的zIndex
 +elem.style.zIndex = (-tempV.z * .5 + .5) * 100000 | 0;</pre>
           <p>由于投影 z 值的取值限制，我们需要选择一个大数来分散这些值，否则许多Label将具有相同的值。为了保证Label不和页面其他的部分重叠，通过设置 <code class="notranslate"
@@ -386,7 +360,6 @@ async function loadCountryData() {
   requestRenderIfNotRequested();
 }
 loadCountryData();</pre>
-
           <p>现在让我们用这些数据来生成和放置Labels</p>
           <p>在这一篇文章 <a href="optimize-lots-of-objects.html">优化大量对象</a>，
             我们已经创建了一个小辅助对象，以便于计算地球上的经纬度位置，具体可以看看这篇文章是如何解释它们怎么工作的。</p>
@@ -406,17 +379,14 @@ latHelper.add(positionHelper);</pre>
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const labelParentElem = document.querySelector('#labels');
 for (const countryInfo of countryInfos) {
   const {lat, lon, name} = countryInfo;
-
   // 调整helper，旋转指向经纬度点的位置
   lonHelper.rotation.y = THREE.MathUtils.degToRad(lon) + lonFudge;
   latHelper.rotation.x = THREE.MathUtils.degToRad(lat) + latFudge;
-
   // 获取经纬度位置
   positionHelper.updateWorldMatrix(true, false);
   const position = new THREE.Vector3();
   positionHelper.getWorldPosition(position);
   countryInfo.position = position;
-
   // 给每一个国家添加一个Label
   const elem = document.createElement('div');
   elem.textContent = name;
@@ -427,30 +397,24 @@ for (const countryInfo of countryInfos) {
             对于我们添加的每个国家/地区都有一个 <code class="notranslate" translate="no">elem</code>
             属性代表Label元素 和一个 <code class="notranslate" translate="no">position</code> 代表它的位置。</p>
           <p>就像我们对立方体所做的那样，我们需要在渲染的时候先更新Label。</p>
-
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const tempV = new THREE.Vector3();
 function updateLabels() {
   // 如果JSON文件还没加载进来，就退出
   if (!countryInfos) {
     return;
   }
-
   for (const countryInfo of countryInfos) {
     const {position, elem} = countryInfo;
-
     // 获取标准化屏幕坐标，x和y都会在-1和1区间
     // x = -1 表示在最左侧
     // y = -1 表示在最底部
     tempV.copy(position);
     tempV.project(camera);
-
     // 将标准屏幕坐标转化为CSS坐标
     const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
     const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
-
     // 将元素移动到此位置
     elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
-
     // 设置排序用的zIndex
     elem.style.zIndex = (-tempV.z * .5 + .5) * 100000 | 0;
   }
@@ -459,17 +423,13 @@ function updateLabels() {
           <p>然后我们需要在我们的渲染循环中调用 <code class="notranslate" translate="no">updateLabels</code> </p>
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render() {
   renderRequested = false;
-
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
     camera.updateProjectionMatrix();
   }
-
   controls.update();
-
 +  updateLabels();
-
   renderer.render(scene, camera);
 }</pre>
           <p>这就是我们得到的结果</p>
@@ -498,13 +458,11 @@ function updateLabels() {
 +const cameraToPoint = new THREE.Vector3();
 +const cameraPosition = new THREE.Vector3();
 +const normalMatrix = new THREE.Matrix3();
-
 function updateLabels() {
   // 如果JSON文件还没加载进来，就退出
   if (!countryInfos) {
     return;
   }
-
 +  const minVisibleDot = 0.2;
 +  // 获取表示相机相对方向的变换矩阵
 +  normalMatrix.getNormalMatrix(camera.matrixWorldInverse);
@@ -512,7 +470,6 @@ function updateLabels() {
 +  camera.getWorldPosition(cameraPosition);
   for (const countryInfo of countryInfos) {
     const {position, elem} = countryInfo;
-
 +    // 根据相机的方向定位位置
 +    // 由于球体在原点并且球体是半径为1.0的单位球体
 +    // 这就能获取相对于相机的单位向量
@@ -537,20 +494,16 @@ function updateLabels() {
 +
 +    // 将元素恢复为其默认显示样式
 +    elem.style.display = '';
-
     // 获取标准化屏幕坐标，x和y都会在-1和1区间
     // x = -1 表示在最左侧
     // y = -1 表示在最底部
     tempV.copy(position);
     tempV.project(camera);
-
     // 将标准屏幕坐标转化为CSS坐标
     const x = (tempV.x *  .5 + .5) * canvas.clientWidth;
     const y = (tempV.y * -.5 + .5) * canvas.clientHeight;
-
     // 将元素移动到此位置
     countryInfo.elem.style.transform = `translate(-50%, -50%) translate(${x}px,${y}px)`;
-
     // 设置排序用的zIndex
     elem.style.zIndex = (-tempV.z * .5 + .5) * 100000 | 0;
   }
@@ -572,23 +525,19 @@ function updateLabels() {
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">const labelParentElem = document.querySelector('#labels');
 for (const countryInfo of countryInfos) {
   const {lat, lon, min, max, name} = countryInfo;
-
   // 调整helper，旋转指向经纬度点的位置
   lonHelper.rotation.y = THREE.MathUtils.degToRad(lon) + lonFudge;
   latHelper.rotation.x = THREE.MathUtils.degToRad(lat) + latFudge;
-
   // 获取经纬度位置
   positionHelper.updateWorldMatrix(true, false);
   const position = new THREE.Vector3();
   positionHelper.getWorldPosition(position);
   countryInfo.position = position;
-
 +  // 计算每个国家的面积
 +  const width = max[0] - min[0];
 +  const height = max[1] - min[1];
 +  const area = width * height;
 +  countryInfo.area = area;
-
   // a给每一个国家添加一个Label
   const elem = document.createElement('div');
   elem.textContent = name;
@@ -610,7 +559,6 @@ for (const countryInfo of countryInfos) {
 +    elem.style.display = 'none';
 +    continue;
 +  }
-
   ...</pre>
           <p>最后，由于我不确定这些值设多少好，于是添加一个GUI，就可以调试了</p>
           <pre class="prettyprint showlinemods notranslate lang-js" translate="no">import * as THREE from 'three';
@@ -623,12 +571,10 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 +const gui = new GUI({width: 300});
 +gui.add(settings, 'minArea', 0, 50).onChange(requestRenderIfNotRequested);
 +gui.add(settings, 'maxVisibleDot', -1, 1, 0.01).onChange(requestRenderIfNotRequested);
-
 function updateLabels() {
   if (!countryInfos) {
     return;
   }
-
 -  const large = 20 * 20;
 -  const maxVisibleDot = -0.2;
 +  const large = settings.minArea * settings.minArea;
@@ -637,9 +583,7 @@ function updateLabels() {
   //  获取相机的世界坐标
   camera.getWorldPosition(cameraPosition);
   for (const countryInfo of countryInfos) {
-
     ...
-
     // 如果方向不面向我们，隐藏它
 -    if (dot &gt; maxVisibleDot) {
 +    if (dot &gt; settings.maxVisibleDot) {
@@ -665,7 +609,6 @@ function updateLabels() {
         </p>
         <p>无论如何，我希望这些示例能让你了解如何用HTML对齐你的3D元素，我也或许会做出小小的贡献。</p>
         <p>下一步我们来实现 <a href="indexed-textures.html">拾取和高亮一个城市</a>。</p>
-
       </div>
     </div>
   </div>
@@ -675,10 +618,5 @@ function updateLabels() {
   <script type="module" src="../resources/threejs-align-html-elements-to-3d.js"></script>
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body>
-
 </html>

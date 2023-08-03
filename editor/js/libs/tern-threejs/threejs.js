@@ -6,7 +6,6 @@
   mod(tern, tern);
 })(function(infer, tern) {
   "use strict";
-
   tern.registerPlugin("threejs", function(server, options) {
     return {
       defs : {

@@ -8,13 +8,11 @@
     <meta property="og:image" content="https://threejs.org/files/share.png">
     <link rel="shortcut icon" href="../../files/favicon_white.ico" media="(prefers-color-scheme: dark)">
     <link rel="shortcut icon" href="../../files/favicon.ico" media="(prefers-color-scheme: light)">
-
     <link rel="stylesheet" href="../resources/lesson.css">
     <link rel="stylesheet" href="../resources/lang.css">
 <!-- Import maps polyfill -->
 <!-- Remove this when import maps will be widely supported -->
 <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
-
 <script type="importmap">
 {
   "imports": {
@@ -101,7 +99,6 @@ make the HTML</p>
 To one scene we'll add a cube and to another a diamond.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // the canvas default
   const near = 0.1;
@@ -110,7 +107,6 @@ To one scene we'll add a cube and to another a diamond.</p>
   camera.position.z = 2;
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -118,10 +114,8 @@ To one scene we'll add a cube and to another a diamond.</p>
     light.position.set(-1, 2, 4);
     scene.add(light);
   }
-
   return {scene, camera, elem};
 }
-
 function setupScene1() {
   const sceneInfo = makeScene(document.querySelector('#box'));
   const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -131,7 +125,6 @@ function setupScene1() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 function setupScene2() {
   const sceneInfo = makeScene(document.querySelector('#pyramid'));
   const radius = .8;
@@ -147,7 +140,6 @@ function setupScene2() {
   sceneInfo.mesh = mesh;
   return sceneInfo;
 }
-
 const sceneInfo1 = setupScene1();
 const sceneInfo2 = setupScene2();
 </pre>
@@ -157,28 +149,22 @@ to only render to part of the canvas by turning on the <em>scissor</em>
 test with <a href="/docs/#api/en/constants/Renderer.setScissorTest"><code class="notranslate" translate="no">Renderer.setScissorTest</code></a> and then setting both the scissor and the viewport with <a href="/docs/#api/en/constants/Renderer.setViewport"><code class="notranslate" translate="no">Renderer.setViewport</code></a> and <a href="/docs/#api/en/constants/Renderer.setScissor"><code class="notranslate" translate="no">Renderer.setScissor</code></a>.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function renderSceneInfo(sceneInfo) {
   const {scene, camera, elem} = sceneInfo;
-
   // get the viewport relative position of this element
   const {left, right, top, bottom, width, height} =
       elem.getBoundingClientRect();
-
   const isOffscreen =
       bottom &lt; 0 ||
       top &gt; renderer.domElement.clientHeight ||
       right &lt; 0 ||
       left &gt; renderer.domElement.clientWidth;
-
   if (isOffscreen) {
     return;
   }
-
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
-
   const positiveYUpBottom = canvasRect.height - bottom;
   renderer.setScissor(left, positiveYUpBottom, width, height);
   renderer.setViewport(left, positiveYUpBottom, width, height);
-
   renderer.render(scene, camera);
 }
 </pre>
@@ -186,19 +172,14 @@ test with <a href="/docs/#api/en/constants/Renderer.setScissorTest"><code class=
 and then render each scene.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   sceneInfo1.mesh.rotation.y = time * .1;
   sceneInfo2.mesh.rotation.y = time * .1;
-
   renderSceneInfo(sceneInfo1);
   renderSceneInfo(sceneInfo2);
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -207,7 +188,6 @@ and then render each scene.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-v1.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-v1.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>You can see where the first <code class="notranslate" translate="no">&lt;span&gt;</code> is there's a red cube and where the second <code class="notranslate" translate="no">span</code> is there's a blue diamond.</p>
 <h2 id="syncing-up">Syncing up</h2>
@@ -229,7 +209,6 @@ drawn into the canvas will lag behind the rest of the page.</p>
 </pre>
 <p>And if we <a href="../examples/multiple-scenes-v2.html" target="_blank">quickly scroll up and down</a> we'll see the issue. Here's a animation of scrolling slowed down by 10x.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-skew.gif"></div>
-
 <p>We can switch to a different method which has a different tradeoff. We'll switch the canvas's CSS from <code class="notranslate" translate="no">position: fixed</code> to <code class="notranslate" translate="no">position: absolute</code>. </p>
 <pre class="prettyprint showlinemods notranslate lang-css" translate="no">#c {
 -  position: fixed;
@@ -240,14 +219,12 @@ the top of the canvas is at the top of whatever part
 the page is currently scrolled to.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   ...
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
 </pre>
 <p><code class="notranslate" translate="no">position: fixed</code> kept the canvas from scrolling at all
 while the rest of the page scrolled over it. <code class="notranslate" translate="no">position: absolute</code> will let the canvas scroll with the rest of the page which means whatever we draw will stick with the page as it scrolls even if we're too slow to render. When we finally get a chance to render then we move the canvas so it matches where the page has been scrolled and then we re-render. This means only the edges of the window will show some un-rendered bits for a moment but <a href="../examples/multiple-scenes-v2.html" target="_blank">the stuff in the middle of the page should match up</a> and not slide. Here's a view of the results of the new method slowed down 10x.</p>
 <div class="threejs_center"><img class="border" src="../resources/images/multi-view-fixed.gif"></div>
-
 <h2 id="making-it-more-generic">Making it more Generic</h2>
 <p>Now that we've gotten multiple scenes working let's make this just slightly more generic.</p>
 <p>We could make it so the main render function, the one managing the canvas, just has a list of elements and their associated render function. For each element it would check if the element is on screen and if so call the corresponding render function. In this way we'd have a generic system where individual scenes aren't really aware they are being rendered in some smaller space.</p>
@@ -256,40 +233,31 @@ while the rest of the page scrolled over it. <code class="notranslate" translate
 function addScene(elem, fn) {
   sceneElements.push({elem, fn});
 }
-
 function render(time) {
   time *= 0.001;
-
   resizeRendererToDisplaySize(renderer);
-
   renderer.setScissorTest(false);
   renderer.setClearColor(clearColor, 0);
   renderer.clear(true, true);
   renderer.setScissorTest(true);
-
   const transform = `translateY(${window.scrollY}px)`;
   renderer.domElement.style.transform = transform;
-
   for (const {elem, fn} of sceneElements) {
     // get the viewport relative position of this element
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
-
     const isOffscreen =
         bottom &lt; 0 ||
         top &gt; renderer.domElement.clientHeight ||
         right &lt; 0 ||
         left &gt; renderer.domElement.clientWidth;
-
     if (!isOffscreen) {
       const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
       renderer.setScissor(left, positiveYUpBottom, width, height);
       renderer.setViewport(left, positiveYUpBottom, width, height);
-
       fn(time, rect);
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -310,7 +278,6 @@ function render(time) {
     renderer.render(scene, camera);
   });
 }
-
 {
   const elem = document.querySelector('#pyramid');
   const {scene, camera} = makeScene();
@@ -337,7 +304,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-generic.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-generic.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <h2 id="using-html-dataset">Using HTML Dataset</h2>
 <p>One last even more generic thing we can do is use HTML <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/dataset">dataset</a>. This is a way to add your own data to an HTML element. Instead of using <code class="notranslate" translate="no">id="..."</code> we'll use <code class="notranslate" translate="no">data-diagram="..."</code> like this</p>
@@ -417,7 +383,6 @@ function render(time) {
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">-function makeScene() {
 +function makeScene(elem) {
   const scene = new THREE.Scene();
-
   const fov = 45;
   const aspect = 2;  // the canvas default
   const near = 0.1;
@@ -426,11 +391,9 @@ function render(time) {
   camera.position.set(0, 1, 2);
   camera.lookAt(0, 0, 0);
 +  scene.add(camera);
-
 +  const controls = new TrackballControls(camera, elem);
 +  controls.noZoom = true;
 +  controls.noPan = true;
-
   {
     const color = 0xFFFFFF;
     const intensity = 1;
@@ -439,7 +402,6 @@ function render(time) {
 -    scene.add(light);
 +    camera.add(light);
   }
-
 -  return {scene, camera};
 + return {scene, camera, controls};
 }
@@ -494,7 +456,6 @@ function render(time) {
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-controls.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-controls.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>These techniques are used on this site itself. In particular <a href="primitives.html">the article about primitives</a> and <a href="materials.html">the article about materials</a> use this technique to add the various examples throughout the article.</p>
 <p>One more solution would be to render to an off screen canvas and copy the result to a 2D canvas at each element.
@@ -538,7 +499,6 @@ just turn on the scissor test at the beginning.</p>
 +  const canvas = document.createElement('canvas');
   const renderer = new THREE.WebGLRenderer({antialias: true, canvas, alpha: true});
 +  renderer.setScissorTest(true);
-
   ...
 </pre>
 <p>Then for each scene we create a 2D rendering context and
@@ -558,7 +518,6 @@ change its size. Finally we set the scissor and viewport,
 render the scene for this area, then copy the result to the area's canvas.</p>
 <pre class="prettyprint showlinemods notranslate lang-js" translate="no">function render(time) {
   time *= 0.001;
-
 -  resizeRendererToDisplaySize(renderer);
 -
 -  renderer.setScissorTest(false);
@@ -568,14 +527,12 @@ render the scene for this area, then copy the result to the area's canvas.</p>
 -
 -  const transform = `translateY(${window.scrollY}px)`;
 -  renderer.domElement.style.transform = transform;
-
 -  for (const {elem, fn} of sceneElements) {
 +  for (const {elem, fn, ctx} of sceneElements) {
     // get the viewport relative position of this element
     const rect = elem.getBoundingClientRect();
     const {left, right, top, bottom, width, height} = rect;
 +    const rendererCanvas = renderer.domElement;
-
     const isOffscreen =
         bottom &lt; 0 ||
 -        top &gt; renderer.domElement.clientHeight ||
@@ -583,12 +540,10 @@ render the scene for this area, then copy the result to the area's canvas.</p>
         right &lt; 0 ||
 -        left &gt; renderer.domElement.clientWidth;
 +        left &gt; window.innerWidth;
-
     if (!isOffscreen) {
 -      const positiveYUpBottom = renderer.domElement.clientHeight - bottom;
 -      renderer.setScissor(left, positiveYUpBottom, width, height);
 -      renderer.setViewport(left, positiveYUpBottom, width, height);
-
 +      // make sure the renderer's canvas is big enough
 +      if (rendererCanvas.width &lt; width || rendererCanvas.height &lt; height) {
 +        renderer.setSize(width, height, false);
@@ -602,9 +557,7 @@ render the scene for this area, then copy the result to the area's canvas.</p>
 +
 +      renderer.setScissor(0, 0, width, height);
 +      renderer.setViewport(0, 0, width, height);
-
       fn(time, rect);
-
 +      // copy the rendered scene to this element's canvas
 +      ctx.globalCompositeOperation = 'copy';
 +      ctx.drawImage(
@@ -613,7 +566,6 @@ render the scene for this area, then copy the result to the area's canvas.</p>
 +          0, 0, width, height);                              // dst rect
     }
   }
-
   requestAnimationFrame(render);
 }
 </pre>
@@ -622,21 +574,14 @@ render the scene for this area, then copy the result to the area's canvas.</p>
   <div><iframe class="threejs_example notranslate" translate="no" style=" " src="/manual/examples/resources/editor.html?url=/manual/examples/multiple-scenes-copy-canvas.html"></iframe></div>
   <a class="threejs_center" href="/manual/examples/multiple-scenes-copy-canvas.html" target="_blank">click here to open in a separate window</a>
 </div>
-
 <p></p>
 <p>One other advantage to this solution is you could potentially use
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas"><code class="notranslate" translate="no">OffscreenCanvas</code></a>
 to render from a web worker and still use this technique. Unfortunately as of July 2020
 <code class="notranslate" translate="no">OffscreenCanvas</code> is only supported by Chrome.</p>
-
         </div>
       </div>
     </div>
-  
   <script src="../resources/prettify.js"></script>
   <script src="../resources/lesson.js"></script>
-
-
-
-
 </body></html>

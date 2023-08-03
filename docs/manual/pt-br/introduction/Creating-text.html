@@ -13,7 +13,6 @@
 				Muitas vezes, você pode precisar usar texto em sua aplicação three.js - aqui estão algumas maneiras de fazer isso.
 			</p>
 		</div>
-
 		<h2>1. DOM + CSS</h2>
 		<div>
 			<p>
@@ -22,12 +21,10 @@
 			</p>
 			<p>Você pode adicionar conteúdo para uma</p>
 			<code>&lt;div id="info"&gt;Description&lt;/div&gt;</code>
-
 			<p>
 				e usar marcação CSS para posicionar absolutamente em uma posição acima de todas as outras com um
 				z-index, especialmente se você estiver executando o three.js em tela cheia.
 			</p>
-
 			<code>
 #info {
 	position: absolute;
@@ -38,10 +35,7 @@
 	display:block;
 }
 			</code>
-
 		</div>
-
-		
 		<h2>2. Usar [page:CSS2DRenderer] ou [page:CSS3DRenderer]</h2>
 		<div>
 			<p>
@@ -50,22 +44,16 @@
 				mais firmemente e dinamicamente na cena.
 			</p>
 		</div>
-		
-
 		<h2>3. Desenhe texto na tela e use como [page:Texture]</h2>
 		<div>
 			<p>
 				Use este método se deseja desenhar texto facilmente em um plano na sua cena three.js.
 			</p>
 		</div>
-
-
 		<h2>4. Crie um modelo em seu aplicativo 3D favorito e exporte para three.js</h2>
 		<div>
 			<p>Use este método se preferir trabalhar com seus aplicativos 3D e importar os modelos para o three.js.</p>
 		</div>
-
-
 		<h2>5. Geometria de Texto Procedural</h2>
 		<div>
 			<p>
@@ -78,27 +66,20 @@
 			<p>
 				Para que isso funcione, no entanto, seu TextGeometry precisará de uma instância de THREE.Font
 				para ser definido em seu parâmetro "fonte".
-
 				Veja a página [page:TextGeometry] para mais informações sobre como isso pode ser feito, descrição de cada
 				um dos parâmetros aceitos e uma lista das fontes JSON que vêm com a própria distribuição THREE.js.
 			</p>
-
 			<h3>Exemplos</h3>
-
 			<p>
 				[example:webgl_geometry_text WebGL / geometry / text]<br />
 				[example:webgl_shadowmap WebGL / shadowmap]
 			</p>
-
 			<p>
 				Se o Typeface estiver desativado ou você quiser usar uma fonte que não está lá, há um tutorial
 				com um script python para blender que permite exportar texto para o formato JSON do Three.js:
 				[link:http://www.jaanga.com/2012/03/blender-to-threejs-create-3d-text-with.html]
 			</p>
-
 		</div>
-
-
 		<h2>6. Fontes Bitmap</h2>
 		<div>
 			<p>
@@ -121,8 +102,6 @@
 				<li>[link:https://github.com/libgdx/libgdx/wiki/Hiero hiero] <i>(desktop)</i></li>
 			</ul>
 		</div>
-
-
 		<h2>7. Troika Text</h2>
 		<div>
 			<p>
@@ -138,7 +117,5 @@
 				<li>Otimização para grandes quantidades de texto dinâmico, realizando a maior parte do trabalho fora da thread principal em um web worker</li>
 			</ul>
 		</div>
-
-
 	</body>
 </html>

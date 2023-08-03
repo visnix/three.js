@@ -8,7 +8,6 @@
 	</head>
 	<body>
 		<h1>[name]</h1>
-
 		<p class="desc">
 		An exporter for `EXR`.
 		<br /><br />
@@ -20,40 +19,30 @@
 		is critical, such as photorealistic rendering, texture access, image compositing, deep compositing,
 		and DI.
 		</p>
-
 		<h2>Import</h2>
-
 		<p>
 			[name] is an add-on, and must be imported explicitly.
 			See [link:#manual/introduction/Installation Installation / Addons].
 		</p>
-
 		<code>
 			import { EXRExporter } from 'three/addons/exporters/EXRExporter.js';
 		</code>
-
 		<h2>Code Example</h2>
-
 		<code>
 		// Instantiate a exporter
 		const exporter = new EXRExporter();
-
 		// Parse the input render target data and generate the EXR output
 		const EXR = exporter.parse( renderer, renderTarget, options );
 		downloadFile( EXR );
 		</code>
-
 		<h2>Constructor</h2>
-
 		<h3>[name]()</h3>
 		<p>
 		</p>
 		<p>
 		Creates a new [name].
 		</p>
-
 		<h2>Methods</h2>
-
 		<h3>[method:null parse]( [param:WebGLRenderer renderer], [param:WebGLRenderTarget renderTarget], [param:Object options] )</h3>
 		<p>
 			[page:Function renderTarget] — WebGLRenderTarget containing data used for exporting EXR image.<br />
@@ -77,9 +66,7 @@ ZIPS_COMPRESSION
 		<p>
 		Generates a .exr output from the input render target.
 		</p>
-
 		<h2>Source</h2>
-
 		<p>
 			[link:https://github.com/mrdoob/three.js/blob/master/examples/jsm/exporters/EXRExporter.js examples/jsm/exporters/EXRExporter.js]
 		</p>
